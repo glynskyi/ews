@@ -1,0 +1,3 @@
+class Nullable<T> {
+
+}

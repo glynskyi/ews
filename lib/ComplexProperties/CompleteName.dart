@@ -1,0 +1,175 @@
+/*
+ * Exchange Web Services Managed API
+ *
+ * Copyright (c) Microsoft Corporation
+ * All rights reserved.
+ *
+ * MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+ * to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+import 'package:ews/ComplexProperties/ComplexProperty.dart';
+import 'package:ews/Core/EwsServiceXmlReader.dart';
+import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+import 'package:ews/Enumerations/XmlNamespace.dart';
+
+/// <summary>
+/// Represents the complete name of a contact.
+/// </summary>
+class CompleteName extends ComplexProperty {
+  /* private */ String title;
+
+  /* private */
+  String givenName;
+
+  /* private */
+  String middleName;
+
+  /* private */
+  String surname;
+
+  /* private */
+  String suffix;
+
+  /* private */
+  String initials;
+
+  /* private */
+  String fullName;
+
+  /* private */
+  String nickname;
+
+  /* private */
+  String yomiGivenName;
+
+  /* private */
+  String yomiSurname;
+
+  /// <summary>
+  /// Gets the contact's title.
+  /// </summary>
+  String get Title => this.title;
+
+  /// <summary>
+  /// Gets the given name (first name) of the contact.
+  /// </summary>
+  String get GivenName => this.givenName;
+
+  /// <summary>
+  /// Gets the middle name of the contact.
+  /// </summary>
+  String get MiddleName => this.middleName;
+
+  /// <summary>
+  /// Gets the surname (last name) of the contact.
+  /// </summary>
+  String get Surname => this.surname;
+
+  /// <summary>
+  /// Gets the suffix of the contact.
+  /// </summary>
+  String get Suffix => this.suffix;
+
+  /// <summary>
+  /// Gets the initials of the contact.
+  /// </summary>
+  String get Initials => this.initials;
+
+  /// <summary>
+  /// Gets the full name of the contact.
+  /// </summary>
+  String get FullName => this.fullName;
+
+  /// <summary>
+  /// Gets the nickname of the contact.
+  /// </summary>
+  String get NickName => this.nickname;
+
+  /// <summary>
+  /// Gets the Yomi given name (first name) of the contact.
+  /// </summary>
+  String get YomiGivenName => this.yomiGivenName;
+
+  /// <summary>
+  /// Gets the Yomi surname (last name) of the contact.
+  /// </summary>
+  String get YomiSurname => this.yomiSurname;
+
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    switch (reader.LocalName) {
+      case XmlElementNames.Title:
+        this.title = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.FirstName:
+        this.givenName = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.MiddleName:
+        this.middleName = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.LastName:
+        this.surname = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.Suffix:
+        this.suffix = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.Initials:
+        this.initials = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.FullName:
+        this.fullName = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.NickName:
+        this.nickname = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.YomiFirstName:
+        this.yomiGivenName = reader.ReadElementValue();
+        return true;
+      case XmlElementNames.YomiLastName:
+        this.yomiSurname = reader.ReadElementValue();
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  /// <summary>
+  /// Writes the elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Title, this.Title);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.FirstName, this.GivenName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.MiddleName, this.MiddleName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.LastName, this.Surname);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Suffix, this.Suffix);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Initials, this.Initials);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.FullName, this.FullName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.NickName, this.NickName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.YomiFirstName, this.YomiGivenName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.YomiLastName, this.YomiSurname);
+  }
+}

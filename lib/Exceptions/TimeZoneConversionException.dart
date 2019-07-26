@@ -1,0 +1,2 @@
+class TimeZoneConversionException implements Exception {
+}

@@ -1,0 +1,2 @@
+class XmlException implements Exception {
+}

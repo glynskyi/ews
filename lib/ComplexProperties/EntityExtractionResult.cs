@@ -1,0 +1,128 @@
+/*
+ * Exchange Web Services Managed API
+ *
+ * Copyright (c) Microsoft Corporation
+ * All rights reserved.
+ *
+ * MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+ * to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+
+
+
+
+    /// <summary>
+    /// Represents an EntityExtractionResult object.
+    /// </summary>
+ class EntityExtractionResult extends ComplexProperty
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityExtractionResult"/> class.
+        /// </summary>
+        EntityExtractionResult()
+            : super()
+        {
+            this.Namespace = XmlNamespace.Types;
+        }
+
+        /// <summary>
+        /// Gets the extracted Addresses.
+        /// </summary>
+ AddressEntityCollection Addresses { get; set; }
+
+        /// <summary>
+        /// Gets the extracted MeetingSuggestions.
+        /// </summary>
+ MeetingSuggestionCollection MeetingSuggestions { get; set; }
+
+        /// <summary>
+        /// Gets the extracted TaskSuggestions.
+        /// </summary>
+ TaskSuggestionCollection TaskSuggestions { get; set; }
+
+        /// <summary>
+        /// Gets the extracted EmailAddresses.
+        /// </summary>
+ EmailAddressEntityCollection EmailAddresses { get; set; }
+
+        /// <summary>
+        /// Gets the extracted Contacts.
+        /// </summary>
+ ContactEntityCollection Contacts { get; set; }
+
+        /// <summary>
+        /// Gets the extracted Urls.
+        /// </summary>
+ UrlEntityCollection Urls { get; set; }
+
+        /// <summary>
+        /// Gets the extracted PhoneNumbers.
+        /// </summary>
+ PhoneEntityCollection PhoneNumbers { get; set; }
+
+        /// <summary>
+        /// Tries to read element from XML.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <returns>True if element was read.</returns>
+@override
+        bool TryReadElementFromXml(EwsServiceXmlReader reader)
+        {
+            switch (reader.LocalName)
+            {
+                case XmlElementNames.NlgAddresses:
+                    this.Addresses = new AddressEntityCollection();
+                    this.Addresses.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgAddresses);
+                    return true;
+
+                case XmlElementNames.NlgMeetingSuggestions:
+                    this.MeetingSuggestions = new MeetingSuggestionCollection();
+                    this.MeetingSuggestions.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgMeetingSuggestions);
+                    return true;
+
+                case XmlElementNames.NlgTaskSuggestions:
+                    this.TaskSuggestions = new TaskSuggestionCollection();
+                    this.TaskSuggestions.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgTaskSuggestions);
+                    return true;
+
+                case XmlElementNames.NlgEmailAddresses:
+                    this.EmailAddresses = new EmailAddressEntityCollection();
+                    this.EmailAddresses.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgEmailAddresses);
+                    return true;
+
+                case XmlElementNames.NlgContacts:
+                    this.Contacts = new ContactEntityCollection();
+                    this.Contacts.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgContacts);
+                    return true;
+
+                case XmlElementNames.NlgUrls:
+                    this.Urls = new UrlEntityCollection();
+                    this.Urls.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgUrls);
+                    return true;
+
+                case XmlElementNames.NlgPhoneNumbers:
+                    this.PhoneNumbers = new PhoneEntityCollection();
+                    this.PhoneNumbers.LoadFromXml(reader, XmlNamespace.Types, XmlElementNames.NlgPhoneNumbers);
+                    return true;
+
+                default:
+                    return base.TryReadElementFromXml(reader);
+            }
+        }
+    }
