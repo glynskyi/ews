@@ -2,6 +2,7 @@ name: ews
 description: The Exchange Web Services (EWS) Managed API provides a managed interface for developing .NET client applications that use EWS.
 version: 0.0.1
 author: Dmytro Glynskyi <dmytro.glynskyi@gmail.com>
+homepage: https://github.com/dmytro-glynskyi/ews
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
