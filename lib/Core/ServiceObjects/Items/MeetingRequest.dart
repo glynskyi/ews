@@ -53,7 +53,7 @@ import 'package:ews/Enumerations/MeetingRequestType.dart';
 import 'package:ews/Enumerations/ResponseType.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Interfaces/ICalendarActionProvider.dart';
-import 'package:ews/Misc/CalendarActionResults.dart';
+import 'package:ews/misc/CalendarActionResults.dart';
 
 /// <summary>
     /// Represents a meeting request that an attendee can accept or decline. Properties available on meeting requests are defined in the MeetingRequestSchema class.

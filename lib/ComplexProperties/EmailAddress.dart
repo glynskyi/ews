@@ -32,7 +32,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/MailboxType.dart' as enumerations;
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Interfaces/ISearchStringProvider.dart';
-import 'package:ews/Misc/StringUtils.dart';
+import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
 /// Represents an e-mail address.

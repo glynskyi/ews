@@ -36,7 +36,7 @@ import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/ServiceObjects/ResponseObjects/ResponseObject.dart';
 import 'package:ews/Enumerations/MessageDisposition.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
-import 'package:ews/Misc/CalendarActionResults.dart';
+import 'package:ews/misc/CalendarActionResults.dart';
 
 /// <summary>
     /// Represents the base class for all calendar-related response messages.

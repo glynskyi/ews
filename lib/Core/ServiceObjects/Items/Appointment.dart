@@ -63,7 +63,7 @@ import 'package:ews/Enumerations/WellKnownFolderName.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Interfaces/ICalendarActionProvider.dart';
-import 'package:ews/Misc/CalendarActionResults.dart';
+import 'package:ews/misc/CalendarActionResults.dart';
 import 'package:ews/misc/TimeSpan.dart';
 
 /// <summary>

@@ -25,7 +25,7 @@
 
 import 'package:ews/Core/ServiceObjects/ResponseObjects/AcceptMeetingInvitationMessage.dart';
 import 'package:ews/Core/ServiceObjects/ResponseObjects/DeclineMeetingInvitationMessage.dart';
-import 'package:ews/Misc/CalendarActionResults.dart';
+import 'package:ews/misc/CalendarActionResults.dart';
 
 /// <summary>
 /// Interface defintion of a group of methods that are common to items that return CalendarActionResults

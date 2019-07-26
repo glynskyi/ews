@@ -31,7 +31,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/SortDirection.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
-import 'package:ews/Misc/OutParam.dart';
+import 'package:ews/misc/OutParam.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 
 /// <summary>

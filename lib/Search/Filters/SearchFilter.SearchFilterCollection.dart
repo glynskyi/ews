@@ -32,7 +32,7 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Enumerations/LogicalOperator.dart' as enumerations;
 import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
-import 'package:ews/Misc/Std/EnumToString.dart';
+import 'package:ews/misc/Std/EnumToString.dart';
 import 'package:ews/Search/Filters/SearchFilter.dart';
 
 //    /// <content>
