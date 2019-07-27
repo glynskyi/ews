@@ -23,8 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:synchronized/synchronized.dart';
-
 /// <summary>
 /// Delegate called to perform the actual initialization of the member
 /// </summary>
@@ -40,16 +38,11 @@ typedef T InitializeLazyMember<T>();
 /// this.  Each lazy member holds the actual member, a lock object, a boolean flag and a delegate.
 /// That can turn into a whole lot of overhead.</remarks>
 class LazyMember<T> {
-  /* private */ T lazyMember;
+  T _lazyMember;
 
-  /* private */
-  InitializeLazyMember<T> initializationDelegate;
+  InitializeLazyMember<T> _initializationDelegate;
 
-  /* private */
-  Lock lockObject = Lock();
-
-  /* private */
-  bool initialized = false;
+  bool _initialized = false;
 
   /// <summary>
   /// Constructor
@@ -57,21 +50,17 @@ class LazyMember<T> {
   /// <param name="initializationDelegate">The initialization delegate to call for the item on first access
   /// </param>
   LazyMember(InitializeLazyMember<T> initializationDelegate) {
-    this.initializationDelegate = initializationDelegate;
+    this._initializationDelegate = initializationDelegate;
   }
 
   /// <summary>
   /// Public accessor for the lazy member.  Lazy initializes the member on first access
   /// </summary>
   T get Member {
-    if (!this.initialized) {
-      this.lockObject.synchronized(() {
-        if (!this.initialized) {
-          this.lazyMember = this.initializationDelegate();
-        }
-        this.initialized = true;
-      });
+    if (!this._initialized) {
+      this._lazyMember = this._initializationDelegate();
+      this._initialized = true;
     }
-    return this.lazyMember;
+    return this._lazyMember;
   }
 }
