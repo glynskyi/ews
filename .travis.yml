@@ -9,7 +9,7 @@ jobs:
     - stage: coverage
       script:
         - pub global activate dart_coveralls
-        - dart_coveralls report test/travis_test.dart
+        - dart_coveralls report --token $COVERALLS_TOKEN test/travis_test.dart
 stages:
   - analyze
   - unit_test
