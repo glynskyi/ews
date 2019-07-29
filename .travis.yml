@@ -1,12 +1,9 @@
 language: dart
 dart: dev
-
 jobs:
   include:
     - stage: analyze
       script: dartanalyzer --fatal-warnings .
-#    - stage: analyze
-#      script: dartfmt --dry-run --set-exit-if-changed .
     - stage: unit_test
       script: pub run test test/travis_test.dart --platform vm
     - stage: coverage
@@ -17,9 +14,13 @@ stages:
   - analyze
   - unit_test
   - coverage
-
 sudo: required
 cache:
   directories:
-    - $HOME/.pub-cache
-    - .dart_tool/build
+    - "$HOME/.pub-cache"
+    - ".dart_tool/build"
+env:
+  global:
+    - secure: ic4is9g8N54/i1DNgd5y03KVC+3K0bzajd++3br8Ci8HJbw/zliNQFYEJqEHT7nA0ddxHcSPCKaNRYe1RwrBDiRkO/Q5JtizCJl92/8ztAtXjCKapytkSEHIcEXDjgs5eQddiQ3NIKRL60T9LQmkx1G50kzq/vXnkq1B1YueJ7rBDUU7vv88MqZ4M9Gops8o7/+nfGtQE+khGHmf2CqN/XqooiYGTf6LDOAoKj+V9/HZqn71AlKS6iyUlS8klCma0i7L9Utq9KHILsW2S7wf8nVI8ejxT3HdFwvbuBYRwONKEQ29sA8iVMj/2NuySac6bqd/lLuVpY9VP0wp/imv/+IMM4dxkDkH2Hhu7nazrwx0jsl4lnVUwOydtZXuqi2AUZ7NrvvEbNCfsTP/USvaDkgSIYp6tRBOyVPaSiWZ9nz5Fdhy0z95m54TiFAhlGY6QDfcG13dSTdey5o2n4MGrESYLDypFoICIU+QtFWnK5focUIpbuL2zB1qcQQtuxRBBjU73BVmkzQL9nxP3O9hSNVKZR8DIJ5qINR3UbvjR/RNit9FCHFy/KxsQwNjD4+7t0SYThByXsogGcYf+mPRuKPc0+uqgwTt6qrLAGjPMRlG/b9Ep0K4du2Ur9EO2KJhNrRgZDRif5UCS7Qt32PCQN0kPE133loEUmXftHrd/E4=
+    - secure: hiYCgO++tUcWoMAfBVxOd2B47+D/HsAcA/zgSoYSQE6b0AIcKqAf2X4ZCphSbelN4TLWND3+qQfwFVLEbkwg01NgqFDSivEoAS5rZnkckf0oLW9VH2xwTb+bPPRK8f2YtIoiM2Im6N21TDGgN4NluQHZfi0Jw4dB/6i2y49OgpBNWXUSnlS4/cS5aadLFOs4+yda1lX3vNmy2n06Gt7eT2f83OZe2M6ynNG1AgAcOq3hUiqp/C2xTMEd0v4WaWiTAeynboY5RJn8q389hAnvLby/mz+37u4kLKa0QDSUTXRfJScZOvWoXUeLlVMxdVDCTBcv4PoLBExjbZvMUl03IbfWMAC08PkLW+9eCrQbcIeBy7wERcm+ioezQYjPHW3JpETjpPhXh7KqN2yNsrOkOKkxP0gu85gh/i+K9ih6f4lci+zuufEEc8aw+n7pjBA2OXlNHWXP0fTY3Q54hS+wYyNp7NT5iA66zDaPoHoRja2fTYPmg8H6YWYBo4Bx04b7bLsXIgKiNKiH03m6+BziLA6JxWwUYcLgUCgErDndslphZ+p1oNJMmGdNaw8Mb2DSEbWXd02IC9v6sMe/PKtwJssIxGNy8qXqyC+kedaAGKgKf+WU10DvOznEwJUJnCvvswlp/WESUWeSba6+Un3uRUKY7Nzcrar+4D3VxgUM9xQ=
+    - secure: ipH7U4ui0yoAp4uErCcXkVYGE70yeNRCdsoYlw2qf7Zhx6VU4dfrcVvLxcRKSU4ilV4U4we2/Ry8ttCbZZH3ufzK/F5TlyDY/Fd9UFWtrzrg9jY4z4sb838gbrUlNTnn8qzHnK6TLKkWEXOMSY579sleNEDWq/sJCo2Cr8iiem7e8MromvclkJeEE+Aq4lalHJf3STypzqHMwV31yiW/xLGBTauP1j/9kJ9sqFGdp2XHEaH1/NxtKO0uy3IiH23TewJmiFIZWOihZfR4tLtjS3XUfATOQ8yi/6FGixAgvdH6kW7JJZaAJfoDmrNBQxp1NDtFVlRqTSUL9nqAc5aBL2xvkQWSu9efighX+csc6fwt9UuUOvzOJlEpZUOFygM4mcpbYlul9ugybTQCkxXLXUP3UQ7jYEmC4UWPgMin/1E1Vfuocv3Jp5Q/5YUcbHFInPj60W/S6ysHWG8nhHBkPZ77YNLK2f4C8D+7usZFp4gp4l6RXUBXb+vQX1RwZ7MkBwpzqsgbSBQ/7gr0mWjUczsNm5Gq/RL5y0YTgbeT+MT+SiSXtToFcQFXXwmRQUidmaxGoB0ol/9t2bS4slrNXzkpZe+Uwcl0YBWkxhe16UXzbA3/FoNPDwgsXEbWT34YKoSl9mekC7IkE+Js2dgOiodNUo9s14dbYr7Qnaj/ME8=
