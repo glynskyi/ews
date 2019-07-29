@@ -5,11 +5,11 @@ jobs:
     - stage: analyze
       script: dartanalyzer --fatal-warnings .
     - stage: unit_test
-      script: pub run test test/travis_test.dart --platform vm
+      script: pub run test test/test_all.dart --platform vm
     - stage: coverage
       script:
         - pub global activate dart_coveralls
-        - dart_coveralls report --token $COVERALLS_TOKEN test/travis_test.dart
+        - dart_coveralls report --token $COVERALLS_TOKEN test/test_all.dart
 stages:
   - analyze
   - unit_test
