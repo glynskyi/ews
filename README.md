@@ -3,6 +3,7 @@
 [![pub](https://img.shields.io/pub/v/ews)](https://pub.dartlang.org/packages/ews)
 [![build](https://travis-ci.org/dmytro-glynskyi/ews.svg?branch=master)](https://travis-ci.org/dmytro-glynskyi/ews)
 [![coverage](https://coveralls.io/repos/github/dmytro-glynskyi/ews/badge.svg?branch=master)](https://coveralls.io/github/dmytro-glynskyi/ews?branch=master)
+![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 The Exchange Web Services (EWS) Managed API provides a managed interface for developing .NET client applications that use EWS.
 By using the EWS Managed API, you can access almost all the information stored in an Office 365, Exchange Online, or Exchange Server mailbox. However, this API is in sustaining mode, the recommended access pattern for Office 365 and Exchange online data is [Microsoft Graph](https://graph.microsoft.com)
