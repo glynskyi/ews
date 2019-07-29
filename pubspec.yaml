@@ -17,3 +17,4 @@ dependencies:
 
 dev_dependencies:
   test: ^1.6.4
+  dotenv: ^1.0.0

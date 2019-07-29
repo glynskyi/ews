@@ -71,6 +71,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.0"
+  dart2_constant:
+    dependency: transitive
+    description:
+      name: dart2_constant
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2+dart2"
   dio:
     dependency: "direct main"
     description:
@@ -78,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.8"
+  dotenv:
+    dependency: "direct dev"
+    description:
+      name: dotenv
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   front_end:
     dependency: transitive
     description:
