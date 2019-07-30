@@ -1,3 +1,3 @@
-## [0.0.1] - TODO: Add release date.
+## 0.0.3
 
-* TODO: Describe initial release.
+* Added a folder permission
