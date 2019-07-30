@@ -8,7 +8,7 @@ import '_shared.dart';
 
 main() {
   test('creates task', () async {
-    final exchangeService = prepareExchangeService();
+    final exchangeService = prepareExchangeService(primaryUserCredential);
 
     await initializeTimeZone();
 //    final kiev = getLocation('Europe/Kiev');

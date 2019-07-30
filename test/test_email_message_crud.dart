@@ -7,7 +7,7 @@ import '_shared.dart';
 
 void main() {
   test('gets notes folder', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     final notesFolderId = FolderId.fromWellKnownFolder(WellKnownFolderName.Notes);
     ItemView itemView = ItemView.withPageSize(1);
     itemView.propertySet = PropertySet.idOnly();

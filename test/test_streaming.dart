@@ -5,7 +5,7 @@ import '_shared.dart';
 
 main() {
   test('streaming', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     final subscription = await service.SubscribeToStreamingNotifications(
         [ FolderId.fromWellKnownFolder(WellKnownFolderName.Inbox) ],
         [EventType.NewMail,

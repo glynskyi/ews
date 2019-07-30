@@ -28,11 +28,6 @@
 /// </summary>
 enum EffectiveRights {
   /// <summary>
-  /// The user has no acces right on the item or folder.
-  /// </summary>
-  None,
-
-  /// <summary>
   /// The user can create associated items (FAI)
   /// </summary>
   CreateAssociated,

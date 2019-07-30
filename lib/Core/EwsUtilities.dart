@@ -41,9 +41,11 @@ import 'package:ews/Enumerations/BodyType.dart';
 import 'package:ews/Enumerations/ConflictResolutionMode.dart';
 import 'package:ews/Enumerations/DefaultExtendedPropertySet.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
+import 'package:ews/Enumerations/EffectiveRights.dart';
 import 'package:ews/Enumerations/EventType.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/FileAsMapping.dart';
+import 'package:ews/Enumerations/FolderPermissionLevel.dart';
 import 'package:ews/Enumerations/FolderTraversal.dart';
 import 'package:ews/Enumerations/Importance.dart';
 import 'package:ews/Enumerations/ItemFlagStatus.dart';
@@ -792,7 +794,8 @@ typedef R Converter<T,R>(T);
         TaskStatus,
         DeleteMode,
         AffectedTaskOccurrence,
-        ConflictResolutionMode
+        ConflictResolutionMode,
+        FolderPermissionLevel
       ];
 
 

@@ -9,7 +9,7 @@ import '_shared.dart';
 
 main() {
   test('load events', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     DateTime startDate = DateTime.now().subtract(Duration(days: 31));
     DateTime endDate = DateTime.now().add(Duration(days: 365));
     const int NUM_APPTS = 50;

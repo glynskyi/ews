@@ -35,16 +35,13 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents the Id of a user.
 /// </summary>
 class UserId extends ComplexProperty {
-  /* private */ String sID;
+  String _sID;
 
-  /* private */
-  String primarySmtpAddress;
+  String _primarySmtpAddress;
 
-  /* private */
-  String displayName;
+  String _displayName;
 
-  /* private */
-  enumerations.StandardUser standardUser;
+  enumerations.StandardUser _standardUser;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UserId"/> class.
@@ -55,13 +52,13 @@ class UserId extends ComplexProperty {
   /// Initializes a new instance of the <see cref="UserId"/> class.
   /// </summary>
   /// <param name="primarySmtpAddress">The primary SMTP address used to initialize the UserId.</param>
-  UserId.fromSmtpAddress(this.primarySmtpAddress) : super();
+  UserId.withSmtpAddress(this._primarySmtpAddress) : super();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UserId"/> class.
   /// </summary>
   /// <param name="standardUser">The StandardUser value used to initialize the UserId.</param>
-  UserId.fromStandardUser(this.standardUser) : super();
+  UserId.withStandardUser(this._standardUser) : super();
 
   /// <summary>
   /// Determines whether this instance is valid.
@@ -76,11 +73,11 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets the SID of the user.
   /// </summary>
-  String get SID => this.sID;
+  String get SID => this._sID;
 
   set SID(String value) {
-    if (this.CanSetFieldValue(this.sID, value)) {
-      this.sID = value;
+    if (this.CanSetFieldValue(this._sID, value)) {
+      this._sID = value;
       this.Changed();
     }
   }
@@ -88,11 +85,11 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets the primary SMTP address or the user.
   /// </summary>
-  String get PrimarySmtpAddress => this.primarySmtpAddress;
+  String get PrimarySmtpAddress => this._primarySmtpAddress;
 
   set PrimarySmtpAddress(String value) {
-    if (this.CanSetFieldValue(this.primarySmtpAddress, value)) {
-      this.primarySmtpAddress = value;
+    if (this.CanSetFieldValue(this._primarySmtpAddress, value)) {
+      this._primarySmtpAddress = value;
       this.Changed();
     }
   }
@@ -100,11 +97,11 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets the display name of the user.
   /// </summary>
-  String get DisplayName => this.displayName;
+  String get DisplayName => this._displayName;
 
   set DisplayName(String value) {
-    if (this.CanSetFieldValue(this.displayName, value)) {
-      this.displayName = value;
+    if (this.CanSetFieldValue(this._displayName, value)) {
+      this._displayName = value;
       this.Changed();
     }
   }
@@ -112,11 +109,11 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating which standard user the user represents.
   /// </summary>
-  enumerations.StandardUser get StandardUser => this.standardUser;
+  enumerations.StandardUser get StandardUser => this._standardUser;
 
   set StandardUser(enumerations.StandardUser value) {
-    if (this.CanSetFieldValue(this.standardUser, value)) {
-      this.standardUser = value;
+    if (this.CanSetFieldValue(this._standardUser, value)) {
+      this._standardUser = value;
       this.Changed();
     }
   }
@@ -150,16 +147,16 @@ class UserId extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.SID:
-        this.sID = reader.ReadValue();
+        this._sID = reader.ReadValue();
         return true;
       case XmlElementNames.PrimarySmtpAddress:
-        this.primarySmtpAddress = reader.ReadValue();
+        this._primarySmtpAddress = reader.ReadValue();
         return true;
       case XmlElementNames.DisplayName:
-        this.displayName = reader.ReadValue();
+        this._displayName = reader.ReadValue();
         return true;
       case XmlElementNames.DistinguishedUser:
-        this.standardUser = reader.ReadValue<enumerations.StandardUser>();
+        this._standardUser = reader.ReadValue<enumerations.StandardUser>();
         return true;
       default:
         return false;
@@ -174,13 +171,13 @@ class UserId extends ComplexProperty {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.SID, this.SID);
 
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
-        XmlElementNames.PrimarySmtpAddress, this.PrimarySmtpAddress);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.PrimarySmtpAddress, this.PrimarySmtpAddress);
 
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.DisplayName, this.DisplayName);
 
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
-        XmlElementNames.DistinguishedUser, this.StandardUser);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.DistinguishedUser, this.StandardUser);
   }
 }

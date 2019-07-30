@@ -6,7 +6,7 @@ import '_shared.dart';
 
 void main() {
   test('gets well known folders', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Notes);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Tasks);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.MsgFolderRoot);
@@ -16,14 +16,14 @@ void main() {
   });
 
   test('creates a folder with unique name', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     final folder = new Folder(service);
     folder.DisplayName = "test-${Uuid.randomUuid()}";
     await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
   });
 
   test('creates a folder with duplicate name', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     final duplicateName = "test-${Uuid.randomUuid()}";
     final firstFolder = new Folder(service);
     firstFolder.DisplayName = duplicateName;
@@ -36,7 +36,7 @@ void main() {
   });
 
   test('searchs folder', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     final view = new FolderView.withPageSize(100);
     view.PropertySet = new PropertySet.fromPropertySet(BasePropertySet.IdOnly);
     view.PropertySet.Add(FolderSchema.DisplayName);
@@ -50,7 +50,7 @@ void main() {
   });
 
   test('searches folder with extended property', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     final meetingsFolderProperty = ExtendedPropertyDefinition.withDefaultPropertySetAndName(
         DefaultExtendedPropertySet.Common, "folder:meetingRoot", MapiPropertyType.Boolean);
 

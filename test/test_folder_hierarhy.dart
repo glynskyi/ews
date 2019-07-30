@@ -11,14 +11,14 @@ import '_shared.dart';
 
 main() {
   test('syncs folder hierarhy', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     ChangeCollection<FolderChange> fcc = await service.SyncFolderHierarchy(
         new FolderId.fromWellKnownFolder(WellKnownFolderName.Root), PropertySet.IdOnly, "");
     print(fcc.syncState);
   });
 
   test('syncs folder items', () async {
-    final service = prepareExchangeService();
+    final service = prepareExchangeService(primaryUserCredential);
     ChangeCollection<ItemChange> icc = await service.SyncFolderItems(
         new FolderId.fromWellKnownFolder(WellKnownFolderName.Inbox),
         PropertySet.FirstClassProperties,
