@@ -563,9 +563,8 @@ class FolderPermission extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.UserId:
-        throw UnsupportedError("Doesn't support UserId permission");
-//                    this.UserId = new property.UserId();
-//                    this.UserId.LoadFromXml(reader, reader.LocalName);
+        this.UserId = new property.UserId();
+        this.UserId.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.CanCreateItems:
         this.canCreateItems = reader.ReadValue<bool>();

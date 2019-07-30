@@ -46,6 +46,7 @@ import 'package:ews/Enumerations/EventType.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/FileAsMapping.dart';
 import 'package:ews/Enumerations/FolderPermissionLevel.dart';
+import 'package:ews/Enumerations/FolderPermissionReadAccess.dart';
 import 'package:ews/Enumerations/FolderTraversal.dart';
 import 'package:ews/Enumerations/Importance.dart';
 import 'package:ews/Enumerations/ItemFlagStatus.dart';
@@ -54,11 +55,13 @@ import 'package:ews/Enumerations/MailboxType.dart';
 import 'package:ews/Enumerations/MapiPropertyType.dart';
 import 'package:ews/Enumerations/MessageDisposition.dart';
 import 'package:ews/Enumerations/OffsetBasePoint.dart';
+import 'package:ews/Enumerations/PermissionScope.dart';
 import 'package:ews/Enumerations/ResponseType.dart';
 import 'package:ews/Enumerations/RuleProperty.dart';
 import 'package:ews/Enumerations/Sensitivity.dart';
 import 'package:ews/Enumerations/ServiceError.dart';
 import 'package:ews/Enumerations/ServiceResult.dart';
+import 'package:ews/Enumerations/StandardUser.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TaskStatus.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
@@ -767,6 +770,10 @@ typedef R Converter<T,R>(T);
           MailboxType: (stringValue) => EnumToString.fromString(MailboxType.values, stringValue),
           TaskStatus: (stringValue) => EnumToString.fromString(TaskStatus.values, stringValue),
           BodyType: (stringValue) => EnumToString.fromString(BodyType.values, stringValue),
+          StandardUser: (stringValue) => EnumToString.fromString(StandardUser.values, stringValue),
+          PermissionScope: (stringValue) => EnumToString.fromString(PermissionScope.values, stringValue),
+          FolderPermissionReadAccess: (stringValue) => EnumToString.fromString(FolderPermissionReadAccess.values, stringValue),
+          FolderPermissionLevel: (stringValue) => EnumToString.fromString(FolderPermissionLevel.values, stringValue),
       };
 
         static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
