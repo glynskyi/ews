@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Http/EwsHttpWebRequest.dart';
-import 'package:ews/Http/HttpStatusCode.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 
@@ -47,9 +46,9 @@ class EwsHttpWebResponse implements IEwsHttpWebResponse {
   Uri get ResponseUri => throw NotImplementedException("Headers");
 
   @override
-  HttpStatusCode get StatusCode => throw NotImplementedException("StatusCode");
+  int get StatusCode => httpClientResponse.statusCode;
 
   @override
-  String get StatusDescription => throw NotImplementedException("StatusDescription");
+  String get StatusDescription => httpClientResponse.reasonPhrase;
 
 }

@@ -68,24 +68,24 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     // TODO: implement Abort
   }
 
-  final controller = StreamController<List<int>>();
+  HttpClientRequest _request;
 
   @override
-  StreamConsumer<List<int>> GetRequestStream() {
-    return controller.sink;
-  }
-
-  @override
-  Future<IEwsHttpWebResponse> GetResponse() async {
+  Future<StreamConsumer<List<int>>> GetRequestStream() async {
     final user = (Credentials as WebCredentials).user;
     String password = (Credentials as WebCredentials).pwd;
     String auth = 'Basic ' + base64Encode(utf8.encode('$user:$password'));
 
     final client = HttpClient();
-    final HttpClientRequest request = await client.postUrl(RequestUri);
-    request.headers.add("authorization", auth);
-    await request.addStream(controller.stream);
-    final HttpClientResponse response = await request.close();
+    _request = await client.postUrl(RequestUri);
+    _request.headers.add("authorization", auth);
+    return _request;
+  }
+
+  @override
+  Future<IEwsHttpWebResponse> GetResponse() async {
+
+    final HttpClientResponse response = await _request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw new WebException(WebExceptionStatus.ProtocolError, response);

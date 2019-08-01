@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:ews/Http/HttpStatusCode.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
 import 'package:ews/misc/IDisposable.dart';
 
@@ -72,7 +71,7 @@ abstract class IEwsHttpWebResponse implements IDisposable {
   /// Gets the status of the response.
   /// </summary>
   /// <returns>One of the System.Net.HttpStatusCode values.</returns>
-  HttpStatusCode get StatusCode;
+  int get StatusCode;
 
   /// <summary>
   /// Gets the status description returned with the response.

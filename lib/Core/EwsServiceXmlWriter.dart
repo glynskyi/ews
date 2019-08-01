@@ -199,11 +199,11 @@ import 'package:ews/misc/StringUtils.dart';
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
- void Dispose()
+        Future<void> Dispose() async
         {
             if (!this.isDisposed)
             {
-                this.xmlWriter.Close();
+                await this.xmlWriter.Close();
 
                 this.isDisposed = true;
             }
@@ -212,9 +212,9 @@ import 'package:ews/misc/StringUtils.dart';
         /// <summary>
         /// Flushes this instance.
         /// </summary>
-        Future Flush() async
+        Future<void> Flush()
         {
-            await this.xmlWriter.Flush();
+            return this.xmlWriter.Flush();
         }
 
         /// <summary>

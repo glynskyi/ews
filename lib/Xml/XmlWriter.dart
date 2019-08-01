@@ -23,12 +23,13 @@ class XmlWriter {
     builder.processing('xml', 'version="1.0" encoding="utf-8"');
   }
 
-  void Close() {
-    _output.close();
+  Future<void> Close() {
+    return _output.close();
   }
 
   Future<void> Flush() async {
-    List<int> data = utf8.encode(builder.build().toString());
+    final xml = builder.build().toString();
+    List<int> data = utf8.encode(xml);
     await _output.addStream(Stream.fromIterable([data]));
   }
 

@@ -57,6 +57,8 @@ import 'package:ews/Core/Responses/GetAttachmentResponse.dart';
 import 'package:ews/Core/Responses/GetFolderResponse.dart';
 import 'package:ews/Core/Responses/GetItemResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
+import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
+import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/ServiceObjects/ServiceObject.dart';
 import 'package:ews/Enumerations/AffectedTaskOccurrence.dart';
@@ -64,16 +66,14 @@ import 'package:ews/Enumerations/BodyType.dart';
 import 'package:ews/Enumerations/ConflictResolutionMode.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
 import 'package:ews/Enumerations/EventType.dart';
+import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/MessageDisposition.dart';
 import 'package:ews/Enumerations/SendCancellationsMode.dart';
 import 'package:ews/Enumerations/SendInvitationsMode.dart';
 import 'package:ews/Enumerations/SendInvitationsOrCancellationsMode.dart';
+import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TraceFlags.dart' as enumerations;
-import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
-import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
-import 'package:ews/Enumerations/ExchangeVersion.dart';
-import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
@@ -81,6 +81,7 @@ import 'package:ews/Http/WebException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/Notifications/StreamingSubscription.dart';
+import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 import 'package:ews/Search/Filters/SearchFilter.dart';
 import 'package:ews/Search/FindFoldersResults.dart';
 import 'package:ews/Search/FolderView.dart';
@@ -90,7 +91,6 @@ import 'package:ews/Sync/ChangeCollection.dart';
 import 'package:ews/Sync/FolderChange.dart';
 import 'package:ews/Sync/ItemChange.dart';
 import 'package:ews/misc/StringUtils.dart';
-import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 
 import 'ExchangeServiceBase.dart';
 import 'Requests/DeleteItemRequest.dart';
@@ -100,10 +100,9 @@ import 'Responses/UpdateItemResponse.dart';
 /// Represents a binding to the Exchange Web Services.
 /// </summary>
 class ExchangeService extends ExchangeServiceBase {
-
   static const TargetServerVersionHeaderName = "X-EWS-TargetVersion";
 
-  Uri url;
+  Uri _url;
 
 //        CultureInfo preferredCulture;
 //        DateTimePrecision dateTimePrecision = DateTimePrecision.Default;
@@ -112,10 +111,9 @@ class ExchangeService extends ExchangeServiceBase {
 //        ManagementRoles managementRoles;
 //        IFileAttachmentContentHandler fileAttachmentContentHandler;
 //        UnifiedMessaging unifiedMessaging;
-  bool enableScpLookup = true;
-  bool traceEnablePrettyPrinting = true;
-  String targetServerVersion = null;
-
+  bool _enableScpLookup = true;
+  bool _traceEnablePrettyPrinting = true;
+  String _targetServerVersion = null;
 
   /// <summary>
   /// Create response object.
@@ -124,33 +122,29 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="parentFolderId">The parent folder id.</param>
   /// <param name="messageDisposition">The message disposition.</param>
   /// <returns>The list of items created or modified as a result of the "creation" of the response object.</returns>
-        Future<List<Item>> InternalCreateResponseObject(
-            ServiceObject responseObject,
-            FolderId parentFolderId,
-            MessageDisposition messageDisposition) async
-        {
-            CreateResponseObjectRequest request = new CreateResponseObjectRequest(this, ServiceErrorHandling.ThrowOnError);
+  Future<List<Item>> InternalCreateResponseObject(ServiceObject responseObject,
+      FolderId parentFolderId, MessageDisposition messageDisposition) async {
+    CreateResponseObjectRequest request =
+        new CreateResponseObjectRequest(this, ServiceErrorHandling.ThrowOnError);
 
-            request.ParentFolderId = parentFolderId;
-            request.Items = [ responseObject ];
-            request.MessageDisposition = messageDisposition;
+    request.ParentFolderId = parentFolderId;
+    request.Items = [responseObject];
+    request.MessageDisposition = messageDisposition;
 
-            ServiceResponseCollection<CreateResponseObjectResponse> responses = await request.Execute();
+    ServiceResponseCollection<CreateResponseObjectResponse> responses = await request.Execute();
 
-            return responses[0].Items;
-        }
+    return responses[0].Items;
+  }
 
   /// <summary>
   /// Creates a folder. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="folder">The folder.</param>
   /// <param name="parentFolderId">The parent folder id.</param>
-  Future<void> CreateFolder(Folder folder,
-      FolderId parentFolderId) async {
-    CreateFolderRequest request = new CreateFolderRequest(
-        this, ServiceErrorHandling.ThrowOnError);
+  Future<void> CreateFolder(Folder folder, FolderId parentFolderId) async {
+    CreateFolderRequest request = new CreateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
 
-    request.Folders = [ folder];
+    request.Folders = [folder];
     request.ParentFolderId = parentFolderId;
 
     await request.Execute();
@@ -160,14 +154,13 @@ class ExchangeService extends ExchangeServiceBase {
   /// Updates a folder.
   /// </summary>
   /// <param name="folder">The folder.</param>
-        Future<void> UpdateFolder(Folder folder)
-        {
-            UpdateFolderRequest request = new UpdateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
+  Future<void> UpdateFolder(Folder folder) {
+    UpdateFolderRequest request = new UpdateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
 
-            request.Folders.add(folder);
+    request.Folders.add(folder);
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Copies a folder. Calling this method results in a call to EWS.
@@ -219,20 +212,19 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of folders returned.</param>
   /// <param name="errorHandlingMode">Indicates the type of error handling should be done.</param>
   /// <returns>Collection of service responses.</returns>
-    Future<ServiceResponseCollection<FindFolderResponse>> InternalFindFolders(
-            Iterable<FolderId> parentFolderIds,
-            SearchFilter searchFilter,
-            FolderView view,
-            ServiceErrorHandling errorHandlingMode)
-        {
-            FindFolderRequest request = new FindFolderRequest(this, errorHandlingMode);
+  Future<ServiceResponseCollection<FindFolderResponse>> InternalFindFolders(
+      Iterable<FolderId> parentFolderIds,
+      SearchFilter searchFilter,
+      FolderView view,
+      ServiceErrorHandling errorHandlingMode) {
+    FindFolderRequest request = new FindFolderRequest(this, errorHandlingMode);
 
-            request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
-            request.SearchFilter = searchFilter;
-            request.View = view;
+    request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
+    request.SearchFilter = searchFilter;
+    request.View = view;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Obtains a list of folders by searching the sub-folders of the specified folder.
@@ -243,20 +235,17 @@ class ExchangeService extends ExchangeServiceBase {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of folders returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-    Future<FindFoldersResults> FindFoldersWithFolderId(FolderId parentFolderId, SearchFilter searchFilter, FolderView view) async
-        {
-            EwsUtilities.ValidateParam(parentFolderId, "parentFolderId");
-            EwsUtilities.ValidateParam(view, "view");
-            EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
+  Future<FindFoldersResults> FindFoldersWithFolderId(
+      FolderId parentFolderId, SearchFilter searchFilter, FolderView view) async {
+    EwsUtilities.ValidateParam(parentFolderId, "parentFolderId");
+    EwsUtilities.ValidateParam(view, "view");
+    EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-            ServiceResponseCollection<FindFolderResponse> responses = await this.InternalFindFolders(
-                [ parentFolderId ],
-                searchFilter,
-                view,
-                ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindFolderResponse> responses = await this.InternalFindFolders(
+        [parentFolderId], searchFilter, view, ServiceErrorHandling.ThrowOnError);
 
-            return responses[0].Results;
-        }
+    return responses[0].Results;
+  }
 
   /// <summary>
   /// Obtains a list of folders by searching the sub-folders of each of the specified folders.
@@ -309,10 +298,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of folders returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName parentFolderName, SearchFilter searchFilter, FolderView view)
-        {
-            return this.FindFoldersWithFolderId(new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view);
-        }
+  Future<FindFoldersResults> FindFoldersWithWellKnownFolder(
+      WellKnownFolderName parentFolderName, SearchFilter searchFilter, FolderView view) {
+    return this.FindFoldersWithFolderId(
+        new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view);
+  }
 
   /// <summary>
   /// Obtains a list of folders by searching the sub-folders of the specified folder.
@@ -330,20 +320,18 @@ Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName pa
   /// </summary>
   /// <param name="folder">The folder.</param>
   /// <param name="propertySet">The property set.</param>
-        Future<void> LoadPropertiesForFolder(
-            Folder folder,
-            PropertySet propertySet)
-        {
-            EwsUtilities.ValidateParam(folder, "folder");
-            EwsUtilities.ValidateParam(propertySet, "propertySet");
+  Future<void> LoadPropertiesForFolder(Folder folder, PropertySet propertySet) {
+    EwsUtilities.ValidateParam(folder, "folder");
+    EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-            GetFolderRequestForLoad request = new GetFolderRequestForLoad(this, ServiceErrorHandling.ThrowOnError);
+    GetFolderRequestForLoad request =
+        new GetFolderRequestForLoad(this, ServiceErrorHandling.ThrowOnError);
 
-            request.FolderIds.Add(folder);
-            request.PropertySet = propertySet;
+    request.FolderIds.Add(folder);
+    request.PropertySet = propertySet;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Binds to a folder.
@@ -356,11 +344,7 @@ Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName pa
 //            EwsUtilities.ValidateParam(propertySet, "propertySet");
 
     ServiceResponseCollection<GetFolderResponse> responses = await this
-        .InternalBindToFolders(
-        [ folderId],
-        propertySet,
-        ServiceErrorHandling.ThrowOnError
-    );
+        .InternalBindToFolders([folderId], propertySet, ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Folder;
   }
@@ -372,23 +356,19 @@ Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName pa
   /// <param name="folderId">The folder id.</param>
   /// <param name="propertySet">The property set.</param>
   /// <returns>Folder</returns>
-        Future<TFolder> BindToFolderGeneric<TFolder extends Folder>(FolderId folderId, PropertySet propertySet) async
-        {
-            Folder result = await this.BindToFolder(folderId, propertySet);
+  Future<TFolder> BindToFolderGeneric<TFolder extends Folder>(
+      FolderId folderId, PropertySet propertySet) async {
+    Folder result = await this.BindToFolder(folderId, propertySet);
 
-            if (result is TFolder)
-            {
-                return result;
-            }
-            else
-            {
-                throw new ServiceLocalException(
-                    """string.Format(
+    if (result is TFolder) {
+      return result;
+    } else {
+      throw new ServiceLocalException("""string.Format(
                         Strings.FolderTypeNotCompatible,
                         result.GetType().Name,
                         typeof(TFolder).Name)""");
-            }
-        }
+    }
+  }
 
   /// <summary>
   /// Binds to multiple folders in a single call to EWS.
@@ -434,19 +414,16 @@ Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName pa
   /// </summary>
   /// <param name="folderId">The folder id.</param>
   /// <param name="deleteMode">The delete mode.</param>
-        Future<void> DeleteFolder(
-            FolderId folderId,
-            DeleteMode deleteMode)
-        {
-            EwsUtilities.ValidateParam(folderId, "folderId");
+  Future<void> DeleteFolder(FolderId folderId, DeleteMode deleteMode) {
+    EwsUtilities.ValidateParam(folderId, "folderId");
 
-            DeleteFolderRequest request = new DeleteFolderRequest(this, ServiceErrorHandling.ThrowOnError);
+    DeleteFolderRequest request = new DeleteFolderRequest(this, ServiceErrorHandling.ThrowOnError);
 
-            request.FolderIds.AddFolderId(folderId);
-            request.DeleteMode = deleteMode;
+    request.FolderIds.AddFolderId(folderId);
+    request.DeleteMode = deleteMode;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Empties a folder. Calling this method results in a call to EWS.
@@ -493,7 +470,6 @@ Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName pa
 //            request.Execute();
 //        }
 
-
   /// <summary>
   /// Creates multiple items in a single EWS call. Supported item classes are EmailMessage, Appointment, Contact, PostItem, Task and Item.
   /// CreateItems does not support items that have unsaved attachments.
@@ -504,22 +480,21 @@ Future<FindFoldersResults> FindFoldersWithWellKnownFolder(WellKnownFolderName pa
   /// <param name="sendInvitationsMode">Indicates if and how invitations should be sent for items of type Appointment. Required if items contains at least one Appointment instance.</param>
   /// <param name="errorHandling">What type of error handling should be performed.</param>
   /// <returns>A ServiceResponseCollection providing creation results for each of the specified items.</returns>
-Future<ServiceResponseCollection<ServiceResponse>> InternalCreateItems(
-            Iterable<Item> items,
-            FolderId parentFolderId,
-            MessageDisposition messageDisposition,
-            SendInvitationsMode sendInvitationsMode,
-            ServiceErrorHandling errorHandling)
-        {
-            CreateItemRequest request = new CreateItemRequest(this, errorHandling);
+  Future<ServiceResponseCollection<ServiceResponse>> InternalCreateItems(
+      Iterable<Item> items,
+      FolderId parentFolderId,
+      MessageDisposition messageDisposition,
+      SendInvitationsMode sendInvitationsMode,
+      ServiceErrorHandling errorHandling) {
+    CreateItemRequest request = new CreateItemRequest(this, errorHandling);
 
-            request.ParentFolderId = parentFolderId;
-            request.Items = items;
-            request.MessageDisposition = messageDisposition;
-            request.SendInvitationsMode = sendInvitationsMode;
+    request.ParentFolderId = parentFolderId;
+    request.Items = items;
+    request.MessageDisposition = messageDisposition;
+    request.SendInvitationsMode = sendInvitationsMode;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Creates multiple items in a single EWS call. Supported item classes are EmailMessage, Appointment, Contact, PostItem, Task and Item.
@@ -563,19 +538,11 @@ Future<ServiceResponseCollection<ServiceResponse>> InternalCreateItems(
   /// <param name="parentFolderId">The Id of the folder in which to place the newly created item. If null, the item is created in its default folders.</param>
   /// <param name="messageDisposition">Indicates the disposition mode for items of type EmailMessage. Required if item is an EmailMessage instance.</param>
   /// <param name="sendInvitationsMode">Indicates if and how invitations should be sent for item of type Appointment. Required if item is an Appointment instance.</param>
-        Future<void> CreateItem(
-            Item item,
-            FolderId parentFolderId,
-            MessageDisposition messageDisposition,
-            SendInvitationsMode sendInvitationsMode)
-        {
-            return this.InternalCreateItems(
-                [ item ],
-                parentFolderId,
-                messageDisposition,
-                sendInvitationsMode,
-                ServiceErrorHandling.ThrowOnError);
-        }
+  Future<void> CreateItem(Item item, FolderId parentFolderId, MessageDisposition messageDisposition,
+      SendInvitationsMode sendInvitationsMode) {
+    return this.InternalCreateItems([item], parentFolderId, messageDisposition, sendInvitationsMode,
+        ServiceErrorHandling.ThrowOnError);
+  }
 
   /// <summary>
   /// Updates multiple items in a single EWS call. UpdateItems does not support items that have unsaved attachments.
@@ -588,26 +555,25 @@ Future<ServiceResponseCollection<ServiceResponse>> InternalCreateItems(
   /// <param name="errorHandling">What type of error handling should be performed.</param>
   /// <param name="suppressReadReceipt">Whether to suppress read receipts</param>
   /// <returns>A ServiceResponseCollection providing update results for each of the specified items.</returns>
-Future<ServiceResponseCollection<UpdateItemResponse>> InternalUpdateItems(
-            Iterable<Item> items,
-            FolderId savedItemsDestinationFolderId,
-            ConflictResolutionMode conflictResolution,
-            MessageDisposition messageDisposition,
-            SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
-            ServiceErrorHandling errorHandling,
-            bool suppressReadReceipt)
-        {
-            UpdateItemRequest request = new UpdateItemRequest(this, errorHandling);
+  Future<ServiceResponseCollection<UpdateItemResponse>> InternalUpdateItems(
+      Iterable<Item> items,
+      FolderId savedItemsDestinationFolderId,
+      ConflictResolutionMode conflictResolution,
+      MessageDisposition messageDisposition,
+      SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
+      ServiceErrorHandling errorHandling,
+      bool suppressReadReceipt) {
+    UpdateItemRequest request = new UpdateItemRequest(this, errorHandling);
 
-            request.Items.addAll(items);
-            request.SavedItemsDestinationFolder = savedItemsDestinationFolderId;
-            request.MessageDisposition = messageDisposition;
-            request.ConflictResolutionMode = conflictResolution;
-            request.SendInvitationsOrCancellationsMode = sendInvitationsOrCancellationsMode;
-            request.SuppressReadReceipts = suppressReadReceipt;
+    request.Items.addAll(items);
+    request.SavedItemsDestinationFolder = savedItemsDestinationFolderId;
+    request.MessageDisposition = messageDisposition;
+    request.ConflictResolutionMode = conflictResolution;
+    request.SendInvitationsOrCancellationsMode = sendInvitationsOrCancellationsMode;
+    request.SuppressReadReceipts = suppressReadReceipt;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Updates multiple items in a single EWS call. UpdateItems does not support items that have unsaved attachments.
@@ -638,35 +604,32 @@ Future<ServiceResponseCollection<UpdateItemResponse>> InternalUpdateItems(
   /// <param name="sendInvitationsOrCancellationsMode">Indicates if and how invitations and/or cancellations should be sent for items of type Appointment. Required if items contains at least one Appointment instance.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
   /// <returns>A ServiceResponseCollection providing update results for each of the specified items.</returns>
-Future<ServiceResponseCollection<UpdateItemResponse>> UpdateItems(
-            Iterable<Item> items,
-            FolderId savedItemsDestinationFolderId,
-            ConflictResolutionMode conflictResolution,
-            MessageDisposition messageDisposition,
-            SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
-            bool suppressReadReceipts)
-        {
-            // All items have to exist on the server (!new) and modified (dirty)
-            if (!items.every((item) => (!item.IsNew && item.IsDirty)))
-            {
-                throw new ServiceValidationException("Strings.UpdateItemsDoesNotSupportNewOrUnchangedItems");
-            }
+  Future<ServiceResponseCollection<UpdateItemResponse>> UpdateItems(
+      Iterable<Item> items,
+      FolderId savedItemsDestinationFolderId,
+      ConflictResolutionMode conflictResolution,
+      MessageDisposition messageDisposition,
+      SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
+      bool suppressReadReceipts) {
+    // All items have to exist on the server (!new) and modified (dirty)
+    if (!items.every((item) => (!item.IsNew && item.IsDirty))) {
+      throw new ServiceValidationException("Strings.UpdateItemsDoesNotSupportNewOrUnchangedItems");
+    }
 
-            // Make sure that all items do *not* have unprocessed attachments.
-            if (!items.every((item) => !item.HasUnprocessedAttachmentChanges()))
-            {
-                throw new ServiceValidationException("Strings.UpdateItemsDoesNotAllowAttachments");
-            }
+    // Make sure that all items do *not* have unprocessed attachments.
+    if (!items.every((item) => !item.HasUnprocessedAttachmentChanges())) {
+      throw new ServiceValidationException("Strings.UpdateItemsDoesNotAllowAttachments");
+    }
 
-            return this.InternalUpdateItems(
-                items,
-                savedItemsDestinationFolderId,
-                conflictResolution,
-                messageDisposition,
-                sendInvitationsOrCancellationsMode,
-                ServiceErrorHandling.ReturnErrors,
-                suppressReadReceipts);
-        }
+    return this.InternalUpdateItems(
+        items,
+        savedItemsDestinationFolderId,
+        conflictResolution,
+        messageDisposition,
+        sendInvitationsOrCancellationsMode,
+        ServiceErrorHandling.ReturnErrors,
+        suppressReadReceipts);
+  }
 
   /// <summary>
   /// Updates an item.
@@ -697,42 +660,38 @@ Future<ServiceResponseCollection<UpdateItemResponse>> UpdateItems(
   /// <param name="sendInvitationsOrCancellationsMode">Indicates if and how invitations and/or cancellations should be sent for ian tem of type Appointment. Required if item is an Appointment instance.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
   /// <returns>Updated item.</returns>
-        Future<Item> UpdateItem(
-            Item item,
-            FolderId savedItemsDestinationFolderId,
-            ConflictResolutionMode conflictResolution,
-            MessageDisposition messageDisposition,
-            SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
-            [bool suppressReadReceipts = false]) async
-        {
-            ServiceResponseCollection<UpdateItemResponse> responses = await this.InternalUpdateItems(
-                [item],
-                savedItemsDestinationFolderId,
-                conflictResolution,
-                messageDisposition,
-                sendInvitationsOrCancellationsMode,
-                ServiceErrorHandling.ThrowOnError,
-                suppressReadReceipts);
+  Future<Item> UpdateItem(
+      Item item,
+      FolderId savedItemsDestinationFolderId,
+      ConflictResolutionMode conflictResolution,
+      MessageDisposition messageDisposition,
+      SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
+      [bool suppressReadReceipts = false]) async {
+    ServiceResponseCollection<UpdateItemResponse> responses = await this.InternalUpdateItems(
+        [item],
+        savedItemsDestinationFolderId,
+        conflictResolution,
+        messageDisposition,
+        sendInvitationsOrCancellationsMode,
+        ServiceErrorHandling.ThrowOnError,
+        suppressReadReceipts);
 
-            return responses[0].ReturnedItem;
-        }
+    return responses[0].ReturnedItem;
+  }
 
   /// <summary>
   /// Sends an item.
   /// </summary>
   /// <param name="item">The item.</param>
   /// <param name="savedCopyDestinationFolderId">The saved copy destination folder id.</param>
-        Future<void> SendItem(
-            Item item,
-            FolderId savedCopyDestinationFolderId)
-        {
-            SendItemRequest request = new SendItemRequest(this, ServiceErrorHandling.ThrowOnError);
+  Future<void> SendItem(Item item, FolderId savedCopyDestinationFolderId) {
+    SendItemRequest request = new SendItemRequest(this, ServiceErrorHandling.ThrowOnError);
 
-            request.Items = [ item ];
-            request.SavedCopyDestinationFolderId = savedCopyDestinationFolderId;
+    request.Items = [item];
+    request.SavedCopyDestinationFolderId = savedCopyDestinationFolderId;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Copies multiple items in a single call to EWS.
@@ -926,30 +885,29 @@ Future<ServiceResponseCollection<UpdateItemResponse>> UpdateItems(
   /// <param name="groupBy">The group by.</param>
   /// <param name="errorHandlingMode">Indicates the type of error handling should be done.</param>
   /// <returns>Service response collection.</returns>
-        Future<ServiceResponseCollection<FindItemResponse<TItem>>> FindItemsGeneric<TItem extends Item>(
-            Iterable<FolderId> parentFolderIds,
-            SearchFilter searchFilter,
-            String queryString,
-            ViewBase view,
-            Grouping groupBy,
-            ServiceErrorHandling errorHandlingMode) async
-        {
-            EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
-            EwsUtilities.ValidateParam(view, "view");
-            EwsUtilities.ValidateParamAllowNull(groupBy, "groupBy");
-            EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
-            EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
+  Future<ServiceResponseCollection<FindItemResponse<TItem>>> FindItemsGeneric<TItem extends Item>(
+      Iterable<FolderId> parentFolderIds,
+      SearchFilter searchFilter,
+      String queryString,
+      ViewBase view,
+      Grouping groupBy,
+      ServiceErrorHandling errorHandlingMode) async {
+    EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
+    EwsUtilities.ValidateParam(view, "view");
+    EwsUtilities.ValidateParamAllowNull(groupBy, "groupBy");
+    EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
+    EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-            FindItemRequest<TItem> request = await new FindItemRequest<TItem>(this, errorHandlingMode);
+    FindItemRequest<TItem> request = await new FindItemRequest<TItem>(this, errorHandlingMode);
 
-            request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
-            request.SearchFilter = searchFilter;
-            request.QueryString = queryString;
-            request.View = view;
-            request.GroupBy = groupBy;
+    request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
+    request.SearchFilter = searchFilter;
+    request.QueryString = queryString;
+    request.View = view;
+    request.GroupBy = groupBy;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1334,18 +1292,15 @@ Future<ServiceResponseCollection<UpdateItemResponse>> UpdateItems(
   /// <param name="propertySet">The set of properties to load.</param>
   /// <param name="errorHandling">Indicates the type of error handling should be done.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified items.</returns>
-        Future<ServiceResponseCollection<ServiceResponse>> InternalLoadPropertiesForItems(
-            Iterable<Item> items,
-            PropertySet propertySet,
-            ServiceErrorHandling errorHandling)
-        {
-            GetItemRequestForLoad request = new GetItemRequestForLoad(this, errorHandling);
+  Future<ServiceResponseCollection<ServiceResponse>> InternalLoadPropertiesForItems(
+      Iterable<Item> items, PropertySet propertySet, ServiceErrorHandling errorHandling) {
+    GetItemRequestForLoad request = new GetItemRequestForLoad(this, errorHandling);
 
-            request.ItemIds.AddRange(items);
-            request.PropertySet = propertySet;
+    request.ItemIds.AddRange(items);
+    request.PropertySet = propertySet;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Binds to multiple items in a single call to EWS.
@@ -1355,20 +1310,16 @@ Future<ServiceResponseCollection<UpdateItemResponse>> UpdateItems(
   /// <param name="anchorMailbox">The SmtpAddress of mailbox that hosts all items we need to bind to</param>
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified item Ids.</returns>
-Future<ServiceResponseCollection<GetItemResponse>> InternalBindToItems(
-            Iterable<ItemId> itemIds,
-            PropertySet propertySet,
-            String anchorMailbox,
-            ServiceErrorHandling errorHandling)
-        {
-            GetItemRequest request = new GetItemRequest(this, errorHandling);
+  Future<ServiceResponseCollection<GetItemResponse>> InternalBindToItems(Iterable<ItemId> itemIds,
+      PropertySet propertySet, String anchorMailbox, ServiceErrorHandling errorHandling) {
+    GetItemRequest request = new GetItemRequest(this, errorHandling);
 
-            request.ItemIds.AddRangeItemIds(itemIds);
-            request.PropertySet = propertySet;
-            request.AnchorMailbox = anchorMailbox;
+    request.ItemIds.AddRangeItemIds(itemIds);
+    request.PropertySet = propertySet;
+    request.AnchorMailbox = anchorMailbox;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Binds to multiple items in a single call to EWS.
@@ -1376,17 +1327,18 @@ Future<ServiceResponseCollection<GetItemResponse>> InternalBindToItems(
   /// <param name="itemIds">The Ids of the items to bind to.</param>
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified item Ids.</returns>
-Future<ServiceResponseCollection<GetItemResponse>> BindToItems(Iterable<ItemId> itemIds, PropertySet propertySet)
-        {
-            EwsUtilities.ValidateParamCollection(itemIds, "itemIds");
-            EwsUtilities.ValidateParam(propertySet, "propertySet");
+  Future<ServiceResponseCollection<GetItemResponse>> BindToItems(
+      Iterable<ItemId> itemIds, PropertySet propertySet) {
+    EwsUtilities.ValidateParamCollection(itemIds, "itemIds");
+    EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-            return this.InternalBindToItems(
-                itemIds,
-                propertySet,
-                null, /* anchorMailbox */
-                ServiceErrorHandling.ReturnErrors);
-        }
+    return this.InternalBindToItems(
+        itemIds,
+        propertySet,
+        null,
+        /* anchorMailbox */
+        ServiceErrorHandling.ReturnErrors);
+  }
 
   /// <summary>
   /// Binds to multiple items in a single call to EWS.
@@ -1421,19 +1373,19 @@ Future<ServiceResponseCollection<GetItemResponse>> BindToItems(Iterable<ItemId> 
   /// <param name="itemId">The item id.</param>
   /// <param name="propertySet">The property set.</param>
   /// <returns>Item.</returns>
-        Future<Item> BindToItem(ItemId itemId, PropertySet propertySet) async
-        {
-            EwsUtilities.ValidateParam(itemId, "itemId");
-            EwsUtilities.ValidateParam(propertySet, "propertySet");
+  Future<Item> BindToItem(ItemId itemId, PropertySet propertySet) async {
+    EwsUtilities.ValidateParam(itemId, "itemId");
+    EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-            ServiceResponseCollection<GetItemResponse> responses = await this.InternalBindToItems(
-                [ itemId ],
-                propertySet,
-                null, /* anchorMailbox */
-                ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<GetItemResponse> responses = await this.InternalBindToItems(
+        [itemId],
+        propertySet,
+        null,
+        /* anchorMailbox */
+        ServiceErrorHandling.ThrowOnError);
 
-            return responses[0].Item;
-        }
+    return responses[0].Item;
+  }
 
   /// <summary>
   /// Binds to item.
@@ -1442,23 +1394,19 @@ Future<ServiceResponseCollection<GetItemResponse>> BindToItems(Iterable<ItemId> 
   /// <param name="itemId">The item id.</param>
   /// <param name="propertySet">The property set.</param>
   /// <returns>Item</returns>
-        Future<TItem> BindToItemGeneric<TItem extends Item>(ItemId itemId, PropertySet propertySet) async
-        {
-            Item result = await this.BindToItem(itemId, propertySet);
+  Future<TItem> BindToItemGeneric<TItem extends Item>(
+      ItemId itemId, PropertySet propertySet) async {
+    Item result = await this.BindToItem(itemId, propertySet);
 
-            if (result is TItem)
-            {
-                return result;
-            }
-            else
-            {
-                throw new ServiceLocalException(
-                    """string.Format(
+    if (result is TItem) {
+      return result;
+    } else {
+      throw new ServiceLocalException("""string.Format(
                         Strings.ItemTypeNotCompatible,
                         result.GetType().Name,
                         typeof(TItem).Name)""");
-            }
-        }
+    }
+  }
 
   /// <summary>
   /// Deletes multiple items in a single call to EWS.
@@ -1470,24 +1418,23 @@ Future<ServiceResponseCollection<GetItemResponse>> BindToItems(Iterable<ItemId> 
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
   /// <returns>A ServiceResponseCollection providing deletion results for each of the specified item Ids.</returns>
-Future<ServiceResponseCollection<ServiceResponse>> InternalDeleteItems(
-            Iterable<ItemId> itemIds,
-            DeleteMode deleteMode,
-            SendCancellationsMode sendCancellationsMode,
-            AffectedTaskOccurrence affectedTaskOccurrences,
-            ServiceErrorHandling errorHandling,
-            bool suppressReadReceipts)
-        {
-            DeleteItemRequest request = new DeleteItemRequest(this, errorHandling);
+  Future<ServiceResponseCollection<ServiceResponse>> InternalDeleteItems(
+      Iterable<ItemId> itemIds,
+      DeleteMode deleteMode,
+      SendCancellationsMode sendCancellationsMode,
+      AffectedTaskOccurrence affectedTaskOccurrences,
+      ServiceErrorHandling errorHandling,
+      bool suppressReadReceipts) {
+    DeleteItemRequest request = new DeleteItemRequest(this, errorHandling);
 
-            request.ItemIds.AddRangeItemIds(itemIds);
-            request.DeleteMode = deleteMode;
-            request.SendCancellationsMode = sendCancellationsMode;
-            request.AffectedTaskOccurrences = affectedTaskOccurrences;
-            request.SuppressReadReceipts = suppressReadReceipts;
+    request.ItemIds.AddRangeItemIds(itemIds);
+    request.DeleteMode = deleteMode;
+    request.SendCancellationsMode = sendCancellationsMode;
+    request.AffectedTaskOccurrences = affectedTaskOccurrences;
+    request.SuppressReadReceipts = suppressReadReceipts;
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Deletes multiple items in a single call to EWS.
@@ -1515,23 +1462,17 @@ Future<ServiceResponseCollection<ServiceResponse>> InternalDeleteItems(
   /// <param name="affectedTaskOccurrences">Indicates which instance of a recurring task should be deleted. Required if any of the item Ids represents a Task.</param>
   /// <returns>A ServiceResponseCollection providing deletion results for each of the specified item Ids.</returns>
   /// <param name="suppressReadReceipt">Whether to suppress read receipts</param>
-Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
-            Iterable<ItemId> itemIds,
-            DeleteMode deleteMode,
-            SendCancellationsMode sendCancellationsMode,
-            AffectedTaskOccurrence affectedTaskOccurrences,
-            [bool suppressReadReceipt = false])
-        {
-            EwsUtilities.ValidateParamCollection(itemIds, "itemIds");
+  Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
+      Iterable<ItemId> itemIds,
+      DeleteMode deleteMode,
+      SendCancellationsMode sendCancellationsMode,
+      AffectedTaskOccurrence affectedTaskOccurrences,
+      [bool suppressReadReceipt = false]) {
+    EwsUtilities.ValidateParamCollection(itemIds, "itemIds");
 
-            return this.InternalDeleteItems(
-                itemIds,
-                deleteMode,
-                sendCancellationsMode,
-                affectedTaskOccurrences,
-                ServiceErrorHandling.ReturnErrors,
-                suppressReadReceipt);
-        }
+    return this.InternalDeleteItems(itemIds, deleteMode, sendCancellationsMode,
+        affectedTaskOccurrences, ServiceErrorHandling.ReturnErrors, suppressReadReceipt);
+  }
 
   /// <summary>
   /// Deletes an item. Calling this method results in a call to EWS.
@@ -1557,23 +1498,17 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// <param name="sendCancellationsMode">Indicates whether cancellation messages should be sent. Required if the item Id represents an Appointment.</param>
   /// <param name="affectedTaskOccurrences">Indicates which instance of a recurring task should be deleted. Required if item Id represents a Task.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
-        Future<void> DeleteItem(
-            ItemId itemId,
-            DeleteMode deleteMode,
-            SendCancellationsMode sendCancellationsMode,
-            AffectedTaskOccurrence affectedTaskOccurrences,
-            bool suppressReadReceipts)
-        {
-            EwsUtilities.ValidateParam(itemId, "itemId");
+  Future<void> DeleteItem(
+      ItemId itemId,
+      DeleteMode deleteMode,
+      SendCancellationsMode sendCancellationsMode,
+      AffectedTaskOccurrence affectedTaskOccurrences,
+      bool suppressReadReceipts) {
+    EwsUtilities.ValidateParam(itemId, "itemId");
 
-            return this.InternalDeleteItems(
-                [itemId],
-                deleteMode,
-                sendCancellationsMode,
-                affectedTaskOccurrences,
-                ServiceErrorHandling.ThrowOnError,
-                suppressReadReceipts);
-        }
+    return this.InternalDeleteItems([itemId], deleteMode, sendCancellationsMode,
+        affectedTaskOccurrences, ServiceErrorHandling.ThrowOnError, suppressReadReceipts);
+  }
 
   /// <summary>
   /// Mark items as junk.
@@ -1860,24 +1795,22 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// <param name="additionalProperties">The additional properties.</param>
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <returns>Service response collection.</returns>
-    Future<ServiceResponseCollection<GetAttachmentResponse>> InternalGetAttachments(
-            Iterable<Attachment> attachments,
-            BodyType bodyType,
-            Iterable<PropertyDefinitionBase> additionalProperties,
-            ServiceErrorHandling errorHandling)
-        {
-            GetAttachmentRequest request = new GetAttachmentRequest(this, errorHandling);
+  Future<ServiceResponseCollection<GetAttachmentResponse>> InternalGetAttachments(
+      Iterable<Attachment> attachments,
+      BodyType bodyType,
+      Iterable<PropertyDefinitionBase> additionalProperties,
+      ServiceErrorHandling errorHandling) {
+    GetAttachmentRequest request = new GetAttachmentRequest(this, errorHandling);
 
-            request.Attachments.addAll(attachments);
-            request.BodyType = bodyType;
+    request.Attachments.addAll(attachments);
+    request.BodyType = bodyType;
 
-            if (additionalProperties != null)
-            {
-                request.AdditionalProperties.addAll(additionalProperties);
-            }
+    if (additionalProperties != null) {
+      request.AdditionalProperties.addAll(additionalProperties);
+    }
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Gets attachments.
@@ -1929,17 +1862,11 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// <param name="attachment">The attachment.</param>
   /// <param name="bodyType">Type of the body.</param>
   /// <param name="additionalProperties">The additional properties.</param>
-        void GetAttachment(
-            Attachment attachment,
-            BodyType bodyType,
-            Iterable<PropertyDefinitionBase> additionalProperties)
-        {
-            this.InternalGetAttachments(
-                [ attachment ],
-                bodyType,
-                additionalProperties,
-                ServiceErrorHandling.ThrowOnError);
-        }
+  void GetAttachment(Attachment attachment, BodyType bodyType,
+      Iterable<PropertyDefinitionBase> additionalProperties) {
+    this.InternalGetAttachments(
+        [attachment], bodyType, additionalProperties, ServiceErrorHandling.ThrowOnError);
+  }
 
   /// <summary>
   /// Creates attachments.
@@ -1947,31 +1874,31 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// <param name="parentItemId">The parent item id.</param>
   /// <param name="attachments">The attachments.</param>
   /// <returns>Service response collection.</returns>
-        Future<ServiceResponseCollection<CreateAttachmentResponse>> CreateAttachments(
-            String parentItemId,
-            Iterable<Attachment> attachments)
-        {
-            CreateAttachmentRequest request = new CreateAttachmentRequest(this, ServiceErrorHandling.ReturnErrors);
+  Future<ServiceResponseCollection<CreateAttachmentResponse>> CreateAttachments(
+      String parentItemId, Iterable<Attachment> attachments) {
+    CreateAttachmentRequest request =
+        new CreateAttachmentRequest(this, ServiceErrorHandling.ReturnErrors);
 
-            request.ParentItemId = parentItemId;
-            request.Attachments.addAll(attachments);
+    request.ParentItemId = parentItemId;
+    request.Attachments.addAll(attachments);
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Deletes attachments.
   /// </summary>
   /// <param name="attachments">The attachments.</param>
   /// <returns>Service response collection.</returns>
-        Future<ServiceResponseCollection<DeleteAttachmentResponse>> DeleteAttachments(Iterable<Attachment> attachments)
-        {
-            DeleteAttachmentRequest request = new DeleteAttachmentRequest(this, ServiceErrorHandling.ReturnErrors);
+  Future<ServiceResponseCollection<DeleteAttachmentResponse>> DeleteAttachments(
+      Iterable<Attachment> attachments) {
+    DeleteAttachmentRequest request =
+        new DeleteAttachmentRequest(this, ServiceErrorHandling.ReturnErrors);
 
-            request.Attachments.addAll(attachments);
+    request.Attachments.addAll(attachments);
 
-            return request.Execute();
-        }
+    return request.Execute();
+  }
 
   /// <summary>
   /// Finds contacts in the user's Contacts folder and the Global Address List (in that order) that have names
@@ -2318,10 +2245,9 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// Unsubscribes from a subscription. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="subscriptionId">The Id of the pull subscription to unsubscribe from.</param>
-        void Unsubscribe(String subscriptionId)
-        {
-            this.BuildUnsubscribeRequest(subscriptionId).Execute();
-        }
+  void Unsubscribe(String subscriptionId) {
+    this.BuildUnsubscribeRequest(subscriptionId).Execute();
+  }
 
   /// <summary>
   /// Begins an asynchronous request to unsubscribe from a subscription. Calling this method results in a call to EWS.
@@ -2354,16 +2280,15 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// </summary>
   /// <param name="subscriptionId">The Id of the subscription for which to get the events.</param>
   /// <returns>A request to unsubscribe from a subscription.</returns>
-        UnsubscribeRequest BuildUnsubscribeRequest(String subscriptionId)
-        {
-            EwsUtilities.ValidateParam(subscriptionId, "subscriptionId");
+  UnsubscribeRequest BuildUnsubscribeRequest(String subscriptionId) {
+    EwsUtilities.ValidateParam(subscriptionId, "subscriptionId");
 
-            UnsubscribeRequest request = new UnsubscribeRequest(this);
+    UnsubscribeRequest request = new UnsubscribeRequest(this);
 
-            request.SubscriptionId = subscriptionId;
+    request.SubscriptionId = subscriptionId;
 
-            return request;
-        }
+    return request;
+  }
 
   /// <summary>
   /// Retrieves the latests events associated with a pull subscription. Calling this method results in a call to EWS.
@@ -2857,19 +2782,16 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// <param name="folderIds">The Ids of the folder to subscribe to.</param>
   /// <param name="eventTypes">The event types to subscribe to.</param>
   /// <returns>A StreamingSubscription representing the new subscription.</returns>
-      Future<StreamingSubscription> SubscribeToStreamingNotifications(
-            Iterable<FolderId> folderIds,
-            List<EventType> eventTypes) async
-        {
-            EwsUtilities.ValidateMethodVersion(
-                this,
-                ExchangeVersion.Exchange2010_SP1,
-                "SubscribeToStreamingNotifications");
+  Future<StreamingSubscription> SubscribeToStreamingNotifications(
+      Iterable<FolderId> folderIds, List<EventType> eventTypes) async {
+    EwsUtilities.ValidateMethodVersion(
+        this, ExchangeVersion.Exchange2010_SP1, "SubscribeToStreamingNotifications");
 
-            EwsUtilities.ValidateParamCollection(folderIds, "folderIds");
-            final response = await this.BuildSubscribeToStreamingNotificationsRequest(folderIds, eventTypes).Execute();
-            return response[0].Subscription;
-        }
+    EwsUtilities.ValidateParamCollection(folderIds, "folderIds");
+    final response =
+        await this.BuildSubscribeToStreamingNotificationsRequest(folderIds, eventTypes).Execute();
+    return response[0].Subscription;
+  }
 
   /// <summary>
   /// Begins an asynchronous request to subscribe to streaming notifications. Calling this method results in a call to EWS.
@@ -2954,23 +2876,21 @@ Future<ServiceResponseCollection<ServiceResponse>> DeleteItems(
   /// <param name="folderIds">The Ids of the folder to subscribe to.</param>
   /// <param name="eventTypes">The event types to subscribe to.</param>
   /// <returns>A request to subscribe to streaming notifications in the authenticated user's mailbox. </returns>
-SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsRequest(
-            Iterable<FolderId> folderIds,
-            List<EventType> eventTypes)
-        {
-            EwsUtilities.ValidateParamCollection(eventTypes, "eventTypes");
+  SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsRequest(
+      Iterable<FolderId> folderIds, List<EventType> eventTypes) {
+    EwsUtilities.ValidateParamCollection(eventTypes, "eventTypes");
 
-            SubscribeToStreamingNotificationsRequest request = new SubscribeToStreamingNotificationsRequest(this);
+    SubscribeToStreamingNotificationsRequest request =
+        new SubscribeToStreamingNotificationsRequest(this);
 
-            if (folderIds != null)
-            {
-                request.FolderIds.AddRangeFolderIds(folderIds);
-            }
+    if (folderIds != null) {
+      request.FolderIds.AddRangeFolderIds(folderIds);
+    }
 
-            request.EventTypes.addAll(eventTypes);
+    request.EventTypes.addAll(eventTypes);
 
-            return request;
-        }
+    return request;
+  }
 
   /// <summary>
   /// Synchronizes the items of a specific folder. Calling this method results in a call to EWS.
@@ -2983,22 +2903,22 @@ SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsR
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
   Future<ChangeCollection<ItemChange>> SyncFolderItems(
-            FolderId syncFolderId,
-            PropertySet propertySet,
-            Iterable<ItemId> ignoredItemIds,
-            int maxChangesReturned,
-            SyncFolderItemsScope syncScope,
-            String syncState)
-        {
-            return this.SyncFolderItemsWithNumberOfDays(
-                syncFolderId,
-                propertySet,
-                ignoredItemIds,
-                maxChangesReturned,
-                0, // numberOfDays
-                syncScope,
-                syncState);
-        }
+      FolderId syncFolderId,
+      PropertySet propertySet,
+      Iterable<ItemId> ignoredItemIds,
+      int maxChangesReturned,
+      SyncFolderItemsScope syncScope,
+      String syncState) {
+    return this.SyncFolderItemsWithNumberOfDays(
+        syncFolderId,
+        propertySet,
+        ignoredItemIds,
+        maxChangesReturned,
+        0,
+        // numberOfDays
+        syncScope,
+        syncState);
+  }
 
   /// <summary>
   /// Synchronizes the items of a specific folder. Calling this method results in a call to EWS.
@@ -3012,25 +2932,18 @@ SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsR
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
   Future<ChangeCollection<ItemChange>> SyncFolderItemsWithNumberOfDays(
-            FolderId syncFolderId,
-            PropertySet propertySet,
-            Iterable<ItemId> ignoredItemIds,
-            int maxChangesReturned,
-            int numberOfDays,
-            SyncFolderItemsScope syncScope,
-            String syncState) async
-        {
-            final request = this.BuildSyncFolderItemsRequest(
-                syncFolderId,
-                propertySet,
-                ignoredItemIds,
-                maxChangesReturned,
-                numberOfDays,
-                syncScope,
-                syncState);
-            final response = await request.Execute();
-            return response[0].Changes;
-        }
+      FolderId syncFolderId,
+      PropertySet propertySet,
+      Iterable<ItemId> ignoredItemIds,
+      int maxChangesReturned,
+      int numberOfDays,
+      SyncFolderItemsScope syncScope,
+      String syncState) async {
+    final request = this.BuildSyncFolderItemsRequest(syncFolderId, propertySet, ignoredItemIds,
+        maxChangesReturned, numberOfDays, syncScope, syncState);
+    final response = await request.Execute();
+    return response[0].Changes;
+  }
 
   /// <summary>
   /// Begins an asynchronous request to synchronize the items of a specific folder. Calling this method results in a call to EWS.
@@ -3123,33 +3036,31 @@ SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsR
   /// <param name="syncScope">The sync scope identifying items to include in the ChangeCollection.</param>
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A request to synchronize the items of a specific folder.</returns>
-      SyncFolderItemsRequest BuildSyncFolderItemsRequest(
-            FolderId syncFolderId,
-            PropertySet propertySet,
-            Iterable<ItemId> ignoredItemIds,
-            int maxChangesReturned,
-            int numberOfDays,
-            SyncFolderItemsScope syncScope,
-            String syncState)
-        {
-            EwsUtilities.ValidateParam(syncFolderId, "syncFolderId");
-            EwsUtilities.ValidateParam(propertySet, "propertySet");
+  SyncFolderItemsRequest BuildSyncFolderItemsRequest(
+      FolderId syncFolderId,
+      PropertySet propertySet,
+      Iterable<ItemId> ignoredItemIds,
+      int maxChangesReturned,
+      int numberOfDays,
+      SyncFolderItemsScope syncScope,
+      String syncState) {
+    EwsUtilities.ValidateParam(syncFolderId, "syncFolderId");
+    EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-            SyncFolderItemsRequest request = new SyncFolderItemsRequest(this);
+    SyncFolderItemsRequest request = new SyncFolderItemsRequest(this);
 
-            request.SyncFolderId = syncFolderId;
-            request.PropertySet = propertySet;
-            if (ignoredItemIds != null)
-            {
-                request.IgnoredItemIds.AddRangeItemIds(ignoredItemIds);
-            }
-            request.MaxChangesReturned = maxChangesReturned;
-            request.NumberOfDays = numberOfDays;
-            request.SyncScope = syncScope;
-            request.SyncState = syncState;
+    request.SyncFolderId = syncFolderId;
+    request.PropertySet = propertySet;
+    if (ignoredItemIds != null) {
+      request.IgnoredItemIds.AddRangeItemIds(ignoredItemIds);
+    }
+    request.MaxChangesReturned = maxChangesReturned;
+    request.NumberOfDays = numberOfDays;
+    request.SyncScope = syncScope;
+    request.SyncState = syncState;
 
-            return request;
-        }
+    return request;
+  }
 
   /// <summary>
   /// Synchronizes the sub-folders of a specific folder. Calling this method results in a call to EWS.
@@ -3158,18 +3069,13 @@ SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsR
   /// <param name="propertySet">The set of properties to retrieve for synchronized items.</param>
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
-Future<ChangeCollection<FolderChange>> SyncFolderHierarchy(
-            FolderId syncFolderId,
-            PropertySet propertySet,
-            String syncState) async
-        {
-          final request = await this.BuildSyncFolderHierarchyRequest(
-              syncFolderId,
-              propertySet,
-              syncState);
-          final response = await request.Execute();
-          return response[0].Changes;
-        }
+  Future<ChangeCollection<FolderChange>> SyncFolderHierarchy(
+      FolderId syncFolderId, PropertySet propertySet, String syncState) async {
+    final request =
+        await this.BuildSyncFolderHierarchyRequest(syncFolderId, propertySet, syncState);
+    final response = await request.Execute();
+    return response[0].Changes;
+  }
 
   /// <summary>
   /// Begins an asynchronous request to synchronize the sub-folders of a specific folder. Calling this method results in a call to EWS.
@@ -3248,22 +3154,20 @@ Future<ChangeCollection<FolderChange>> SyncFolderHierarchy(
   /// <param name="propertySet">The set of properties to retrieve for synchronized items.</param>
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A request to synchronize the specified folder hierarchy of the mailbox this Service is connected to.</returns>
-Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
-            FolderId syncFolderId,
-            PropertySet propertySet,
-            String syncState) async
-        {
-            EwsUtilities.ValidateParamAllowNull(syncFolderId, "syncFolderId");  // Null syncFolderId is allowed
-            EwsUtilities.ValidateParam(propertySet, "propertySet");
+  Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
+      FolderId syncFolderId, PropertySet propertySet, String syncState) async {
+    EwsUtilities.ValidateParamAllowNull(
+        syncFolderId, "syncFolderId"); // Null syncFolderId is allowed
+    EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-            SyncFolderHierarchyRequest request = await new SyncFolderHierarchyRequest(this);
+    SyncFolderHierarchyRequest request = await new SyncFolderHierarchyRequest(this);
 
-            request.PropertySet = propertySet;
-            request.SyncFolderId = syncFolderId;
-            request.SyncState = syncState;
+    request.PropertySet = propertySet;
+    request.SyncFolderId = syncFolderId;
+    request.SyncState = syncState;
 
-            return request;
-        }
+    return request;
+  }
 
   /// <summary>
   /// Gets Out of Office (OOF) settings for a specific user. Calling this method results in a call to EWS.
@@ -5115,7 +5019,6 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
 //            throw new AutodiscoverLocalException(Strings.AutodiscoverDidNotReturnEwsUrl);
 //        }
 
-
   /// <summary>
   /// GetClientAccessToken
   /// </summary>
@@ -5466,7 +5369,6 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
   /// Validates this instance.
   /// </summary>
   @override
-
   void Validate() {
     super.Validate();
 
@@ -5496,80 +5398,72 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
   ///   X-EWS-TargetVersion: 2.4
   ///   X-EWS_TargetVersion: 2.9; minimum=2.4
   /// </remarks>
-//        static void ValidateTargetVersion(string version)
-//        {
-//            const char ParameterSeparator = ';';
-//            const string LegacyVersionPrefix = "Exchange20";
-//            const char ParameterValueSeparator = '=';
-//            const string ParameterName = "minimum";
-//
-//            if (StringUtils.IsNullOrEmpty(version))
-//            {
-//                throw new ArgumentError("Target version must not be empty.");
-//            }
-//
-//            string[] parts = version.Trim().Split(ParameterSeparator);
-//            switch (parts.Length)
-//            {
-//                case 1:
-//                    // Validate the header value. We allow X.Y or Exchange20XX.
-//                    string part1 = parts[0].Trim();
-//                    if (parts[0].StartsWith(LegacyVersionPrefix))
-//                    {
-//                        // Close enough; misses corner cases like "Exchange2001". Server will do complete validation.
-//                    }
-//                    else if (ExchangeService.IsMajorMinor(part1))
-//                    {
-//                        // Also close enough; misses corner cases like ".5".
-//                    }
-//                    else
-//                    {
-//                        throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
-//                    }
-//
-//                    break;
-//
-//                case 2:
-//                    // Validate the optional minimum version parameter, "minimum=X.Y"
-//                    string part2 = parts[1].Trim();
-//                    string[] minParts = part2.Split(ParameterValueSeparator);
-//                    if (minParts.Length == 2 &&
-//                        minParts[0].Trim().Equals(ParameterName, StringComparison.OrdinalIgnoreCase) &&
-//                        ExchangeService.IsMajorMinor(minParts[1].Trim()))
-//                    {
-//                        goto case 1;
-//                    }
-//
-//                    throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
-//
-//                default:
-//                    throw new ArgumentError("Target version should have the form.");
-//            }
-//        }
+  static void ValidateTargetVersion(String version) {
+    const String ParameterSeparator = ';';
+    const String LegacyVersionPrefix = "Exchange20";
+    const String ParameterValueSeparator = '=';
+    const String ParameterName = "minimum";
 
-//static bool IsMajorMinor(string versionPart)
-//        {
-//            const char MajorMinorSeparator = '.';
-//
-//            string[] parts = versionPart.Split(MajorMinorSeparator);
-//            if (parts.Length != 2)
-//            {
-//                return false;
-//            }
-//
-//            for (string s in parts)
-//            {
-//                for (char c in s)
-//                {
-//                    if (!Char.IsDigit(c))
-//                    {
-//                        return false;
-//                    }
-//                }
-//            }
-//
-//            return true;
-//        }
+    if (StringUtils.IsNullOrEmpty(version)) {
+      throw new ArgumentError("Target version must not be empty.");
+    }
+
+    List<String> parts = version.trim().split(ParameterSeparator);
+    switch (parts.length) {
+      case 1:
+        // Validate the header value. We allow X.Y or Exchange20XX.
+        String part1 = parts[0].trim();
+        if (parts[0].startsWith(LegacyVersionPrefix)) {
+          // Close enough; misses corner cases like "Exchange2001". Server will do complete validation.
+        } else if (ExchangeService.IsMajorMinor(part1)) {
+          // Also close enough; misses corner cases like ".5".
+        } else {
+          throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
+        }
+
+        break;
+
+      case 2:
+        // Validate the optional minimum version parameter, "minimum=X.Y"
+        String part2 = parts[1].trim();
+        List<String> minParts = part2.split(ParameterValueSeparator);
+        if (minParts.length == 2 &&
+            minParts[0].trim().toLowerCase() == ParameterName.toLowerCase() &&
+            ExchangeService.IsMajorMinor(minParts[1].trim())) {
+          String part1 = parts[0].trim();
+          if (parts[0].startsWith(LegacyVersionPrefix)) {
+            // Close enough; misses corner cases like "Exchange2001". Server will do complete validation.
+          } else if (ExchangeService.IsMajorMinor(part1)) {
+            // Also close enough; misses corner cases like ".5".
+          } else {
+            throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
+          }
+
+          break;
+        }
+
+        throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
+
+      default:
+        throw new ArgumentError("Target version should have the form.");
+    }
+  }
+
+  static bool IsMajorMinor(String versionPart) {
+    final RegExp numberRegExp = RegExp(r'\d');
+    const String MajorMinorSeparator = '.';
+
+    List<String> parts = versionPart.split(MajorMinorSeparator);
+    if (parts.length != 2) {
+      return false;
+    }
+
+    for (String s in parts) {
+      if (!numberRegExp.hasMatch(s)) return false;
+    }
+
+    return true;
+  }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExchangeService"/> class, targeting
@@ -5648,7 +5542,6 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
 //            this.TargetServerVersion = targetServerVersion;
 //        }
 
-
   /// <summary>
   /// Creates an HttpWebRequest instance and initializes it with the appropriate parameters,
   /// based on the configuration of this service object.
@@ -5665,14 +5558,11 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
 //
 //    endpoint = this.AdjustServiceUriFromCredentials(endpoint);
 
-    IEwsHttpWebRequest request = this.PrepareHttpWebRequestForUrl(
-        endpoint,
-        this.AcceptGzipEncoding,
-        true);
+    IEwsHttpWebRequest request =
+        this.PrepareHttpWebRequestForUrl(endpoint, this.AcceptGzipEncoding, true);
 
     if (!StringUtils.IsNullOrEmpty(this.TargetServerVersion)) {
-      request.Headers.Set(ExchangeService.TargetServerVersionHeaderName,
-          this.TargetServerVersion);
+      request.Headers.Set(ExchangeService.TargetServerVersionHeaderName, this.TargetServerVersion);
     }
 
     return request;
@@ -5694,23 +5584,18 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
   /// <param name="httpWebResponse">The HTTP web response.</param>
   /// <param name="webException">The web exception.</param>
 //        @override
-  void ProcessHttpErrorResponse(IEwsHttpWebResponse httpWebResponse,
-      WebException webException) {
-    this.InternalProcessHttpErrorResponse(
-        httpWebResponse,
-        webException,
-        enumerations.TraceFlags.EwsResponseHttpHeaders,
-        enumerations.TraceFlags.EwsResponse);
+  void ProcessHttpErrorResponse(IEwsHttpWebResponse httpWebResponse, WebException webException) {
+    this.InternalProcessHttpErrorResponse(httpWebResponse, webException,
+        enumerations.TraceFlags.EwsResponseHttpHeaders, enumerations.TraceFlags.EwsResponse);
   }
-
 
   /// <summary>
   /// Gets or sets the URL of the Exchange Web Services.
   /// </summary>
-  Uri get Url => this.url;
+  Uri get Url => this._url;
 
   set Url(Uri value) {
-    this.url = value;
+    this._url = value;
   }
 
   /// <summary>
@@ -5823,20 +5708,19 @@ Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
   /// <summary>
   /// Gets or sets a value indicating whether trace output is pretty printed.
   /// </summary>
-  bool get TraceEnablePrettyPrinting => this.traceEnablePrettyPrinting;
+  bool get TraceEnablePrettyPrinting => this._traceEnablePrettyPrinting;
 
   set TraceEnablePrettyPrinting(bool value) {
-    this.traceEnablePrettyPrinting = value;
+    this._traceEnablePrettyPrinting = value;
   }
 
   /// <summary>
   /// Gets or sets the target server version string (newer than Exchange2013).
   /// </summary>
-  String get TargetServerVersion => this.targetServerVersion;
+  String get TargetServerVersion => this._targetServerVersion;
 
   set TargetServerVersion(String value) {
-    // todo("implement version validation")
-//    ExchangeService.ValidateTargetVersion(value);
-    this.targetServerVersion = value;
+    ExchangeService.ValidateTargetVersion(value);
+    this._targetServerVersion = value;
   }
 }

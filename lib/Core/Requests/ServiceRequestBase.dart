@@ -46,7 +46,6 @@ import 'package:ews/Exceptions/ServiceRequestException.dart';
 import 'package:ews/Exceptions/ServiceXmlDeserializationException.dart';
 import 'package:ews/Exceptions/ServiceResponseException.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
-import 'package:ews/Http/HttpStatusCode.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebExceptionStatus.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
@@ -73,13 +72,13 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// AnchorMailbox. These headers should be used primarily for UnifiedGroup scenario where
         /// a request needs to be routed directly to the group mailbox versus the user mailbox.
         /// </remarks>
-        /* private */ static const String AnchorMailboxHeaderName = "X-AnchorMailbox";
-        /* private */ static const String ExplicitLogonUserHeaderName = "X-OWA-ExplicitLogonUser";
+        static const String _AnchorMailboxHeaderName = "X-AnchorMailbox";
+        static const String _ExplicitLogonUserHeaderName = "X-OWA-ExplicitLogonUser";
 
-        /* private */ static const List<String> RequestIdResponseHeaders = [ "RequestId", "request-id" ];
-        /* private */ static const String XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
-        /* private */ static const String XMLSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
-        /* private */ static const String ClientStatisticsRequestHeader = "X-ClientStatistics";
+        static const List<String> _RequestIdResponseHeaders = [ "RequestId", "request-id" ];
+        static const String _XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
+        static const String _XMLSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+        static const String _ClientStatisticsRequestHeader = "X-ClientStatistics";
         
         /// <summary>
         /// Gets or sets the anchor mailbox associated with the request
@@ -96,7 +95,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// </summary>
         /* private */ static List<String> clientStatisticsCache = new List<String>();
 
-        /* private */ ExchangeService service;
+        ExchangeService _service;
     
         /// <summary>
         /// Gets the response stream (may be wrapped with GZip/Deflate stream to decompress content)
@@ -236,8 +235,8 @@ import 'package:ews/misc/Std/EnumToString.dart';
         {
             if (!StringUtils.IsNullOrEmpty(this.AnchorMailbox))
             {
-                webHeaderCollection.Set(AnchorMailboxHeaderName, this.AnchorMailbox);
-                webHeaderCollection.Set(ExplicitLogonUserHeaderName, this.AnchorMailbox);
+                webHeaderCollection.Set(_AnchorMailboxHeaderName, this.AnchorMailbox);
+                webHeaderCollection.Set(_ExplicitLogonUserHeaderName, this.AnchorMailbox);
             }
         }
 
@@ -252,7 +251,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
                 throw new ArgumentNullException("service");
             }
 
-            this.service = service;
+            this._service = service;
             this.ThrowIfNotSupportedByRequestedServerVersion();
         }
 
@@ -260,7 +259,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// Gets the service.
         /// </summary>
         /// <value>The service.</value>
-        ExchangeService get Service => this.service;
+        ExchangeService get Service => this._service;
 
         /// <summary>
         /// Throw exception if request is not supported in requested server version.
@@ -404,11 +403,13 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// Emits the request.
         /// </summary>
         /// <param name="request">The request.</param>
-        /* private */ void EmitRequest(IEwsHttpWebRequest request)
+        Future<void> _EmitRequest(IEwsHttpWebRequest request) async
         {
-            StreamConsumer<List<int>> requestStream = this.GetWebRequestStream(request);
+            StreamConsumer<List<int>> requestStream = await this._GetWebRequestStream(request);
             EwsServiceXmlWriter writer = new EwsServiceXmlWriter(this.Service, requestStream);
             this.WriteToXml(writer);
+            await writer.Flush();
+            await writer.Dispose();
         }
 
         /// <summary>
@@ -417,7 +418,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// <param name="request">The request.</param>
         /// <param name="needSignature"></param>
         /// <param name="needTrace"></param>
-        /* private */ Future<void> TraceAndEmitRequest(IEwsHttpWebRequest request, bool needSignature, bool needTrace) async
+        Future<void> _TraceAndEmitRequest(IEwsHttpWebRequest request, bool needSignature, bool needTrace) async
         {
             MemoryStream memoryStream = new MemoryStream();
 
@@ -427,11 +428,11 @@ import 'package:ews/misc/Std/EnumToString.dart';
             this.WriteToXml(writer);
 
             await writer.Flush();
-//            writer.close();
+            await writer.Dispose();
 
             if (needSignature)
             {
-            this.service.Credentials.Sign(memoryStream);
+                this._service.Credentials.Sign(memoryStream);
             }
 
             if (needTrace)
@@ -439,12 +440,12 @@ import 'package:ews/misc/Std/EnumToString.dart';
                 this.TraceXmlRequest(memoryStream);
             }
 
-            StreamConsumer<List<int>> serviceRequestStream = this.GetWebRequestStream(request);
+            StreamConsumer<List<int>> serviceRequestStream = await this._GetWebRequestStream(request);
 
-            EwsUtilities.CopyStream(memoryStream, serviceRequestStream);
-//            serviceRequestStream.close();
+            await EwsUtilities.CopyStream(memoryStream, serviceRequestStream);
+            await serviceRequestStream.close();
 
-            memoryStream.close();
+            await memoryStream.close();
         }
 
         /// <summary>
@@ -452,7 +453,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// </summary>
         /// <param name="request">The request</param>
         /// <returns>The Request stream</returns>
-        /* private */ StreamConsumer<List<int>> GetWebRequestStream(IEwsHttpWebRequest request)
+        Future<StreamConsumer<List<int>>> _GetWebRequestStream(IEwsHttpWebRequest request)
         {
             // In the async case, although we can use async callback to make the entire worflow completely async,
             // there is little perf gain with this approach because of EWS's message nature.
@@ -718,11 +719,11 @@ import 'package:ews/misc/Std/EnumToString.dart';
                 // the request stream.
                 if (needSignature || needTrace)
                 {
-                    await this.TraceAndEmitRequest(request, needSignature, needTrace);
+                    await this._TraceAndEmitRequest(request, needSignature, needTrace);
                 }
                 else
                 {
-                    this.EmitRequest(request);
+                    await this._EmitRequest(request);
                 }
 
                 return request;

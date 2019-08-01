@@ -86,7 +86,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// <returns>
         /// A <see cref="T:System.IO.Stream"/> to use to write request data.
         /// </returns>
-        StreamConsumer<List<int>> GetRequestStream();
+        Future<StreamConsumer<List<int>>> GetRequestStream();
 
         /// <summary>
         /// Returns a response from an Internet resource.

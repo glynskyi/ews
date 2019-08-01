@@ -31,7 +31,7 @@ enum TraceFlags {
   /// <summary>
   /// No tracing.
   /// </summary>
-  None,
+//  None,
 
   /// <summary>
   /// Trace EWS request messages.
@@ -93,6 +93,3 @@ enum TraceFlags {
   /// </summary>
 //        All = Int64.MaxValue,
 }
-
-// todo("add all flags")
-const TraceFlagsAll = [TraceFlags.EwsRequest];

@@ -71,6 +71,7 @@ import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
+import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/Interfaces/ISelfValidate.dart';
 import 'package:ews/Xml/XmlWriter.dart';
 import 'package:ews/misc/OutParam.dart';
@@ -659,10 +660,7 @@ typedef R Converter<T,R>(T);
         /// <param name="target">The target.</param>
         static Future<void> CopyStream(Stream<List<int>> source, StreamConsumer<List<int>> target) async
         {
-          print("CopyStream::begin");
           await source.pipe(target);
-          print("CopyStream::end");
-
 //            // See if this is a MemoryStream -- we can use WriteTo.
 //            MemoryStream memContentStream = source as MemoryStream;
 //            if (memContentStream != null)
@@ -2183,26 +2181,21 @@ typedef R Converter<T,R>(T);
 //
 //            return sb.ToString();
 //        }
-//
-//        /// <summary>
-//        /// Format response HTTP headers.
-//        /// </summary>
-//        /// <param name="response">The HTTP response.</param>
-//        static String FormatHttpResponseHeaders(IEwsHttpWebResponse response)
-//        {
-//            StringBuilder sb = new StringBuilder();
-//            sb.Append(
-//                string.Format(
-//                    "HTTP/{0} {1} {2}\n",
-//                    response.ProtocolVersion,
-//                    (int)response.StatusCode,
-//                    response.StatusDescription));
-//
-//            sb.Append(EwsUtilities.FormatHttpHeaders(response.Headers));
-//            sb.Append("\n");
-//            return sb.ToString();
-//        }
-//
+
+        /// <summary>
+        /// Format response HTTP headers.
+        /// </summary>
+        /// <param name="response">The HTTP response.</param>
+        static String FormatHttpResponseHeaders(IEwsHttpWebResponse response)
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.write("HTTP/? ${response.StatusCode} ${response.StatusDescription}\n");
+
+            sb.write(EwsUtilities.FormatHttpHeaders(response.Headers));
+            sb.write("\n");
+            return sb.toString();
+        }
+
 //        /// <summary>
 //        /// Format request HTTP headers.
 //        /// </summary>
