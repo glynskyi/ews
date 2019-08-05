@@ -389,16 +389,6 @@ import 'package:ews/misc/OutParam.dart';
                 MessageDisposition.SaveOnly,
                 null);
         }
-//
-//        /// <summary>
-//        /// Applies the local changes that have been made to this item. Calling this method results in at least one call to EWS.
-//        /// Mutliple calls to EWS might be made if attachments have been added or removed.
-//        /// </summary>
-//        /// <param name="conflictResolutionMode">The conflict resolution mode.</param>
-// void Update(ConflictResolutionMode conflictResolutionMode)
-//        {
-//            this.Update(conflictResolutionMode, false);
-//        }
 
         /// <summary>
         /// Applies the local changes that have been made to this item. Calling this method results in at least one call to EWS.
@@ -406,9 +396,9 @@ import 'package:ews/misc/OutParam.dart';
         /// </summary>
         /// <param name="conflictResolutionMode">The conflict resolution mode.</param>
         /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
- void Update(ConflictResolutionMode conflictResolutionMode, [ bool suppressReadReceipts = false ])
+        Future<void> Update(ConflictResolutionMode conflictResolutionMode, [ bool suppressReadReceipts = false ])
         {
-            this.InternalUpdate(
+            return this.InternalUpdate(
                 null /* parentFolder */,
                 conflictResolutionMode,
                 MessageDisposition.SaveOnly,
