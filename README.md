@@ -26,9 +26,28 @@ The following code example shows how to create a folder with a custom folder cla
 
 ```Dart
 final folder = new Folder(service)
-    ..DisplayName = duplicateName
+    ..DisplayName = "Custom Folder"
     ..FolderClass = "IPF.MyCustomFolderClass";
 await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
+```
+
+### Creating custom extended properties 
+
+The following code example shows how to create a new extended property, set a value for the extended property, and add it to a message.
+
+```Dart
+// Create a definition for the extended property.
+final extendedPropertyDefinition = ExtendedPropertyDefinition.withDefaultPropertySetAndName(DefaultExtendedPropertySet.Common, "custom:MeetingDescription", MapiPropertyType.String);
+
+// Create an e-mail message that you will add the extended property to.
+final message = new EmailMessage(service)
+    ..Subject = "Saved with the meeting description"
+    ..Body = MessageBody.withText("The meeting description is contained within the extended property.")
+    ..ToRecipients.Add(EmailAddress(smtpAddress: "user@contoso.com"))
+    ..SetExtendedProperty(extendedPropertyDefinition, "The meeting purpose is make the right decision");
+
+// Save the e-mail message.
+await message.SendAndSaveCopy();
 ```
 
 ## Support statement

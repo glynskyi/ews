@@ -13,6 +13,7 @@ ExtendedPropertyDefinition AssigneeMail = ExtendedPropertyDefinition.withDefault
 void main() {
   test('creates task with extended properties', () async {
     final service = prepareExchangeService(primaryUserCredential);
+
     Task task = Task(service);
     task.Subject = "New Task #0";
     task.Status = TaskStatus.NotStarted;
