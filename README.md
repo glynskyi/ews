@@ -5,14 +5,37 @@
 [![coverage](https://coveralls.io/repos/github/dmytro-glynskyi/ews/badge.svg?branch=master)](https://coveralls.io/github/dmytro-glynskyi/ews?branch=master)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/renggli/dart-xml/master/LICENSE)
 
-The Exchange Web Services (EWS) Managed API provides a managed interface for developing .NET client applications that use EWS.
-By using the EWS Managed API, you can access almost all the information stored in an Office 365, Exchange Online, or Exchange Server mailbox. However, this API is in sustaining mode, the recommended access pattern for Office 365 and Exchange online data is [Microsoft Graph](https://graph.microsoft.com)
+This project is a Dart client library to access Microsoft Exchange web services. The library works against Office 365 Exchange Online as well as on premises Exchange.
+By using it you can access almost all the information stored in an Office 365, Exchange Online, or Exchange Server mailbox.
+However, this API is in sustaining mode, the recommended access pattern for Office 365 and Exchange online data is [Microsoft Graph](https://graph.microsoft.com)
+
+## Getting started
+
+In the library the ExchangeService class contains the methods and properties that are used to set user credentials, identify the Exchange Web Services endpoint, send and receive SOAP messages, and configure the connection with Exchange Web Services.
+To perform an operation by using the library, you must set up the ExchangeService class.
+
+```Dart
+final service = ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
+    ..Url = Uri.parse("https://outlook.office365.com/ews/exchange.asmx")
+    ..Credentials = WebCredentials("---USER_NAME---", "---USER_PASSWORD---", "---USER_DOMAIN---");
+```
+
+### Creating folders
+
+The following code example shows how to create a folder with a custom folder class.
+
+```Dart
+final folder = new Folder(service)
+    ..DisplayName = duplicateName
+    ..FolderClass = "IPF.MyCustomFolderClass";
+await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
+```
 
 ## Support statement
 
 Starting July 19th 2018, Exchange Web Services (EWS) will no longer receive feature updates. While the service will continue to receive security updates and certain non-security updates, product design and features will remain unchanged. This change also applies to the EWS SDKs for Java and .NET. More information here: https://developer.microsoft.com/en-us/graph/blogs/upcoming-changes-to-exchange-web-services-ews-api-for-office-365/
 
-## Getting started resources
+## Additional resources
 
 See the following articles to help you get started:
 - [Get started with EWS Managed API client applications](http://msdn.microsoft.com/en-us/library/office/dn567668(v=exchg.150).aspx)
