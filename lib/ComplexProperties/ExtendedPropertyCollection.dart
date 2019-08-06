@@ -25,6 +25,7 @@
 
 import 'package:ews/ComplexProperties/ComplexPropertyCollection.dart';
 import 'package:ews/ComplexProperties/ExtendedProperty.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/misc/OutParam.dart';
 import 'package:ews/PropertyDefinitions/ExtendedPropertyDefinition.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
@@ -123,7 +124,7 @@ class ExtendedPropertyCollection
   /// <param name="propertyDefinition">The definition of the extended property to remove.</param>
   /// <returns>True if the property matching the extended property definition was successfully removed from the collection, false otherwise.</returns>
   bool RemoveExtendedProperty(ExtendedPropertyDefinition propertyDefinition) {
-//    EwsUtilities.ValidateParam(propertyDefinition, "propertyDefinition");
+    EwsUtilities.ValidateParam(propertyDefinition, "propertyDefinition");
 
     ExtendedProperty extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =

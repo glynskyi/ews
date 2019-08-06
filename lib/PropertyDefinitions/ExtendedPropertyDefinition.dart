@@ -44,58 +44,47 @@ import 'package:uuid_enhanced/uuid.dart';
 /// Represents the definition of an extended property.
 /// </summary>
 class ExtendedPropertyDefinition extends PropertyDefinitionBase {
-  /* private */
-  static const PropertySetFieldName = "PropertySet";
+  static const _PropertySetFieldName = "PropertySet";
 
-  /* private */
-  static const PropertySetIdFieldName = "PropertySetId";
+  static const _PropertySetIdFieldName = "PropertySetId";
 
-  /* private */
-  static const TagFieldName = "Tag";
+  static const _TagFieldName = "Tag";
 
-  /* private */
-  static const NameFieldName = "Name";
+  static const _NameFieldName = "Name";
 
-  /* private */
-  static const IdFieldName = "Id";
+  static const _IdFieldName = "Id";
 
-  /* private */
-  static const MapiTypeFieldName = "MapiType";
+  static const _MapiTypeFieldName = "MapiType";
 
-  /* private */
-  DefaultExtendedPropertySet propertySet;
+  DefaultExtendedPropertySet _propertySet;
 
-  /* private */
-  Uuid propertySetId;
+  Uuid _propertySetId;
 
-  /* private */
-  int tag;
+  int _tag;
 
-  /* private */
-  String name;
+  String _name;
 
-  /* private */
-  int id;
+  int _id;
 
-  /* private */
-  MapiPropertyType mapiType;
+  MapiPropertyType _mapiType;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExtendedPropertyDefinition"/> class.
   /// </summary>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
-  ExtendedPropertyDefinition([MapiPropertyType mapiType = MapiPropertyType.String]) : this.mapiType = mapiType;
+  ExtendedPropertyDefinition([MapiPropertyType mapiType = MapiPropertyType.String])
+      : this._mapiType = mapiType;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExtendedPropertyDefinition"/> class.
   /// </summary>
   /// <param name="tag">The tag of the extended property.</param>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
-  ExtendedPropertyDefinition.withTag(int tag, this.mapiType) {
+  ExtendedPropertyDefinition.withTag(int tag, this._mapiType) {
     if (tag < 0x00 || tag > 0xFF) {
       throw new RangeError.range(tag, 0x00, 0xFF, "tag", "Strings.TagValueIsOutOfRange");
     }
-    this.tag = tag;
+    this._tag = tag;
   }
 
   /// <summary>
@@ -104,8 +93,9 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="propertySet">The extended property set of the extended property.</param>
   /// <param name="name">The name of the extended property.</param>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
-  ExtendedPropertyDefinition.withDefaultPropertySetAndName(this.propertySet, this.name, this.mapiType) {
-    EwsUtilities.ValidateParam(name, "name");
+  ExtendedPropertyDefinition.withDefaultPropertySetAndName(
+      this._propertySet, this._name, this._mapiType) {
+    EwsUtilities.ValidateParam(_name, "name");
   }
 
   /// <summary>
@@ -114,7 +104,8 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="propertySet">The property set of the extended property.</param>
   /// <param name="id">The Id of the extended property.</param>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
-  ExtendedPropertyDefinition.withDefaultPropertySetAndId(this.propertySet, this.id, this.mapiType);
+  ExtendedPropertyDefinition.withDefaultPropertySetAndId(
+      this._propertySet, this._id, this._mapiType);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExtendedPropertyDefinition"/> class.
@@ -122,10 +113,11 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="propertySetId">The property set Id of the extended property.</param>
   /// <param name="name">The name of the extended property.</param>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
-  ExtendedPropertyDefinition.withPropertySetIdAndName(this.propertySetId, this.name, this.mapiType) {
-    EwsUtilities.ValidateParam(name, "name");
+  ExtendedPropertyDefinition.withPropertySetIdAndName(
+      this._propertySetId, this._name, this._mapiType) {
+    EwsUtilities.ValidateParam(_name, "name");
 
-    this.propertySetId = propertySetId;
+    this._propertySetId = _propertySetId;
   }
 
   /// <summary>
@@ -134,7 +126,7 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="propertySetId">The property set Id of the extended property.</param>
   /// <param name="id">The Id of the extended property.</param>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
-  ExtendedPropertyDefinition.withPropertySetIdAndId(this.propertySetId, this.id, this.mapiType);
+  ExtendedPropertyDefinition.withPropertySetIdAndId(this._propertySetId, this._id, this._mapiType);
 
   /// <summary>
   /// Determines whether two specified instances of ExtendedPropertyDefinition are equal.
@@ -142,7 +134,8 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="extPropDef1">First extended property definition.</param>
   /// <param name="extPropDef2">Second extended property definition.</param>
   /// <returns>True if extended property definitions are equal.</returns>
-  static bool IsEqualTo(ExtendedPropertyDefinition extPropDef1, ExtendedPropertyDefinition extPropDef2) {
+  static bool IsEqualTo(
+      ExtendedPropertyDefinition extPropDef1, ExtendedPropertyDefinition extPropDef2) {
     return identical(extPropDef1, extPropDef2) ||
         (extPropDef1 != null &&
             extPropDef2 != null &&
@@ -151,7 +144,7 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
             extPropDef1.Tag == extPropDef2.Tag &&
             extPropDef1.Name == extPropDef2.Name &&
             extPropDef1.PropertySet == extPropDef2.PropertySet &&
-            extPropDef1.propertySetId == extPropDef2.propertySetId);
+            extPropDef1._propertySetId == extPropDef2._propertySetId);
   }
 
   /// <summary>
@@ -176,22 +169,22 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="writer">The writer.</param>
   @override
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
-    if (this.propertySet != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.DistinguishedPropertySetId, this.propertySet);
+    if (this._propertySet != null) {
+      writer.WriteAttributeValue(XmlAttributeNames.DistinguishedPropertySetId, this._propertySet);
     }
-    if (this.propertySetId != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.PropertySetId, this.propertySetId.toString());
+    if (this._propertySetId != null) {
+      writer.WriteAttributeValue(XmlAttributeNames.PropertySetId, this._propertySetId.toString());
     }
-    if (this.tag != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.PropertyTag, this.tag);
+    if (this._tag != null) {
+      writer.WriteAttributeValue(XmlAttributeNames.PropertyTag, this._tag);
     }
-    if (!StringUtils.IsNullOrEmpty(this.name)) {
-      writer.WriteAttributeValue(XmlAttributeNames.PropertyName, this.name);
+    if (!StringUtils.IsNullOrEmpty(this._name)) {
+      writer.WriteAttributeValue(XmlAttributeNames.PropertyName, this._name);
     }
-    if (this.id != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.PropertyId, this.id);
+    if (this._id != null) {
+      writer.WriteAttributeValue(XmlAttributeNames.PropertyId, this._id);
     }
-    writer.WriteAttributeValue(XmlAttributeNames.PropertyType, this.mapiType);
+    writer.WriteAttributeValue(XmlAttributeNames.PropertyType, this._mapiType);
   }
 
   /// <summary>
@@ -203,27 +196,28 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.DistinguishedPropertySetId);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this.propertySet = EnumToString.fromString(DefaultExtendedPropertySet.values, attributeValue);
+      this._propertySet =
+          EnumToString.fromString(DefaultExtendedPropertySet.values, attributeValue);
     }
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertySetId);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this.propertySetId = Uuid.fromString(attributeValue);
+      this._propertySetId = Uuid.fromString(attributeValue);
     }
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertyTag);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this.tag = int.parse(attributeValue, radix: 16);
+      this._tag = int.parse(attributeValue, radix: 16);
     }
 
-    this.name = reader.ReadAttributeValue(XmlAttributeNames.PropertyName);
+    this._name = reader.ReadAttributeValue(XmlAttributeNames.PropertyName);
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertyId);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this.id = int.parse(attributeValue);
+      this._id = int.parse(attributeValue);
     }
 
-    this.mapiType = reader.ReadAttributeValue<MapiPropertyType>(XmlAttributeNames.PropertyType);
+    this._mapiType = reader.ReadAttributeValue<MapiPropertyType>(XmlAttributeNames.PropertyType);
   }
 
   /// <summary>
@@ -232,21 +226,10 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="extPropDef1">First extended property definition.</param>
   /// <param name="extPropDef2">Second extended property definition.</param>
   /// <returns>True if extended property definitions are equal.</returns>
-// static bool operator ==(ExtendedPropertyDefinition extPropDef1, ExtendedPropertyDefinition extPropDef2)
-//        {
-//            return ExtendedPropertyDefinition.IsEqualTo(extPropDef1, extPropDef2);
-//        }
-
-  /// <summary>
-  /// Determines whether two specified instances of ExtendedPropertyDefinition are not equal.
-  /// </summary>
-  /// <param name="extPropDef1">First extended property definition.</param>
-  /// <param name="extPropDef2">Second extended property definition.</param>
-  /// <returns>True if extended property definitions are equal.</returns>
-// static bool operator !=(ExtendedPropertyDefinition extPropDef1, ExtendedPropertyDefinition extPropDef2)
-//        {
-//            return !ExtendedPropertyDefinition.IsEqualTo(extPropDef1, extPropDef2);
-//        }
+  @override
+  bool operator ==(Object other) {
+    return other is ExtendedPropertyDefinition && ExtendedPropertyDefinition.IsEqualTo(this, other);
+  }
 
   /// <summary>
   /// Determines whether a given extended property definition is equal to this extended property definition.
@@ -281,12 +264,12 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   String GetPrintableName() {
     StringBuffer sb = new StringBuffer();
     sb.write("{");
-    sb.write(FormatField<String>(NameFieldName, this.Name));
-    sb.write(FormatField<MapiPropertyType>(MapiTypeFieldName, this.MapiType));
-    sb.write(FormatField<int>(IdFieldName, this.Id));
-    sb.write(FormatField<DefaultExtendedPropertySet>(PropertySetFieldName, this.PropertySet));
-    sb.write(FormatField<Uuid>(PropertySetIdFieldName, this.PropertySetId));
-    sb.write(FormatField<int>(TagFieldName, this.Tag));
+    sb.write(FormatField<String>(_NameFieldName, this.Name));
+    sb.write(FormatField<MapiPropertyType>(_MapiTypeFieldName, this.MapiType));
+    sb.write(FormatField<int>(_IdFieldName, this.Id));
+    sb.write(FormatField<DefaultExtendedPropertySet>(_PropertySetFieldName, this.PropertySet));
+    sb.write(FormatField<Uuid>(_PropertySetIdFieldName, this.PropertySetId));
+    sb.write(FormatField<int>(_TagFieldName, this.Tag));
     sb.write("}");
     return sb.toString();
   }
@@ -305,32 +288,32 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <summary>
   /// Gets the property set of the extended property.
   /// </summary>
-  DefaultExtendedPropertySet get PropertySet => this.propertySet;
+  DefaultExtendedPropertySet get PropertySet => this._propertySet;
 
   /// <summary>
   /// Gets the property set Id or the extended property.
   /// </summary>
-  Uuid get PropertySetId => this.propertySetId;
+  Uuid get PropertySetId => this._propertySetId;
 
   /// <summary>
   /// Gets the extended property's tag.
   /// </summary>
-  int get Tag => this.tag;
+  int get Tag => this._tag;
 
   /// <summary>
   /// Gets the name of the extended property.
   /// </summary>
-  String get Name => this.name;
+  String get Name => this._name;
 
   /// <summary>
   /// Gets the Id of the extended property.
   /// </summary>
-  int get Id => this.id;
+  int get Id => this._id;
 
   /// <summary>
   /// Gets the MAPI type of the extended property.
   /// </summary>
-  MapiPropertyType get MapiType => this.mapiType;
+  MapiPropertyType get MapiType => this._mapiType;
 
   /// <summary>
   /// Gets the property type.

@@ -135,8 +135,9 @@ class Task extends Item {
   /// a Task object representing the current occurrence if the task is recurring and the uypdate changed its recurrence
   /// pattern; or null in every other case.
   /// </returns>
-  Future<Task> Update(ConflictResolutionMode conflictResolutionMode, [bool suppressReadReceipts = false]) {
-    return this.InternalUpdate(null /* parentFolder */, conflictResolutionMode, MessageDisposition.SaveOnly, null);
+  Future<Task> Update(ConflictResolutionMode conflictResolutionMode, [bool suppressReadReceipts = false]) async {
+    Item item = await this.InternalUpdate(null /* parentFolder */, conflictResolutionMode, MessageDisposition.SaveOnly, null);
+    return item as Task;
   }
 
   /// <summary>
