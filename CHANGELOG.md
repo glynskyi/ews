@@ -1,3 +1,9 @@
+## 0.0.6
+
+* Fixed the extended property updating
+* Removed suppress messages for the schema definitions
+* Added the contact group, conversation and person schemas
+
 ## 0.0.5
 
 * Added the Item.Update function
