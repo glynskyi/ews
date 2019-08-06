@@ -91,7 +91,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Id property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Id = new ComplexPropertyDefinition<ConversationId>.withUriAndFlags(
       XmlElementNames.ConversationId,
       _ConversationSchemaFieldUris.ConversationId,
@@ -103,7 +102,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Topic property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Topic = new StringPropertyDefinition(
       XmlElementNames.ConversationTopic,
       _ConversationSchemaFieldUris.ConversationTopic,
@@ -113,7 +111,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the UniqueRecipients property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition UniqueRecipients =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.UniqueRecipients,
@@ -126,7 +123,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalUniqueRecipients property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalUniqueRecipients =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.GlobalUniqueRecipients,
@@ -139,7 +135,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the UniqueUnreadSenders property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition UniqueUnreadSenders =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.UniqueUnreadSenders,
@@ -152,7 +147,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalUniqueUnreadSenders property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalUniqueUnreadSenders =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.GlobalUniqueUnreadSenders,
@@ -165,7 +159,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the UniqueSenders property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition UniqueSenders =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.UniqueSenders,
@@ -178,7 +171,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalUniqueSenders property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalUniqueSenders =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.GlobalUniqueSenders,
@@ -191,7 +183,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the LastDeliveryTime property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition LastDeliveryTime = new DateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.LastDeliveryTime,
       _ConversationSchemaFieldUris.LastDeliveryTime,
@@ -201,7 +192,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalLastDeliveryTime property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalLastDeliveryTime = new DateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.GlobalLastDeliveryTime,
       _ConversationSchemaFieldUris.GlobalLastDeliveryTime,
@@ -211,7 +201,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Categories property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Categories = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
       XmlElementNames.Categories,
       _ConversationSchemaFieldUris.Categories,
@@ -223,7 +212,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalCategories property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalCategories =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.GlobalCategories,
@@ -236,7 +224,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the FlagStatus property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition FlagStatus =
       new GenericPropertyDefinition<ConversationFlagStatus>.withUriAndFlags(
           XmlElementNames.FlagStatus,
@@ -247,7 +234,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalFlagStatus property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalFlagStatus =
       new GenericPropertyDefinition<ConversationFlagStatus>.withUriAndFlags(
           XmlElementNames.GlobalFlagStatus,
@@ -258,7 +244,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the HasAttachments property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition HasAttachments = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.HasAttachments,
       _ConversationSchemaFieldUris.HasAttachments,
@@ -268,7 +253,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalHasAttachments property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalHasAttachments = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.GlobalHasAttachments,
       _ConversationSchemaFieldUris.GlobalHasAttachments,
@@ -278,7 +262,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the MessageCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition MessageCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.MessageCount,
       _ConversationSchemaFieldUris.MessageCount,
@@ -288,7 +271,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalMessageCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalMessageCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.GlobalMessageCount,
       _ConversationSchemaFieldUris.GlobalMessageCount,
@@ -298,7 +280,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the UnreadCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition UnreadCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.UnreadCount,
       _ConversationSchemaFieldUris.UnreadCount,
@@ -308,7 +289,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalUnreadCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalUnreadCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.GlobalUnreadCount,
       _ConversationSchemaFieldUris.GlobalUnreadCount,
@@ -318,7 +298,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Size property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Size = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.Size,
       _ConversationSchemaFieldUris.Size,
@@ -328,7 +307,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalSize property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalSize = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.GlobalSize,
       _ConversationSchemaFieldUris.GlobalSize,
@@ -338,7 +316,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ItemClasses property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ItemClasses = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
       XmlElementNames.ItemClasses,
       _ConversationSchemaFieldUris.ItemClasses,
@@ -350,7 +327,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalItemClasses property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalItemClasses =
       new ComplexPropertyDefinition<StringList>.withUriAndFlags(
           XmlElementNames.GlobalItemClasses,
@@ -363,7 +339,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Importance property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Importance =
       new GenericPropertyDefinition<enumerations.Importance>.withUriAndFlags(
           XmlElementNames.Importance,
@@ -374,7 +349,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalImportance property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalImportance =
       new GenericPropertyDefinition<enumerations.Importance>.withUriAndFlags(
           XmlElementNames.GlobalImportance,
@@ -385,7 +359,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ItemIds property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ItemIds =
       new ComplexPropertyDefinition<ItemIdCollection>.withUriAndFlags(
           XmlElementNames.ItemIds,
@@ -398,7 +371,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalItemIds property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalItemIds =
       new ComplexPropertyDefinition<ItemIdCollection>.withUriAndFlags(
           XmlElementNames.GlobalItemIds,
@@ -411,7 +383,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the LastModifiedTime property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition LastModifiedTime = new DateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.LastModifiedTime,
       _ConversationSchemaFieldUris.LastModifiedTime,
@@ -421,7 +392,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the InstanceKey property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition InstanceKey =
 //            new ByteArrayPropertyDefinition(
 //                XmlElementNames.InstanceKey,
@@ -432,7 +402,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Preview property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Preview = new StringPropertyDefinition(
       XmlElementNames.Preview,
       _ConversationSchemaFieldUris.Preview,
@@ -442,7 +411,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the IconIndex property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IconIndex =
       new GenericPropertyDefinition<enumerations.IconIndex>.withUriAndFlags(
           XmlElementNames.IconIndex,
@@ -453,7 +421,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalIconIndex property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalIconIndex =
       new GenericPropertyDefinition<enumerations.IconIndex>.withUriAndFlags(
           XmlElementNames.GlobalIconIndex,
@@ -464,7 +431,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the DraftItemIds property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition DraftItemIds =
       new ComplexPropertyDefinition<ItemIdCollection>.withUriAndFlags(
           XmlElementNames.DraftItemIds,
@@ -477,7 +443,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the HasIrm property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition HasIrm = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.HasIrm,
       _ConversationSchemaFieldUris.HasIrm,
@@ -487,7 +452,6 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalHasIrm property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition GlobalHasIrm = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.GlobalHasIrm,
       _ConversationSchemaFieldUris.GlobalHasIrm,

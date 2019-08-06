@@ -35,39 +35,33 @@ class MeetingCancellationSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the Start property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition Start =
 //            AppointmentSchema.Start;
 
   /// <summary>
   /// Defines the End property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition End =
 //            AppointmentSchema.End;
 
   /// <summary>
   /// Defines the Location property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Location = AppointmentSchema.Location;
 
   /// <summary>
   /// Defines the AppointmentType property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AppointmentType = AppointmentSchema.AppointmentType;
 
   /// <summary>
   /// Defines the Recurrence property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Recurrence = AppointmentSchema.Recurrence;
 
   /// <summary>
   /// Enhanced Location property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition EnhancedLocation = AppointmentSchema.EnhancedLocation;
 
   // This must be after the declaration of property definitions

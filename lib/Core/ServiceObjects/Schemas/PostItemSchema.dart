@@ -46,39 +46,33 @@ class PostItemSchema extends ItemSchema {
   /// <summary>
   /// Defines the ConversationIndex property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition ConversationIndex =
 //            EmailMessageSchema.ConversationIndex;
 
   /// <summary>
   /// Defines the ConversationTopic property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ConversationTopic = EmailMessageSchema.ConversationTopic;
 
   /// <summary>
   /// Defines the From property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition From =
 //            EmailMessageSchema.From;
 
   /// <summary>
   /// Defines the InternetMessageId property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition InternetMessageId = EmailMessageSchema.InternetMessageId;
 
   /// <summary>
   /// Defines the IsRead property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsRead = EmailMessageSchema.IsRead;
 
   /// <summary>
   /// Defines the PostedTime property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition PostedTime = new DateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.PostedTime,
       _PostItemSchemaFieldUris.PostedTime,
@@ -88,13 +82,11 @@ class PostItemSchema extends ItemSchema {
   /// <summary>
   /// Defines the References property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition References = EmailMessageSchema.References;
 
   /// <summary>
   /// Defines the Sender property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Sender = EmailMessageSchema.Sender;
 
   // This must be after the declaration of property definitions

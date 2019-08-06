@@ -110,7 +110,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the StartTimeZone property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition StartTimeZone = new StartTimeZonePropertyDefinition(
       XmlElementNames.StartTimeZone,
       _AppointmentSchemaFieldUris.StartTimeZone,
@@ -124,7 +123,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the EndTimeZone property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition EndTimeZone = new TimeZonePropertyDefinition(
       XmlElementNames.EndTimeZone,
       _AppointmentSchemaFieldUris.EndTimeZone,
@@ -138,7 +136,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Start property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Start = new ScopedDateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.Start,
       _AppointmentSchemaFieldUris.Start,
@@ -154,7 +151,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the End property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition End = new ScopedDateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.End,
       _AppointmentSchemaFieldUris.End,
@@ -172,7 +168,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the OriginalStart property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition OriginalStart =
 //            new DateTimePropertyDefinition.withUriAndFlags(
 //                XmlElementNames.OriginalStart,
@@ -182,7 +177,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsAllDayEvent property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsAllDayEvent = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.IsAllDayEvent,
       _AppointmentSchemaFieldUris.IsAllDayEvent,
@@ -196,7 +190,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the LegacyFreeBusyStatus property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition LegacyFreeBusyStatus =
 //            new GenericPropertyDefinition<LegacyFreeBusyStatus>.withFlags(
 //                XmlElementNames.LegacyFreeBusyStatus,
@@ -207,7 +200,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Location property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Location = new StringPropertyDefinition(
       XmlElementNames.Location,
       _AppointmentSchemaFieldUris.Location,
@@ -222,7 +214,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the When property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition When = new StringPropertyDefinition(
       XmlElementNames.When,
       _AppointmentSchemaFieldUris.When,
@@ -237,7 +228,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsMeeting property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsMeeting = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.IsMeeting,
       _AppointmentSchemaFieldUris.IsMeeting,
@@ -247,7 +237,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsCancelled property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsCancelled = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.IsCancelled,
       _AppointmentSchemaFieldUris.IsCancelled,
@@ -257,7 +246,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsRecurring property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsRecurring = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.IsRecurring,
       _AppointmentSchemaFieldUris.IsRecurring,
@@ -267,7 +255,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the MeetingRequestWasSent property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition MeetingRequestWasSent = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.MeetingRequestWasSent,
       _AppointmentSchemaFieldUris.MeetingRequestWasSent,
@@ -277,7 +264,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsResponseRequested property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsResponseRequested = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.IsResponseRequested,
       _AppointmentSchemaFieldUris.IsResponseRequested,
@@ -291,7 +277,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AppointmentType property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AppointmentType =
       new GenericPropertyDefinition<enumerations.AppointmentType>.withUriAndFlags(
           XmlElementNames.CalendarItemType,
@@ -302,7 +287,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the MyResponseType property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition MyResponseType =
       new GenericPropertyDefinition<MeetingResponseType>.withUriAndFlags(
           XmlElementNames.MyResponseType,
@@ -317,7 +301,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Organizer property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Organizer =
       new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
           XmlElementNames.Organizer,
@@ -331,7 +314,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the RequiredAttendees property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition RequiredAttendees =
       new ComplexPropertyDefinition<AttendeeCollection>.withUriAndFlags(
           XmlElementNames.RequiredAttendees,
@@ -349,7 +331,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the OptionalAttendees property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition OptionalAttendees =
       new ComplexPropertyDefinition<AttendeeCollection>.withUriAndFlags(
           XmlElementNames.OptionalAttendees,
@@ -367,7 +348,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Resources property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Resources =
       new ComplexPropertyDefinition<AttendeeCollection>.withUriAndFlags(
           XmlElementNames.Resources,
@@ -385,7 +365,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the ConflictingMeetingCount property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ConflictingMeetingCount = new IntPropertyDefinition(
       XmlElementNames.ConflictingMeetingCount,
       _AppointmentSchemaFieldUris.ConflictingMeetingCount,
@@ -394,7 +373,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AdjacentMeetingCount property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AdjacentMeetingCount = new IntPropertyDefinition(
       XmlElementNames.AdjacentMeetingCount,
       _AppointmentSchemaFieldUris.AdjacentMeetingCount,
@@ -403,7 +381,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the ConflictingMeetings property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ConflictingMeetings =
       new ComplexPropertyDefinition<ItemCollection<Appointment>>.withUri(
           XmlElementNames.ConflictingMeetings,
@@ -415,7 +392,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AdjacentMeetings property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AdjacentMeetings =
       new ComplexPropertyDefinition<ItemCollection<Appointment>>.withUri(
           XmlElementNames.AdjacentMeetings,
@@ -427,7 +403,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Duration property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Duration = new TimeSpanPropertyDefinition.withUriAndFlags(
       XmlElementNames.Duration,
       _AppointmentSchemaFieldUris.Duration,
@@ -437,7 +412,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the TimeZone property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition TimeZone = new StringPropertyDefinition(
       XmlElementNames.TimeZone,
       _AppointmentSchemaFieldUris.TimeZone,
@@ -447,7 +421,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AppointmentReplyTime property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AppointmentReplyTime = new DateTimePropertyDefinition.withUriAndFlags(
       XmlElementNames.AppointmentReplyTime,
       _AppointmentSchemaFieldUris.AppointmentReplyTime,
@@ -457,7 +430,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AppointmentSequenceNumber property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AppointmentSequenceNumber = new IntPropertyDefinition(
       XmlElementNames.AppointmentSequenceNumber,
       _AppointmentSchemaFieldUris.AppointmentSequenceNumber,
@@ -466,7 +438,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AppointmentState property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AppointmentState = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.AppointmentState,
       _AppointmentSchemaFieldUris.AppointmentState,
@@ -476,7 +447,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Recurrence property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Recurrence = new RecurrencePropertyDefinition(
       XmlElementNames.Recurrence,
       _AppointmentSchemaFieldUris.Recurrence,
@@ -490,7 +460,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the FirstOccurrence property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition FirstOccurrence =
 //            new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
 //                XmlElementNames.FirstOccurrence,
@@ -501,7 +470,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the LastOccurrence property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition LastOccurrence =
 //            new ComplexPropertyDefinition<OccurrenceInfo>(
 //                XmlElementNames.LastOccurrence,
@@ -512,7 +480,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the ModifiedOccurrences property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition ModifiedOccurrences =
 //            new ComplexPropertyDefinition<OccurrenceInfoCollection>(
 //                XmlElementNames.ModifiedOccurrences,
@@ -523,7 +490,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the DeletedOccurrences property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition DeletedOccurrences =
 //            new ComplexPropertyDefinition<DeletedOccurrenceInfoCollection>(
 //                XmlElementNames.DeletedOccurrences,
@@ -543,7 +509,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the ConferenceType property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ConferenceType = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.ConferenceType,
       _AppointmentSchemaFieldUris.ConferenceType,
@@ -557,7 +522,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AllowNewTimeProposal property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition AllowNewTimeProposal = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.AllowNewTimeProposal,
       _AppointmentSchemaFieldUris.AllowNewTimeProposal,
@@ -571,7 +535,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsOnlineMeeting property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition IsOnlineMeeting = new BoolPropertyDefinition.withUriAndFlags(
       XmlElementNames.IsOnlineMeeting,
       _AppointmentSchemaFieldUris.IsOnlineMeeting,
@@ -585,7 +548,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the MeetingWorkspaceUrl property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition MeetingWorkspaceUrl = new StringPropertyDefinition(
       XmlElementNames.MeetingWorkspaceUrl,
       _AppointmentSchemaFieldUris.MeetingWorkspaceUrl,
@@ -600,7 +562,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the NetShowUrl property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition NetShowUrl = new StringPropertyDefinition(
       XmlElementNames.NetShowUrl,
       _AppointmentSchemaFieldUris.NetShowUrl,
@@ -615,7 +576,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the iCalendar Uid property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ICalUid = new StringPropertyDefinition(
       XmlElementNames.Uid,
       _AppointmentSchemaFieldUris.Uid,
@@ -629,7 +589,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the iCalendar RecurrenceId property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ICalRecurrenceId =
       new DateTimePropertyDefinition.withUriAndFlagsANdNullable(
           XmlElementNames.RecurrenceId,
@@ -641,7 +600,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the iCalendar DateTimeStamp property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ICalDateTimeStamp =
       new DateTimePropertyDefinition.withUriAndFlagsANdNullable(
           XmlElementNames.DateTimeStamp,
@@ -653,7 +611,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Enhanced Location property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition EnhancedLocation =
       new ComplexPropertyDefinition<complex.EnhancedLocation>.withUriAndFlags(
           XmlElementNames.EnhancedLocation,
@@ -671,7 +628,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// JoinOnlineMeetingUrl property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition JoinOnlineMeetingUrl = new StringPropertyDefinition(
       XmlElementNames.JoinOnlineMeetingUrl,
       _AppointmentSchemaFieldUris.JoinOnlineMeetingUrl,
@@ -681,7 +637,6 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// OnlineMeetingSettings property.
   /// </summary>
-  // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition OnlineMeetingSettings =
 //            new ComplexPropertyDefinition<OnlineMeetingSettings>(
 //                XmlElementNames.OnlineMeetingSettings,

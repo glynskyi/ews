@@ -51,19 +51,16 @@ class ContactGroupSchema extends ItemSchema {
   /// <summary>
   /// Defines the DisplayName property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition DisplayName = ContactSchema.DisplayName;
 
   /// <summary>
   /// Defines the FileAs property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition FileAs = ContactSchema.FileAs;
 
   /// <summary>
   /// Defines the Members property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Members =
       new ComplexPropertyDefinition<GroupMemberCollection>.withUriAndFlags(
           XmlElementNames.Members,

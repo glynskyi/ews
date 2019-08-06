@@ -64,7 +64,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Id property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Id = new ComplexPropertyDefinition<FolderId>.withUriAndFlags(
       XmlElementNames.FolderId,
       FolderSchemaFieldUris.FolderId,
@@ -76,7 +75,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the FolderClass property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition FolderClass = new StringPropertyDefinition(
       XmlElementNames.FolderClass,
       FolderSchemaFieldUris.FolderClass,
@@ -90,7 +88,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ParentFolderId property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ParentFolderId = ComplexPropertyDefinition<FolderId>.withUriAndFlags(
       XmlElementNames.ParentFolderId,
       FolderSchemaFieldUris.ParentFolderId,
@@ -102,7 +99,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ChildFolderCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition ChildFolderCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.ChildFolderCount,
       FolderSchemaFieldUris.ChildFolderCount,
@@ -112,7 +108,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the DisplayName property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition DisplayName = new StringPropertyDefinition(
       XmlElementNames.DisplayName,
       FolderSchemaFieldUris.DisplayName,
@@ -127,7 +122,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the UnreadCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition UnreadCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.UnreadCount,
       FolderSchemaFieldUris.UnreadCount,
@@ -137,7 +131,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the TotalCount property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition TotalCount = new IntPropertyDefinition.withUriAndFlags(
       XmlElementNames.TotalCount,
       FolderSchemaFieldUris.TotalCount,
@@ -147,7 +140,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ManagedFolderInformation property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition ManagedFolderInformation =
 //            new ComplexPropertyDefinition<ManagedFolderInformation>(
 //                XmlElementNames.ManagedFolderInformation,
@@ -159,7 +151,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the EffectiveRights property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition EffectiveRights = new EffectiveRightsPropertyDefinition(
       XmlElementNames.EffectiveRights,
       FolderSchemaFieldUris.EffectiveRights,
@@ -169,7 +160,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Permissions property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition Permissions = new PermissionSetPropertyDefinition(
       XmlElementNames.PermissionSet,
       FolderSchemaFieldUris.PermissionSet,
@@ -185,7 +175,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the WellKnownFolderName property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition WellKnownFolderName = new StringPropertyDefinition(
       XmlElementNames.DistinguishedFolderId,
       FolderSchemaFieldUris.DistinguishedFolderId,
@@ -195,7 +184,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the PolicyTag property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition PolicyTag =
 //            new ComplexPropertyDefinition<PolicyTag>(
 //                XmlElementNames.PolicyTag,
@@ -207,7 +195,6 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ArchiveTag property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
 // static PropertyDefinition ArchiveTag =
 //            new ComplexPropertyDefinition<ArchiveTag>(
 //                XmlElementNames.ArchiveTag,

@@ -48,7 +48,6 @@ class SearchFolderSchema extends FolderSchema {
   /// <summary>
   /// Defines the SearchParameters property.
   /// </summary>
-//        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
   static PropertyDefinition SearchParameters = new ComplexPropertyDefinition<SearchFolderParameters>.withUriAndFlags(
       XmlElementNames.SearchParameters,
       SearchFolderSchemaFieldUris.SearchParameters,
