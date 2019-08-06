@@ -226,14 +226,14 @@ class EmailMessageSchemaFieldUris
         /// Defines the Sender property.
         /// </summary>
         // [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Immutable type")]
-// static PropertyDefinition Sender =
-//            new ContainedPropertyDefinition<EmailAddress>(
-//                XmlElementNames.Sender,
-//                EmailMessageSchemaFieldUris.Sender,
-//                XmlElementNames.Mailbox,
-//                PropertyDefinitionFlags.CanSet , PropertyDefinitionFlags.CanFind,
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new EmailAddress(); });
+ static PropertyDefinition Sender =
+            new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
+                XmlElementNames.Sender,
+                EmailMessageSchemaFieldUris.Sender,
+                XmlElementNames.Mailbox,
+                [PropertyDefinitionFlags.CanSet , PropertyDefinitionFlags.CanFind],
+                ExchangeVersion.Exchange2007_SP1,
+                () { return new EmailAddress(); });
 
         /// <summary>
         /// Defines the ReceivedBy property.
@@ -309,7 +309,7 @@ class EmailMessageSchemaFieldUris
         {
             super.RegisterProperties();
 
-//            this.RegisterProperty(Sender);
+            this.RegisterProperty(Sender);
             this.RegisterProperty(ToRecipients);
             this.RegisterProperty(CcRecipients);
             this.RegisterProperty(BccRecipients);

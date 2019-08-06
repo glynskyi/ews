@@ -38,11 +38,11 @@ import 'package:ews/Http/IEwsHttpWebRequestFactory.dart';
 import 'package:ews/Http/IWebProxy.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
-import 'package:ews/Interfaces/ICustomXmlSerialization.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/Interfaces/ITraceListener.dart';
 import 'package:ews/Xml/XmlWriter.dart';
+import 'package:ews/misc/DelegateTypes.dart';
 import 'package:ews/misc/EwsTraceListener.dart';
 import 'package:ews/misc/OutParam.dart';
 import 'package:ews/misc/Std/MemoryStream.dart';
@@ -84,6 +84,7 @@ abstract class ExchangeServiceBase {
   /// Occurs when the http response headers of a server call is captured.
   /// </summary>
 // event ResponseHeadersCapturedHandler OnResponseHeadersCaptured;
+  List<ResponseHeadersCapturedHandler> OnResponseHeadersCaptured = [];
 
   ExchangeCredentials _credentials;
   bool _useDefaultCredentials = false;
@@ -115,12 +116,7 @@ abstract class ExchangeServiceBase {
   void DoOnSerializeCustomSoapHeaders(XmlWriter writer) {
     EwsUtilities.Assert(
         writer != null, "ExchangeService.DoOnSerializeCustomSoapHeaders", "writer is null");
-    // todo ("implmenet DoOnSerializeCustomSoapHeaders")
-    print("DoOnSerializeCustomSoapHeaders");
-//            if (this.OnSerializeCustomSoapHeaders != null)
-//            {
-//                this.OnSerializeCustomSoapHeaders(writer);
-//            }
+    this.OnSerializeCustomSoapHeaders.forEach((delegate) => delegate(writer));
   }
 
   /// <summary>
@@ -341,13 +337,7 @@ abstract class ExchangeServiceBase {
       }
     }
 
-    print("produce OnResponseHeadersCaptured");
-    //todo("produce OnResponseHeadersCaptured");
-
-//            if (this.OnResponseHeadersCaptured != null)
-//            {
-//                this.OnResponseHeadersCaptured(headers);
-//            }
+    this.OnResponseHeadersCaptured.forEach((delegate) => delegate(headers));
   }
 
   /// <summary>
@@ -818,7 +808,7 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// Provides an event that applications can implement to emit custom SOAP headers in requests that are sent to Exchange.
   /// </summary>
-  List<ICustomXmlSerialization> OnSerializeCustomSoapHeaders;
+  List<CustomXmlSerializationDelegate> OnSerializeCustomSoapHeaders = [];
 
 // event CustomXmlSerializationDelegate OnSerializeCustomSoapHeaders;
 }

@@ -27,16 +27,34 @@ import 'dart:collection';
 
 import 'package:ews/ComplexProperties/ExtendedPropertyCollection.dart';
 import 'package:ews/Core/LazyMember.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/AppointmentSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/CalendarResponseObjectSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/CancelMeetingMessageSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ContactGroupSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ContactSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ConversationSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/EmailMessageSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/FolderSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ItemSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/MeetingCancellationSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/MeetingMessageSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/MeetingRequestSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/MeetingResponseSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/PersonaSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/PostItemSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/PostReplySchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ResponseMessageSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ResponseObjectSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/SearchFolderSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/TaskSchema.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
-import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/PropertyDefinitions/ComplexPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/IndexedPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 import 'package:ews/misc/OutParam.dart';
-
 
 /// <summary>
 /// Delegate that takes a property definition and matching static field info.
@@ -49,67 +67,64 @@ typedef void PropertyFieldInfoDelegate(PropertyDefinition, FieldInfo);
 //typedef SchemaTypeList = LazyMember<System.Collections.Generic.List<System.Type>>;
 
 /// <summary>
-    /// Represents the base class for all item and folder schemas.
-    /// </summary>
- abstract class ServiceObjectSchema with IterableMixin<PropertyDefinition> implements Iterable<PropertyDefinition>
-    {
-        /* private */ static Object lockObject = new Object();
+/// Represents the base class for all item and folder schemas.
+/// </summary>
+abstract class ServiceObjectSchema
+    with IterableMixin<PropertyDefinition>
+    implements Iterable<PropertyDefinition> {
+  static Object _lockObject = new Object();
 
-        /// <summary>
-        /// List of all schema types.
-        /// </summary>
-        /// <remarks>
-        /// If you add a new ServiceObject subclass that has an associated schema, add the schema type
-        /// to the list below.
-        /// </remarks>
-        /* private */ static LazyMember<List<Type>> allSchemaTypes = LazyMember<List<Type>>(
-            () {
-              return [
-                // ItemSchema
-              ];
-//                List<Type> typeList = new List<Type>();
-//                typeList.add(AppointmentSchema);
-//                typeList.add(typeof(CalendarResponseObjectSchema));
-//                typeList.add(typeof(CancelMeetingMessageSchema));
-//                typeList.add(typeof(ContactGroupSchema));
-//                typeList.add(typeof(ContactSchema));
-//                typeList.add(typeof(ConversationSchema));
-//                typeList.add(typeof(EmailMessageSchema));
-//                typeList.add(typeof(FolderSchema));
-//                typeList.add(typeof(ItemSchema));
-//                typeList.add(typeof(MeetingMessageSchema));
-//                typeList.add(typeof(MeetingRequestSchema));
-//                typeList.add(typeof(MeetingCancellationSchema));
-//                typeList.add(typeof(MeetingResponseSchema));
-//                typeList.add(typeof(PersonaSchema));
-//                typeList.add(typeof(PostItemSchema));
-//                typeList.Add(typeof(PostReplySchema));
-//                typeList.Add(typeof(ResponseMessageSchema));
-//                typeList.Add(typeof(ResponseObjectSchema));
-//                typeList.Add(typeof(ServiceObjectSchema));
-//                typeList.Add(typeof(SearchFolderSchema));
-//                typeList.Add(typeof(TaskSchema));
-//
-//                return typeList;
-            });
+  /// <summary>
+  /// List of all schema types.
+  /// </summary>
+  /// <remarks>
+  /// If you add a new ServiceObject subclass that has an associated schema, add the schema type
+  /// to the list below.
+  /// </remarks>
+  static LazyMember<List<Type>> _allSchemaTypes = LazyMember<List<Type>>(() {
+    return [
+      AppointmentSchema,
+      CalendarResponseObjectSchema,
+      CancelMeetingMessageSchema,
+      ContactGroupSchema,
+      ContactSchema,
+      ConversationSchema,
+      EmailMessageSchema,
+      FolderSchema,
+      ItemSchema,
+      MeetingMessageSchema,
+      MeetingRequestSchema,
+      MeetingCancellationSchema,
+      MeetingResponseSchema,
+      PersonaSchema,
+      PostItemSchema,
+      PostReplySchema,
+      ResponseMessageSchema,
+      ResponseObjectSchema,
+      ServiceObjectSchema,
+      SearchFolderSchema,
+      TaskSchema
+    ];
+  });
 
-        /// <summary>
-        /// Dictionary of all property definitions.
-        /// </summary>
-        /* private */ static LazyMember<Map<String, PropertyDefinitionBase>> allSchemaProperties = new LazyMember<Map<String, PropertyDefinitionBase>>((){
-                Map<String, PropertyDefinitionBase> propDefDictionary = new Map<String, PropertyDefinitionBase>();
-                for (Type type in ServiceObjectSchema.allSchemaTypes.Member)
-                {
-                    ServiceObjectSchema.AddSchemaPropertiesToDictionary(type, propDefDictionary);
-                }
-                return propDefDictionary;
-            });
+  /// <summary>
+  /// Dictionary of all property definitions.
+  /// </summary>
+  static LazyMember<Map<String, PropertyDefinitionBase>> _allSchemaProperties =
+      new LazyMember<Map<String, PropertyDefinitionBase>>(() {
+    Map<String, PropertyDefinitionBase> propDefDictionary =
+        new Map<String, PropertyDefinitionBase>();
+    for (Type type in ServiceObjectSchema._allSchemaTypes.Member) {
+      ServiceObjectSchema.AddSchemaPropertiesToDictionary(type, propDefDictionary);
+    }
+    return propDefDictionary;
+  });
 
-        /// <summary>
-        /// Call delegate for each public static PropertyDefinition field in type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="propFieldDelegate">The property field delegate.</param>
+  /// <summary>
+  /// Call delegate for each public static PropertyDefinition field in type.
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <param name="propFieldDelegate">The property field delegate.</param>
 //        static void ForeachPublicStaticPropertyFieldInType(Type type, PropertyFieldInfoDelegate propFieldDelegate)
 //        {
 //            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
@@ -124,15 +139,13 @@ typedef void PropertyFieldInfoDelegate(PropertyDefinition, FieldInfo);
 //            }
 //        }
 
-        /// <summary>
-        /// Adds schema properties to dictionary.
-        /// </summary>
-        /// <param name="type">Schema type.</param>
-        /// <param name="propDefDictionary">The property definition dictionary.</param>
-        static void AddSchemaPropertiesToDictionary(
-            Type type,
-            Map<String, PropertyDefinitionBase> propDefDictionary)
-        {
+  /// <summary>
+  /// Adds schema properties to dictionary.
+  /// </summary>
+  /// <param name="type">Schema type.</param>
+  /// <param name="propDefDictionary">The property definition dictionary.</param>
+  static void AddSchemaPropertiesToDictionary(
+      Type type, Map<String, PropertyDefinitionBase> propDefDictionary) {
 //            ServiceObjectSchema.ForeachPublicStaticPropertyFieldInType(
 //                type,
 //                (propertyDefinition, fieldInfo) {
@@ -164,181 +177,183 @@ typedef void PropertyFieldInfoDelegate(PropertyDefinition, FieldInfo);
 //                        }
 //                    }
 //                });
-        }
+  }
 
-        /// <summary>
-        /// Adds the schema property names to dictionary.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="propertyNameDictionary">The property name dictionary.</param>
-        /* private */ static void AddSchemaPropertyNamesToDictionary(Type type, Map<PropertyDefinition, String> propertyNameDictionary)
-        {
+  /// <summary>
+  /// Adds the schema property names to dictionary.
+  /// </summary>
+  /// <param name="type">The type.</param>
+  /// <param name="propertyNameDictionary">The property name dictionary.</param>
+  /* private */
+  static void AddSchemaPropertyNamesToDictionary(
+      Type type, Map<PropertyDefinition, String> propertyNameDictionary) {
 //            ServiceObjectSchema.ForeachPublicStaticPropertyFieldInType(
 //                type,
 //                delegate(PropertyDefinition propertyDefinition, FieldInfo fieldInfo)
 //                { propertyNameDictionary.Add(propertyDefinition, fieldInfo.Name); });
-        }
+  }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceObjectSchema"/> class.
-        /// </summary>
-        ServiceObjectSchema()
-        {
-            this.RegisterProperties();
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ServiceObjectSchema"/> class.
+  /// </summary>
+  ServiceObjectSchema() {
+    this.RegisterProperties();
+  }
 
-        /// <summary>
-        /// Finds the property definition.
-        /// </summary>
-        /// <param name="uri">The URI.</param>
-        /// <returns>Property definition.</returns>
-        static PropertyDefinitionBase FindPropertyDefinition(String uri)
-        {
-          throw NotImplementedException("FindPropertyDefinition($uri)");
-            return ServiceObjectSchema.allSchemaProperties.Member[uri];
-        }
+  /// <summary>
+  /// Finds the property definition.
+  /// </summary>
+  /// <param name="uri">The URI.</param>
+  /// <returns>Property definition.</returns>
+  static PropertyDefinitionBase FindPropertyDefinition(String uri) {
+    return ServiceObjectSchema._allSchemaProperties.Member[uri];
+  }
 
-        /// <summary>
-        /// Initialize schema property names.
-        /// </summary>
-        static void InitializeSchemaPropertyNames()
-        {
-            lock (lockObject)
-            {
-                for (Type type in ServiceObjectSchema.allSchemaTypes.Member)
-                {
+  /// <summary>
+  /// Initialize schema property names.
+  /// </summary>
+  static void InitializeSchemaPropertyNames() {
+    lock(lockObject) {
+      for (Type type in ServiceObjectSchema._allSchemaTypes.Member) {
 //                    ServiceObjectSchema.ForeachPublicStaticPropertyFieldInType(
 //                        type,
 //                        delegate(PropertyDefinition propDef, FieldInfo fieldInfo) { propDef.Name = fieldInfo.Name; });
-                }
-            }
-        }
+      }
+    }
+  }
 
-        /// <summary>
-        /// Defines the ExtendedProperties property.
-        /// </summary>
-       static PropertyDefinition ExtendedProperties =
-            ComplexPropertyDefinition<ExtendedPropertyCollection>.withFlags(
-                XmlElementNames.ExtendedProperty,
-                [PropertyDefinitionFlags.AutoInstantiateOnRead, PropertyDefinitionFlags.ReuseInstance, PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate],
-                ExchangeVersion.Exchange2007_SP1,
-                () { return new ExtendedPropertyCollection(); });
+  /// <summary>
+  /// Defines the ExtendedProperties property.
+  /// </summary>
+  static PropertyDefinition ExtendedProperties =
+      ComplexPropertyDefinition<ExtendedPropertyCollection>.withFlags(
+          XmlElementNames.ExtendedProperty,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.ReuseInstance,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new ExtendedPropertyCollection();
+  });
 
-        /* private */ Map<String, PropertyDefinition> properties = new Map<String, PropertyDefinition>();
-        /* private */ List<PropertyDefinition> visibleProperties = new List<PropertyDefinition>();
-        /* private */ List<PropertyDefinition> firstClassProperties = new List<PropertyDefinition>();
-        /* private */ List<PropertyDefinition> firstClassSummaryProperties = new List<PropertyDefinition>();
-        /* private */ List<IndexedPropertyDefinition> indexedProperties = new List<IndexedPropertyDefinition>();
+  /* private */
+  Map<String, PropertyDefinition> properties = new Map<String, PropertyDefinition>();
 
-        /// <summary>
-        /// Registers a schema property.
-        /// </summary>
-        /// <param name="property">The property to register.</param>
-        /// <param name="isInternal">Indicates whether the property is or should be visible to developers.</param>
-        /* private */ void RegisterPropertyWithInternal(PropertyDefinition property, bool isInternal)
-        {
-            this.properties[property.XmlElementName] =  property;
+  /* private */
+  List<PropertyDefinition> visibleProperties = new List<PropertyDefinition>();
 
-            if (!isInternal)
-            {
-                this.visibleProperties.add(property);
-            }
+  /* private */
+  List<PropertyDefinition> firstClassProperties = new List<PropertyDefinition>();
 
-            // If this property does not have to be requested explicitly, add
-            // it to the list of firstClassProperties.
-            if (!property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.MustBeExplicitlyLoaded))
-            {
-                this.firstClassProperties.add(property);
-            }
+  /* private */
+  List<PropertyDefinition> firstClassSummaryProperties = new List<PropertyDefinition>();
 
-            // If this property can be found, add it to the list of firstClassSummaryProperties
-            if (property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanFind))
-            {
-                this.firstClassSummaryProperties.add(property);
-            }
-        }
+  /* private */
+  List<IndexedPropertyDefinition> indexedProperties = new List<IndexedPropertyDefinition>();
 
-        /// <summary>
-        /// Registers a schema property that will be visible to developers.
-        /// </summary>
-        /// <param name="property">The property to register.</param>
-        void RegisterProperty(PropertyDefinition property)
-        {
-            this.RegisterPropertyWithInternal(property, false);
-        }
+  /// <summary>
+  /// Registers a schema property.
+  /// </summary>
+  /// <param name="property">The property to register.</param>
+  /// <param name="isInternal">Indicates whether the property is or should be visible to developers.</param>
+  /* private */
+  void RegisterPropertyWithInternal(PropertyDefinition property, bool isInternal) {
+    this.properties[property.XmlElementName] = property;
 
-        /// <summary>
-        /// Registers an schema property.
-        /// </summary>
-        /// <param name="property">The property to register.</param>
-        void RegisterInternalProperty(PropertyDefinition property)
-        {
-            this.RegisterPropertyWithInternal(property, true);
-        }
+    if (!isInternal) {
+      this.visibleProperties.add(property);
+    }
 
-        /// <summary>
-        /// Registers an indexed property.
-        /// </summary>
-        /// <param name="indexedProperty">The indexed property to register.</param>
-        void RegisterIndexedProperty(IndexedPropertyDefinition indexedProperty)
-        {
-            this.indexedProperties.add(indexedProperty);
-        }
+    // If this property does not have to be requested explicitly, add
+    // it to the list of firstClassProperties.
+    if (!property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.MustBeExplicitlyLoaded)) {
+      this.firstClassProperties.add(property);
+    }
 
-        /// <summary>
-        /// Registers properties.
-        /// </summary>
-        void RegisterProperties()
-        {
-        }
+    // If this property can be found, add it to the list of firstClassSummaryProperties
+    if (property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanFind)) {
+      this.firstClassSummaryProperties.add(property);
+    }
+  }
 
-        /// <summary>
-        /// Gets the list of first class properties for this service object type.
-        /// </summary>
-        List<PropertyDefinition> get FirstClassProperties => this.firstClassProperties;
+  /// <summary>
+  /// Registers a schema property that will be visible to developers.
+  /// </summary>
+  /// <param name="property">The property to register.</param>
+  void RegisterProperty(PropertyDefinition property) {
+    this.RegisterPropertyWithInternal(property, false);
+  }
 
-        /// <summary>
-        /// Gets the list of first class summary properties for this service object type.
-        /// </summary>
-        List<PropertyDefinition> get FirstClassSummaryProperties => this.firstClassSummaryProperties;
+  /// <summary>
+  /// Registers an schema property.
+  /// </summary>
+  /// <param name="property">The property to register.</param>
+  void RegisterInternalProperty(PropertyDefinition property) {
+    this.RegisterPropertyWithInternal(property, true);
+  }
 
-        /// <summary>
-        /// Gets the list of indexed properties for this service object type.
-        /// </summary>
-        List<IndexedPropertyDefinition> get IndexedProperties => this.indexedProperties;
+  /// <summary>
+  /// Registers an indexed property.
+  /// </summary>
+  /// <param name="indexedProperty">The indexed property to register.</param>
+  void RegisterIndexedProperty(IndexedPropertyDefinition indexedProperty) {
+    this.indexedProperties.add(indexedProperty);
+  }
 
-        /// <summary>
-        /// Tries to get property definition.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <param name="propertyDefinition">The property definition.</param>
-        /// <returns>True if property definition exists.</returns>
-        bool TryGetPropertyDefinition(String xmlElementName, OutParam<PropertyDefinition> propertyDefinitionOutParam)
-        {
-          if (this.properties.containsKey(xmlElementName)) {
-            propertyDefinitionOutParam.param = this.properties[xmlElementName];
-            return true;
-          } else {
-            return false;
-          }
-        }
+  /// <summary>
+  /// Registers properties.
+  /// </summary>
+  void RegisterProperties() {}
 
-            /// <summary>
-        /// Obtains an enumerator for the properties of the schema.
-        /// </summary>
-        /// <returns>An IEnumerator instance.</returns>
-        Iterator<PropertyDefinition> get iterator => this.visibleProperties.iterator;
+  /// <summary>
+  /// Gets the list of first class properties for this service object type.
+  /// </summary>
+  List<PropertyDefinition> get FirstClassProperties => this.firstClassProperties;
+
+  /// <summary>
+  /// Gets the list of first class summary properties for this service object type.
+  /// </summary>
+  List<PropertyDefinition> get FirstClassSummaryProperties => this.firstClassSummaryProperties;
+
+  /// <summary>
+  /// Gets the list of indexed properties for this service object type.
+  /// </summary>
+  List<IndexedPropertyDefinition> get IndexedProperties => this.indexedProperties;
+
+  /// <summary>
+  /// Tries to get property definition.
+  /// </summary>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <param name="propertyDefinition">The property definition.</param>
+  /// <returns>True if property definition exists.</returns>
+  bool TryGetPropertyDefinition(
+      String xmlElementName, OutParam<PropertyDefinition> propertyDefinitionOutParam) {
+    if (this.properties.containsKey(xmlElementName)) {
+      propertyDefinitionOutParam.param = this.properties[xmlElementName];
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /// <summary>
+  /// Obtains an enumerator for the properties of the schema.
+  /// </summary>
+  /// <returns>An IEnumerator instance.</returns>
+  Iterator<PropertyDefinition> get iterator => this.visibleProperties.iterator;
 // Iterable<PropertyDefinition> GetEnumerator()
 //        {
 //            return this.visibleProperties.GetEnumerator();
 //        }
 
-        /// <summary>
-        /// Obtains an enumerator for the properties of the schema.
-        /// </summary>
-        /// <returns>An IEnumerator instance.</returns>
+  /// <summary>
+  /// Obtains an enumerator for the properties of the schema.
+  /// </summary>
+  /// <returns>An IEnumerator instance.</returns>
 //        System.Collections.IEnumerator System.Collections.Iterable.GetEnumerator()
 //        {
 //            return this.visibleProperties.GetEnumerator();
 //        }
-    }
+}

@@ -23,42 +23,30 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Core/ServiceObjects/Schemas/ItemSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ResponseObjectSchema.dart';
+import 'package:ews/Core/ServiceObjects/Schemas/ServiceObjectSchema.dart';
 
+/// <summary>
+/// Represents PostReply schema definition.
+/// </summary>
+class PostReplySchema extends ServiceObjectSchema {
+  // This must be declared after the property definitions
+  static PostReplySchema Instance = new PostReplySchema();
 
+  /// <summary>
+  /// Registers properties.
+  /// </summary>
+  /// <remarks>
+  /// IMPORTANT NOTE: PROPERTIES MUST BE REGISTERED IN SCHEMA ORDER (i.e. the same order as they are defined in types.xsd)
+  /// </remarks>
+  @override
+  void RegisterProperties() {
+    super.RegisterProperties();
 
-    /// <summary>
-    /// Represents a collection of item Ids.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
- class ItemIdCollection extends ComplexPropertyCollection<ItemId>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemIdCollection"/> class.
-        /// </summary>
-        ItemIdCollection()
-            : super()
-        {
-        }
-
-        /// <summary>
-        /// Creates the complex property.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <returns>ItemId.</returns>
-@override
-        ItemId CreateComplexProperty(String xmlElementName)
-        {
-            return new ItemId();
-        }
-
-        /// <summary>
-        /// Gets the name of the collection item XML element.
-        /// </summary>
-        /// <param name="complexProperty">The complex property.</param>
-        /// <returns>XML element name.</returns>
-@override
-        String GetCollectionItemXmlElementName(ItemId complexProperty)
-        {
-            return complexProperty.GetXmlElementName();
-        }
-    }
+    this.RegisterProperty(ItemSchema.Subject);
+    this.RegisterProperty(ItemSchema.Body);
+    this.RegisterProperty(ResponseObjectSchema.ReferenceItemId);
+    this.RegisterProperty(ResponseObjectSchema.BodyPrefix);
+  }
+}

@@ -16,8 +16,6 @@ class EwsHttpWebRequestFactory implements IEwsHttpWebRequestFactory {
 
   @override
   IEwsHttpWebRequest CreateRequestWithUrl(ExchangeService exchangeService, Uri url) {
-    // todo("add uri to EwsHttpWebRequest");
-    print("add uri to EwsHttpWebRequest");
     return EwsHttpWebRequest()
       ..Credentials = exchangeService.Credentials
       ..RequestUri = url;

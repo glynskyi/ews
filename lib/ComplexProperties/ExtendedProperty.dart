@@ -129,13 +129,6 @@ class ExtendedProperty extends ComplexProperty {
       this._value = mapiValue;
       this.Changed();
     }
-
-//                EwsUtilities.ValidateParam(value, "value");
-    // todo("implement Value");
-    print("implement Value");
-//      this.SetFieldValue<Object>(
-//          ref this.value,
-//          MapiTypeConverter.ChangeType(this.PropertyDefinition.MapiType, value));
   }
 
   /// <summary>
