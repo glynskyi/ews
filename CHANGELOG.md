@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Added the appointment schema
+
 ## 0.0.6
 
 * Fixed the extended property updating
