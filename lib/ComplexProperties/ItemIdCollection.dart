@@ -29,7 +29,6 @@ import 'package:ews/ComplexProperties/ItemId.dart';
 /// <summary>
 /// Represents a collection of item Ids.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class ItemIdCollection extends ComplexPropertyCollection<ItemId> {
   /// <summary>
   /// Initializes a new instance of the <see cref="ItemIdCollection"/> class.

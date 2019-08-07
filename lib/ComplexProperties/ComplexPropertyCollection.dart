@@ -35,7 +35,6 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a collection of properties that can be sent to and retrieved from EWS.
 /// </summary>
 /// <typeparam name="TComplexProperty">ComplexProperty type.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class ComplexPropertyCollection<TComplexProperty extends ComplexProperty>
     extends ComplexProperty
     with IterableMixin<TComplexProperty>

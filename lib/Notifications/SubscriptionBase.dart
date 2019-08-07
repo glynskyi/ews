@@ -32,7 +32,6 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents the base class for event subscriptions.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class SubscriptionBase {
   /* private */ ExchangeService service;
 

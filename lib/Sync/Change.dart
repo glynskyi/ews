@@ -30,7 +30,6 @@ import 'package:ews/Enumerations/ChangeType.dart' as enumerations;
 /// <summary>
 /// Represents a change as returned by a synchronization operation.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class Change {
   /// <summary>
   /// The type of change.

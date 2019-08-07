@@ -39,7 +39,6 @@ import 'package:ews/misc/StringUtils.dart';
 /// <summary>
 /// Represents an entry of an EmailAddressDictionary.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   /// <summary>
   /// The email address.

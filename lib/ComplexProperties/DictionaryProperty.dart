@@ -39,7 +39,6 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// </summary>
 /// <typeparam name="TKey">The type of key.</typeparam>
 /// <typeparam name="TEntry">The type of entry.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<TKey>> extends ComplexProperty
     implements ICustomUpdateSerializer {
   /* private */

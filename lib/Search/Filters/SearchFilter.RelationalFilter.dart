@@ -48,7 +48,6 @@ import 'package:ews/Search/Filters/SearchFilter.PropertyBasedFilter.dart';
 /// <summary>
         /// Represents the base class for relational filters (for example, IsEqualTo, IsGreaterThan or IsLessThanOrEqualTo).
         /// </summary>
-//        [EditorBrowsable(EditorBrowsableState.Never)]
  abstract class RelationalFilter extends PropertyBasedFilter {
      /* private */ PropertyDefinitionBase otherPropertyDefinition;
 

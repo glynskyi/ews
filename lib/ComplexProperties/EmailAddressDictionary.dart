@@ -32,7 +32,6 @@ import 'package:ews/misc/OutParam.dart';
 /// <summary>
 /// Represents a dictionary of e-mail addresses.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class EmailAddressDictionary extends DictionaryProperty<EmailAddressKey, EmailAddressEntry> {
   /// <summary>
   /// Gets the field URI.

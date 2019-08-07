@@ -47,7 +47,6 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
 /// <summary>
     /// Represents an item's attachment collection.
     /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
   class AttachmentCollection extends ComplexPropertyCollection<Attachment> implements IOwnedProperty
     {
         /// <summary>

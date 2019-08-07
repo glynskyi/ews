@@ -24,14 +24,19 @@
  */
 
 import 'package:ews/ComplexProperties/AttendeeCollection.dart';
+import 'package:ews/ComplexProperties/DeletedOccurrenceInfoCollection.dart';
 import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/ComplexProperties/EnhancedLocation.dart' as complex;
 import 'package:ews/ComplexProperties/ItemCollection.dart';
+import 'package:ews/ComplexProperties/OccurrenceInfo.dart';
+import 'package:ews/ComplexProperties/OccurrenceInfoCollection.dart';
+import 'package:ews/ComplexProperties/OnlineMeetingSettings.dart' as complex;
 import 'package:ews/Core/ServiceObjects/Items/Appointment.dart';
 import 'package:ews/Core/ServiceObjects/Schemas/ItemSchema.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/AppointmentType.dart' as enumerations;
 import 'package:ews/Enumerations/ExchangeVersion.dart';
+import 'package:ews/Enumerations/LegacyFreeBusyStatus.dart' as enumerations;
 import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
 import 'package:ews/Enumerations/ResponseType.dart';
 import 'package:ews/PropertyDefinitions/BoolPropertyDefinition.dart';
@@ -168,11 +173,10 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the OriginalStart property.
   /// </summary>
-// static PropertyDefinition OriginalStart =
-//            new DateTimePropertyDefinition.withUriAndFlags(
-//                XmlElementNames.OriginalStart,
-//                FieldUris.OriginalStart,
-//                ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition OriginalStart = new DateTimePropertyDefinition(
+      XmlElementNames.OriginalStart,
+      _AppointmentSchemaFieldUris.OriginalStart,
+      ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsAllDayEvent property.
@@ -190,12 +194,16 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the LegacyFreeBusyStatus property.
   /// </summary>
-// static PropertyDefinition LegacyFreeBusyStatus =
-//            new GenericPropertyDefinition<LegacyFreeBusyStatus>.withFlags(
-//                XmlElementNames.LegacyFreeBusyStatus,
-//                FieldUris.LegacyFreeBusyStatus,
-//                [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate, PropertyDefinitionFlags.CanFind],
-//                ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition LegacyFreeBusyStatus =
+      new GenericPropertyDefinition<enumerations.LegacyFreeBusyStatus>.withUriAndFlags(
+          XmlElementNames.LegacyFreeBusyStatus,
+          _AppointmentSchemaFieldUris.LegacyFreeBusyStatus,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Location property.
@@ -460,42 +468,44 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the FirstOccurrence property.
   /// </summary>
-// static PropertyDefinition FirstOccurrence =
-//            new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
-//                XmlElementNames.FirstOccurrence,
-//                FieldUris.FirstOccurrence,
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new OccurrenceInfo(); });
+  static PropertyDefinition FirstOccurrence = new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
+      XmlElementNames.FirstOccurrence,
+      _AppointmentSchemaFieldUris.FirstOccurrence,
+      ExchangeVersion.Exchange2007_SP1, () {
+    return new OccurrenceInfo();
+  });
 
   /// <summary>
   /// Defines the LastOccurrence property.
   /// </summary>
-// static PropertyDefinition LastOccurrence =
-//            new ComplexPropertyDefinition<OccurrenceInfo>(
-//                XmlElementNames.LastOccurrence,
-//                FieldUris.LastOccurrence,
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new OccurrenceInfo(); });
+  static PropertyDefinition LastOccurrence = new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
+      XmlElementNames.LastOccurrence,
+      _AppointmentSchemaFieldUris.LastOccurrence,
+      ExchangeVersion.Exchange2007_SP1, () {
+    return new OccurrenceInfo();
+  });
 
   /// <summary>
   /// Defines the ModifiedOccurrences property.
   /// </summary>
-// static PropertyDefinition ModifiedOccurrences =
-//            new ComplexPropertyDefinition<OccurrenceInfoCollection>(
-//                XmlElementNames.ModifiedOccurrences,
-//                FieldUris.ModifiedOccurrences,
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new OccurrenceInfoCollection(); });
+  static PropertyDefinition ModifiedOccurrences =
+      new ComplexPropertyDefinition<OccurrenceInfoCollection>.withUri(
+          XmlElementNames.ModifiedOccurrences,
+          _AppointmentSchemaFieldUris.ModifiedOccurrences,
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new OccurrenceInfoCollection();
+  });
 
   /// <summary>
   /// Defines the DeletedOccurrences property.
   /// </summary>
-// static PropertyDefinition DeletedOccurrences =
-//            new ComplexPropertyDefinition<DeletedOccurrenceInfoCollection>(
-//                XmlElementNames.DeletedOccurrences,
-//                FieldUris.DeletedOccurrences,
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new DeletedOccurrenceInfoCollection(); });
+  static PropertyDefinition DeletedOccurrences =
+      new ComplexPropertyDefinition<DeletedOccurrenceInfoCollection>.withUri(
+          XmlElementNames.DeletedOccurrences,
+          _AppointmentSchemaFieldUris.DeletedOccurrences,
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new DeletedOccurrenceInfoCollection();
+  });
 
   /// <summary>
   /// Defines the MeetingTimeZone property.
@@ -637,13 +647,14 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// OnlineMeetingSettings property.
   /// </summary>
-// static PropertyDefinition OnlineMeetingSettings =
-//            new ComplexPropertyDefinition<OnlineMeetingSettings>(
-//                XmlElementNames.OnlineMeetingSettings,
-//                FieldUris.OnlineMeetingSettings,
-//                PropertyDefinitionFlags.CanFind,
-//                ExchangeVersion.Exchange2013,
-//                () { return new OnlineMeetingSettings(); });
+  static PropertyDefinition OnlineMeetingSettings =
+      new ComplexPropertyDefinition<complex.OnlineMeetingSettings>.withUriAndFlags(
+          XmlElementNames.OnlineMeetingSettings,
+          _AppointmentSchemaFieldUris.OnlineMeetingSettings,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2013, () {
+    return new complex.OnlineMeetingSettings();
+  });
 
   /// <summary>
   /// Instance of schema.
@@ -668,9 +679,9 @@ class AppointmentSchema extends ItemSchema {
     this.RegisterProperty(ICalDateTimeStamp);
     this.RegisterProperty(Start);
     this.RegisterProperty(End);
-//            this.RegisterProperty(OriginalStart);
+    this.RegisterProperty(OriginalStart);
     this.RegisterProperty(IsAllDayEvent);
-//            this.RegisterProperty(LegacyFreeBusyStatus);
+    this.RegisterProperty(LegacyFreeBusyStatus);
     this.RegisterProperty(Location);
     this.RegisterProperty(When);
     this.RegisterProperty(IsMeeting);
@@ -680,7 +691,7 @@ class AppointmentSchema extends ItemSchema {
     this.RegisterProperty(IsResponseRequested);
     this.RegisterProperty(AppointmentType);
     this.RegisterProperty(MyResponseType);
-//            this.RegisterProperty(Organizer);
+    this.RegisterProperty(Organizer);
     this.RegisterProperty(RequiredAttendees);
     this.RegisterProperty(OptionalAttendees);
     this.RegisterProperty(Resources);
@@ -694,13 +705,13 @@ class AppointmentSchema extends ItemSchema {
     this.RegisterProperty(AppointmentSequenceNumber);
     this.RegisterProperty(AppointmentState);
     this.RegisterProperty(Recurrence);
-//            this.RegisterProperty(FirstOccurrence);
-//            this.RegisterProperty(LastOccurrence);
-//            this.RegisterProperty(ModifiedOccurrences);
-//            this.RegisterProperty(DeletedOccurrences);
-//            this.RegisterInternalProperty(MeetingTimeZone);
-//            this.RegisterProperty(StartTimeZone);
-//            this.RegisterProperty(EndTimeZone);
+    this.RegisterProperty(FirstOccurrence);
+    this.RegisterProperty(LastOccurrence);
+    this.RegisterProperty(ModifiedOccurrences);
+    this.RegisterProperty(DeletedOccurrences);
+    this.RegisterInternalProperty(MeetingTimeZone);
+    this.RegisterProperty(StartTimeZone);
+    this.RegisterProperty(EndTimeZone);
     this.RegisterProperty(ConferenceType);
     this.RegisterProperty(AllowNewTimeProposal);
     this.RegisterProperty(IsOnlineMeeting);
@@ -708,7 +719,7 @@ class AppointmentSchema extends ItemSchema {
     this.RegisterProperty(NetShowUrl);
     this.RegisterProperty(EnhancedLocation);
     this.RegisterProperty(JoinOnlineMeetingUrl);
-//            this.RegisterProperty(OnlineMeetingSettings);
+    this.RegisterProperty(OnlineMeetingSettings);
   }
 
   /// <summary>

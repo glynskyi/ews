@@ -42,7 +42,6 @@ import 'package:ews/misc/CalendarActionResults.dart';
     /// Represents the base class for all calendar-related response messages.
     /// </summary>
     /// <typeparam name="TMessage">The type of message that is created when this response message is saved.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
  abstract class CalendarResponseMessageBase<TMessage extends EmailMessage> extends ResponseObject<TMessage>
     {
         /// <summary>

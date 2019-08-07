@@ -23,51 +23,46 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
-import 'package:ews/Core/ExchangeService.dart';
-import 'package:ews/Core/Responses/ServiceResponse.dart';
-import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 
 /// <summary>
-/// Represents the base response class for item creation operations.
+/// Encapsulates information on the deleted occurrence of a recurring appointment.
 /// </summary>
-abstract class CreateItemResponseBase extends ServiceResponse {
-  /* private */ List<Item> items;
-
+class DeletedOccurrenceInfo extends ComplexProperty {
   /// <summary>
-  /// Gets Item instance.
+  /// The original start date and time of the deleted occurrence.
   /// </summary>
-  /// <param name="service">The service.</param>
-  /// <param name="xmlElementName">Name of the XML element.</param>
-  /// <returns>Item.</returns>
-  Item GetObjectInstance(ExchangeService service, String xmlElementName);
+  /// <remarks>
+  /// The EWS schema contains a Start property for deleted occurrences but it's
+  /// really the original start date and time of the occurrence.
+  /// </remarks>
+  DateTime _originalStart;
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="CreateItemResponseBase"/> class.
+  /// Initializes a new instance of the <see cref="DeletedOccurrenceInfo"/> class.
   /// </summary>
-  CreateItemResponseBase() : super();
+  DeletedOccurrenceInfo() {}
 
   /// <summary>
-  /// Reads response elements from XML.
+  /// Tries to read element from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
-
-    this.items = reader.ReadServiceObjectsCollectionFromXml<Item>(
-        XmlElementNames.Items,
-        this.GetObjectInstance,
-        false,
-        /* clearPropertyBag */
-        null,
-        /* requestedPropertySet */
-        false); /* summaryPropertiesOnly */
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    switch (reader.LocalName) {
+      case XmlElementNames.Start:
+        this._originalStart = reader.ReadElementValueAsDateTime();
+        return true;
+      default:
+        return false;
+    }
   }
 
   /// <summary>
-  /// Gets the items.
+  /// Gets the original start date and time of the deleted occurrence.
   /// </summary>
-  List<Item> get Items => this.items;
+  DateTime get OriginalStart => this._originalStart;
 }

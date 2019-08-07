@@ -41,7 +41,6 @@ import 'package:ews/misc/Std/EnumToString.dart';
 /// </summary>
 /// <typeparam name="TServiceObject">ServiceObject type.</typeparam>
 /// <typeparam name="TChange">Change type.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extends Change> extends ServiceResponse {
   /* private */
   ChangeCollection<TChange> changes = new ChangeCollection<TChange>();

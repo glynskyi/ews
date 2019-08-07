@@ -31,7 +31,6 @@ import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 /// <summary>
 /// Represents response to generic Create request.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class CreateResponseObjectResponse extends CreateItemResponseBase {
   /// <summary>
   /// Gets Item instance.

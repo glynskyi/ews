@@ -43,7 +43,6 @@ import 'package:ews/Xml/XmlNodeType.dart';
     /// Represents a collection of items.
     /// </summary>
     /// <typeparam name="TItem">The type of item the collection contains.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
  class ItemCollection<TItem extends Item> extends ComplexProperty with IterableMixin<TItem> implements Iterable<TItem>
     {
         /* private */ List<TItem> items = new List<TItem>();

@@ -39,7 +39,6 @@ import 'package:ews/misc/OutParam.dart';
 /// <summary>
 /// Represents a search filter where an item or folder property is involved.
 /// </summary>
-//        [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class PropertyBasedFilter extends SearchFilter {
   /* private */ PropertyDefinitionBase propertyDefinition;
 

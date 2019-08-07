@@ -34,7 +34,6 @@ import 'package:ews/Search/Grouping.dart';
 /// <summary>
 /// Represents the base view class for search operations.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class ViewBase {
   /* private */ core.PropertySet propertySet;
 

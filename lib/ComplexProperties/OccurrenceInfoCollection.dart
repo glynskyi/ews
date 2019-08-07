@@ -23,51 +23,40 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:ews/Core/EwsServiceXmlReader.dart';
-import 'package:ews/Core/ExchangeService.dart';
-import 'package:ews/Core/Responses/ServiceResponse.dart';
-import 'package:ews/Core/ServiceObjects/Items/Item.dart';
+import 'package:ews/ComplexProperties/ComplexPropertyCollection.dart';
+import 'package:ews/ComplexProperties/OccurrenceInfo.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 
 /// <summary>
-/// Represents the base response class for item creation operations.
+/// Represents a collection of OccurrenceInfo objects.
 /// </summary>
-abstract class CreateItemResponseBase extends ServiceResponse {
-  /* private */ List<Item> items;
+class OccurrenceInfoCollection extends ComplexPropertyCollection<OccurrenceInfo> {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="OccurrenceInfoCollection"/> class.
+  /// </summary>
+  OccurrenceInfoCollection() {}
 
   /// <summary>
-  /// Gets Item instance.
+  /// Creates the complex property.
   /// </summary>
-  /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  /// <returns>Item.</returns>
-  Item GetObjectInstance(ExchangeService service, String xmlElementName);
-
-  /// <summary>
-  /// Initializes a new instance of the <see cref="CreateItemResponseBase"/> class.
-  /// </summary>
-  CreateItemResponseBase() : super();
-
-  /// <summary>
-  /// Reads response elements from XML.
-  /// </summary>
-  /// <param name="reader">The reader.</param>
+  /// <returns>OccurenceInfo instance.</returns>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
-
-    this.items = reader.ReadServiceObjectsCollectionFromXml<Item>(
-        XmlElementNames.Items,
-        this.GetObjectInstance,
-        false,
-        /* clearPropertyBag */
-        null,
-        /* requestedPropertySet */
-        false); /* summaryPropertiesOnly */
+  OccurrenceInfo CreateComplexProperty(String xmlElementName) {
+    if (xmlElementName == XmlElementNames.Occurrence) {
+      return new OccurrenceInfo();
+    } else {
+      return null;
+    }
   }
 
   /// <summary>
-  /// Gets the items.
+  /// Gets the name of the collection item XML element.
   /// </summary>
-  List<Item> get Items => this.items;
+  /// <param name="complexProperty">The complex property.</param>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetCollectionItemXmlElementName(OccurrenceInfo complexProperty) {
+    return XmlElementNames.Occurrence;
+  }
 }

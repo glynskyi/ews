@@ -33,7 +33,6 @@ import 'package:ews/Search/ViewBase.dart';
 /// <summary>
 /// Represents a view settings that support paging in a search operation.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class PagedView extends ViewBase {
   /* private */
   int pageSize = 0;

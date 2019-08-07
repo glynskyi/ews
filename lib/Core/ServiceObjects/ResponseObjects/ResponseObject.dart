@@ -49,8 +49,7 @@ import 'package:ews/Exceptions/NotSupportedException.dart';
     /// Represents the base class for all responses that can be sent.
     /// </summary>
     /// <typeparam name="TMessage">Type of message.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
- abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObject      
+ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObject
     {
         /* private */ Item referenceItem;
 

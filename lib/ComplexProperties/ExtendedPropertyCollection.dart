@@ -35,7 +35,6 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// <summary>
 /// Represents a collection of extended properties.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class ExtendedPropertyCollection
     extends ComplexPropertyCollection<
         ExtendedProperty> //, ICustomUpdateSerializer

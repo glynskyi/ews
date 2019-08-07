@@ -44,7 +44,6 @@ import 'package:timezone/standalone.dart';
 /// <summary>
         /// Represents a recurrence pattern where each occurrence happens at a specific interval after the previous one.
         /// </summary>
-//        [EditorBrowsable(EditorBrowsableState.Never)]
  abstract class IntervalPattern extends Recurrence
         {
             /* private */ int interval = 1;

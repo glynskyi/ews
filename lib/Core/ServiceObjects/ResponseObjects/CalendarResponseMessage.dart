@@ -39,7 +39,6 @@ import 'package:ews/Enumerations/Sensitivity.dart' as enumerations;
 /// Represents the base class for accept, tentatively accept and decline response messages.
 /// </summary>
 /// <typeparam name="TMessage">The type of message that is created when this response message is saved.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class CalendarResponseMessage<TMessage extends serviceObjects.EmailMessage>
     extends CalendarResponseMessageBase<TMessage> {
   /// <summary>

@@ -39,7 +39,6 @@ import 'package:ews/Enumerations/ResponseType.dart';
 /// Represents a meeting-related message. Properties available on meeting messages are defined in the MeetingMessageSchema class.
 /// </summary>
 //    [ServiceObjectDefinition(XmlElementNames.MeetingMessage)]
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class MeetingMessage extends EmailMessage {
   /// <summary>
   /// Initializes a new instance of the <see cref="MeetingMessage"/> class.

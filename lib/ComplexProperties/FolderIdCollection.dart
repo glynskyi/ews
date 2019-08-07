@@ -31,7 +31,6 @@ import 'package:ews/Enumerations/WellKnownFolderName.dart';
 /// <summary>
 /// Represents a collection of folder Ids.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class FolderIdCollection extends ComplexPropertyCollection<FolderId> {
   /// <summary>
   /// Initializes a new instance of the <see cref="FolderIdCollection"/> class.

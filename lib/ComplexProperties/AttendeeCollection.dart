@@ -31,7 +31,6 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// <summary>
 /// Represents a collection of attendees.
 /// </summary>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 class AttendeeCollection extends ComplexPropertyCollection<Attendee> {
   /// <summary>
   /// Initializes a new instance of the <see cref="AttendeeCollection"/> class.

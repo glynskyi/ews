@@ -37,7 +37,6 @@ import 'package:ews/Core/XmlAttributeNames.dart';
 /// constructor. That constructor does not have to be public.
 /// </remarks>
 /// <typeparam name="TKey">The type of the key used by this dictionary.</typeparam>
-//    [EditorBrowsable(EditorBrowsableState.Never)]
 abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
   /* private */ TKey key;
 
