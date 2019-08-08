@@ -58,6 +58,8 @@ import 'package:ews/Enumerations/OffsetBasePoint.dart';
 import 'package:ews/Enumerations/PermissionScope.dart';
 import 'package:ews/Enumerations/ResponseType.dart';
 import 'package:ews/Enumerations/RuleProperty.dart';
+import 'package:ews/Enumerations/SendCancellationsMode.dart';
+import 'package:ews/Enumerations/SendInvitationsMode.dart';
 import 'package:ews/Enumerations/Sensitivity.dart';
 import 'package:ews/Enumerations/ServiceError.dart';
 import 'package:ews/Enumerations/ServiceResult.dart';
@@ -800,7 +802,9 @@ typedef R Converter<T,R>(T);
         DeleteMode,
         AffectedTaskOccurrence,
         ConflictResolutionMode,
-        FolderPermissionLevel
+        FolderPermissionLevel,
+        SendInvitationsMode,
+        SendCancellationsMode
       ];
 
 

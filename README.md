@@ -50,6 +50,21 @@ final message = new EmailMessage(service)
 await message.SendAndSaveCopy();
 ```
 
+### Creating an appointment
+
+The following code shows how to create an appointment and set a subject, a body, a start time, and an end time to one.
+
+```Dart
+final startTime = new DateTime(2019, 9, 9, 9, 10, 0);
+final appointment = new Appointment(service)
+  ..Subject = "Dentist Appointment"
+  ..Body = MessageBody.withText("The appointment is with Dr. Smith.")
+  ..Start = startTime
+  ..End = startTime.add(Duration(hours: 2));
+
+await appointment.SaveWithSendInvitationsMode(SendInvitationsMode.SendToNone);
+```
+
 ## Support statement
 
 Starting July 19th 2018, Exchange Web Services (EWS) will no longer receive feature updates. While the service will continue to receive security updates and certain non-security updates, product design and features will remain unchanged. This change also applies to the EWS SDKs for Java and .NET. More information here: https://developer.microsoft.com/en-us/graph/blogs/upcoming-changes-to-exchange-web-services-ews-api-for-office-365/
