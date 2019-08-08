@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Fixed the appointment CRUD operations
+
 ## 0.0.7
 
 * Added the appointment schema
