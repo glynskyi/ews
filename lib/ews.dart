@@ -95,6 +95,7 @@ export 'package:ews/Core/ServiceObjects/Items/MeetingResponse.dart';
 export 'package:ews/Core/ServiceObjects/Items/MeetingCancellation.dart';
 export 'package:ews/Core/ServiceObjects/Items/Appointment.dart';
 export 'package:ews/Core/PropertySet.dart';
+export 'package:ews/Exceptions/ServiceRequestException.dart';
 export 'package:ews/Exceptions/ServiceResponseException.dart';
 export 'package:ews/PropertyDefinitions/ExtendedPropertyDefinition.dart';
 export 'package:ews/Search/Filters/SearchFilter.IsEqualTo.dart';

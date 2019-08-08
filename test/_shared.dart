@@ -7,6 +7,7 @@ import 'package:ews/Http/WebCredentials.dart';
 WebCredentials primaryUserCredential = WebCredentials(env["USER_NAME"], env["USER_PASSWORD"], null);
 WebCredentials secondaryUserCredential =
     WebCredentials(env["USER_NAME_SECONDARY"], env["USER_PASSWORD_SECONDARY"], null);
+WebCredentials wrongUserCredential = WebCredentials("user", "password", null);
 
 ExchangeService prepareExchangeService(WebCredentials credentials) {
   return ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
