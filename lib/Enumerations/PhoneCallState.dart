@@ -24,56 +24,46 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// The PhoneCallState enumeration
 /// </summary>
-enum EventType {
+enum PhoneCallState {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// Idle
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  Idle,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// Connecting
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Connecting,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// Alerted
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  Alerted,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// Connected
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  Connected,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// Disconnected
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  Disconnected,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// Incoming
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  Incoming,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// Transferring
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
+  Transferring,
 
   /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// Forwarding
   /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Forwarding
 }

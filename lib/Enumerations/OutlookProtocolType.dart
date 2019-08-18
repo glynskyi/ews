@@ -24,56 +24,26 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines supported Outlook protocls.
 /// </summary>
-enum EventType {
+enum OutlookProtocolType {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The Remote Procedure Call (RPC) protocol.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  Rpc,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The Remote Procedure Call (RPC) over HTTP protocol.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  RpcOverHttp,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The Web protocol.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  Web,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The protocol is unknown.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
-  /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
-  /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Unknown,
 }

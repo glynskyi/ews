@@ -24,56 +24,42 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the action of a retention policy tag.
 /// </summary>
-enum EventType {
+enum RetentionActionType {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// Never tags (RetentionEnabled = false) do not have retention action in the FAI.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  None,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// Expired items will be moved to the Deleted Items folder.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  MoveToDeletedItems,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// Expired items will be moved to the organizational folder specified
+  /// in the ExpirationDestination field.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  MoveToFolder,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// Expired items will be soft deleted.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  DeleteAndAllowRecovery,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// Expired items will be hard deleted.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  PermanentlyDelete,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// Expired items will be tagged as expired.
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  MarkAsPastRetentionLimit,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// Expired items will be moved to the archive.
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  MoveToArchive,
 }

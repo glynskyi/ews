@@ -24,56 +24,62 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the response actions that can be taken on an item.
 /// </summary>
-enum EventType {
+/// [Flags]
+enum ResponseActions {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// No action can be taken.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  // None ,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The item can be accepted.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Accept,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The item can be tentatively accepted.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  TentativelyAccept,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The item can be declined.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  Decline,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// The item can be replied to.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  Reply,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// The item can be replied to.
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  ReplyAll,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// The item can be forwarded.
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
+  Forward,
 
   /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// The item can be cancelled.
   /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Cancel,
+
+  /// <summary>
+  /// The item can be removed from the calendar.
+  /// </summary>
+  RemoveFromCalendar,
+
+  /// <summary>
+  /// The item's read receipt can be suppressed.
+  /// </summary>
+  SuppressReadReceipt,
+
+  /// <summary>
+  /// A reply to the item can be posted.
+  /// </summary>
+  PostReply
 }

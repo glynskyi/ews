@@ -24,56 +24,28 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines how meeting requests are sent to delegates.
 /// </summary>
-enum EventType {
+enum MeetingRequestsDeliveryScope {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// Meeting requests are sent to delegates only.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  DelegatesOnly,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// Meeting requests are sent to delegates and to the owner of the mailbox.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  DelegatesAndMe,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// Meeting requests are sent to delegates and informational messages are sent to the owner of the mailbox.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  DelegatesAndSendInformationToMe,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
-  /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
-  /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
-  /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// Meeting requests are not sent to delegates.  This value is supported only for Exchange 2010 SP1 or later
+  /// server versions.
   /// </summary>
   /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  NoForward
 }

@@ -24,56 +24,36 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines supported Id formats in ConvertId operations.
 /// </summary>
-enum EventType {
+enum IdFormat {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The EWS Id format used in Exchange 2007 RTM.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  EwsLegacyId,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The EWS Id format used in Exchange 2007 SP1 and above.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  EwsId,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The base64-encoded PR_ENTRYID property.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  EntryId,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The hexadecimal representation  of the PR_ENTRYID property.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  HexEntryId,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// The Store Id format.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  StoreId,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// The Outlook Web Access Id format.
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  OwaId
 }

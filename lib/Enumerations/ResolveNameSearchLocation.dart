@@ -24,56 +24,26 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the location where a ResolveName operation searches for contacts.
 /// </summary>
-enum EventType {
+enum ResolveNameSearchLocation {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The name is resolved against the Global Address List.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  DirectoryOnly,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The name is resolved against the Global Address List and then against the Contacts folder if no match was found.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  DirectoryThenContacts,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The name is resolved against the Contacts folder.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  ContactsOnly,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The name is resolved against the Contacts folder and then against the Global Address List if no match was found.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
-  /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
-  /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  ContactsThenDirectory
 }

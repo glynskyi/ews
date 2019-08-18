@@ -24,56 +24,46 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Enum MailboxSearchScopeType
 /// </summary>
-enum EventType {
+enum MailboxSearchScopeType {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The legacy exchange DN
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  LegacyExchangeDN,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The public folder
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  PublicFolder,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The recipient
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  Recipient,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The mailbox GUID
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  MailboxGuid,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// All public folders
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  AllPublicFolders,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// All mailboxes
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  AllMailboxes,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// The saved search id
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
+  SavedSearchId,
 
   /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// The auto detect
   /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  AutoDetect,
 }

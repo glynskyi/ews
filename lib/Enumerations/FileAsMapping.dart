@@ -35,13 +35,13 @@ enum FileAsMapping {
   /// <summary>
   /// Surname, GivenName
   /// </summary>
-//        [EwsEnum("LastCommaFirst")]
+  /// [EwsEnum("LastCommaFirst")]
   SurnameCommaGivenName,
 
   /// <summary>
   /// GivenName Surname
   /// </summary>
-//        [EwsEnum("FirstSpaceLast")]
+  /// [EwsEnum("FirstSpaceLast")]
   GivenNameSpaceSurname,
 
   /// <summary>
@@ -52,87 +52,87 @@ enum FileAsMapping {
   /// <summary>
   /// Surname, GivenName (Company)
   /// </summary>
-//        [EwsEnum("LastCommaFirstCompany")]
+  /// [EwsEnum("LastCommaFirstCompany")]
   SurnameCommaGivenNameCompany,
 
   /// <summary>
   /// Company (SurnameGivenName)
   /// </summary>
-//        [EwsEnum("CompanyLastFirst")]
+  /// [EwsEnum("CompanyLastFirst")]
   CompanySurnameGivenName,
 
   /// <summary>
   /// SurnameGivenName
   /// </summary>
-//        [EwsEnum("LastFirst")]
+  /// [EwsEnum("LastFirst")]
   SurnameGivenName,
 
   /// <summary>
   /// SurnameGivenName (Company)
   /// </summary>
-//        [EwsEnum("LastFirstCompany")]
+  /// [EwsEnum("LastFirstCompany")]
   SurnameGivenNameCompany,
 
   /// <summary>
   /// Company (Surname, GivenName)
   /// </summary>
-//        [EwsEnum("CompanyLastCommaFirst")]
+  /// [EwsEnum("CompanyLastCommaFirst")]
   CompanySurnameCommaGivenName,
 
   /// <summary>
   /// SurnameGivenName Suffix
   /// </summary>
-//        [EwsEnum("LastFirstSuffix")]
+  /// [EwsEnum("LastFirstSuffix")]
   SurnameGivenNameSuffix,
 
   /// <summary>
   /// Surname GivenName (Company)
   /// </summary>
-//        [EwsEnum("LastSpaceFirstCompany")]
+  /// [EwsEnum("LastSpaceFirstCompany")]
   SurnameSpaceGivenNameCompany,
 
   /// <summary>
   /// Company (Surname GivenName)
   /// </summary>
-//        [EwsEnum("CompanyLastSpaceFirst")]
+  /// [EwsEnum("CompanyLastSpaceFirst")]
   CompanySurnameSpaceGivenName,
 
   /// <summary>
   /// Surname GivenName
   /// </summary>
-//        [EwsEnum("LastSpaceFirst")]
+  /// [EwsEnum("LastSpaceFirst")]
   SurnameSpaceGivenName,
 
   /// <summary>
   /// Display Name (Exchange 2010 or later).
   /// </summary>
-//        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2010)]
   DisplayName,
 
   /// <summary>
   /// GivenName (Exchange 2010 or later).
   /// </summary>
-//        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
-//        [EwsEnum("FirstName")]
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2010)]
+  /// [EwsEnum("FirstName")]
   GivenName,
 
   /// <summary>
   /// Surname GivenName Middle Suffix (Exchange 2010 or later).
   /// </summary>
-//        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
-//        [EwsEnum("LastFirstMiddleSuffix")]
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2010)]
+  /// [EwsEnum("LastFirstMiddleSuffix")]
   SurnameGivenNameMiddleSuffix,
 
   /// <summary>
   /// Surname (Exchange 2010 or later).
   /// </summary>
-//        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
-//        [EwsEnum("LastName")]
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2010)]
+  /// [EwsEnum("LastName")]
   Surname,
 
   /// <summary>
   /// Empty (Exchange 2010 or later).
   /// </summary>
-//        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2010)]
   Empty
 }

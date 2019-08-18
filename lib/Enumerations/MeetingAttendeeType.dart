@@ -24,56 +24,31 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the type of a meeting attendee.
 /// </summary>
-enum EventType {
+enum MeetingAttendeeType {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The attendee is the organizer of the meeting.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  Organizer,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The attendee is required.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Required,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The attendee is optional.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  Optional,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The attendee is a room.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  Room,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// The attendee is a resource.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
-  /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Resource
 }

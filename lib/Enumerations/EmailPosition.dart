@@ -24,56 +24,26 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the email position of an extracted entity.
 /// </summary>
-enum EventType {
+enum EmailPosition {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The position is in the latest reply.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  LatestReply,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The position is not in the latest reply.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Other,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The position is in the subject.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  Subject,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The position is in the signature.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
-  /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
-  /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Signature,
 }

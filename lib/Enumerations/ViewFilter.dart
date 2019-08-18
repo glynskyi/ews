@@ -24,56 +24,72 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the view filter for queries.
 /// </summary>
-enum EventType {
+enum ViewFilter {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// Show all item (no filter)
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  All,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// Item has flag
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  Flagged,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// Item has attachment
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  HasAttachment,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// Item is to or cc me
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  ToOrCcMe,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// Item is unread
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  Unread,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// Active task items
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  TaskActive,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// Overdue task items
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  TaskOverdue,
 
   /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// Completed task items
   /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  TaskCompleted,
+
+  /// <summary>
+  /// Suggestions (aka Predicted Actions) from the Inference engine
+  /// </summary>
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  Suggestions,
+
+  /// <summary>
+  /// Respond suggestions
+  /// </summary>
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  SuggestionsRespond,
+
+  /// <summary>
+  /// Delete suggestions
+  /// </summary>
+  /// [RequiredServerVersion(ExchangeVersion.Exchange2013)]
+  SuggestionsDelete,
 }

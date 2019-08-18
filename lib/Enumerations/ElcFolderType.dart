@@ -24,56 +24,102 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the folder type of a retention policy tag.
 /// </summary>
-enum EventType {
+enum ElcFolderType {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// Calendar folder.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  Calendar,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// Contacts folder.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Contacts,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// Deleted Items.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  DeletedItems,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// Drafts folder.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  Drafts,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// Inbox.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  Inbox,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// Junk mail.
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  JunkEmail,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// Journal.
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
+  Journal,
 
   /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// Notes.
   /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Notes,
+
+  /// <summary>
+  /// Outbox.
+  /// </summary>
+  Outbox,
+
+  /// <summary>
+  /// Sent Items.
+  /// </summary>
+  SentItems,
+
+  /// <summary>
+  /// Tasks folder.
+  /// </summary>
+  Tasks,
+
+  /// <summary>
+  /// Policy applies to all folders that do not have a policy.
+  /// </summary>
+  All,
+
+  /// <summary>
+  /// Policy is for an organizational policy.
+  /// </summary>
+  ManagedCustomFolder,
+
+  /// <summary>
+  /// Policy is for the RSS Subscription (default) folder.
+  /// </summary>
+  RssSubscriptions,
+
+  /// <summary>
+  /// Policy is for the Sync Issues (default) folder.
+  /// </summary>
+  SyncIssues,
+
+  /// <summary>
+  /// Policy is for the Conversation History (default) folder.
+  /// This folder is used by the Office Communicator to archive IM conversations.
+  /// </summary>
+  ConversationHistory,
+
+  /// <summary>
+  /// Policy is for the personal folders.
+  /// </summary>
+  Personal,
+
+  /// <summary>
+  /// Policy is for Dumpster 2.0.
+  /// </summary>
+  RecoverableItems,
+
+  /// <summary>
+  /// Non IPM Subtree root.
+  /// </summary>
+  NonIpmRoot,
 }

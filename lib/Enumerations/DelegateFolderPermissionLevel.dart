@@ -24,56 +24,31 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines a delegate user's permission level on a specific folder.
 /// </summary>
-enum EventType {
+enum DelegateFolderPermissionLevel {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The delegate has no permission.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  None,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The delegate has Editor permissions.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Editor,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The delegate has Reviewer permissions.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  Reviewer,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The delegate has Author permissions.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  Author,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// The delegate has custom permissions.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
-
-  /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
-  /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
-
-  /// <summary>
-  /// This event indicates that a new item or folder has been created.
-  /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
-
-  /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
-  /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Custom
 }

@@ -24,56 +24,61 @@
  */
 
 /// <summary>
-/// Defines the types of event that can occur in a folder.
+/// Defines the follow-up actions that may be stamped on a message.
 /// </summary>
-enum EventType {
+enum FlaggedForAction {
   /// <summary>
-  /// This event is sent to a client application by push notifications to indicate that
-  /// the subscription is still alive.
+  /// The message is flagged with any action.
   /// </summary>
-  /// [EwsEnum("StatusEvent")]
-  Status,
+  Any,
 
   /// <summary>
-  /// This event indicates that a new e-mail message was received.
+  /// The recipient is requested to call the sender.
   /// </summary>
-  /// [EwsEnum("NewMailEvent")]
-  NewMail,
+  Call,
 
   /// <summary>
-  /// This event indicates that an item or folder has been deleted.
+  /// The recipient is requested not to forward the message.
   /// </summary>
-  /// [EwsEnum("DeletedEvent")]
-  Deleted,
+  DoNotForward,
 
   /// <summary>
-  /// This event indicates that an item or folder has been modified.
+  /// The recipient is requested to follow up on the message.
   /// </summary>
-  /// [EwsEnum("ModifiedEvent")]
-  Modified,
+  FollowUp,
 
   /// <summary>
-  /// This event indicates that an item or folder has been moved to another folder.
+  /// The recipient received the message for information.
   /// </summary>
-  /// [EwsEnum("MovedEvent")]
-  Moved,
+  FYI,
 
   /// <summary>
-  /// This event indicates that an item or folder has been copied to another folder.
+  /// The recipient is requested to forward the message.
   /// </summary>
-  /// [EwsEnum("CopiedEvent")]
-  Copied,
+  Forward,
 
   /// <summary>
-  /// This event indicates that a new item or folder has been created.
+  /// The recipient is informed that a response to the message is not required.
   /// </summary>
-  /// [EwsEnum("CreatedEvent")]
-  Created,
+  NoResponseNecessary,
 
   /// <summary>
-  /// This event indicates that free/busy has changed. This is only supported in 2010 SP1 or later
+  /// The recipient is requested to read the message.
   /// </summary>
-  /// [RequiredServerVersion(ExchangeVersion.Exchange2010_SP1)]
-  /// [EwsEnum("FreeBusyChangedEvent")]
-  FreeBusyChanged
+  Read,
+
+  /// <summary>
+  /// The recipient is requested to reply to the sender of the message.
+  /// </summary>
+  Reply,
+
+  /// <summary>
+  /// The recipient is requested to reply to everyone the message was sent to.
+  /// </summary>
+  ReplyToAll,
+
+  /// <summary>
+  /// The recipient is requested to review the message.
+  /// </summary>
+  Review
 }
