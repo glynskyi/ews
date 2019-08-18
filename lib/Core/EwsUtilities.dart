@@ -39,9 +39,9 @@ import 'package:ews/Enumerations/AffectedTaskOccurrence.dart';
 import 'package:ews/Enumerations/AppointmentType.dart';
 import 'package:ews/Enumerations/BodyType.dart';
 import 'package:ews/Enumerations/ConflictResolutionMode.dart';
+import 'package:ews/Enumerations/ConversationQueryTraversal.dart';
 import 'package:ews/Enumerations/DefaultExtendedPropertySet.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
-import 'package:ews/Enumerations/EffectiveRights.dart';
 import 'package:ews/Enumerations/EventType.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/FileAsMapping.dart';
@@ -51,8 +51,10 @@ import 'package:ews/Enumerations/FolderTraversal.dart';
 import 'package:ews/Enumerations/Importance.dart';
 import 'package:ews/Enumerations/ItemFlagStatus.dart';
 import 'package:ews/Enumerations/ItemTraversal.dart';
+import 'package:ews/Enumerations/MailboxSearchLocation.dart';
 import 'package:ews/Enumerations/MailboxType.dart';
 import 'package:ews/Enumerations/MapiPropertyType.dart';
+import 'package:ews/Enumerations/MeetingRequestsDeliveryScope.dart';
 import 'package:ews/Enumerations/MessageDisposition.dart';
 import 'package:ews/Enumerations/OffsetBasePoint.dart';
 import 'package:ews/Enumerations/PermissionScope.dart';
@@ -66,6 +68,7 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 import 'package:ews/Enumerations/StandardUser.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TaskStatus.dart';
+import 'package:ews/Enumerations/ViewFilter.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
@@ -114,6 +117,75 @@ typedef R Converter<T,R>(T);
        static final RegExp PATTERN_MINUTES = RegExp("(\\d+)M");
        static final RegExp PATTERN_SECONDS = RegExp("(\\d+)S");
        static final RegExp PATTERN_MILLISECONDS = RegExp("(\\d+)S");
+
+       static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>> _requiredServerVersion = new LazyMember(() => {
+         ViewFilter: {
+           ViewFilter.All: ExchangeVersion.Exchange2013,
+           ViewFilter.Flagged: ExchangeVersion.Exchange2013,
+           ViewFilter.HasAttachment: ExchangeVersion.Exchange2013,
+           ViewFilter.ToOrCcMe: ExchangeVersion.Exchange2013,
+           ViewFilter.Unread: ExchangeVersion.Exchange2013,
+           ViewFilter.TaskActive: ExchangeVersion.Exchange2013,
+           ViewFilter.TaskOverdue: ExchangeVersion.Exchange2013,
+           ViewFilter.TaskCompleted: ExchangeVersion.Exchange2013,
+           ViewFilter.Suggestions: ExchangeVersion.Exchange2013,
+           ViewFilter.SuggestionsRespond: ExchangeVersion.Exchange2013,
+           ViewFilter.SuggestionsDelete: ExchangeVersion.Exchange2013,
+         },
+         MailboxSearchLocation: {
+           MailboxSearchLocation.PrimaryOnly:ExchangeVersion.Exchange2013,
+           MailboxSearchLocation.ArchiveOnly:ExchangeVersion.Exchange2013,
+           MailboxSearchLocation.All:ExchangeVersion.Exchange2013,
+         },
+         EventType: {
+           EventType.FreeBusyChanged: ExchangeVersion.Exchange2010_SP1
+         },
+         MeetingRequestsDeliveryScope: {
+           MeetingRequestsDeliveryScope.NoForward: ExchangeVersion.Exchange2010_SP1
+         },
+         FileAsMapping: {
+           FileAsMapping.DisplayName: ExchangeVersion.Exchange2010,
+           FileAsMapping.GivenName: ExchangeVersion.Exchange2010,
+           FileAsMapping.SurnameGivenNameMiddleSuffix: ExchangeVersion.Exchange2010,
+           FileAsMapping.Surname: ExchangeVersion.Exchange2010,
+           FileAsMapping.Empty: ExchangeVersion.Exchange2010,
+         },
+         WellKnownFolderName: {
+           WellKnownFolderName.PublicFoldersRoot: ExchangeVersion.Exchange2007_SP1,
+           WellKnownFolderName.RecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.RecoverableItemsDeletions: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.RecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.RecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.RecoverableItemsDiscoveryHolds: ExchangeVersion.Exchange2013_SP1,
+           WellKnownFolderName.ArchiveRoot: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveInbox: ExchangeVersion.Exchange2013_SP1,
+           WellKnownFolderName.ArchiveMsgFolderRoot: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveDeletedItems: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveRecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveRecoverableItemsDeletions: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveRecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveRecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
+           WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds: ExchangeVersion.Exchange2013_SP1,
+           WellKnownFolderName.SyncIssues: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.Conflicts: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.LocalFailures: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.ServerFailures: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.RecipientCache: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.QuickContacts: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.ConversationHistory: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.AdminAuditLogs: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.ToDoSearch: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.MyContacts: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.Directory: ExchangeVersion.Exchange2013_SP1,
+           WellKnownFolderName.IMContactList: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.PeopleConnect: ExchangeVersion.Exchange2013,
+           WellKnownFolderName.Favorites: ExchangeVersion.Exchange2013,
+         },
+         ConversationQueryTraversal: {
+           ConversationQueryTraversal.Shallow: ExchangeVersion.Exchange2013,
+           ConversationQueryTraversal.Deep: ExchangeVersion.Exchange2013,
+         }
+       });
 
 
 //        private static LazyMember<string> buildVersion = new LazyMember<string>(
@@ -1436,47 +1508,6 @@ typedef R Converter<T,R>(T);
             }
         }
 
-//        /// <summary>
-//        /// Validates property version against the request version.
-//        /// </summary>
-//        /// <param name="service">The Exchange service.</param>
-//        /// <param name="minimumServerVersion">The minimum server version that supports the property.</param>
-//        /// <param name="propertyName">Name of the property.</param>
-//        internal static void ValidatePropertyVersion(
-//            ExchangeService service,
-//            ExchangeVersion minimumServerVersion,
-//            string propertyName)
-//        {
-//            if (service.RequestedServerVersion < minimumServerVersion)
-//            {
-//                throw new ServiceVersionException(
-//                    string.Format(
-//                    Strings.PropertyIncompatibleWithRequestVersion,
-//                    propertyName,
-//                    minimumServerVersion));
-//            }
-//        }
-
-        /// <summary>
-        /// Validates method version against the request version.
-        /// </summary>
-        /// <param name="service">The Exchange service.</param>
-        /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
-        /// <param name="methodName">Name of the method.</param>
-          static void ValidateMethodVersion(
-            ExchangeService service,
-            ExchangeVersion minimumServerVersion,
-            String methodName)
-        {
-            if (service.RequestedServerVersion.index < minimumServerVersion.index)
-            {
-                throw new ServiceVersionException(
-                    """String.Format(
-                    Strings.MethodIncompatibleWithRequestVersion,
-                    methodName,
-                    minimumServerVersion)""");
-            }
-        }
 //
 //        /// <summary>
 //        /// Validates class version against the request version.
@@ -3138,48 +3169,48 @@ typedef R Converter<T,R>(T);
 //                    minimumRequiredServerVersion));
 //            }
 //        }
-//
-//        /// <summary>
-//        /// Validates property version against the request version.
-//        /// </summary>
-//        /// <param name="service">The Exchange service.</param>
-//        /// <param name="minimumServerVersion">The minimum server version that supports the property.</param>
-//        /// <param name="propertyName">Name of the property.</param>
-//        static void ValidatePropertyVersion(
-//            ExchangeService service,
-//            ExchangeVersion minimumServerVersion,
-//            String propertyName)
-//        {
-//            if (service.RequestedServerVersion < minimumServerVersion)
-//            {
-//                throw new ServiceVersionException(
-//                    string.Format(
-//                    Strings.PropertyIncompatibleWithRequestVersion,
-//                    propertyName,
-//                    minimumServerVersion));
-//            }
-//        }
-//
-//        /// <summary>
-//        /// Validates method version against the request version.
-//        /// </summary>
-//        /// <param name="service">The Exchange service.</param>
-//        /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
-//        /// <param name="methodName">Name of the method.</param>
-//        static void ValidateMethodVersion(
-//            ExchangeService service,
-//            ExchangeVersion minimumServerVersion,
-//            String methodName)
-//        {
-//            if (service.RequestedServerVersion < minimumServerVersion)
-//            {
-//                throw new ServiceVersionException(
-//                    string.Format(
-//                    Strings.MethodIncompatibleWithRequestVersion,
-//                    methodName,
-//                    minimumServerVersion));
-//            }
-//        }
+
+        /// <summary>
+        /// Validates property version against the request version.
+        /// </summary>
+        /// <param name="service">The Exchange service.</param>
+        /// <param name="minimumServerVersion">The minimum server version that supports the property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        static void ValidatePropertyVersion(
+            ExchangeService service,
+            ExchangeVersion minimumServerVersion,
+            String propertyName)
+        {
+            if (service.RequestedServerVersion.index < minimumServerVersion.index)
+            {
+                throw new ServiceVersionException(
+                    """string.Format(
+                    Strings.PropertyIncompatibleWithRequestVersion,
+                    propertyName,
+                    minimumServerVersion)""");
+            }
+        }
+
+        /// <summary>
+        /// Validates method version against the request version.
+        /// </summary>
+        /// <param name="service">The Exchange service.</param>
+        /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
+        /// <param name="methodName">Name of the method.</param>
+        static void ValidateMethodVersion(
+            ExchangeService service,
+            ExchangeVersion minimumServerVersion,
+            String methodName)
+        {
+            if (service.RequestedServerVersion.index < minimumServerVersion.index)
+            {
+                throw new ServiceVersionException(
+                    """string.Format(
+                    Strings.MethodIncompatibleWithRequestVersion,
+                    methodName,
+                    minimumServerVersion)""");
+            }
+        }
 
         /// <summary>
         /// Validates class version against the request version.

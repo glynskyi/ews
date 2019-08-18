@@ -33,10 +33,9 @@ import 'package:ews/Enumerations/ResponseType.dart';
 /// Represents an attendee to a meeting.
 /// </summary>
 class Attendee extends EmailAddress {
-  /* private */ MeetingResponseType responseType;
+  MeetingResponseType _responseType;
 
-  /* private */
-  DateTime lastResponseTime;
+  DateTime _lastResponseTime;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Attendee"/> class.
@@ -56,12 +55,12 @@ class Attendee extends EmailAddress {
   /// <summary>
   /// Gets the type of response the attendee gave to the meeting invitation it received.
   /// </summary>
-  MeetingResponseType get ResponseType => this.responseType;
+  MeetingResponseType get ResponseType => this._responseType;
 
   /// <summary>
   /// Gets the date and time when the attendee last responded to a meeting invitation or update.
   /// </summary>
-  DateTime get LastResponseTime => this.lastResponseTime;
+  DateTime get LastResponseTime => this._lastResponseTime;
 
   /// <summary>
   /// Tries to read element from XML.
@@ -75,10 +74,10 @@ class Attendee extends EmailAddress {
         this.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.ResponseType:
-        this.responseType = reader.ReadElementValue<MeetingResponseType>();
+        this._responseType = reader.ReadElementValue<MeetingResponseType>();
         return true;
       case XmlElementNames.LastResponseTime:
-        this.lastResponseTime = reader.ReadElementValueAsDateTime();
+        this._lastResponseTime = reader.ReadElementValueAsDateTime();
         return true;
       default:
         return super.TryReadElementFromXml(reader);

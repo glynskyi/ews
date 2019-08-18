@@ -23,31 +23,27 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/ComplexProperties/RetentionTagBase.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+import 'package:uuid_enhanced/uuid.dart';
 
+/// <summary>
+/// Represents the archive tag of an item or folder.
+/// </summary>
+class ArchiveTag extends RetentionTagBase {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ArchiveTag"/> class.
+  /// </summary>
+  ArchiveTag() : super(XmlElementNames.ArchiveTag) {}
 
-
-    /// <summary>
-    /// Represents the archive tag of an item or folder.
-    /// </summary>
- class ArchiveTag extends RetentionTagBase
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArchiveTag"/> class.
-        /// </summary>
- ArchiveTag()
-            : super(XmlElementNames.ArchiveTag)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArchiveTag"/> class.
-        /// </summary>
-        /// <param name="isExplicit">Is explicit.</param>
-        /// <param name="retentionId">Retention id.</param>
- ArchiveTag(bool isExplicit, Guid retentionId)
-            : this()
-        {
-            this.IsExplicit = isExplicit;
-            this.RetentionId = retentionId;
-        }
-    }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ArchiveTag"/> class.
+  /// </summary>
+  /// <param name="isExplicit">Is explicit.</param>
+  /// <param name="retentionId">Retention id.</param>
+  ArchiveTag.withExplicitAndRetentionId(bool isExplicit, Uuid retentionId)
+      : super(XmlElementNames.ArchiveTag) {
+    this.IsExplicit = isExplicit;
+    this.RetentionId = retentionId;
+  }
+}

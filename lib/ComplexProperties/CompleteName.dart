@@ -33,84 +33,75 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the complete name of a contact.
 /// </summary>
 class CompleteName extends ComplexProperty {
-  /* private */ String title;
+  String _title;
 
-  /* private */
-  String givenName;
+  String _givenName;
 
-  /* private */
-  String middleName;
+  String _middleName;
 
-  /* private */
-  String surname;
+  String _surname;
 
-  /* private */
-  String suffix;
+  String _suffix;
 
-  /* private */
-  String initials;
+  String _initials;
 
-  /* private */
-  String fullName;
+  String _fullName;
 
-  /* private */
-  String nickname;
+  String _nickname;
 
-  /* private */
-  String yomiGivenName;
+  String _yomiGivenName;
 
-  /* private */
-  String yomiSurname;
+  String _yomiSurname;
 
   /// <summary>
   /// Gets the contact's title.
   /// </summary>
-  String get Title => this.title;
+  String get Title => this._title;
 
   /// <summary>
   /// Gets the given name (first name) of the contact.
   /// </summary>
-  String get GivenName => this.givenName;
+  String get GivenName => this._givenName;
 
   /// <summary>
   /// Gets the middle name of the contact.
   /// </summary>
-  String get MiddleName => this.middleName;
+  String get MiddleName => this._middleName;
 
   /// <summary>
   /// Gets the surname (last name) of the contact.
   /// </summary>
-  String get Surname => this.surname;
+  String get Surname => this._surname;
 
   /// <summary>
   /// Gets the suffix of the contact.
   /// </summary>
-  String get Suffix => this.suffix;
+  String get Suffix => this._suffix;
 
   /// <summary>
   /// Gets the initials of the contact.
   /// </summary>
-  String get Initials => this.initials;
+  String get Initials => this._initials;
 
   /// <summary>
   /// Gets the full name of the contact.
   /// </summary>
-  String get FullName => this.fullName;
+  String get FullName => this._fullName;
 
   /// <summary>
   /// Gets the nickname of the contact.
   /// </summary>
-  String get NickName => this.nickname;
+  String get NickName => this._nickname;
 
   /// <summary>
   /// Gets the Yomi given name (first name) of the contact.
   /// </summary>
-  String get YomiGivenName => this.yomiGivenName;
+  String get YomiGivenName => this._yomiGivenName;
 
   /// <summary>
   /// Gets the Yomi surname (last name) of the contact.
   /// </summary>
-  String get YomiSurname => this.yomiSurname;
+  String get YomiSurname => this._yomiSurname;
 
   /// <summary>
   /// Tries to read element from XML.
@@ -121,34 +112,34 @@ class CompleteName extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Title:
-        this.title = reader.ReadElementValue();
+        this._title = reader.ReadElementValue();
         return true;
       case XmlElementNames.FirstName:
-        this.givenName = reader.ReadElementValue();
+        this._givenName = reader.ReadElementValue();
         return true;
       case XmlElementNames.MiddleName:
-        this.middleName = reader.ReadElementValue();
+        this._middleName = reader.ReadElementValue();
         return true;
       case XmlElementNames.LastName:
-        this.surname = reader.ReadElementValue();
+        this._surname = reader.ReadElementValue();
         return true;
       case XmlElementNames.Suffix:
-        this.suffix = reader.ReadElementValue();
+        this._suffix = reader.ReadElementValue();
         return true;
       case XmlElementNames.Initials:
-        this.initials = reader.ReadElementValue();
+        this._initials = reader.ReadElementValue();
         return true;
       case XmlElementNames.FullName:
-        this.fullName = reader.ReadElementValue();
+        this._fullName = reader.ReadElementValue();
         return true;
       case XmlElementNames.NickName:
-        this.nickname = reader.ReadElementValue();
+        this._nickname = reader.ReadElementValue();
         return true;
       case XmlElementNames.YomiFirstName:
-        this.yomiGivenName = reader.ReadElementValue();
+        this._yomiGivenName = reader.ReadElementValue();
         return true;
       case XmlElementNames.YomiLastName:
-        this.yomiSurname = reader.ReadElementValue();
+        this._yomiSurname = reader.ReadElementValue();
         return true;
       default:
         return false;
@@ -162,14 +153,22 @@ class CompleteName extends ComplexProperty {
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Title, this.Title);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.FirstName, this.GivenName);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.MiddleName, this.MiddleName);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.LastName, this.Surname);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.FirstName, this.GivenName);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.MiddleName, this.MiddleName);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.LastName, this.Surname);
     writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Suffix, this.Suffix);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Initials, this.Initials);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.FullName, this.FullName);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.NickName, this.NickName);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.YomiFirstName, this.YomiGivenName);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.YomiLastName, this.YomiSurname);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Initials, this.Initials);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.FullName, this.FullName);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.NickName, this.NickName);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.YomiFirstName, this.YomiGivenName);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.YomiLastName, this.YomiSurname);
   }
 }

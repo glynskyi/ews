@@ -52,7 +52,7 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
         /// <summary>
         /// The item owner that owns this attachment collection
         /// </summary>
-        /* private */ Item owner;
+        Item _owner;
 
         /// <summary>
         /// Initializes a new instance of AttachmentCollection.
@@ -63,17 +63,17 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
         /// <summary>
         /// The owner of this attachment collection.
         /// </summary>
-      ServiceObject get Owner => this.owner;
+      ServiceObject get Owner => this._owner;
 
       set Owner(ServiceObject value) {
         Item item = value as Item;
 
-//        EwsUtilities.Assert(
-//            item != null,
-//            "AttachmentCollection.IOwnedProperty.set_Owner",
-//            "value is not a descendant of ItemBase");
+        EwsUtilities.Assert(
+            item != null,
+            "AttachmentCollection.IOwnedProperty.set_Owner",
+            "value is not a descendant of ItemBase");
 
-        this.owner = item;
+        this._owner = item;
       }
 
         /// <summary>
@@ -111,7 +111,7 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
         /// <returns>A FileAttachment instance.</returns>
  FileAttachment AddFileAttachmentWithStream(String name, Stream contentStream)
         {
-            FileAttachment fileAttachment = new FileAttachment.withOwner(this.owner);
+            FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
             fileAttachment.Name = name;
             fileAttachment.ContentStream = contentStream;
 
@@ -128,7 +128,7 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
         /// <returns>A FileAttachment instance.</returns>
  FileAttachment AddFileAttachmentWithContent(String name, Uint8List content)
         {
-            FileAttachment fileAttachment = new FileAttachment.withOwner(this.owner);
+            FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
             fileAttachment.Name = name;
             fileAttachment.Content = content;
 
@@ -225,11 +225,11 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
             switch (xmlElementName)
             {
                 case XmlElementNames.FileAttachment:
-                    return new FileAttachment.withOwner(this.owner);
+                    return new FileAttachment.withOwner(this._owner);
                 case XmlElementNames.ItemAttachment:
-                    return new ItemAttachment.withOwner(this.owner);
+                    return new ItemAttachment.withOwner(this._owner);
                 case XmlElementNames.ReferenceAttachment:
-                    return new ReferenceAttachment.withOwner(this.owner);
+                    return new ReferenceAttachment.withOwner(this._owner);
                 default:
                     return null;
             }
@@ -293,13 +293,13 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
             // If there are any, create them by calling the CreateAttachment web method.
             if (attachments.length > 0)
             {
-                if (this.owner.IsAttachment)
+                if (this._owner.IsAttachment)
                 {
-                    await this.InternalCreateAttachments(this.owner.ParentAttachment.Id, attachments);
+                    await this.InternalCreateAttachments(this._owner.ParentAttachment.Id, attachments);
                 }
                 else
                 {
-                  await this.InternalCreateAttachments(this.owner.Id.UniqueId, attachments);
+                  await this.InternalCreateAttachments(this._owner.Id.UniqueId, attachments);
                 }
             }
 
@@ -395,7 +395,7 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
                     //
                     // The IsNew check is to still let CreateAttachmentRequest allow multiple IsContactPhoto attachments.
                     //
-                    if (this.owner.IsNew && this.owner.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010_SP2.index)
+                    if (this._owner.IsNew && this._owner.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010_SP2.index)
                     {
                         FileAttachment fileAttachment = attachment as FileAttachment;
 
@@ -421,7 +421,7 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
         /// <param name="attachments">The attachments to delete.</param>
         /* private */ Future<void> InternalDeleteAttachments(Iterable<Attachment> attachments) async
         {
-            ServiceResponseCollection<DeleteAttachmentResponse> responses = await this.owner.Service.DeleteAttachments(attachments);
+            ServiceResponseCollection<DeleteAttachmentResponse> responses = await this._owner.Service.DeleteAttachments(attachments);
 
             for (DeleteAttachmentResponse response in responses)
             {
@@ -447,7 +447,7 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
         /// <param name="attachments">The attachments to create.</param>
         /* private */ Future<void> InternalCreateAttachments(String parentItemId, Iterable<Attachment> attachments) async
         {
-            ServiceResponseCollection<CreateAttachmentResponse> responses = await this.owner.Service.CreateAttachments(parentItemId, attachments);
+            ServiceResponseCollection<CreateAttachmentResponse> responses = await this._owner.Service.CreateAttachments(parentItemId, attachments);
 
             for (CreateAttachmentResponse response in responses)
             {
