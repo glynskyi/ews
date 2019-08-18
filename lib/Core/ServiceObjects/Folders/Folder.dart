@@ -200,17 +200,17 @@ class Folder extends ServiceObject {
       AffectedTaskOccurrence affectedTaskOccurrences) {
     this.ThrowIfThisIsNew();
 
-    this.Service.DeleteFolder(this.Id, deleteMode);
+    return this.Service.DeleteFolder(this.Id, deleteMode);
   }
 
   /// <summary>
   /// Deletes the folder. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="deleteMode">Deletion mode.</param>
-// void Delete(DeleteMode deleteMode)
-//        {
-//            this.InternalDelete(deleteMode, null, null);
-//        }
+  Future<void> Delete(DeleteMode deleteMode)
+        {
+            return this.InternalDelete(deleteMode, null, null);
+        }
 
   /// <summary>
   /// Empties the folder. Calling this method results in a call to EWS.
@@ -280,16 +280,16 @@ class Folder extends ServiceObject {
   /// <summary>
   /// Applies the local changes that have been made to this folder. Calling this method results in a call to EWS.
   /// </summary>
-// void Update()
-//        {
-//            if (this.IsDirty)
-//            {
-//                if (this.PropertyBag.GetIsUpdateCallNecessary())
-//                {
-//                    this.Service.UpdateFolder(this);
-//                }
-//            }
-//        }
+ Future<void> Update() async
+        {
+            if (this.IsDirty)
+            {
+                if (this.PropertyBag.GetIsUpdateCallNecessary())
+                {
+                    this.Service.UpdateFolder(this);
+                }
+            }
+        }
 
   /// <summary>
   /// Copies this folder into a specific folder. Calling this method results in a call to EWS.

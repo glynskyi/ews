@@ -9,7 +9,8 @@ main() {
     final primaryExchangeService = prepareExchangeService(primaryUserCredential);
     final secondExchangeService = prepareExchangeService(secondaryUserCredential);
 
-    FolderPermission reviewerPermission = new FolderPermission.withSmtpAddress(secondaryUserCredential.user, FolderPermissionLevel.Reviewer);
+    FolderPermission reviewerPermission = new FolderPermission.withSmtpAddress(
+        secondaryUserCredential.user, FolderPermissionLevel.Reviewer);
 
     final primaryFolder = Folder(primaryExchangeService);
     primaryFolder.DisplayName = Uuid.randomUuid().toString();
@@ -17,6 +18,8 @@ main() {
     await primaryFolder.Save(FolderId.fromWellKnownFolder(WellKnownFolderName.Notes));
 
     await Folder.Bind(secondExchangeService, primaryFolder.Id);
+
+    await primaryFolder.Delete(DeleteMode.HardDelete);
   });
 
   test('reads shared folder as unknown', () async {
@@ -27,6 +30,9 @@ main() {
     primaryFolder.DisplayName = Uuid.randomUuid().toString();
     await primaryFolder.Save(FolderId.fromWellKnownFolder(WellKnownFolderName.Notes));
 
-    expect(Folder.Bind(secondExchangeService, primaryFolder.Id), throwsA(const TypeMatcher<ServiceResponseException>()));
+    expect(Folder.Bind(secondExchangeService, primaryFolder.Id),
+        throwsA(const TypeMatcher<ServiceResponseException>()));
+
+    await primaryFolder.Delete(DeleteMode.HardDelete);
   });
 }

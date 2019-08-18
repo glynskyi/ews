@@ -20,6 +20,8 @@ void main() {
     final folder = new Folder(service);
     folder.DisplayName = "test-${Uuid.randomUuid()}";
     await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
+
+    await folder.Delete(DeleteMode.HardDelete);
   });
 
   test('creates a folder with duplicate name', () async {
@@ -33,6 +35,8 @@ void main() {
     secondFolder.DisplayName = duplicateName;
     expect(secondFolder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes),
         throwsA(TypeMatcher<ServiceResponseException>()));
+
+    await firstFolder.Delete(DeleteMode.HardDelete);
   });
 
   test('searchs folder', () async {
@@ -42,8 +46,8 @@ void main() {
     view.PropertySet.Add(FolderSchema.DisplayName);
     SearchFilter searchFilter = new IsGreaterThan.withPropertyAndValue(FolderSchema.TotalCount, 0);
     view.Traversal = FolderTraversal.Deep;
-    FindFoldersResults findFolderResults =
-        await service.FindFoldersWithWellKnownFolder(WellKnownFolderName.MsgFolderRoot, searchFilter, view);
+    FindFoldersResults findFolderResults = await service.FindFoldersWithWellKnownFolder(
+        WellKnownFolderName.MsgFolderRoot, searchFilter, view);
     findFolderResults.forEach((folder) {
       print(folder.DisplayName);
     });
@@ -59,8 +63,8 @@ void main() {
     view.PropertySet.Add(FolderSchema.DisplayName);
     SearchFilter searchFilter = new IsEqualTo.withPropertyAndValue(FolderSchema.TotalCount, 0);
     view.Traversal = FolderTraversal.Deep;
-    FindFoldersResults findFolderResults =
-        await service.FindFoldersWithWellKnownFolder(WellKnownFolderName.MsgFolderRoot, searchFilter, view);
+    FindFoldersResults findFolderResults = await service.FindFoldersWithWellKnownFolder(
+        WellKnownFolderName.MsgFolderRoot, searchFilter, view);
 //    findFolderResults.forEach((folder) {
 //      print(folder.DisplayName);
 //      folder.ExtendedProperties.forEach((prop) {

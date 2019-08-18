@@ -20,6 +20,8 @@ void main() {
     task.SetExtendedProperty(AssigneeName, "mail@domain.com");
     task.SetExtendedProperty(AssigneeMail, "FirstName LastName");
     await task.Save();
+
+    await task.Delete(DeleteMode.HardDelete);
   });
 
   test('updates task with extended properties', () async {
@@ -32,6 +34,8 @@ void main() {
     Task updatedTask = await Task.BindWithItemId(service, task.Id);
     updatedTask.SetExtendedProperty(AssigneeName, "mail@domain.com");
     updatedTask.SetExtendedProperty(AssigneeMail, "FirstName LastName");
-    await task.Update(ConflictResolutionMode.AlwaysOverwrite);
+    await updatedTask.Update(ConflictResolutionMode.AlwaysOverwrite);
+
+    await updatedTask.Delete(DeleteMode.HardDelete);
   });
 }

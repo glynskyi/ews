@@ -23,6 +23,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'dart:core';
+import 'dart:core' as core;
 import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
@@ -49,7 +51,7 @@ abstract class Attachment extends ComplexProperty {
   String _contentId;
   String _contentLocation;
   int _size;
-  DateTime _lastModifiedTime;
+  core.DateTime _lastModifiedTime;
   bool _isInline;
   ExchangeService _service;
 
@@ -177,14 +179,14 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Gets the date and time when this attachment was last modified.
   /// </summary>
-  DateTime get LastModifiedTime {
+  core.DateTime get LastModifiedTime {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "LastModifiedTime");
 
     return this._lastModifiedTime;
   }
 
-  set DateTime(DateTime value) {
+  set DateTime(core.DateTime value) {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "LastModifiedTime");
 

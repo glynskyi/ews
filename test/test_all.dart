@@ -8,6 +8,7 @@ import 'test_trace_logs.dart' as test_trace_logs;
 import 'test_item_crud.dart' as test_item_crud;
 import 'test_extended_properties.dart' as test_extended_properties;
 import 'test_appointment_crud.dart' as test_appointment_crud;
+import 'test_auth.dart' as test_auth;
 
 void main() {
   group("folder crud", test_folder_crud.main);
@@ -18,4 +19,5 @@ void main() {
   group("item crud", test_item_crud.main);
   group("extended properties", test_extended_properties.main);
   group("appointment crud", test_appointment_crud.main);
+  group("auth", test_auth.main);
 }

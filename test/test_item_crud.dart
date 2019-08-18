@@ -23,6 +23,8 @@ main() {
     taskItem.Recurrence.NumberOfOccurrences = 5;
 
     await taskItem.SaveWithWellKnownFolderName(WellKnownFolderName.Tasks);
+
+    await taskItem.Delete(DeleteMode.HardDelete);
   });
 
   test('updates email message', () async {
