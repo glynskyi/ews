@@ -1,3 +1,8 @@
+## 0.0.9
+* Fixed the equals operators
+* Added the `ResolveName` function
+* Added the `FindItems` function
+
 ## 0.0.8
 
 * Fixed the appointment CRUD operations
