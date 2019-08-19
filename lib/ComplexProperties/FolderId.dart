@@ -171,23 +171,23 @@ class FolderId extends ServiceId {
   /// </returns>
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
-  bool Equals(Object obj) {
+  bool operator ==(obj) {
     if (identical(this, obj)) {
       return true;
     } else {
-      FolderId other = obj as FolderId;
+      FolderId other = obj is FolderId ? obj : null;
 
       if (other == null) {
         return false;
       } else if (this.FolderName != null) {
         if (other.FolderName != null && this.FolderName == other.FolderName) {
           if (this.Mailbox != null) {
-            return this.Mailbox.Equals(other.Mailbox);
+            return this.Mailbox == other.Mailbox;
           } else if (other.Mailbox == null) {
             return true;
           }
         }
-      } else if (super.Equals(other)) {
+      } else if (super == other) {
         return true;
       }
 

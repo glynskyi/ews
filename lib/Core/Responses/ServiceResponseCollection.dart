@@ -25,6 +25,7 @@
 
 import 'dart:collection';
 
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Enumerations/ServiceResult.dart';
 
@@ -34,12 +35,11 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 /// <typeparam name="TResponse">The type of response stored in the list.</typeparam>
 //    [Serializable]
 class ServiceResponseCollection<TResponse extends ServiceResponse>
-    with IterableMixin<TResponse> implements Iterable<TResponse> {
-  /* private */
-  List<TResponse> responses = new List<TResponse>();
+    with IterableMixin<TResponse>
+    implements Iterable<TResponse> {
+  List<TResponse> _responses = new List<TResponse>();
 
-  /* private */
-  ServiceResult overallResult = ServiceResult.Success;
+  ServiceResult _overallResult = ServiceResult.Success;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServiceResponseCollection&lt;TResponse&gt;"/> class.
@@ -51,40 +51,33 @@ class ServiceResponseCollection<TResponse extends ServiceResponse>
   /// </summary>
   /// <param name="response">The response.</param>
   void Add(TResponse response) {
-//            EwsUtilities.Assert(
-//                response != null,
-//                "EwsResponseList.Add",
-//                "response is null");
+    EwsUtilities.Assert(
+        response != null, "EwsResponseList.Add", "response is null");
 
-    if (response.Result.index > this.overallResult.index) {
-      this.overallResult = response.Result;
+    if (response.Result.index > this._overallResult.index) {
+      this._overallResult = response.Result;
     }
 
-    this.responses.add(response);
+    this._responses.add(response);
   }
 
   /// <summary>
   /// Gets the total number of responses in the list.
   /// </summary>
-  int get Count => this.responses.length;
+  int get Count => this._responses.length;
 
   /// <summary>
   /// Gets the response at the specified index.
   /// </summary>
   /// <param name="index">The zero-based index of the response to get.</param>
   /// <returns>The response at the specified index.</returns>
-// TResponse this[int index]
-//        {
-//            get
-//            {
-//                if (index < 0 || index >= this.Count)
-//                {
-//                    throw new ArgumentOutOfRangeException("index", Strings.IndexIsOutOfRange);
-//                }
-//
-//                return this.responses[index];
-//            }
-//        }
+  operator [](int index) {
+    if (index < 0 || index >= this.Count) {
+      throw new RangeError.value(index, "index", "Strings.IndexIsOutOfRange");
+    }
+
+    return this._responses[index];
+  }
 
   /// <summary>
   /// Gets a value indicating the overall result of the request that generated this response collection.
@@ -93,27 +86,12 @@ class ServiceResponseCollection<TResponse extends ServiceResponse>
   /// property set to Success, OverallResult returns Warning. If at least one response has a its Result set to
   /// Error, OverallResult returns Error.
   /// </summary>
-  ServiceResult get OverallResult => this.overallResult;
+  ServiceResult get OverallResult => this._overallResult;
 
   /// <summary>
   /// Gets an enumerator that iterates through the elements of the collection.
   /// </summary>
   /// <returns>An IEnumerator for the collection.</returns>
   @override
-  Iterator<TResponse> get iterator => this.responses.iterator;
-// IEnumerator<TResponse> GetEnumerator()
-//        {
-//            return this.responses.GetEnumerator();
-//        }
-
-  operator [](int index) => this.elementAt(index);
-
-  /// <summary>
-  /// Gets an enumerator that iterates through the elements of the collection.
-  /// </summary>
-  /// <returns>An IEnumerator for the collection.</returns>
-//        System.Collections.IEnumerator System.Collections.Iterable.GetEnumerator()
-//        {
-//            return (this.responses as System.Collections.Iterable).GetEnumerator();
-//        }
+  Iterator<TResponse> get iterator => this._responses.iterator;
 }

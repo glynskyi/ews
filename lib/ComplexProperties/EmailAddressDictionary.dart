@@ -32,7 +32,8 @@ import 'package:ews/misc/OutParam.dart';
 /// <summary>
 /// Represents a dictionary of e-mail addresses.
 /// </summary>
-class EmailAddressDictionary extends DictionaryProperty<EmailAddressKey, EmailAddressEntry> {
+class EmailAddressDictionary
+    extends DictionaryProperty<EmailAddressKey, EmailAddressEntry> {
   /// <summary>
   /// Gets the field URI.
   /// </summary>
@@ -69,7 +70,8 @@ class EmailAddressDictionary extends DictionaryProperty<EmailAddressKey, EmailAd
         entry.EmailAddress = value;
         this.Changed();
       } else {
-        EmailAddressEntry entry = new EmailAddressEntry.withKeyAndEmail(key, value);
+        EmailAddressEntry entry =
+            new EmailAddressEntry.withKeyAndEmail(key, value);
         this.InternalAdd(entry);
       }
     }
@@ -86,7 +88,8 @@ class EmailAddressDictionary extends DictionaryProperty<EmailAddressKey, EmailAd
   /// <returns>
   /// true if the Dictionary contains an e-mail address associated with the specified key; otherwise, false.
   /// </returns>
-  bool TryGetValue(EmailAddressKey key, OutParam<EmailAddress> emailAddressOutParam) {
+  bool TryGetValue(
+      EmailAddressKey key, OutParam<EmailAddress> emailAddressOutParam) {
     if (this.Entries.containsKey(key)) {
       emailAddressOutParam.param = this.Entries[key].EmailAddress;
       return true;

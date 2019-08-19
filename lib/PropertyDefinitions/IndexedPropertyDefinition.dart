@@ -105,24 +105,13 @@ class IndexedPropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <param name="idxPropDef1">First indexed property definition.</param>
   /// <param name="idxPropDef2">Second indexed property definition.</param>
   /// <returns>True if indexed property definitions are equal.</returns>
-  bool operator ==(Object idxPropDef1) {
-    return IsEqualTo(this, idxPropDef1);
-  }
-
-  /// <summary>
-  /// Determines whether a given indexed property definition is equal to this indexed property definition.
-  /// </summary>
-  /// <param name="obj">The object to check for equality.</param>
-  /// <returns>True if the properties definitions define the same indexed property.</returns>
-  @override
-  bool Equals(Object obj) {
-    IndexedPropertyDefinition propertyDefinition = obj as IndexedPropertyDefinition;
-    return IndexedPropertyDefinition.IsEqualTo(propertyDefinition, this);
+  bool operator ==(other) {
+    return other is IndexedPropertyDefinition && IsEqualTo(this, other);
   }
 
   @override
   int get hashCode {
-    this.Uri.hashCode ^ this.Index.hashCode;
+    return this.Uri.hashCode ^ this.Index.hashCode;
   }
 
   /// <summary>

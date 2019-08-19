@@ -37,7 +37,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Exceptions/ServiceObjectPropertyException.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
-import 'package:ews/Interfaces/ICustomXmlUpdateSerializer.dart';
+import 'package:ews/Interfaces/ICustomUpdateSerializer.dart';
 import 'package:ews/Interfaces/IOwnedProperty.dart';
 import 'package:ews/Interfaces/ISelfValidate.dart';
 import 'package:ews/PropertyDefinitions/ComplexPropertyDefinitionBase.dart';
@@ -568,11 +568,11 @@ class PropertyBag {
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Updates);
 
     for (PropertyDefinition propertyDefinition in this._addedProperties) {
-      this.WriteSetUpdateToXml(writer, propertyDefinition);
+      this._WriteSetUpdateToXml(writer, propertyDefinition);
     }
 
     for (PropertyDefinition propertyDefinition in this._modifiedProperties) {
-      this.WriteSetUpdateToXml(writer, propertyDefinition);
+      this._WriteSetUpdateToXml(writer, propertyDefinition);
     }
 
     for (MapEntry<PropertyDefinition, Object> property in this._deletedProperties.entries) {
@@ -623,12 +623,11 @@ class PropertyBag {
   }
 
   /// <summary>
-  /// Writes an EWS SetUpdate opeartion for the specified property.
+  /// Writes an EWS SetUpdate operation for the specified property.
   /// </summary>
   /// <param name="writer">The writer to write the update to.</param>
   /// <param name="propertyDefinition">The property fro which to write the update.</param>
-  /* private */
-  void WriteSetUpdateToXml(EwsServiceXmlWriter writer, PropertyDefinition propertyDefinition) {
+  void _WriteSetUpdateToXml(EwsServiceXmlWriter writer, PropertyDefinition propertyDefinition) {
     // The following test should not be necessary since the property bag prevents
     // properties to be updated if they don't have the CanUpdate flag, but it
     // doesn't hurt...

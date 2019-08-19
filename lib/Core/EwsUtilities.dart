@@ -38,7 +38,9 @@ import 'package:ews/Core/ServiceObjects/ServiceObjectInfo.dart';
 import 'package:ews/Enumerations/AffectedTaskOccurrence.dart';
 import 'package:ews/Enumerations/AppointmentType.dart';
 import 'package:ews/Enumerations/BodyType.dart';
+import 'package:ews/Enumerations/ComparisonMode.dart';
 import 'package:ews/Enumerations/ConflictResolutionMode.dart';
+import 'package:ews/Enumerations/ContainmentMode.dart';
 import 'package:ews/Enumerations/ConversationQueryTraversal.dart';
 import 'package:ews/Enumerations/DefaultExtendedPropertySet.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
@@ -876,7 +878,9 @@ typedef R Converter<T,R>(T);
         ConflictResolutionMode,
         FolderPermissionLevel,
         SendInvitationsMode,
-        SendCancellationsMode
+        SendCancellationsMode,
+        ContainmentMode,
+        ComparisonMode
       ];
 
 

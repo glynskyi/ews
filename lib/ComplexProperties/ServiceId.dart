@@ -121,7 +121,7 @@ abstract class ServiceId extends ComplexProperty {
   /// </summary>
   /// <param name="other">The ServiceId to compare with the current ServiceId.</param>
   bool SameIdAndChangeKey(ServiceId other) {
-    if (this.Equals(other)) {
+    if (this == other) {
       return ((this.ChangeKey == null) && (other.ChangeKey == null)) ||
           this.ChangeKey == other.ChangeKey;
     } else {
@@ -140,11 +140,11 @@ abstract class ServiceId extends ComplexProperty {
   /// </returns>
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
-  bool Equals(Object obj) {
+  bool operator ==(obj) {
     if (identical(this, obj)) {
       return true;
     } else {
-      ServiceId other = obj as ServiceId;
+      ServiceId other = obj is ServiceId ? obj : null;
 
       if (other == null) {
         return false;

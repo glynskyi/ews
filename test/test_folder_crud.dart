@@ -9,7 +9,8 @@ void main() {
     final service = prepareExchangeService(primaryUserCredential);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Notes);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Tasks);
-    await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.MsgFolderRoot);
+    await Folder.BindWithWellKnownFolder(
+        service, WellKnownFolderName.MsgFolderRoot);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Inbox);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Calendar);
     await Folder.BindWithWellKnownFolder(service, WellKnownFolderName.Contacts);
@@ -33,8 +34,14 @@ void main() {
 
     final secondFolder = new Folder(service);
     secondFolder.DisplayName = duplicateName;
-    expect(secondFolder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes),
-        throwsA(TypeMatcher<ServiceResponseException>()));
+
+    var expectedException = null;
+    try {
+      await secondFolder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
+    } on ServiceResponseException catch(e) {
+      expectedException = e;
+    }
+    expect(expectedException, TypeMatcher<ServiceResponseException>());
 
     await firstFolder.Delete(DeleteMode.HardDelete);
   });
@@ -44,34 +51,37 @@ void main() {
     final view = new FolderView.withPageSize(100);
     view.PropertySet = new PropertySet.fromPropertySet(BasePropertySet.IdOnly);
     view.PropertySet.Add(FolderSchema.DisplayName);
-    SearchFilter searchFilter = new IsGreaterThan.withPropertyAndValue(FolderSchema.TotalCount, 0);
+    SearchFilter searchFilter =
+        new IsGreaterThan.withPropertyAndValue(FolderSchema.TotalCount, 0);
     view.Traversal = FolderTraversal.Deep;
-    FindFoldersResults findFolderResults = await service.FindFoldersWithWellKnownFolder(
-        WellKnownFolderName.MsgFolderRoot, searchFilter, view);
+    FindFoldersResults findFolderResults =
+        await service.FindFoldersWithWellKnownFolder(
+            WellKnownFolderName.MsgFolderRoot, searchFilter, view);
     findFolderResults.forEach((folder) {
-      print(folder.DisplayName);
+      expect(folder.DisplayName, isNotNull);
     });
   });
 
   test('searches folder with extended property', () async {
     final service = prepareExchangeService(primaryUserCredential);
-    final meetingsFolderProperty = ExtendedPropertyDefinition.withDefaultPropertySetAndName(
-        DefaultExtendedPropertySet.Common, "folder:meetingRoot", MapiPropertyType.Boolean);
+    final meetingsFolderProperty =
+        ExtendedPropertyDefinition.withDefaultPropertySetAndName(
+            DefaultExtendedPropertySet.Common,
+            "folder:meetingRoot",
+            MapiPropertyType.Boolean);
 
     final view = new FolderView.withPageSize(100);
-    view.PropertySet = new PropertySet.fromPropertyDefinitions([meetingsFolderProperty]);
+    view.PropertySet =
+        new PropertySet.fromPropertyDefinitions([meetingsFolderProperty]);
     view.PropertySet.Add(FolderSchema.DisplayName);
-    SearchFilter searchFilter = new IsEqualTo.withPropertyAndValue(FolderSchema.TotalCount, 0);
+    SearchFilter searchFilter =
+        new IsEqualTo.withPropertyAndValue(FolderSchema.TotalCount, 0);
     view.Traversal = FolderTraversal.Deep;
-    FindFoldersResults findFolderResults = await service.FindFoldersWithWellKnownFolder(
-        WellKnownFolderName.MsgFolderRoot, searchFilter, view);
-//    findFolderResults.forEach((folder) {
-//      print(folder.DisplayName);
-//      folder.ExtendedProperties.forEach((prop) {
-//        print(".. ${prop.PropertyDefinition} ${prop.value}");
-//      });
-//    });
-//
-//    print(findFolderResults.MoreAvailable);
+    FindFoldersResults findFolderResults =
+        await service.FindFoldersWithWellKnownFolder(
+            WellKnownFolderName.MsgFolderRoot, searchFilter, view);
+    findFolderResults.forEach((folder) {
+      expect(folder.DisplayName, isNotNull);
+    });
   });
 }

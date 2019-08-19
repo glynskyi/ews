@@ -68,21 +68,19 @@ class ExtendedProperty extends ComplexProperty {
         this._propertyDefinition.LoadFromXml(reader);
         return true;
       case XmlElementNames.Value:
-        EwsUtilities.Assert(this.PropertyDefinition != null,
-            "ExtendedProperty.TryReadElementFromXml", "PropertyDefintion is missing");
+        EwsUtilities.Assert(
+            this.PropertyDefinition != null, "ExtendedProperty.TryReadElementFromXml", "PropertyDefintion is missing");
 
         String stringValue = reader.ReadElementValue();
-        this._value = MapiTypeConverter.ConvertToValueWithStringValue(
-            this.PropertyDefinition.MapiType, stringValue);
+        this._value = MapiTypeConverter.ConvertToValueWithStringValue(this.PropertyDefinition.MapiType, stringValue);
         return true;
       case XmlElementNames.Values:
-        EwsUtilities.Assert(this.PropertyDefinition != null,
-            "ExtendedProperty.TryReadElementFromXml", "PropertyDefintion is missing");
+        EwsUtilities.Assert(
+            this.PropertyDefinition != null, "ExtendedProperty.TryReadElementFromXml", "PropertyDefintion is missing");
 
         StringList stringList = new StringList.fromElementName(XmlElementNames.Value);
         stringList.LoadFromXml(reader, reader.LocalName);
-        this._value =
-            MapiTypeConverter.ConvertToValue(this.PropertyDefinition.MapiType, stringList);
+        this._value = MapiTypeConverter.ConvertToValue(this.PropertyDefinition.MapiType, stringList);
         return true;
       default:
         return false;
@@ -98,7 +96,6 @@ class ExtendedProperty extends ComplexProperty {
     this.PropertyDefinition.WriteToXml(writer);
 
     if (MapiTypeConverter.IsArrayType(this.PropertyDefinition.MapiType)) {
-      print("!!! convert ${this._value} as list");
       List array = this.Value as List;
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Values);
       for (int index = 0; index < array.length; index++) {
@@ -135,33 +132,25 @@ class ExtendedProperty extends ComplexProperty {
   /// Gets the String value.
   /// </summary>
   /// <returns>Value as string.</returns>
-  /* private */
-  String GetStringValue() {
-    //todo("implement GetStringValue");
-    print("implement GetStringValue");
-//      if (MapiTypeConverter.IsArrayType(this.PropertyDefinition.MapiType)) {
-//        Array array = this.Value as Array;
-//        if (array == null) {
-//          return "";
-//        }
-//        else {
-//          StringBuffer sb = new StringBuffer();
-//          sb.write("[");
-//          for (int index = array.GetLowerBound(0); index <= array.GetUpperBound(0); index++) {
-//            sb.write(
-//                MapiTypeConverter.ConvertToString(
-//                    this.PropertyDefinition.MapiType,
-//                    array.GetValue(index)));
-//            sb.write(",");
-//          }
-//          sb.write("]");
-//
-//          return sb.toString();
-//        }
-//      }
-//      else {
-//        return MapiTypeConverter.ConvertToString(this.PropertyDefinition.MapiType, this.Value);
-//      }
+  String _GetStringValue() {
+    if (MapiTypeConverter.IsArrayType(this.PropertyDefinition.MapiType)) {
+      List array = this.Value as List;
+      if (array == null) {
+        return "";
+      } else {
+        StringBuffer sb = new StringBuffer();
+        sb.write("[");
+        for (int index = 0; index <= array.length; index++) {
+          sb.write(MapiTypeConverter.ConvertToString(this.PropertyDefinition.MapiType, array[index]));
+          sb.write(",");
+        }
+        sb.write("]");
+
+        return sb.toString();
+      }
+    } else {
+      return MapiTypeConverter.ConvertToString(this.PropertyDefinition.MapiType, this.Value);
+    }
   }
 
   /// <summary>
@@ -173,10 +162,10 @@ class ExtendedProperty extends ComplexProperty {
   /// </returns>
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
-  bool Equals(Object obj) {
-    ExtendedProperty other = obj as ExtendedProperty;
-    if ((other != null) && other.PropertyDefinition.Equals(this.PropertyDefinition)) {
-      return this.GetStringValue() == other.GetStringValue();
+  bool operator ==(obj) {
+    ExtendedProperty other = obj is ExtendedProperty ? obj : null;
+    if ((other != null) && other.PropertyDefinition == this.PropertyDefinition) {
+      return this._GetStringValue() == other._GetStringValue();
     } else {
       return false;
     }
@@ -184,9 +173,8 @@ class ExtendedProperty extends ComplexProperty {
 
   @override
   int get hashCode {
-    final part1 =
-        (this.PropertyDefinition != null) ? this.PropertyDefinition.GetPrintableName() : "";
-    final part2 = this.GetStringValue();
+    final part1 = (this.PropertyDefinition != null) ? this.PropertyDefinition.GetPrintableName() : "";
+    final part2 = this._GetStringValue();
     return (part1 + part2).hashCode;
   }
 }

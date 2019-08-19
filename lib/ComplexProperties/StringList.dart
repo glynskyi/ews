@@ -35,14 +35,10 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents a list of strings.
 /// </summary>
-class StringList extends ComplexProperty
-    with IterableMixin<String>
-    implements Iterable<String> {
-  /* private */
-  List<String> items = new List<String>();
+class StringList extends ComplexProperty with IterableMixin<String> implements Iterable<String> {
+  List<String> _items = new List<String>();
 
-  /* private */
-  String itemXmlElementName = XmlElementNames.String;
+  String _itemXmlElementName = XmlElementNames.String;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="StringList"/> class.
@@ -62,7 +58,7 @@ class StringList extends ComplexProperty
   /// </summary>
   /// <param name="itemXmlElementName">Name of the item XML element.</param>
   StringList.fromElementName(String itemXmlElementName) {
-    this.itemXmlElementName = itemXmlElementName;
+    this._itemXmlElementName = itemXmlElementName;
   }
 
   /// <summary>
@@ -72,7 +68,7 @@ class StringList extends ComplexProperty
   /// <returns>True if element was read.</returns>
   @override
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (reader.LocalName == this.itemXmlElementName) {
+    if (reader.LocalName == this._itemXmlElementName) {
       this.Add(reader.ReadValue());
 
       return true;
@@ -88,8 +84,8 @@ class StringList extends ComplexProperty
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     for (String item in this) {
-      writer.WriteStartElement(XmlNamespace.Types, this.itemXmlElementName);
-      writer.WriteValue(item, this.itemXmlElementName);
+      writer.WriteStartElement(XmlNamespace.Types, this._itemXmlElementName);
+      writer.WriteValue(item, this._itemXmlElementName);
       writer.WriteEndElement();
     }
   }
@@ -99,7 +95,7 @@ class StringList extends ComplexProperty
   /// </summary>
   /// <param name="s">The String to add.</param>
   void Add(String s) {
-    this.items.add(s);
+    this._items.add(s);
     this.Changed();
   }
 
@@ -112,7 +108,7 @@ class StringList extends ComplexProperty
 
     for (String s in strings) {
       if (!this.Contains(s)) {
-        this.items.add(s);
+        this._items.add(s);
         changed = true;
       }
     }
@@ -128,7 +124,7 @@ class StringList extends ComplexProperty
   /// <param name="s">The String to check the presence of.</param>
   /// <returns>True if s is present in the list, false otherwise.</returns>
   bool Contains(String s) {
-    return this.items.contains(s);
+    return this._items.contains(s);
   }
 
   /// <summary>
@@ -137,7 +133,7 @@ class StringList extends ComplexProperty
   /// <param name="s">The String to remove.</param>
   /// <returns>True is s was removed, false otherwise.</returns>
   bool Remove(String s) {
-    bool result = this.items.remove(s);
+    bool result = this._items.remove(s);
 
     if (result) {
       this.Changed();
@@ -155,7 +151,7 @@ class StringList extends ComplexProperty
       throw new RangeError.range(index, 0, this.length, "index", "Strings.IndexIsOutOfRange");
     }
 
-    this.items.removeAt(index);
+    this._items.removeAt(index);
 
     this.Changed();
   }
@@ -164,7 +160,7 @@ class StringList extends ComplexProperty
   /// Clears the list.
   /// </summary>
   void Clear() {
-    this.items.clear();
+    this._items.clear();
     this.Changed();
   }
 
@@ -174,13 +170,13 @@ class StringList extends ComplexProperty
   /// <returns>A comma-separated list of the strings present in the list.</returns>
   @override
   String toString() {
-    return this.items.join(",");
+    return this._items.join(",");
   }
 
   /// <summary>
   /// Gets the number of strings in the list.
   /// </summary>
-  int get Count => this.items.length;
+  int get Count => this._items.length;
 
   /// <summary>
   /// Gets or sets the String at the specified index.
@@ -192,7 +188,7 @@ class StringList extends ComplexProperty
       throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
-    return this.items[index];
+    return this._items[index];
   }
 
   void operator []=(int index, String value) {
@@ -200,8 +196,8 @@ class StringList extends ComplexProperty
       throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
-    if (this.items[index] != value) {
-      this.items[index] = value;
+    if (this._items[index] != value) {
+      this._items[index] = value;
       this.Changed();
     }
   }
@@ -210,21 +206,7 @@ class StringList extends ComplexProperty
   /// Gets an enumerator that iterates through the elements of the collection.
   /// </summary>
   /// <returns>An IEnumerator for the collection.</returns>
-  Iterator<String> get iterator => this.items.iterator;
-
-// IEnumerator<string> GetEnumerator()
-//        {
-//            return this.items.GetEnumerator();
-//        }
-
-  /// <summary>
-  /// Gets an enumerator that iterates through the elements of the collection.
-  /// </summary>
-  /// <returns>An IEnumerator for the collection.</returns>
-//        System.Collections.IEnumerator System.Collections.Iterable.GetEnumerator()
-//        {
-//            return this.items.GetEnumerator();
-//        }
+  Iterator<String> get iterator => this._items.iterator;
 
   /// <summary>
   /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -235,18 +217,13 @@ class StringList extends ComplexProperty
   /// </returns>
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
-  bool Equals(Object obj) {
-    StringList other = obj as StringList;
+  bool operator ==(obj) {
+    StringList other = obj is StringList ? obj : null;
     if (other != null) {
       return this.toString() == other.toString();
     } else {
       return false;
     }
-  }
-
-  @override
-  int get hashCode {
-    return this.toString().hashCode;
   }
 
   /// <summary>
@@ -255,10 +232,8 @@ class StringList extends ComplexProperty
   /// <returns>
   /// A hash code for the current <see cref="T:System.Object"/>.
   /// </returns>
-
-//@override
-// int GetHashCode()
-//        {
-//            return this.toString().GetHashCode();
-//        }
+  @override
+  int get hashCode {
+    return this.toString().hashCode;
+  }
 }

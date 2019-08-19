@@ -35,14 +35,11 @@ import 'package:ews/Search/ItemGroup.dart' as search;
 class GroupedFindItemsResults<TItem extends Item>
     with IterableMixin<search.ItemGroup<TItem>>
     implements Iterable<search.ItemGroup<TItem>> {
-  /* private */
-  int totalCount = 0;
+  int _totalCount = 0;
 
-  /* private */
-  int nextPageOffset;
+  int _nextPageOffset;
 
-  /* private */
-  bool moreAvailable = false;
+  bool _moreAvailable = false;
 
   /// <summary>
   /// List of ItemGroups.
@@ -58,24 +55,24 @@ class GroupedFindItemsResults<TItem extends Item>
   /// <summary>
   /// Gets the total number of items matching the search criteria available in the searched folder.
   /// </summary>
-  int get TotalCount => this.totalCount;
+  int get TotalCount => this._totalCount;
 
-  set TotalCount(int value) => this.totalCount = value;
+  set TotalCount(int value) => this._totalCount = value;
 
   /// <summary>
   /// Gets the offset that should be used with ItemView to retrieve the next page of items in a FindItems operation.
   /// </summary>
-  int get NextPageOffset => this.nextPageOffset;
+  int get NextPageOffset => this._nextPageOffset;
 
-  set NextPageOffset(int value) => this.nextPageOffset = value;
+  set NextPageOffset(int value) => this._nextPageOffset = value;
 
   /// <summary>
   /// Gets a value indicating whether more items corresponding to the search criteria
   /// are available in the searched folder.
   /// </summary>
-  bool get MoreAvailable => this.moreAvailable;
+  bool get MoreAvailable => this._moreAvailable;
 
-  set MoreAvailable(bool value) => this.moreAvailable = value;
+  set MoreAvailable(bool value) => this._moreAvailable = value;
 
   /// <summary>
   /// Gets the item groups returned by the search operation.

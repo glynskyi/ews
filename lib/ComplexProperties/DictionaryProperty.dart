@@ -31,7 +31,7 @@ import 'package:ews/Core/ServiceObjects/ServiceObject.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:ews/Interfaces/ICustomXmlUpdateSerializer.dart';
+import 'package:ews/Interfaces/ICustomUpdateSerializer.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 
 /// <summary>

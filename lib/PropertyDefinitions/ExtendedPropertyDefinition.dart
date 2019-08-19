@@ -232,17 +232,6 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   }
 
   /// <summary>
-  /// Determines whether a given extended property definition is equal to this extended property definition.
-  /// </summary>
-  /// <param name="obj">The object to check for equality.</param>
-  /// <returns>True if the properties definitions define the same extended property.</returns>
-  @override
-  bool Equals(Object obj) {
-    ExtendedPropertyDefinition propertyDefinition = obj as ExtendedPropertyDefinition;
-    return ExtendedPropertyDefinition.IsEqualTo(propertyDefinition, this);
-  }
-
-  /// <summary>
   /// Serves as a hash function for a particular type.
   /// </summary>
   /// <returns>

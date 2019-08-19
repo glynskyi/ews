@@ -139,11 +139,11 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
   /// </returns>
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
-  bool Equals(Object obj) {
+  bool operator ==(obj) {
     if (identical(this, obj)) {
       return true;
     } else {
-      Mailbox other = obj as Mailbox;
+      Mailbox other = obj is Mailbox ? obj : null;
 
       if (other == null) {
         return false;

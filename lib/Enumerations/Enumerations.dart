@@ -34,7 +34,6 @@ export 'EffectiveRights.dart';
 export 'ElcFolderType.dart';
 export 'EmailAddressKey.dart';
 export 'EmailPosition.dart';
-export 'Enumerations.dart';
 export 'EventType.dart';
 export 'ExchangeVersion.dart';
 export 'ExtensionInstallScope.dart';
