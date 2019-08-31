@@ -13,5 +13,6 @@ ExchangeService prepareExchangeService(WebCredentials credentials) {
   return ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
     ..Url = Uri.parse("https://outlook.office365.com/ews/exchange.asmx")
     ..Credentials = credentials
-    ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse];
+    ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse]
+    ..TraceEnabled = true;
 }

@@ -306,8 +306,8 @@ abstract class Attachment extends ComplexProperty {
   /// </summary>
   /// <param name="bodyType">Type of the body.</param>
   /// <param name="additionalProperties">The additional properties.</param>
-  void InternalLoad(BodyType bodyType, Iterable<PropertyDefinitionBase> additionalProperties) {
-    this._service.GetAttachment(this, bodyType, additionalProperties);
+  Future<void> InternalLoad(BodyType bodyType, Iterable<PropertyDefinitionBase> additionalProperties) {
+    return this._service.GetAttachment(this, bodyType, additionalProperties);
   }
 
   /// <summary>
@@ -319,7 +319,7 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Loads the attachment. Calling this method results in a call to EWS.
   /// </summary>
-  void Load() {
-    this.InternalLoad(null, null);
+  Future<void> Load() {
+    return this.InternalLoad(null, null);
   }
 }

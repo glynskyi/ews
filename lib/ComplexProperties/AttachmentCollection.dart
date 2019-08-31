@@ -45,53 +45,49 @@ import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/Interfaces/IOwnedProperty.dart';
 
 /// <summary>
-    /// Represents an item's attachment collection.
-    /// </summary>
-  class AttachmentCollection extends ComplexPropertyCollection<Attachment> implements IOwnedProperty
-    {
-        /// <summary>
-        /// The item owner that owns this attachment collection
-        /// </summary>
-        Item _owner;
+/// Represents an item's attachment collection.
+/// </summary>
+class AttachmentCollection extends ComplexPropertyCollection<Attachment> implements IOwnedProperty {
+  /// <summary>
+  /// The item owner that owns this attachment collection
+  /// </summary>
+  Item _owner;
 
-        /// <summary>
-        /// Initializes a new instance of AttachmentCollection.
-        /// </summary>
-        AttachmentCollection()
-            : super();
+  /// <summary>
+  /// Initializes a new instance of AttachmentCollection.
+  /// </summary>
+  AttachmentCollection() : super();
 
-        /// <summary>
-        /// The owner of this attachment collection.
-        /// </summary>
-      ServiceObject get Owner => this._owner;
+  /// <summary>
+  /// The owner of this attachment collection.
+  /// </summary>
+  ServiceObject get Owner => this._owner;
 
-      set Owner(ServiceObject value) {
-        Item item = value as Item;
+  set Owner(ServiceObject value) {
+    Item item = value as Item;
 
-        EwsUtilities.Assert(
-            item != null,
-            "AttachmentCollection.IOwnedProperty.set_Owner",
-            "value is not a descendant of ItemBase");
+    EwsUtilities.Assert(item != null, "AttachmentCollection.IOwnedProperty.set_Owner",
+        "value is not a descendant of ItemBase");
 
-        this._owner = item;
-      }
+    this._owner = item;
+  }
 
-        /// <summary>
-        /// Adds a file attachment to the collection.
-        /// </summary>
-        /// <param name="fileName">The name of the file representing the content of the attachment.</param>
-        /// <returns>A FileAttachment instance.</returns>
+  /// <summary>
+  /// Adds a file attachment to the collection.
+  /// </summary>
+  /// <param name="fileName">The name of the file representing the content of the attachment.</param>
+  /// <returns>A FileAttachment instance.</returns>
 // FileAttachment AddFileAttachment(String fileName)
 //        {
 //            return this.AddFileAttachment(Path.GetFileName(fileName), fileName);
 //        }
 
-        /// <summary>
-        /// Adds a file attachment to the collection.
-        /// </summary>
-        /// <param name="name">The display name of the new attachment.</param>
-        /// <param name="fileName">The name of the file representing the content of the attachment.</param>
-        /// <returns>A FileAttachment instance.</returns>
+  /// <summary>
+  /// Adds a file attachment to the collection.
+  /// </summary>
+  /// <param name="name">The display name of the new attachment.</param>
+  /// <param name="fileName">The name of the file representing the content of the attachment.</param>
+  /// <returns>A FileAttachment instance.</returns>
 // FileAttachment AddFileAttachment(String name, String fileName)
 //        {
 //            FileAttachment fileAttachment = new FileAttachment.withOwner(this.owner);
@@ -103,46 +99,44 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
 //            return fileAttachment;
 //        }
 
-        /// <summary>
-        /// Adds a file attachment to the collection.
-        /// </summary>
-        /// <param name="name">The display name of the new attachment.</param>
-        /// <param name="contentStream">The stream from which to read the content of the attachment.</param>
-        /// <returns>A FileAttachment instance.</returns>
- FileAttachment AddFileAttachmentWithStream(String name, Stream contentStream)
-        {
-            FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
-            fileAttachment.Name = name;
-            fileAttachment.ContentStream = contentStream;
+  /// <summary>
+  /// Adds a file attachment to the collection.
+  /// </summary>
+  /// <param name="name">The display name of the new attachment.</param>
+  /// <param name="contentStream">The stream from which to read the content of the attachment.</param>
+  /// <returns>A FileAttachment instance.</returns>
+  FileAttachment AddFileAttachmentWithStream(String name, Stream contentStream) {
+    FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
+    fileAttachment.Name = name;
+    fileAttachment.ContentStream = contentStream;
 
-            this.InternalAdd(fileAttachment);
+    this.InternalAdd(fileAttachment);
 
-            return fileAttachment;
-        }
+    return fileAttachment;
+  }
 
-        /// <summary>
-        /// Adds a file attachment to the collection.
-        /// </summary>
-        /// <param name="name">The display name of the new attachment.</param>
-        /// <param name="content">A byte arrays representing the content of the attachment.</param>
-        /// <returns>A FileAttachment instance.</returns>
- FileAttachment AddFileAttachmentWithContent(String name, Uint8List content)
-        {
-            FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
-            fileAttachment.Name = name;
-            fileAttachment.Content = content;
+  /// <summary>
+  /// Adds a file attachment to the collection.
+  /// </summary>
+  /// <param name="name">The display name of the new attachment.</param>
+  /// <param name="content">A byte arrays representing the content of the attachment.</param>
+  /// <returns>A FileAttachment instance.</returns>
+  FileAttachment AddFileAttachmentWithContent(String name, Uint8List content) {
+    FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
+    fileAttachment.Name = name;
+    fileAttachment.Content = content;
 
-            this.InternalAdd(fileAttachment);
+    this.InternalAdd(fileAttachment);
 
-            return fileAttachment;
-        }
+    return fileAttachment;
+  }
 
-        /// <summary>
-        /// Adds a reference attachment to the collection
-        /// </summary>
-        /// <param name="name">The display name of the new attachment.</param>
-        /// <param name="attachLongPathName">The fully-qualified path identifying the attachment</param>
-        /// <returns>A ReferenceAttachment instance</returns>
+  /// <summary>
+  /// Adds a reference attachment to the collection
+  /// </summary>
+  /// <param name="name">The display name of the new attachment.</param>
+  /// <param name="attachLongPathName">The fully-qualified path identifying the attachment</param>
+  /// <returns>A ReferenceAttachment instance</returns>
 // ReferenceAttachment AddReferenceAttachment(
 //            String name,
 //            String attachLongPathName)
@@ -157,11 +151,11 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
 //            return referenceAttachment;
 //        }
 
-        /// <summary>
-        /// Adds an item attachment to the collection
-        /// </summary>
-        /// <typeparam name="TItem">The type of the item to attach.</typeparam>
-        /// <returns>An ItemAttachment instance.</returns>
+  /// <summary>
+  /// Adds an item attachment to the collection
+  /// </summary>
+  /// <typeparam name="TItem">The type of the item to attach.</typeparam>
+  /// <returns>An ItemAttachment instance.</returns>
 // ItemAttachment<TItem> AddItemAttachment<TItem extends Item>()
 //        {
 //            if (typeof(TItem).GetCustomAttributes(typeof(AttachableAttribute), false).Length == 0)
@@ -180,295 +174,253 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
 //            return itemAttachment;
 //        }
 
-        /// <summary>
-        /// Removes all attachments from this collection.
-        /// </summary>
- void Clear()
-        {
-            this.InternalClear();
-        }
+  /// <summary>
+  /// Removes all attachments from this collection.
+  /// </summary>
+  void Clear() {
+    this.InternalClear();
+  }
 
-        /// <summary>
-        /// Removes the attachment at the specified index.
-        /// </summary>
-        /// <param name="index">Index of the attachment to remove.</param>
- void RemoveAt(int index)
-        {
-            if (index < 0 || index >= this.Count)
-            {
-                throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
-            }
-
-            this.InternalRemoveAt(index);
-        }
-
-        /// <summary>
-        /// Removes the specified attachment.
-        /// </summary>
-        /// <param name="attachment">The attachment to remove.</param>
-        /// <returns>True if the attachment was successfully removed from the collection, false otherwise.</returns>
- bool Remove(Attachment attachment)
-        {
-            EwsUtilities.ValidateParam(attachment, "attachment");
-
-            return this.InternalRemove(attachment);
-        }
-
-        /// <summary>
-        /// Instantiate the appropriate attachment type depending on the current XML element name.
-        /// </summary>
-        /// <param name="xmlElementName">The XML element name from which to determine the type of attachment to create.</param>
-        /// <returns>An Attachment instance.</returns>
-@override
-        Attachment CreateComplexProperty(String xmlElementName)
-        {
-            switch (xmlElementName)
-            {
-                case XmlElementNames.FileAttachment:
-                    return new FileAttachment.withOwner(this._owner);
-                case XmlElementNames.ItemAttachment:
-                    return new ItemAttachment.withOwner(this._owner);
-                case XmlElementNames.ReferenceAttachment:
-                    return new ReferenceAttachment.withOwner(this._owner);
-                default:
-                    return null;
-            }
-        }
-
-        /// <summary>
-        /// Determines the name of the XML element associated with the complexProperty parameter.
-        /// </summary>
-        /// <param name="complexProperty">The attachment object for which to determine the XML element name with.</param>
-        /// <returns>The XML element name associated with the complexProperty parameter.</returns>
-@override
-        String GetCollectionItemXmlElementName(Attachment complexProperty)
-        {
-            if (complexProperty is FileAttachment)
-            {
-                return XmlElementNames.FileAttachment;
-            }
-            else if (complexProperty is ReferenceAttachment)
-            {
-                return XmlElementNames.ReferenceAttachment;
-            }
-            else
-            {
-                return XmlElementNames.ItemAttachment;
-            }
-        }
-
-        /// <summary>
-        /// Saves this collection by creating new attachment and deleting removed ones.
-        /// </summary>
-        Future<void> Save() async
-        {
-            List<Attachment> attachments = new List<Attachment>();
-
-            // Retrieve a list of attachments that have to be deleted.
-            for (Attachment attachment in this.RemovedItems)
-            {
-                if (!attachment.IsNew)
-                {
-                    attachments.add(attachment);
-                }
-            }
-
-            // If any, delete them by calling the DeleteAttachment web method.
-            if (attachments.length > 0)
-            {
-                await this.InternalDeleteAttachments(attachments);
-            }
-
-            attachments.clear();
-
-            // Retrieve a list of attachments that have to be created.
-            for (Attachment attachment in this)
-            {
-                if (attachment.IsNew)
-                {
-                    attachments.add(attachment);
-                }
-            }
-
-            // If there are any, create them by calling the CreateAttachment web method.
-            if (attachments.length > 0)
-            {
-                if (this._owner.IsAttachment)
-                {
-                    await this.InternalCreateAttachments(this._owner.ParentAttachment.Id, attachments);
-                }
-                else
-                {
-                  await this.InternalCreateAttachments(this._owner.Id.UniqueId, attachments);
-                }
-            }
-
-            // Process all of the item attachments in this collection.
-            for (Attachment attachment in this)
-            {
-                ItemAttachment itemAttachment = attachment as ItemAttachment;
-                if (itemAttachment != null)
-                {
-                    // Make sure item was created/loaded before trying to create/delete sub-attachments
-                    if (itemAttachment.Item != null)
-                    {
-                        // Create/delete any sub-attachments
-                        await itemAttachment.Item.Attachments.Save();
-
-                        // Clear the item's change log
-                        itemAttachment.Item.ClearChangeLog();
-                    }
-                }
-            }
-
-            super.ClearChangeLog();
-        }
-
-        /// <summary>
-        /// Determines whether there are any unsaved attachment collection changes.
-        /// </summary>
-        /// <returns>True if attachment adds or deletes haven't been processed yet.</returns>
-        bool HasUnprocessedChanges()
-        {
-            // Any new attachments?
-            for (Attachment attachment in this)
-            {
-                if (attachment.IsNew)
-                {
-                    return true;
-                }
-            }
-
-            // Any pending deletions?
-            for (Attachment attachment in this.RemovedItems)
-            {
-                if (!attachment.IsNew)
-                {
-                    return true;
-                }
-            }
-
-            // Recurse: process item attachments to check for new or deleted sub-attachments.
-            for (ItemAttachment itemAttachment in this.OfType<ItemAttachment>())
-            {
-                if (itemAttachment.Item != null)
-                {
-                    if (itemAttachment.Item.Attachments.HasUnprocessedChanges())
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Disables the change log clearing mechanism. Attachment collections are saved separately
-        /// from the items they belong to.
-        /// </summary>
-@override
-        void ClearChangeLog()
-        {
-            // Do nothing
-        }
-
-        /// <summary>
-        /// Validates this instance.
-        /// </summary>
-        void Validate()
-        {
-            // Validate all added attachments
-            bool contactPhotoFound = false;
-
-            for (int attachmentIndex = 0; attachmentIndex < this.AddedItems.length; attachmentIndex++)
-            {
-                Attachment attachment = this.AddedItems[attachmentIndex];
-                if (attachment.IsNew)
-                {
-                    // At the server side, only the last attachment with IsContactPhoto is kept, all other IsContactPhoto
-                    // attachments are removed. CreateAttachment will generate AttachmentId for each of such attachments (although
-                    // only the last one is valid).
-                    //
-                    // With E14 SP2 CreateItemWithAttachment, such request will only return 1 AttachmentId; but the client
-                    // expects to see all, so let us prevent such "invalid" request in the first place.
-                    //
-                    // The IsNew check is to still let CreateAttachmentRequest allow multiple IsContactPhoto attachments.
-                    //
-                    if (this._owner.IsNew && this._owner.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010_SP2.index)
-                    {
-                        FileAttachment fileAttachment = attachment as FileAttachment;
-
-                        if (fileAttachment != null && fileAttachment.IsContactPhoto)
-                        {
-                            if (contactPhotoFound)
-                            {
-                                throw new ServiceValidationException("Strings.MultipleContactPhotosInAttachment");
-                            }
-
-                            contactPhotoFound = true;
-                        }
-                    }
-
-                    attachment.ValidateWithIndex(attachmentIndex);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Calls the DeleteAttachment web method to delete a list of attachments.
-        /// </summary>
-        /// <param name="attachments">The attachments to delete.</param>
-        /* private */ Future<void> InternalDeleteAttachments(Iterable<Attachment> attachments) async
-        {
-            ServiceResponseCollection<DeleteAttachmentResponse> responses = await this._owner.Service.DeleteAttachments(attachments);
-
-            for (DeleteAttachmentResponse response in responses)
-            {
-                // We remove all attachments that were successfully deleted from the change log. We should never
-                // receive a warning from EWS, so we ignore them.
-                if (response.Result != ServiceResult.Error)
-                {
-                    this.RemoveFromChangeLog(response.Attachment);
-                }
-            }
-
-            // TODO : Should we throw for warnings as well?
-            if (responses.OverallResult == ServiceResult.Error)
-            {
-                throw new DeleteAttachmentException(responses, "Strings.AtLeastOneAttachmentCouldNotBeDeleted");
-            }
-        }
-
-        /// <summary>
-        /// Calls the CreateAttachment web method to create a list of attachments.
-        /// </summary>
-        /// <param name="parentItemId">The Id of the parent item of the new attachments.</param>
-        /// <param name="attachments">The attachments to create.</param>
-        /* private */ Future<void> InternalCreateAttachments(String parentItemId, Iterable<Attachment> attachments) async
-        {
-            ServiceResponseCollection<CreateAttachmentResponse> responses = await this._owner.Service.CreateAttachments(parentItemId, attachments);
-
-            for (CreateAttachmentResponse response in responses)
-            {
-                // We remove all attachments that were successfully created from the change log. We should never
-                // receive a warning from EWS, so we ignore them.
-                if (response.Result != ServiceResult.Error)
-                {
-                    this.RemoveFromChangeLog(response.Attachment);
-                }
-            }
-
-            // TODO : Should we throw for warnings as well?
-            if (responses.OverallResult == ServiceResult.Error)
-            {
-                throw new CreateAttachmentException(responses, "Strings.AttachmentCreationFailed");
-            }
-        }
-
-        List<T> OfType<T extends Attachment>() {
-          return this.where((attachment) => attachment is T)
-              .map((attachment) => attachment as T)
-              .toList();
-        }
+  /// <summary>
+  /// Removes the attachment at the specified index.
+  /// </summary>
+  /// <param name="index">Index of the attachment to remove.</param>
+  void RemoveAt(int index) {
+    if (index < 0 || index >= this.Count) {
+      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
+
+    this.InternalRemoveAt(index);
+  }
+
+  /// <summary>
+  /// Removes the specified attachment.
+  /// </summary>
+  /// <param name="attachment">The attachment to remove.</param>
+  /// <returns>True if the attachment was successfully removed from the collection, false otherwise.</returns>
+  bool Remove(Attachment attachment) {
+    EwsUtilities.ValidateParam(attachment, "attachment");
+
+    return this.InternalRemove(attachment);
+  }
+
+  /// <summary>
+  /// Instantiate the appropriate attachment type depending on the current XML element name.
+  /// </summary>
+  /// <param name="xmlElementName">The XML element name from which to determine the type of attachment to create.</param>
+  /// <returns>An Attachment instance.</returns>
+  @override
+  Attachment CreateComplexProperty(String xmlElementName) {
+    switch (xmlElementName) {
+      case XmlElementNames.FileAttachment:
+        return new FileAttachment.withOwner(this._owner);
+      case XmlElementNames.ItemAttachment:
+        return new ItemAttachment.withOwner(this._owner);
+      case XmlElementNames.ReferenceAttachment:
+        return new ReferenceAttachment.withOwner(this._owner);
+      default:
+        return null;
+    }
+  }
+
+  /// <summary>
+  /// Determines the name of the XML element associated with the complexProperty parameter.
+  /// </summary>
+  /// <param name="complexProperty">The attachment object for which to determine the XML element name with.</param>
+  /// <returns>The XML element name associated with the complexProperty parameter.</returns>
+  @override
+  String GetCollectionItemXmlElementName(Attachment complexProperty) {
+    if (complexProperty is FileAttachment) {
+      return XmlElementNames.FileAttachment;
+    } else if (complexProperty is ReferenceAttachment) {
+      return XmlElementNames.ReferenceAttachment;
+    } else {
+      return XmlElementNames.ItemAttachment;
+    }
+  }
+
+  /// <summary>
+  /// Saves this collection by creating new attachment and deleting removed ones.
+  /// </summary>
+  Future<void> Save() async {
+    List<Attachment> attachments = new List<Attachment>();
+
+    // Retrieve a list of attachments that have to be deleted.
+    for (Attachment attachment in this.RemovedItems) {
+      if (!attachment.IsNew) {
+        attachments.add(attachment);
+      }
+    }
+
+    // If any, delete them by calling the DeleteAttachment web method.
+    if (attachments.length > 0) {
+      await this._InternalDeleteAttachments(attachments);
+    }
+
+    attachments.clear();
+
+    // Retrieve a list of attachments that have to be created.
+    for (Attachment attachment in this) {
+      if (attachment.IsNew) {
+        attachments.add(attachment);
+      }
+    }
+
+    // If there are any, create them by calling the CreateAttachment web method.
+    if (attachments.length > 0) {
+      if (this._owner.IsAttachment) {
+        await this._InternalCreateAttachments(this._owner.ParentAttachment.Id, attachments);
+      } else {
+        await this._InternalCreateAttachments(this._owner.Id.UniqueId, attachments);
+      }
+    }
+
+    // Process all of the item attachments in this collection.
+    for (Attachment attachment in this) {
+      if (attachment is ItemAttachment) {
+        // Make sure item was created/loaded before trying to create/delete sub-attachments
+        if (attachment.Item != null) {
+          // Create/delete any sub-attachments
+          await attachment.Item.Attachments.Save();
+
+          // Clear the item's change log
+          attachment.Item.ClearChangeLog();
+        }
+      }
+    }
+
+    super.ClearChangeLog();
+  }
+
+  /// <summary>
+  /// Determines whether there are any unsaved attachment collection changes.
+  /// </summary>
+  /// <returns>True if attachment adds or deletes haven't been processed yet.</returns>
+  bool HasUnprocessedChanges() {
+    // Any new attachments?
+    for (Attachment attachment in this) {
+      if (attachment.IsNew) {
+        return true;
+      }
+    }
+
+    // Any pending deletions?
+    for (Attachment attachment in this.RemovedItems) {
+      if (!attachment.IsNew) {
+        return true;
+      }
+    }
+
+    // Recurse: process item attachments to check for new or deleted sub-attachments.
+    for (ItemAttachment itemAttachment in this.OfType<ItemAttachment>()) {
+      if (itemAttachment.Item != null) {
+        if (itemAttachment.Item.Attachments.HasUnprocessedChanges()) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /// <summary>
+  /// Disables the change log clearing mechanism. Attachment collections are saved separately
+  /// from the items they belong to.
+  /// </summary>
+  @override
+  void ClearChangeLog() {
+    // Do nothing
+  }
+
+  /// <summary>
+  /// Validates this instance.
+  /// </summary>
+  void Validate() {
+    // Validate all added attachments
+    bool contactPhotoFound = false;
+
+    for (int attachmentIndex = 0; attachmentIndex < this.AddedItems.length; attachmentIndex++) {
+      Attachment attachment = this.AddedItems[attachmentIndex];
+      if (attachment.IsNew) {
+        // At the server side, only the last attachment with IsContactPhoto is kept, all other IsContactPhoto
+        // attachments are removed. CreateAttachment will generate AttachmentId for each of such attachments (although
+        // only the last one is valid).
+        //
+        // With E14 SP2 CreateItemWithAttachment, such request will only return 1 AttachmentId; but the client
+        // expects to see all, so let us prevent such "invalid" request in the first place.
+        //
+        // The IsNew check is to still let CreateAttachmentRequest allow multiple IsContactPhoto attachments.
+        //
+        if (this._owner.IsNew &&
+            this._owner.Service.RequestedServerVersion.index >=
+                ExchangeVersion.Exchange2010_SP2.index) {
+          FileAttachment fileAttachment = attachment as FileAttachment;
+
+          if (fileAttachment != null && fileAttachment.IsContactPhoto) {
+            if (contactPhotoFound) {
+              throw new ServiceValidationException("Strings.MultipleContactPhotosInAttachment");
+            }
+
+            contactPhotoFound = true;
+          }
+        }
+
+        attachment.ValidateWithIndex(attachmentIndex);
+      }
+    }
+  }
+
+  /// <summary>
+  /// Calls the DeleteAttachment web method to delete a list of attachments.
+  /// </summary>
+  /// <param name="attachments">The attachments to delete.</param>
+  Future<void> _InternalDeleteAttachments(Iterable<Attachment> attachments) async {
+    ServiceResponseCollection<DeleteAttachmentResponse> responses =
+        await this._owner.Service.DeleteAttachments(attachments);
+
+    for (DeleteAttachmentResponse response in responses) {
+      // We remove all attachments that were successfully deleted from the change log. We should never
+      // receive a warning from EWS, so we ignore them.
+      if (response.Result != ServiceResult.Error) {
+        this.RemoveFromChangeLog(response.Attachment);
+      }
+    }
+
+    // TODO : Should we throw for warnings as well?
+    if (responses.OverallResult == ServiceResult.Error) {
+      throw new DeleteAttachmentException(
+          responses, "Strings.AtLeastOneAttachmentCouldNotBeDeleted");
+    }
+  }
+
+  /// <summary>
+  /// Calls the CreateAttachment web method to create a list of attachments.
+  /// </summary>
+  /// <param name="parentItemId">The Id of the parent item of the new attachments.</param>
+  /// <param name="attachments">The attachments to create.</param>
+  Future<void> _InternalCreateAttachments(
+      String parentItemId, Iterable<Attachment> attachments) async {
+    ServiceResponseCollection<CreateAttachmentResponse> responses =
+        await this._owner.Service.CreateAttachments(parentItemId, attachments);
+
+    for (CreateAttachmentResponse response in responses) {
+      // We remove all attachments that were successfully created from the change log. We should never
+      // receive a warning from EWS, so we ignore them.
+      if (response.Result != ServiceResult.Error) {
+        this.RemoveFromChangeLog(response.Attachment);
+      }
+    }
+
+    // TODO : Should we throw for warnings as well?
+    if (responses.OverallResult == ServiceResult.Error) {
+      throw new CreateAttachmentException(responses, "Strings.AttachmentCreationFailed");
+    }
+  }
+
+  List<T> OfType<T extends Attachment>() {
+    return this
+        .where((attachment) => attachment is T)
+        .map((attachment) => attachment as T)
+        .toList();
+  }
+}

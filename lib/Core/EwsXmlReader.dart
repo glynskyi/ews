@@ -359,8 +359,9 @@ class EwsXmlReader {
   /// Reads the base64 element value.
   /// </summary>
   /// <param name="outputStream">The output stream.</param>
-// void ReadBase64ElementValue(Stream outputStream)
-//        {
+  void ReadBase64ElementValueWithStream(Stream outputStream)
+        {
+          throw UnimplementedError("ReadBase64ElementValueWithStream");
 //            this.EnsureCurrentNodeIsStartElement();
 //
 //            Uint8List buffer = new byte[ReadWriteBufferSize];
@@ -378,7 +379,7 @@ class EwsXmlReader {
 //            while (bytesRead > 0);
 //
 //            outputStream.Flush();
-//        }
+        }
 
   /// <summary>
   /// Reads the start element.

@@ -82,6 +82,7 @@ import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+import 'package:ews/Interfaces/IFileAttachmentContentHandler.dart';
 import 'package:ews/Notifications/StreamingSubscription.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 import 'package:ews/Search/Filters/SearchFilter.dart';
@@ -114,7 +115,8 @@ class ExchangeService extends ExchangeServiceBase {
 //        ImpersonatedUserId impersonatedUserId;
 //        PrivilegedUserId privilegedUserId;
 //        ManagementRoles managementRoles;
-//        IFileAttachmentContentHandler fileAttachmentContentHandler;
+  IFileAttachmentContentHandler _fileAttachmentContentHandler;
+
 //        UnifiedMessaging unifiedMessaging;
   bool _enableScpLookup = true;
   bool _traceEnablePrettyPrinting = true;
@@ -921,20 +923,22 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="queryString">the search string to be used for indexed search, if any.</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndView(FolderId parentFolderId, String queryString, ViewBase view) async
-        {
-            EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
+  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndView(
+      FolderId parentFolderId, String queryString, ViewBase view) async {
+    EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
 
-            ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-                [ parentFolderId ],
-                null, /* searchFilter */
-                queryString,
-                view,
-                null,   /* groupBy */
-                ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
+        [parentFolderId],
+        null,
+        /* searchFilter */
+        queryString,
+        view,
+        null,
+        /* groupBy */
+        ServiceErrorHandling.ThrowOnError);
 
-            return responses[0].Results;
-        }
+    return responses[0].Results;
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder.
@@ -946,26 +950,27 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="returnHighlightTerms">Flag indicating if highlight terms should be returned in the response</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndHighlightAndView(FolderId parentFolderId, String queryString, bool returnHighlightTerms, ViewBase view) async
-        {
-            List<FolderId> parentFolderIds = [ parentFolderId ];
+  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndHighlightAndView(
+      FolderId parentFolderId, String queryString, bool returnHighlightTerms, ViewBase view) async {
+    List<FolderId> parentFolderIds = [parentFolderId];
 
-            EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
-            EwsUtilities.ValidateParam(view, "view");
-            EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
-            EwsUtilities.ValidateParamAllowNull(returnHighlightTerms, "returnHighlightTerms");
-            EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2013, "FindItems");
+    EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
+    EwsUtilities.ValidateParam(view, "view");
+    EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
+    EwsUtilities.ValidateParamAllowNull(returnHighlightTerms, "returnHighlightTerms");
+    EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2013, "FindItems");
 
-            FindItemRequest<Item> request = new FindItemRequest<Item>(this, ServiceErrorHandling.ThrowOnError);
+    FindItemRequest<Item> request =
+        new FindItemRequest<Item>(this, ServiceErrorHandling.ThrowOnError);
 
-            request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
-            request.QueryString = queryString;
-            request.ReturnHighlightTerms = returnHighlightTerms;
-            request.View = view;
+    request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
+    request.QueryString = queryString;
+    request.ReturnHighlightTerms = returnHighlightTerms;
+    request.View = view;
 
-            ServiceResponseCollection<FindItemResponse<Item>> responses = await request.Execute();
-            return responses[0].Results;
-        }
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await request.Execute();
+    return responses[0].Results;
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder.
@@ -978,28 +983,33 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-    Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndHighlightAndViewAndGrouping(FolderId parentFolderId, String queryString, bool returnHighlightTerms, ViewBase view, Grouping groupBy) async
-        {
-            List<FolderId> parentFolderIds = [ parentFolderId ];
+  Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndHighlightAndViewAndGrouping(
+      FolderId parentFolderId,
+      String queryString,
+      bool returnHighlightTerms,
+      ViewBase view,
+      Grouping groupBy) async {
+    List<FolderId> parentFolderIds = [parentFolderId];
 
-            EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
-            EwsUtilities.ValidateParam(view, "view");
-            EwsUtilities.ValidateParam(groupBy, "groupBy");
-            EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
-            EwsUtilities.ValidateParamAllowNull(returnHighlightTerms, "returnHighlightTerms");
-            EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2013, "FindItems");
+    EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
+    EwsUtilities.ValidateParam(view, "view");
+    EwsUtilities.ValidateParam(groupBy, "groupBy");
+    EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
+    EwsUtilities.ValidateParamAllowNull(returnHighlightTerms, "returnHighlightTerms");
+    EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2013, "FindItems");
 
-            FindItemRequest<Item> request = new FindItemRequest<Item>(this, ServiceErrorHandling.ThrowOnError);
+    FindItemRequest<Item> request =
+        new FindItemRequest<Item>(this, ServiceErrorHandling.ThrowOnError);
 
-            request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
-            request.QueryString = queryString;
-            request.ReturnHighlightTerms = returnHighlightTerms;
-            request.View = view;
-            request.GroupBy = groupBy;
+    request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
+    request.QueryString = queryString;
+    request.ReturnHighlightTerms = returnHighlightTerms;
+    request.View = view;
+    request.GroupBy = groupBy;
 
-            ServiceResponseCollection<FindItemResponse<Item>> responses = await request.Execute();
-            return responses[0].GroupedFindResults;
-        }
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await request.Execute();
+    return responses[0].GroupedFindResults;
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1010,20 +1020,22 @@ class ExchangeService extends ExchangeServiceBase {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndFilterAndView(FolderId parentFolderId, SearchFilter searchFilter, ViewBase view) async
-        {
-            EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
+  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndFilterAndView(
+      FolderId parentFolderId, SearchFilter searchFilter, ViewBase view) async {
+    EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-            ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-                [ parentFolderId ],
-                searchFilter,
-                null, /* queryString */
-                view,
-                null,   /* groupBy */
-                ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
+        [parentFolderId],
+        searchFilter,
+        null,
+        /* queryString */
+        view,
+        null,
+        /* groupBy */
+        ServiceErrorHandling.ThrowOnError);
 
-            return responses[0].Results;
-        }
+    return responses[0].Results;
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1031,18 +1043,21 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="parentFolderId">The Id of the folder in which to search for items.</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndView(FolderId parentFolderId, ViewBase view) async
-        {
-            ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-                [ parentFolderId ],
-                null, /* searchFilter */
-                null, /* queryString */
-                view,
-                null, /* groupBy */
-                ServiceErrorHandling.ThrowOnError);
+  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndView(
+      FolderId parentFolderId, ViewBase view) async {
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
+        [parentFolderId],
+        null,
+        /* searchFilter */
+        null,
+        /* queryString */
+        view,
+        null,
+        /* groupBy */
+        ServiceErrorHandling.ThrowOnError);
 
-            return responses[0].Results;
-        }
+    return responses[0].Results;
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1051,10 +1066,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="queryString">query string to be used for indexed search</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellKnownFolderName parentFolderName, String queryString, ViewBase view)
-        {
-            return this.FindItemsWithFolderIdAndQueryAndView(new FolderId.fromWellKnownFolder(parentFolderName), queryString, view);
-        }
+  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(
+      WellKnownFolderName parentFolderName, String queryString, ViewBase view) {
+    return this.FindItemsWithFolderIdAndQueryAndView(
+        new FolderId.fromWellKnownFolder(parentFolderName), queryString, view);
+  }
 
   /// <summary>
   /// Obtains a list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1065,12 +1081,10 @@ Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellK
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndFilterAndView(WellKnownFolderName parentFolderName, SearchFilter searchFilter, ViewBase view)
-  {
-      return this.FindItemsWithFolderIdAndFilterAndView(
-          new FolderId.fromWellKnownFolder(parentFolderName),
-          searchFilter,
-          view);
+  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndFilterAndView(
+      WellKnownFolderName parentFolderName, SearchFilter searchFilter, ViewBase view) {
+    return this.FindItemsWithFolderIdAndFilterAndView(
+        new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view);
   }
 
   /// <summary>
@@ -1079,12 +1093,10 @@ Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellK
   /// <param name="parentFolderName">The name of the folder in which to search for items.</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndView(WellKnownFolderName parentFolderName, ViewBase view)
-  {
-      return this.FindItemsWithFolderIdAndFilterAndView(
-          new FolderId.fromWellKnownFolder(parentFolderName),
-          null,
-          view);
+  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndView(
+      WellKnownFolderName parentFolderName, ViewBase view) {
+    return this.FindItemsWithFolderIdAndFilterAndView(
+        new FolderId.fromWellKnownFolder(parentFolderName), null, view);
   }
 
   /// <summary>
@@ -1096,23 +1108,20 @@ Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellK
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
   Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndViewAndGrouping(
-            FolderId parentFolderId,
-            String queryString,
-            ViewBase view,
-            Grouping groupBy) async
-  {
-      EwsUtilities.ValidateParam(groupBy, "groupBy");
-      EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
+      FolderId parentFolderId, String queryString, ViewBase view, Grouping groupBy) async {
+    EwsUtilities.ValidateParam(groupBy, "groupBy");
+    EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
 
-      ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-          [ parentFolderId ],
-          null, /* searchFilter */
-          queryString,
-          view,
-          groupBy,
-          ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
+        [parentFolderId],
+        null,
+        /* searchFilter */
+        queryString,
+        view,
+        groupBy,
+        ServiceErrorHandling.ThrowOnError);
 
-      return responses[0].GroupedFindResults;
+    return responses[0].GroupedFindResults;
   }
 
   /// <summary>
@@ -1126,23 +1135,20 @@ Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellK
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
   Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndFilterAndViewAndGrouping(
-            FolderId parentFolderId,
-            SearchFilter searchFilter,
-            ViewBase view,
-            Grouping groupBy) async
-  {
-      EwsUtilities.ValidateParam(groupBy, "groupBy");
-      EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
+      FolderId parentFolderId, SearchFilter searchFilter, ViewBase view, Grouping groupBy) async {
+    EwsUtilities.ValidateParam(groupBy, "groupBy");
+    EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-      ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-          [ parentFolderId ],
-          searchFilter,
-          null, /* queryString */
-          view,
-          groupBy,
-          ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
+        [parentFolderId],
+        searchFilter,
+        null,
+        /* queryString */
+        view,
+        groupBy,
+        ServiceErrorHandling.ThrowOnError);
 
-      return responses[0].GroupedFindResults;
+    return responses[0].GroupedFindResults;
   }
 
   /// <summary>
@@ -1153,22 +1159,21 @@ Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellK
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
   Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndViewAndGrouping(
-            FolderId parentFolderId,
-            ViewBase view,
-            Grouping groupBy) async
-        {
-            EwsUtilities.ValidateParam(groupBy, "groupBy");
+      FolderId parentFolderId, ViewBase view, Grouping groupBy) async {
+    EwsUtilities.ValidateParam(groupBy, "groupBy");
 
-            ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-                [ parentFolderId ],
-                null, /* searchFilter */
-                null, /* queryString */
-                view,
-                groupBy,
-                ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
+        [parentFolderId],
+        null,
+        /* searchFilter */
+        null,
+        /* queryString */
+        view,
+        groupBy,
+        ServiceErrorHandling.ThrowOnError);
 
-            return responses[0].GroupedFindResults;
-        }
+    return responses[0].GroupedFindResults;
+  }
 
   /// <summary>
   /// Obtains a grouped list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1205,20 +1210,13 @@ Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(WellK
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A collection of grouped items representing the contents of the specified.</returns>
-Future<GroupedFindItemsResults<Item>> FindItems(
-            WellKnownFolderName parentFolderName,
-            String queryString,
-            ViewBase view,
-            Grouping groupBy)
-        {
-            EwsUtilities.ValidateParam(groupBy, "groupBy");
+  Future<GroupedFindItemsResults<Item>> FindItems(
+      WellKnownFolderName parentFolderName, String queryString, ViewBase view, Grouping groupBy) {
+    EwsUtilities.ValidateParam(groupBy, "groupBy");
 
-            return this.FindItemsWithFolderIdAndQueryAndViewAndGrouping(
-                new FolderId.fromWellKnownFolder(parentFolderName),
-                queryString,
-                view,
-                groupBy);
-        }
+    return this.FindItemsWithFolderIdAndQueryAndViewAndGrouping(
+        new FolderId.fromWellKnownFolder(parentFolderName), queryString, view, groupBy);
+  }
 
   /// <summary>
   /// Obtains a grouped list of items by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1231,17 +1229,13 @@ Future<GroupedFindItemsResults<Item>> FindItems(
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A collection of grouped items representing the contents of the specified.</returns>
   Future<GroupedFindItemsResults<Item>> FindItemsWithWellKnownFolderAndFilterAndViewAndGrouping(
-            WellKnownFolderName parentFolderName,
-            SearchFilter searchFilter,
-            ViewBase view,
-            Grouping groupBy)
-        {
-            return this.FindItemsWithFolderIdAndFilterAndViewAndGrouping(
-                new FolderId.fromWellKnownFolder(parentFolderName),
-                searchFilter,
-                view,
-                groupBy);
-        }
+      WellKnownFolderName parentFolderName,
+      SearchFilter searchFilter,
+      ViewBase view,
+      Grouping groupBy) {
+    return this.FindItemsWithFolderIdAndFilterAndViewAndGrouping(
+        new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view, groupBy);
+  }
 
   /// <summary>
   /// Obtains a list of appointments by searching the contents of a specific folder. Calling this method results in a call to EWS.
@@ -1279,16 +1273,14 @@ Future<GroupedFindItemsResults<Item>> FindItems(
   /// <param name="items">The items to load the properties of.</param>
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified items.</returns>
-Future<ServiceResponseCollection<ServiceResponse>> LoadPropertiesForItems(Iterable<Item> items, PropertySet propertySet)
-        {
-            EwsUtilities.ValidateParamCollection(items, "items");
-            EwsUtilities.ValidateParam(propertySet, "propertySet");
+  Future<ServiceResponseCollection<ServiceResponse>> LoadPropertiesForItems(
+      Iterable<Item> items, PropertySet propertySet) {
+    EwsUtilities.ValidateParamCollection(items, "items");
+    EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-            return this.InternalLoadPropertiesForItems(
-                items,
-                propertySet,
-                ServiceErrorHandling.ReturnErrors);
-        }
+    return this
+        .InternalLoadPropertiesForItems(items, propertySet, ServiceErrorHandling.ReturnErrors);
+  }
 
   /// <summary>
   /// Loads the properties of multiple items in a single call to EWS.
@@ -1867,9 +1859,9 @@ Future<ServiceResponseCollection<ServiceResponse>> LoadPropertiesForItems(Iterab
   /// <param name="attachment">The attachment.</param>
   /// <param name="bodyType">Type of the body.</param>
   /// <param name="additionalProperties">The additional properties.</param>
-  void GetAttachment(Attachment attachment, BodyType bodyType,
+  Future<void> GetAttachment(Attachment attachment, BodyType bodyType,
       Iterable<PropertyDefinitionBase> additionalProperties) {
-    this.InternalGetAttachments(
+    return this.InternalGetAttachments(
         [attachment], bodyType, additionalProperties, ServiceErrorHandling.ThrowOnError);
   }
 
@@ -1911,13 +1903,10 @@ Future<ServiceResponseCollection<ServiceResponse>> LoadPropertiesForItems(Iterab
   /// </summary>
   /// <param name="nameToResolve">The name to resolve.</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
-Future<NameResolutionCollection> ResolveNameSimple(String nameToResolve)
-        {
-            return this.ResolveNameWithSearchScopeAndDetails(
-                nameToResolve,
-                ResolveNameSearchLocation.ContactsThenDirectory,
-                false);
-        }
+  Future<NameResolutionCollection> ResolveNameSimple(String nameToResolve) {
+    return this.ResolveNameWithSearchScopeAndDetails(
+        nameToResolve, ResolveNameSearchLocation.ContactsThenDirectory, false);
+  }
 
   /// <summary>
   /// Finds contacts in the Global Address List and/or in specific contact folders that have names
@@ -1928,19 +1917,13 @@ Future<NameResolutionCollection> ResolveNameSimple(String nameToResolve)
   /// <param name="searchScope">The scope of the search.</param>
   /// <param name="returnContactDetails">Indicates whether full contact information should be returned for each of the found contacts.</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
-Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetails(
-            String nameToResolve,
-            Iterable<FolderId> parentFolderIds,
-            ResolveNameSearchLocation searchScope,
-            bool returnContactDetails)
-        {
-            return ResolveName(
-                nameToResolve,
-                parentFolderIds,
-                searchScope,
-                returnContactDetails,
-                null);
-        }
+  Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetails(
+      String nameToResolve,
+      Iterable<FolderId> parentFolderIds,
+      ResolveNameSearchLocation searchScope,
+      bool returnContactDetails) {
+    return ResolveName(nameToResolve, parentFolderIds, searchScope, returnContactDetails, null);
+  }
 
   /// <summary>
   /// Finds contacts in the Global Address List and/or in specific contact folders that have names
@@ -1953,33 +1936,30 @@ Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetail
   /// <param name="contactDataPropertySet">The property set for the contct details</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
   Future<NameResolutionCollection> ResolveName(
-            String nameToResolve,
-            Iterable<FolderId> parentFolderIds,
-            ResolveNameSearchLocation searchScope,
-            bool returnContactDetails,
-            PropertySet contactDataPropertySet) async
-        {
-            if (contactDataPropertySet != null)
-            {
-                EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2010_SP1, "ResolveName");
-            }
+      String nameToResolve,
+      Iterable<FolderId> parentFolderIds,
+      ResolveNameSearchLocation searchScope,
+      bool returnContactDetails,
+      PropertySet contactDataPropertySet) async {
+    if (contactDataPropertySet != null) {
+      EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2010_SP1, "ResolveName");
+    }
 
-            EwsUtilities.ValidateParam(nameToResolve, "nameToResolve");
-            if (parentFolderIds != null)
-            {
-                EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
-            }
+    EwsUtilities.ValidateParam(nameToResolve, "nameToResolve");
+    if (parentFolderIds != null) {
+      EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
+    }
 
-            ResolveNamesRequest request = new ResolveNamesRequest(this);
+    ResolveNamesRequest request = new ResolveNamesRequest(this);
 
-            request.NameToResolve = nameToResolve;
-            request.ReturnFullContactData = returnContactDetails;
-            request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
-            request.SearchLocation = searchScope;
-            request.ContactDataPropertySet = contactDataPropertySet;
+    request.NameToResolve = nameToResolve;
+    request.ReturnFullContactData = returnContactDetails;
+    request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
+    request.SearchLocation = searchScope;
+    request.ContactDataPropertySet = contactDataPropertySet;
 
-            return (await request.Execute())[0].Resolutions;
-        }
+    return (await request.Execute())[0].Resolutions;
+  }
 
   /// <summary>
   /// Finds contacts in the Global Address List that have names that match the one passed as a parameter.
@@ -1991,18 +1971,13 @@ Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetail
   /// <param name="contactDataPropertySet">Propety set for contact details</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
   Future<NameResolutionCollection> ResolveNameWithSearchScopeAndDetailsAndPropertySet(
-            String nameToResolve,
-            ResolveNameSearchLocation searchScope,
-            bool returnContactDetails,
-            PropertySet contactDataPropertySet)
-        {
-            return this.ResolveName(
-                nameToResolve,
-                null,
-                searchScope,
-                returnContactDetails,
-                contactDataPropertySet);
-        }
+      String nameToResolve,
+      ResolveNameSearchLocation searchScope,
+      bool returnContactDetails,
+      PropertySet contactDataPropertySet) {
+    return this.ResolveName(
+        nameToResolve, null, searchScope, returnContactDetails, contactDataPropertySet);
+  }
 
   /// <summary>
   /// Finds contacts in the Global Address List that have names that match the one passed as a parameter.
@@ -2013,16 +1988,10 @@ Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetail
   /// <param name="returnContactDetails">Indicates whether full contact information should be returned for each of the found contacts.</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
   Future<NameResolutionCollection> ResolveNameWithSearchScopeAndDetails(
-            String nameToResolve,
-            ResolveNameSearchLocation searchScope,
-            bool returnContactDetails)
-        {
-            return this.ResolveNameWithFolderIdsAndSearchScopeAndDetails(
-                nameToResolve,
-                null,
-                searchScope,
-                returnContactDetails);
-        }
+      String nameToResolve, ResolveNameSearchLocation searchScope, bool returnContactDetails) {
+    return this.ResolveNameWithFolderIdsAndSearchScopeAndDetails(
+        nameToResolve, null, searchScope, returnContactDetails);
+  }
 
   /// <summary>
   /// Expands a group by retrieving a list of its members. Calling this method results in a call to EWS.
@@ -5651,11 +5620,11 @@ Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetail
   /// <summary>
   /// Gets or sets a file attachment content handler.
   /// </summary>
-//IFileAttachmentContentHandler FileAttachmentContentHandler
-//        {
-//            get { return this.fileAttachmentContentHandler; }
-//            set { this.fileAttachmentContentHandler = value; }
-//        }
+  IFileAttachmentContentHandler get FileAttachmentContentHandler =>
+      this._fileAttachmentContentHandler;
+
+  set FileAttachmentContentHandler(IFileAttachmentContentHandler value) =>
+      this._fileAttachmentContentHandler = value;
 
   /// <summary>
   /// Gets the time zone this service is scoped to.

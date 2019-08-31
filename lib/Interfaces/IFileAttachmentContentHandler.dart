@@ -23,22 +23,17 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'dart:typed_data';
 
-
-
-
-
-
-    /// <summary>
-    /// Defines a file attachment content handler. Application can implement IFileAttachmentContentHandler
-    /// to provide a stream in which the content of file attachment should be written.
-    /// </summary>
- abstract class IFileAttachmentContentHandler
-    {
-        /// <summary>
-        /// Provides a stream to which the content of the attachment with the specified Id should be written.
-        /// </summary>
-        /// <param name="attachmentId">The Id of the attachment that is being loaded.</param>
-        /// <returns>A Stream to which the content of the attachment will be written.</returns>
-        Stream GetOutputStream(String attachmentId);
-    }
+/// <summary>
+/// Defines a file attachment content handler. Application can implement IFileAttachmentContentHandler
+/// to provide a stream in which the content of file attachment should be written.
+/// </summary>
+abstract class IFileAttachmentContentHandler {
+  /// <summary>
+  /// Provides a stream to which the content of the attachment with the specified Id should be written.
+  /// </summary>
+  /// <param name="attachmentId">The Id of the attachment that is being loaded.</param>
+  /// <returns>A Stream to which the content of the attachment will be written.</returns>
+  Stream<Int8List> GetOutputStream(String attachmentId);
+}
