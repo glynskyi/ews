@@ -1,3 +1,6 @@
+## 0.0.10
+* Added `EmailAddress` to `Contact`
+
 ## 0.0.9
 * Fixed the equals operators
 * Added the `ResolveName` function
