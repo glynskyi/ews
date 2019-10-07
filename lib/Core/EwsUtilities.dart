@@ -44,6 +44,7 @@ import 'package:ews/Enumerations/ContainmentMode.dart';
 import 'package:ews/Enumerations/ConversationQueryTraversal.dart';
 import 'package:ews/Enumerations/DefaultExtendedPropertySet.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
+import 'package:ews/Enumerations/EmailAddressKey.dart';
 import 'package:ews/Enumerations/EventType.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/FileAsMapping.dart';
@@ -880,7 +881,8 @@ typedef R Converter<T,R>(T);
         SendInvitationsMode,
         SendCancellationsMode,
         ContainmentMode,
-        ComparisonMode
+        ComparisonMode,
+        EmailAddressKey
       ];
 
 

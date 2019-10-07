@@ -24,11 +24,11 @@ main() {
         [ContactSchema.DisplayName, ContactSchema.EmailAddress1]);
 
     // Retrieve the items in the Contacts folder that have the properties that you selected.
-    SearchFilter filter =
-        ContainsSubString.withPropertyAndValue(ContactSchema.DisplayName, "qa1");
-    ServiceResponseCollection<FindItemResponse<Contact>> response = await exchangeService
-        .FindItemsGeneric(
-        [contactsFolder.Id], null, null, view, null, ServiceErrorHandling.ThrowOnError);
+    SearchFilter filter = ContainsSubString.withPropertyAndValue(
+        ContactSchema.DisplayName, "qa1");
+    ServiceResponseCollection<FindItemResponse<Contact>> response =
+        await exchangeService.FindItemsGeneric([contactsFolder.Id], null, null,
+            view, null, ServiceErrorHandling.ThrowOnError);
 
     response.first.Results.Items.forEach((contact) {
       expect(contact.DisplayName, isNotNull);
@@ -41,5 +41,16 @@ main() {
     result.forEach((nameResolution) {
       print(nameResolution.Mailbox.Address);
     });
+  });
+
+  test('creates contact', () async {
+    final exchangeService = prepareExchangeService(primaryUserCredential);
+    final contact = Contact(exchangeService);
+    contact.GivenName = "GivenName";
+    contact.Surname = "Surname";
+    contact.EmailAddresses[EmailAddressKey.EmailAddress1] =
+        EmailAddress(smtpAddress: "test@gmail.com");
+    await contact.Save();
+    await contact.Delete(DeleteMode.HardDelete);
   });
 }
