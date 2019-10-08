@@ -852,6 +852,7 @@ typedef R Converter<T,R>(T);
           FolderPermissionLevel: (stringValue) => EnumToString.fromString(FolderPermissionLevel.values, stringValue),
           EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
           PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
+          PhysicalAddressKey: (stringValue) => EnumToString.fromString(PhysicalAddressKey.values, stringValue),
       };
 
         static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
@@ -887,6 +888,7 @@ typedef R Converter<T,R>(T);
         ComparisonMode,
         EmailAddressKey,
         PhoneNumberKey,
+        PhysicalAddressKey
       ];
 
 

@@ -34,6 +34,7 @@ import 'package:ews/ComplexProperties/FileAttachment.dart';
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
 import 'package:ews/ComplexProperties/PhoneNumberDictionary.dart';
+import 'package:ews/ComplexProperties/PhysicalAddressDictionary.dart';
 import 'package:ews/ComplexProperties/StringList.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
@@ -303,7 +304,7 @@ class Contact extends Item {
   /// Gets an indexed list of physical addresses for the contact. For example, to set the business address,
   /// use the following syntax: PhysicalAddresses[PhysicalAddressKey.Business] = new PhysicalAddressEntry()
   /// </summary>
-//        PhysicalAddressDictionary get PhysicalAddresses => this.PropertyBag[ContactSchema.PhysicalAddresses];
+  PhysicalAddressDictionary get PhysicalAddresses => this.PropertyBag[ContactSchema.PhysicalAddresses];
 
   /// <summary>
   /// Gets an indexed list of phone numbers for the contact. For example, to set the home phone number,

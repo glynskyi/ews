@@ -28,6 +28,7 @@ import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/EmailAddressDictionary.dart';
 import 'package:ews/ComplexProperties/PhoneNumberDictionary.dart';
+import 'package:ews/ComplexProperties/PhysicalAddressDictionary.dart';
 import 'package:ews/ComplexProperties/StringList.dart';
 import 'package:ews/Core/ServiceObjects/Schemas/ItemSchema.dart';
 import 'package:ews/Core/XmlElementNames.dart';
@@ -251,13 +252,18 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the PhysicalAddresses property.
   /// </summary>
-// static PropertyDefinition PhysicalAddresses =
-//            new ComplexPropertyDefinition<PhysicalAddressDictionary>(
-//                XmlElementNames.PhysicalAddresses,
-//                ContactSchemaFieldUris.PhysicalAddresses,
-//                [PropertyDefinitionFlags.AutoInstantiateOnRead, PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate],
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new PhysicalAddressDictionary(); });
+  static PropertyDefinition PhysicalAddresses =
+      new ComplexPropertyDefinition<PhysicalAddressDictionary>.withUriAndFlags(
+          XmlElementNames.PhysicalAddresses,
+          _ContactSchemaFieldUris.PhysicalAddresses,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new PhysicalAddressDictionary();
+  });
 
   /// <summary>
   /// Defines the PhoneNumbers property.
@@ -936,7 +942,7 @@ class ContactSchema extends ItemSchema {
     this.RegisterProperty(CompleteName);
     this.RegisterProperty(CompanyName);
     this.RegisterProperty(EmailAddresses);
-//            this.RegisterProperty(PhysicalAddresses);
+    this.RegisterProperty(PhysicalAddresses);
     this.RegisterProperty(PhoneNumbers);
     this.RegisterProperty(AssistantName);
     this.RegisterProperty(Birthday);

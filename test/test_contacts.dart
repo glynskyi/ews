@@ -1,3 +1,4 @@
+import 'package:ews/ComplexProperties/PhysicalAddressEntry.dart';
 import 'package:ews/Core/Responses/FindItemResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
 import 'package:ews/ews.dart';
@@ -52,6 +53,10 @@ main() {
         EmailAddress(smtpAddress: "test@gmail.com");
     contact.PhoneNumbers[PhoneNumberKey.BusinessPhone] = "093 76-71-0111";
     contact.PhoneNumbers[PhoneNumberKey.MobilePhone] = "093 76-71-0222";
+    contact.PhysicalAddresses[PhysicalAddressKey.Home] = PhysicalAddressEntry()
+      ..CountryOrRegion = "Ukraine"
+      ..City = "Kharkiv"
+      ..Street = "Hrushevsky 23";
     await contact.Save();
     await contact.Delete(DeleteMode.HardDelete);
   });
