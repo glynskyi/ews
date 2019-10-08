@@ -33,6 +33,7 @@ import 'package:ews/ComplexProperties/EmailAddressDictionary.dart';
 import 'package:ews/ComplexProperties/FileAttachment.dart';
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
+import 'package:ews/ComplexProperties/PhoneNumberDictionary.dart';
 import 'package:ews/ComplexProperties/StringList.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
@@ -308,7 +309,7 @@ class Contact extends Item {
   /// Gets an indexed list of phone numbers for the contact. For example, to set the home phone number,
   /// use the following syntax: PhoneNumbers[PhoneNumberKey.HomePhone] = "phone number"
   /// </summary>
-//        PhoneNumberDictionary get PhoneNumbers => this.PropertyBag[ContactSchema.PhoneNumbers];
+  PhoneNumberDictionary get PhoneNumbers => this.PropertyBag[ContactSchema.PhoneNumbers];
 
   /// <summary>
   /// Gets or sets the contact's assistant name.

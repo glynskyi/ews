@@ -27,6 +27,7 @@ import 'package:ews/ComplexProperties/CompleteName.dart' as complex;
 import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/EmailAddressDictionary.dart';
+import 'package:ews/ComplexProperties/PhoneNumberDictionary.dart';
 import 'package:ews/ComplexProperties/StringList.dart';
 import 'package:ews/Core/ServiceObjects/Schemas/ItemSchema.dart';
 import 'package:ews/Core/XmlElementNames.dart';
@@ -46,8 +47,7 @@ import 'package:ews/PropertyDefinitions/StringPropertyDefinition.dart';
 /// <summary>
 /// ContactSchemaFieldUris for contacts.
 /// </summary>
-/* private */
-class ContactSchemaFieldUris {
+class _ContactSchemaFieldUris {
   static const String FileAs = "contacts:FileAs";
   static const String FileAsMapping = "contacts:FileAsMapping";
   static const String DisplayName = "contacts:DisplayName";
@@ -77,10 +77,12 @@ class ContactSchemaFieldUris {
   static const String Mileage = "contacts:Mileage";
   static const String OfficeLocation = "contacts:OfficeLocation";
   static const String PhysicalAddressCity = "contacts:PhysicalAddress:City";
-  static const String PhysicalAddressCountryOrRegion = "contacts:PhysicalAddress:CountryOrRegion";
+  static const String PhysicalAddressCountryOrRegion =
+      "contacts:PhysicalAddress:CountryOrRegion";
   static const String PhysicalAddressState = "contacts:PhysicalAddress:State";
   static const String PhysicalAddressStreet = "contacts:PhysicalAddress:Street";
-  static const String PhysicalAddressPostalCode = "contacts:PhysicalAddress:PostalCode";
+  static const String PhysicalAddressPostalCode =
+      "contacts:PhysicalAddress:PostalCode";
   static const String PostalAddressIndex = "contacts:PostalAddressIndex";
   static const String Profession = "contacts:Profession";
   static const String SpouseName = "contacts:SpouseName";
@@ -110,7 +112,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition FileAs = new StringPropertyDefinition(
       XmlElementNames.FileAs,
-      ContactSchemaFieldUris.FileAs,
+      _ContactSchemaFieldUris.FileAs,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -122,23 +124,24 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the FileAsMapping property.
   /// </summary>
-  static PropertyDefinition FileAsMapping = new GenericPropertyDefinition<enumerations.FileAsMapping>.withUriAndFlags(
-      XmlElementNames.FileAsMapping,
-      ContactSchemaFieldUris.FileAsMapping,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition FileAsMapping =
+      new GenericPropertyDefinition<enumerations.FileAsMapping>.withUriAndFlags(
+          XmlElementNames.FileAsMapping,
+          _ContactSchemaFieldUris.FileAsMapping,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the DisplayName property.
   /// </summary>
   static PropertyDefinition DisplayName = new StringPropertyDefinition(
       XmlElementNames.DisplayName,
-      ContactSchemaFieldUris.DisplayName,
+      _ContactSchemaFieldUris.DisplayName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -152,7 +155,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition GivenName = new StringPropertyDefinition(
       XmlElementNames.GivenName,
-      ContactSchemaFieldUris.GivenName,
+      _ContactSchemaFieldUris.GivenName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -166,7 +169,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition Initials = new StringPropertyDefinition(
       XmlElementNames.Initials,
-      ContactSchemaFieldUris.Initials,
+      _ContactSchemaFieldUris.Initials,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -180,7 +183,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition MiddleName = new StringPropertyDefinition(
       XmlElementNames.MiddleName,
-      ContactSchemaFieldUris.MiddleName,
+      _ContactSchemaFieldUris.MiddleName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -194,7 +197,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition NickName = new StringPropertyDefinition(
       XmlElementNames.NickName,
-      ContactSchemaFieldUris.NickName,
+      _ContactSchemaFieldUris.NickName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -206,11 +209,12 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the CompleteName property.
   /// </summary>
-  static PropertyDefinition CompleteName = new ComplexPropertyDefinition<complex.CompleteName>.withUriAndFlags(
-      XmlElementNames.CompleteName,
-      ContactSchemaFieldUris.CompleteName,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition CompleteName =
+      new ComplexPropertyDefinition<complex.CompleteName>.withUriAndFlags(
+          XmlElementNames.CompleteName,
+          _ContactSchemaFieldUris.CompleteName,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new complex.CompleteName();
   });
 
@@ -219,7 +223,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition CompanyName = new StringPropertyDefinition(
       XmlElementNames.CompanyName,
-      ContactSchemaFieldUris.CompanyName,
+      _ContactSchemaFieldUris.CompanyName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -231,15 +235,16 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the EmailAddresses property.
   /// </summary>
-  static PropertyDefinition EmailAddresses = new ComplexPropertyDefinition<EmailAddressDictionary>.withUriAndFlags(
-      XmlElementNames.EmailAddresses,
-      ContactSchemaFieldUris.EmailAddresses,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition EmailAddresses =
+      new ComplexPropertyDefinition<EmailAddressDictionary>.withUriAndFlags(
+          XmlElementNames.EmailAddresses,
+          _ContactSchemaFieldUris.EmailAddresses,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new EmailAddressDictionary();
   });
 
@@ -257,20 +262,25 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the PhoneNumbers property.
   /// </summary>
-// static PropertyDefinition PhoneNumbers =
-//            new ComplexPropertyDefinition<PhoneNumberDictionary>.withUriAndFlags(
-//                XmlElementNames.PhoneNumbers,
-//                ContactSchemaFieldUris.PhoneNumbers,
-//                [PropertyDefinitionFlags.AutoInstantiateOnRead, PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate],
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new PhoneNumberDictionary(); });
+  static PropertyDefinition PhoneNumbers =
+      new ComplexPropertyDefinition<PhoneNumberDictionary>.withUriAndFlags(
+          XmlElementNames.PhoneNumbers,
+          _ContactSchemaFieldUris.PhoneNumbers,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new PhoneNumberDictionary();
+  });
 
   /// <summary>
   /// Defines the AssistantName property.
   /// </summary>
   static PropertyDefinition AssistantName = new StringPropertyDefinition(
       XmlElementNames.AssistantName,
-      ContactSchemaFieldUris.AssistantName,
+      _ContactSchemaFieldUris.AssistantName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -282,16 +292,17 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the Birthday property.
   /// </summary>
-  static PropertyDefinition Birthday = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.Birthday,
-      ContactSchemaFieldUris.Birthday,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition Birthday =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.Birthday,
+          _ContactSchemaFieldUris.Birthday,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the BusinessHomePage property.
@@ -301,7 +312,7 @@ class ContactSchema extends ItemSchema {
   /// </remarks>
   static PropertyDefinition BusinessHomePage = new StringPropertyDefinition(
       XmlElementNames.BusinessHomePage,
-      ContactSchemaFieldUris.BusinessHomePage,
+      _ContactSchemaFieldUris.BusinessHomePage,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -313,52 +324,55 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the Children property.
   /// </summary>
-  static PropertyDefinition Children = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-      XmlElementNames.Children,
-      ContactSchemaFieldUris.Children,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Children =
+      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+          XmlElementNames.Children,
+          _ContactSchemaFieldUris.Children,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
   /// <summary>
   /// Defines the Companies property.
   /// </summary>
-  static PropertyDefinition Companies = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-      XmlElementNames.Companies,
-      ContactSchemaFieldUris.Companies,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Companies =
+      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+          XmlElementNames.Companies,
+          _ContactSchemaFieldUris.Companies,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
   /// <summary>
   /// Defines the ContactSource property.
   /// </summary>
-  static PropertyDefinition ContactSource = new GenericPropertyDefinition<complex.ContactSource>.withUriAndFlags(
-      XmlElementNames.ContactSource,
-      ContactSchemaFieldUris.ContactSource,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition ContactSource =
+      new GenericPropertyDefinition<complex.ContactSource>.withUriAndFlags(
+          XmlElementNames.ContactSource,
+          _ContactSchemaFieldUris.ContactSource,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Department property.
   /// </summary>
   static PropertyDefinition Department = new StringPropertyDefinition(
       XmlElementNames.Department,
-      ContactSchemaFieldUris.Department,
+      _ContactSchemaFieldUris.Department,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -372,7 +386,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition Generation = new StringPropertyDefinition(
       XmlElementNames.Generation,
-      ContactSchemaFieldUris.Generation,
+      _ContactSchemaFieldUris.Generation,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -397,7 +411,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition JobTitle = new StringPropertyDefinition(
       XmlElementNames.JobTitle,
-      ContactSchemaFieldUris.JobTitle,
+      _ContactSchemaFieldUris.JobTitle,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -411,7 +425,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition Manager = new StringPropertyDefinition(
       XmlElementNames.Manager,
-      ContactSchemaFieldUris.Manager,
+      _ContactSchemaFieldUris.Manager,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -425,7 +439,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition Mileage = new StringPropertyDefinition(
       XmlElementNames.Mileage,
-      ContactSchemaFieldUris.Mileage,
+      _ContactSchemaFieldUris.Mileage,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -439,7 +453,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition OfficeLocation = new StringPropertyDefinition(
       XmlElementNames.OfficeLocation,
-      ContactSchemaFieldUris.OfficeLocation,
+      _ContactSchemaFieldUris.OfficeLocation,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -463,7 +477,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition Profession = new StringPropertyDefinition(
       XmlElementNames.Profession,
-      ContactSchemaFieldUris.Profession,
+      _ContactSchemaFieldUris.Profession,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -477,7 +491,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition SpouseName = new StringPropertyDefinition(
       XmlElementNames.SpouseName,
-      ContactSchemaFieldUris.SpouseName,
+      _ContactSchemaFieldUris.SpouseName,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -491,7 +505,7 @@ class ContactSchema extends ItemSchema {
   /// </summary>
   static PropertyDefinition Surname = new StringPropertyDefinition(
       XmlElementNames.Surname,
-      ContactSchemaFieldUris.Surname,
+      _ContactSchemaFieldUris.Surname,
       [
         PropertyDefinitionFlags.CanSet,
         PropertyDefinitionFlags.CanUpdate,
@@ -503,52 +517,72 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the WeddingAnniversary property.
   /// </summary>
-  static PropertyDefinition WeddingAnniversary = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.WeddingAnniversary,
-      ContactSchemaFieldUris.WeddingAnniversary,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition WeddingAnniversary =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.WeddingAnniversary,
+          _ContactSchemaFieldUris.WeddingAnniversary,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the HasPicture property.
   /// </summary>
-  static PropertyDefinition HasPicture = new BoolPropertyDefinition.withUriAndFlags(XmlElementNames.HasPicture,
-      ContactSchemaFieldUris.HasPicture, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010);
+  static PropertyDefinition HasPicture =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.HasPicture,
+          _ContactSchemaFieldUris.HasPicture,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2010);
 
   /// <summary>
   /// Defines the PhoneticFullName property.
   /// </summary>
-  static PropertyDefinition PhoneticFullName = new StringPropertyDefinition(XmlElementNames.PhoneticFullName,
-      ContactSchemaFieldUris.PhoneticFullName, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition PhoneticFullName = new StringPropertyDefinition(
+      XmlElementNames.PhoneticFullName,
+      _ContactSchemaFieldUris.PhoneticFullName,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the PhoneticFirstName property.
   /// </summary>
-  static PropertyDefinition PhoneticFirstName = new StringPropertyDefinition(XmlElementNames.PhoneticFirstName,
-      ContactSchemaFieldUris.PhoneticFirstName, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition PhoneticFirstName = new StringPropertyDefinition(
+      XmlElementNames.PhoneticFirstName,
+      _ContactSchemaFieldUris.PhoneticFirstName,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the PhoneticLastName property.
   /// </summary>
-  static PropertyDefinition PhoneticLastName = new StringPropertyDefinition(XmlElementNames.PhoneticLastName,
-      ContactSchemaFieldUris.PhoneticLastName, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition PhoneticLastName = new StringPropertyDefinition(
+      XmlElementNames.PhoneticLastName,
+      _ContactSchemaFieldUris.PhoneticLastName,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the Alias property.
   /// </summary>
   static PropertyDefinition Alias = new StringPropertyDefinition(
-      XmlElementNames.Alias, ContactSchemaFieldUris.Alias, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010_SP1);
+      XmlElementNames.Alias,
+      _ContactSchemaFieldUris.Alias,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the Notes property.
   /// </summary>
   static PropertyDefinition Notes = new StringPropertyDefinition(
-      XmlElementNames.Notes, ContactSchemaFieldUris.Notes, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010_SP1);
+      XmlElementNames.Notes,
+      _ContactSchemaFieldUris.Notes,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the Photo property.
@@ -585,29 +619,34 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the DirectoryId property.
   /// </summary>
-  static PropertyDefinition DirectoryId = new StringPropertyDefinition(XmlElementNames.DirectoryId,
-      ContactSchemaFieldUris.DirectoryId, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition DirectoryId = new StringPropertyDefinition(
+      XmlElementNames.DirectoryId,
+      _ContactSchemaFieldUris.DirectoryId,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the ManagerMailbox property.
   /// </summary>
-  static PropertyDefinition ManagerMailbox = new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
-      XmlElementNames.ManagerMailbox,
-      ContactSchemaFieldUris.ManagerMailbox,
-      XmlElementNames.Mailbox,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2010_SP1, () {
+  static PropertyDefinition ManagerMailbox =
+      new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
+          XmlElementNames.ManagerMailbox,
+          _ContactSchemaFieldUris.ManagerMailbox,
+          XmlElementNames.Mailbox,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2010_SP1, () {
     return new EmailAddress();
   });
 
   /// <summary>
   /// Defines the DirectReports property.
   /// </summary>
-  static PropertyDefinition DirectReports = new ComplexPropertyDefinition<EmailAddressCollection>.withUriAndFlags(
-      XmlElementNames.DirectReports,
-      ContactSchemaFieldUris.DirectReports,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2010_SP1, () {
+  static PropertyDefinition DirectReports =
+      new ComplexPropertyDefinition<EmailAddressCollection>.withUriAndFlags(
+          XmlElementNames.DirectReports,
+          _ContactSchemaFieldUris.DirectReports,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2010_SP1, () {
     return new EmailAddressCollection();
   });
 
@@ -615,224 +654,264 @@ class ContactSchema extends ItemSchema {
   /// Defines the EmailAddress1 property.
   /// </summary>
   static IndexedPropertyDefinition EmailAddress1 =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.EmailAddress, "EmailAddress1");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.EmailAddress, "EmailAddress1");
 
   /// <summary>
   /// Defines the EmailAddress2 property.
   /// </summary>
   static IndexedPropertyDefinition EmailAddress2 =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.EmailAddress, "EmailAddress2");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.EmailAddress, "EmailAddress2");
 
   /// <summary>
   /// Defines the EmailAddress3 property.
   /// </summary>
   static IndexedPropertyDefinition EmailAddress3 =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.EmailAddress, "EmailAddress3");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.EmailAddress, "EmailAddress3");
 
   /// <summary>
   /// Defines the ImAddress1 property.
   /// </summary>
-  static IndexedPropertyDefinition ImAddress1 = new IndexedPropertyDefinition(ContactSchemaFieldUris.ImAddress, "ImAddress1");
+  static IndexedPropertyDefinition ImAddress1 = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.ImAddress, "ImAddress1");
 
   /// <summary>
   /// Defines the ImAddress2 property.
   /// </summary>
-  static IndexedPropertyDefinition ImAddress2 = new IndexedPropertyDefinition(ContactSchemaFieldUris.ImAddress, "ImAddress2");
+  static IndexedPropertyDefinition ImAddress2 = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.ImAddress, "ImAddress2");
 
   /// <summary>
   /// Defines the ImAddress3 property.
   /// </summary>
-  static IndexedPropertyDefinition ImAddress3 = new IndexedPropertyDefinition(ContactSchemaFieldUris.ImAddress, "ImAddress3");
+  static IndexedPropertyDefinition ImAddress3 = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.ImAddress, "ImAddress3");
 
   /// <summary>
   /// Defines the AssistentPhone property.
   /// </summary>
   static IndexedPropertyDefinition AssistantPhone =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "AssistantPhone");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhoneNumber, "AssistantPhone");
 
   /// <summary>
   /// Defines the BusinessFax property.
   /// </summary>
-  static IndexedPropertyDefinition BusinessFax = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "BusinessFax");
+  static IndexedPropertyDefinition BusinessFax = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "BusinessFax");
 
   /// <summary>
   /// Defines the BusinessPhone property.
   /// </summary>
   static IndexedPropertyDefinition BusinessPhone =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "BusinessPhone");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhoneNumber, "BusinessPhone");
 
   /// <summary>
   /// Defines the BusinessPhone2 property.
   /// </summary>
   static IndexedPropertyDefinition BusinessPhone2 =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "BusinessPhone2");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhoneNumber, "BusinessPhone2");
 
   /// <summary>
   /// Defines the Callback property.
   /// </summary>
-  static IndexedPropertyDefinition Callback = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "Callback");
+  static IndexedPropertyDefinition Callback = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "Callback");
 
   /// <summary>
   /// Defines the CarPhone property.
   /// </summary>
-  static IndexedPropertyDefinition CarPhone = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "CarPhone");
+  static IndexedPropertyDefinition CarPhone = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "CarPhone");
 
   /// <summary>
   /// Defines the CompanyMainPhone property.
   /// </summary>
   static IndexedPropertyDefinition CompanyMainPhone =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "CompanyMainPhone");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhoneNumber, "CompanyMainPhone");
 
   /// <summary>
   /// Defines the HomeFax property.
   /// </summary>
-  static IndexedPropertyDefinition HomeFax = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "HomeFax");
+  static IndexedPropertyDefinition HomeFax = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "HomeFax");
 
   /// <summary>
   /// Defines the HomePhone property.
   /// </summary>
-  static IndexedPropertyDefinition HomePhone = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "HomePhone");
+  static IndexedPropertyDefinition HomePhone = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "HomePhone");
 
   /// <summary>
   /// Defines the HomePhone2 property.
   /// </summary>
-  static IndexedPropertyDefinition HomePhone2 = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "HomePhone2");
+  static IndexedPropertyDefinition HomePhone2 = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "HomePhone2");
 
   /// <summary>
   /// Defines the Isdn property.
   /// </summary>
-  static IndexedPropertyDefinition Isdn = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "Isdn");
+  static IndexedPropertyDefinition Isdn = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "Isdn");
 
   /// <summary>
   /// Defines the MobilePhone property.
   /// </summary>
-  static IndexedPropertyDefinition MobilePhone = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "MobilePhone");
+  static IndexedPropertyDefinition MobilePhone = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "MobilePhone");
 
   /// <summary>
   /// Defines the OtherFax property.
   /// </summary>
-  static IndexedPropertyDefinition OtherFax = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "OtherFax");
+  static IndexedPropertyDefinition OtherFax = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "OtherFax");
 
   /// <summary>
   /// Defines the OtherTelephone property.
   /// </summary>
   static IndexedPropertyDefinition OtherTelephone =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "OtherTelephone");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhoneNumber, "OtherTelephone");
 
   /// <summary>
   /// Defines the Pager property.
   /// </summary>
-  static IndexedPropertyDefinition Pager = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "Pager");
+  static IndexedPropertyDefinition Pager = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "Pager");
 
   /// <summary>
   /// Defines the PrimaryPhone property.
   /// </summary>
-  static IndexedPropertyDefinition PrimaryPhone = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "PrimaryPhone");
+  static IndexedPropertyDefinition PrimaryPhone = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "PrimaryPhone");
 
   /// <summary>
   /// Defines the RadioPhone property.
   /// </summary>
-  static IndexedPropertyDefinition RadioPhone = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "RadioPhone");
+  static IndexedPropertyDefinition RadioPhone = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "RadioPhone");
 
   /// <summary>
   /// Defines the Telex property.
   /// </summary>
-  static IndexedPropertyDefinition Telex = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "Telex");
+  static IndexedPropertyDefinition Telex = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "Telex");
 
   /// <summary>
   /// Defines the TtyTddPhone property.
   /// </summary>
-  static IndexedPropertyDefinition TtyTddPhone = new IndexedPropertyDefinition(ContactSchemaFieldUris.PhoneNumber, "TtyTddPhone");
+  static IndexedPropertyDefinition TtyTddPhone = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhoneNumber, "TtyTddPhone");
 
   /// <summary>
   /// Defines the BusinessAddressStreet property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressStreet =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressStreet, "Business");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressStreet, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressCity property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressCity =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressCity, "Business");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressCity, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressState property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressState =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressState, "Business");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressState, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressCountryOrRegion property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressCountryOrRegion =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Business");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressPostalCode property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressPostalCode =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressPostalCode, "Business");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressPostalCode, "Business");
 
   /// <summary>
   /// Defines the HomeAddressStreet property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressStreet =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressStreet, "Home");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressStreet, "Home");
 
   /// <summary>
   /// Defines the HomeAddressCity property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressCity =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressCity, "Home");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressCity, "Home");
 
   /// <summary>
   /// Defines the HomeAddressState property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressState =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressState, "Home");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressState, "Home");
 
   /// <summary>
   /// Defines the HomeAddressCountryOrRegion property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressCountryOrRegion =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Home");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Home");
 
   /// <summary>
   /// Defines the HomeAddressPostalCode property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressPostalCode =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressPostalCode, "Home");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressPostalCode, "Home");
 
   /// <summary>
   /// Defines the OtherAddressStreet property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressStreet =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressStreet, "Other");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressStreet, "Other");
 
   /// <summary>
   /// Defines the OtherAddressCity property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressCity =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressCity, "Other");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressCity, "Other");
 
   /// <summary>
   /// Defines the OtherAddressState property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressState =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressState, "Other");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressState, "Other");
 
   /// <summary>
   /// Defines the OtherAddressCountryOrRegion property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressCountryOrRegion =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Other");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Other");
 
   /// <summary>
   /// Defines the OtherAddressPostalCode property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressPostalCode =
-      new IndexedPropertyDefinition(ContactSchemaFieldUris.PhysicalAddressPostalCode, "Other");
+      new IndexedPropertyDefinition(
+          _ContactSchemaFieldUris.PhysicalAddressPostalCode, "Other");
 
   // This must be declared after the property definitions
   static ContactSchema Instance = new ContactSchema();
@@ -858,7 +937,7 @@ class ContactSchema extends ItemSchema {
     this.RegisterProperty(CompanyName);
     this.RegisterProperty(EmailAddresses);
 //            this.RegisterProperty(PhysicalAddresses);
-//            this.RegisterProperty(PhoneNumbers);
+    this.RegisterProperty(PhoneNumbers);
     this.RegisterProperty(AssistantName);
     this.RegisterProperty(Birthday);
     this.RegisterProperty(BusinessHomePage);

@@ -45,6 +45,7 @@ import 'package:ews/Enumerations/ConversationQueryTraversal.dart';
 import 'package:ews/Enumerations/DefaultExtendedPropertySet.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
 import 'package:ews/Enumerations/EmailAddressKey.dart';
+import 'package:ews/Enumerations/Enumerations.dart';
 import 'package:ews/Enumerations/EventType.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/FileAsMapping.dart';
@@ -849,6 +850,8 @@ typedef R Converter<T,R>(T);
           PermissionScope: (stringValue) => EnumToString.fromString(PermissionScope.values, stringValue),
           FolderPermissionReadAccess: (stringValue) => EnumToString.fromString(FolderPermissionReadAccess.values, stringValue),
           FolderPermissionLevel: (stringValue) => EnumToString.fromString(FolderPermissionLevel.values, stringValue),
+          EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
+          PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
       };
 
         static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
@@ -882,7 +885,8 @@ typedef R Converter<T,R>(T);
         SendCancellationsMode,
         ContainmentMode,
         ComparisonMode,
-        EmailAddressKey
+        EmailAddressKey,
+        PhoneNumberKey,
       ];
 
 
@@ -2726,15 +2730,15 @@ typedef R Converter<T,R>(T);
 
           RegExpMatch m = PATTERN_TIME_SPAN.firstMatch(xsDateDuration);
           bool negative = false;
-          
+
           if (m != null) {
             negative = true;
           }
-          
+
 
           // Year
           m = PATTERN_YEAR.firstMatch(xsDateDuration);
-          
+
           int year = 0;
           if (m != null) {
             year = int.parse(m.group(0).substring(0,
@@ -2743,7 +2747,7 @@ typedef R Converter<T,R>(T);
 
           // Month
           m = PATTERN_MONTH.firstMatch(xsDateDuration);
-          
+
           int month = 0;
           if (m != null) {
             month = int.parse(m.group(0).substring(0,
@@ -2752,7 +2756,7 @@ typedef R Converter<T,R>(T);
 
           // Day
           m = PATTERN_DAY.firstMatch(xsDateDuration);
-          
+
           int day = 0;
           if (m != null) {
             day = int.parse(m.group(0).substring(0,
@@ -2761,7 +2765,7 @@ typedef R Converter<T,R>(T);
 
           // Hour
           m = PATTERN_HOUR.firstMatch(xsTimeDuration);
-          
+
           int hour = 0;
           if (m != null) {
             hour = int.parse(m.group(0).substring(0,
@@ -2770,7 +2774,7 @@ typedef R Converter<T,R>(T);
 
           // Minute
           m = PATTERN_MINUTES.firstMatch(xsTimeDuration);
-          
+
           int minute = 0;
           if (m != null) {
             minute = int.parse(m.group(0).substring(0,
@@ -2779,7 +2783,7 @@ typedef R Converter<T,R>(T);
 
           // Seconds
           m = PATTERN_SECONDS.firstMatch(xsTimeDuration);
-          
+
           int seconds = 0;
           if (m != null) {
             seconds = int.parse(m.group(0).substring(0,

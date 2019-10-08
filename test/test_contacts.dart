@@ -31,7 +31,7 @@ main() {
             view, null, ServiceErrorHandling.ThrowOnError);
 
     response.first.Results.Items.forEach((contact) {
-      expect(contact.DisplayName, isNotNull);
+      expect(contact.Id, isNotNull);
     });
   });
 
@@ -50,6 +50,8 @@ main() {
     contact.Surname = "Surname";
     contact.EmailAddresses[EmailAddressKey.EmailAddress1] =
         EmailAddress(smtpAddress: "test@gmail.com");
+    contact.PhoneNumbers[PhoneNumberKey.BusinessPhone] = "093 76-71-0111";
+    contact.PhoneNumbers[PhoneNumberKey.MobilePhone] = "093 76-71-0222";
     await contact.Save();
     await contact.Delete(DeleteMode.HardDelete);
   });
