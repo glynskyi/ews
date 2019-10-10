@@ -77,6 +77,7 @@ import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TraceFlags.dart' as enumerations;
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
+import 'package:ews/Exceptions/AutodiscoverLocalException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/Http/WebException.dart';
@@ -4836,20 +4837,20 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="redirectionUrl">The redirection URL.</param>
   /// <returns>Returns true.</returns>
-//bool DefaultAutodiscoverRedirectionUrlValidationCallback(string redirectionUrl)
-//        {
-//            throw new AutodiscoverLocalException(string.Format(Strings.AutodiscoverRedirectBlocked, redirectionUrl));
-//        }
+bool DefaultAutodiscoverRedirectionUrlValidationCallback(String redirectionUrl)
+        {
+            throw new AutodiscoverLocalException("string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
+        }
 
   /// <summary>
   /// Initializes the Url property to the Exchange Web Services URL for the specified e-mail address by
   /// calling the Autodiscover service.
   /// </summary>
   /// <param name="emailAddress">The email address to use.</param>
-//void AutodiscoverUrl(string emailAddress)
-//        {
-//            this.AutodiscoverUrl(emailAddress, this.DefaultAutodiscoverRedirectionUrlValidationCallback);
-//        }
+  Future<void> AutodiscoverUrl(String emailAddress)
+        {
+            return this.AutodiscoverUrl(emailAddress, this.DefaultAutodiscoverRedirectionUrlValidationCallback);
+        }
 
   /// <summary>
   /// Initializes the Url property to the Exchange Web Services URL for the specified e-mail address by
@@ -4857,50 +4858,50 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="emailAddress">The email address to use.</param>
   /// <param name="validateRedirectionUrlCallback">The callback used to validate redirection URL.</param>
-//void AutodiscoverUrl(string emailAddress, AutodiscoverRedirectionUrlValidationCallback validateRedirectionUrlCallback)
-//        {
-//            Uri exchangeServiceUrl;
-//
-//            if (this.RequestedServerVersion > ExchangeVersion.Exchange2007_SP1)
-//            {
-//                try
-//                {
-//                    exchangeServiceUrl = this.GetAutodiscoverUrl(
-//                        emailAddress,
-//                        this.RequestedServerVersion,
-//                        validateRedirectionUrlCallback);
-//
-//                    this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
-//                    return;
-//                }
-//                catch (AutodiscoverLocalException ex)
-//                {
-//                    this.TraceMessage(
-//                        TraceFlags.AutodiscoverResponse,
-//                        string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
-//                }
-//                catch (ServiceRemoteException ex)
-//                {
-//                    // Special case: if the caller's account is locked we want to return this exception, not continue.
-//                    if (ex is AccountIsLockedException)
-//                    {
-//                        throw;
-//                    }
-//
-//                    this.TraceMessage(
-//                        TraceFlags.AutodiscoverResponse,
-//                        string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
-//                }
-//            }
-//
-//            // Try legacy Autodiscover provider
-//            exchangeServiceUrl = this.GetAutodiscoverUrl(
-//                emailAddress,
-//                ExchangeVersion.Exchange2007_SP1,
-//                validateRedirectionUrlCallback);
-//
-//            this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
-//        }
+Future<void> AutodiscoverUrlWithCallback(String emailAddress, AutodiscoverRedirectionUrlValidationCallback validateRedirectionUrlCallback)
+        {
+            Uri exchangeServiceUrl;
+
+            if (this.RequestedServerVersion.index > ExchangeVersion.Exchange2007_SP1.index)
+            {
+                try
+                {
+                    exchangeServiceUrl = this.GetAutodiscoverUrl(
+                        emailAddress,
+                        this.RequestedServerVersion,
+                        validateRedirectionUrlCallback);
+
+                    this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
+                    return;
+                }
+                catch (AutodiscoverLocalException ex)
+                {
+                    this.TraceMessage(
+                        TraceFlags.AutodiscoverResponse,
+                        string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
+                }
+                catch (ServiceRemoteException ex)
+                {
+                    // Special case: if the caller's account is locked we want to return this exception, not continue.
+                    if (ex is AccountIsLockedException)
+                    {
+                        throw;
+                    }
+
+                    this.TraceMessage(
+                        TraceFlags.AutodiscoverResponse,
+                        string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
+                }
+            }
+
+            // Try legacy Autodiscover provider
+            exchangeServiceUrl = this.GetAutodiscoverUrl(
+                emailAddress,
+                ExchangeVersion.Exchange2007_SP1,
+                validateRedirectionUrlCallback);
+
+            this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
+        }
 
   /// <summary>
   /// Adjusts the service URI based on the current type of credentials.

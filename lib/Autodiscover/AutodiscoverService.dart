@@ -24,133 +24,126 @@
  */
 
 
+import 'dart:core';
 
+import 'package:ews/Core/ExchangeServiceBase.dart';
+import 'package:ews/Enumerations/ExchangeVersion.dart';
+import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+import 'package:ews/misc/OutParam.dart';
 
-
-
-
-
-
-
-
-    /// <summary>
+/// <summary>
     /// Defines a delegate that is used by the AutodiscoverService to ask whether a redirectionUrl can be used.
     /// </summary>
     /// <param name="redirectionUrl">Redirection URL that Autodiscover wants to use.</param>
     /// <returns>Delegate returns true if Autodiscover is allowed to use this URL.</returns>
- delegate bool AutodiscoverRedirectionUrlValidationCallback(String redirectionUrl);
+ typedef AutodiscoverRedirectionUrlValidationCallback =  bool Function(String redirectionUrl);
+
+/* private */ typedef GetSettingsMethod = TGetSettingsResponseCollection Function<TGetSettingsResponseCollection, TSettingName>(
+    List<String> smtpAddresses,
+    List<TSettingName> settings,
+    ExchangeVersion requestedVersion,
+    OutParam<Uri> autodiscoverUrl);
 
     /// <summary>
     /// Represents a binding to the Exchange Autodiscover Service.
     /// </summary>
  class AutodiscoverService extends ExchangeServiceBase
     {
-        #region Static members
 
         /// <summary>
         /// Autodiscover legacy path
         /// </summary>
-        /* private */ const String AutodiscoverLegacyPath = "/autodiscover/autodiscover.xml";
+        /* private */ static const String AutodiscoverLegacyPath = "/autodiscover/autodiscover.xml";
 
         /// <summary>
         /// Autodiscover legacy Url with protocol fill-in
         /// </summary>
-        /* private */ const String AutodiscoverLegacyUrl = "{0}://{1}" + AutodiscoverLegacyPath;
+        /* private */ static const String AutodiscoverLegacyUrl = "{0}://{1}" + AutodiscoverLegacyPath;
 
         /// <summary>
         /// Autodiscover legacy HTTPS Url
         /// </summary>
-        /* private */ const String AutodiscoverLegacyHttpsUrl = "https://{0}" + AutodiscoverLegacyPath;
+        /* private */ static const String AutodiscoverLegacyHttpsUrl = "https://{0}" + AutodiscoverLegacyPath;
 
         /// <summary>
         /// Autodiscover legacy HTTP Url
         /// </summary>
-        /* private */ const String AutodiscoverLegacyHttpUrl = "http://{0}" + AutodiscoverLegacyPath;
+        /* private */ static const String AutodiscoverLegacyHttpUrl = "http://{0}" + AutodiscoverLegacyPath;
 
         /// <summary>
         /// Autodiscover SOAP HTTPS Url
         /// </summary>
-        /* private */ const String AutodiscoverSoapHttpsUrl = "https://{0}/autodiscover/autodiscover.svc";
+        /* private */ static const String AutodiscoverSoapHttpsUrl = "https://{0}/autodiscover/autodiscover.svc";
 
         /// <summary>
         /// Autodiscover SOAP WS-Security HTTPS Url
         /// </summary>
-        /* private */ const String AutodiscoverSoapWsSecurityHttpsUrl = AutodiscoverSoapHttpsUrl + "/wssecurity";
+        /* private */ static const String AutodiscoverSoapWsSecurityHttpsUrl = AutodiscoverSoapHttpsUrl + "/wssecurity";
 
         /// <summary>
         /// Autodiscover SOAP WS-Security symmetrickey HTTPS Url
         /// </summary>
-        /* private */ const String AutodiscoverSoapWsSecuritySymmetricKeyHttpsUrl = AutodiscoverSoapHttpsUrl + "/wssecurity/symmetrickey";
+        /* private */ static const String AutodiscoverSoapWsSecuritySymmetricKeyHttpsUrl = AutodiscoverSoapHttpsUrl + "/wssecurity/symmetrickey";
 
         /// <summary>
         /// Autodiscover SOAP WS-Security x509cert HTTPS Url
         /// </summary>
-        /* private */ const String AutodiscoverSoapWsSecurityX509CertHttpsUrl = AutodiscoverSoapHttpsUrl + "/wssecurity/x509cert";
+        /* private */ static const String AutodiscoverSoapWsSecurityX509CertHttpsUrl = AutodiscoverSoapHttpsUrl + "/wssecurity/x509cert";
 
         /// <summary>
         /// Autodiscover request namespace
         /// </summary>
-        /* private */ const String AutodiscoverRequestNamespace = "http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006";
+        /* private */ static const String AutodiscoverRequestNamespace = "http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006";
 
         /// <summary>
         /// Legacy path regular expression.
         /// </summary>
-        /* private */ static readonly Regex LegacyPathRegex = new Regex(@"/autodiscover/([^/]+/)*autodiscover.xml", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        /* private */ static Regex LegacyPathRegex = new Regex(@"/autodiscover/([^/]+/)*autodiscover.xml", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Maximum number of Url (or address) redirections that will be followed by an Autodiscover call
         /// </summary>
-        const int AutodiscoverMaxRedirections = 10;
+    static const int AutodiscoverMaxRedirections = 10;
 
         /// <summary>
         /// HTTP header indicating that SOAP Autodiscover service is enabled.
         /// </summary>
-        /* private */ const String AutodiscoverSoapEnabledHeaderName = "X-SOAP-Enabled";
+        /* private */ static const String AutodiscoverSoapEnabledHeaderName = "X-SOAP-Enabled";
 
         /// <summary>
         /// HTTP header indicating that WS-Security Autodiscover service is enabled.
         /// </summary>
-        /* private */ const String AutodiscoverWsSecurityEnabledHeaderName = "X-WSSecurity-Enabled";
+        /* private */ static const String AutodiscoverWsSecurityEnabledHeaderName = "X-WSSecurity-Enabled";
 
         /// <summary>
         /// HTTP header indicating that WS-Security/SymmetricKey Autodiscover service is enabled.
         /// </summary>
-        /* private */ const String AutodiscoverWsSecuritySymmetricKeyEnabledHeaderName = "X-WSSecurity-SymmetricKey-Enabled";
+        /* private */ static const String AutodiscoverWsSecuritySymmetricKeyEnabledHeaderName = "X-WSSecurity-SymmetricKey-Enabled";
 
         /// <summary>
         /// HTTP header indicating that WS-Security/X509Cert Autodiscover service is enabled.
         /// </summary>
-        /* private */ const String AutodiscoverWsSecurityX509CertEnabledHeaderName = "X-WSSecurity-X509Cert-Enabled";
+        /* private */ static const String AutodiscoverWsSecurityX509CertEnabledHeaderName = "X-WSSecurity-X509Cert-Enabled";
 
         /// <summary>
         /// HTTP header indicating that OAuth Autodiscover service is enabled.
         /// </summary>
-        /* private */ const String AutodiscoverOAuthEnabledHeaderName = "X-OAuth-Enabled";
+        /* private */ static const String AutodiscoverOAuthEnabledHeaderName = "X-OAuth-Enabled";
 
         /// <summary>
         /// Minimum request version for Autodiscover SOAP service.
         /// </summary>
-        /* private */ const ExchangeVersion MinimumRequestVersionForAutoDiscoverSoapService = ExchangeVersion.Exchange2010;
+        /* private */ static const ExchangeVersion MinimumRequestVersionForAutoDiscoverSoapService = ExchangeVersion.Exchange2010;
 
-        #endregion
-
-        #region /* private */ members
 
         /* private */ String domain;
-        /* private */ bool? isExternal = true;
+        /* private */ bool isExternal = true;
         /* private */ Uri url;
         /* private */ AutodiscoverRedirectionUrlValidationCallback redirectionUrlValidationCallback;
         /* private */ AutodiscoverDnsClient dnsClient;
         /* private */ IPAddress dnsServerAddress;
         /* private */ bool enableScpLookup = true;
 
-        /* private */ delegate TGetSettingsResponseCollection GetSettingsMethod<TGetSettingsResponseCollection, TSettingName>(
-            List<string> smtpAddresses,
-            List<TSettingName> settings,
-            ExchangeVersion? requestedVersion,
-            ref Uri autodiscoverUrl);
-
-        #endregion
 
         /// <summary>
         /// Default implementation of AutodiscoverRedirectionUrlValidationCallback.
@@ -162,8 +155,6 @@
         {
             throw new AutodiscoverLocalException(string.Format(Strings.AutodiscoverRedirectBlocked, redirectionUrl));
         }
-
-        #region Legacy Autodiscover
 
         /// <summary>
         /// Calls the Autodiscover service to get configuration settings at the specified URL.
@@ -347,7 +338,7 @@
         /// <param name="response">The response.</param>
         /// <param name="redirectUrl">The redirect URL.</param>
         /// <returns>True if a valid redirection URL was found.</returns>
-        /* private */ bool TryGetRedirectionResponse(IEwsHttpWebResponse response, out Uri redirectUrl)
+        /* private */ bool TryGetRedirectionResponse(IEwsHttpWebResponse response, OutParam<Uri> redirectUrl)
         {
             redirectUrl = null;
             if (AutodiscoverRequest.IsRedirectionResponse(response))
@@ -687,13 +678,13 @@
 
             // Bug 60274: Performing a non-SSL HTTP GET to retrieve a redirection URL is potentially unsafe. We allow the caller
             // to specify delegate to be called to determine whether we are allowed to use the redirection URL.
-            if (this.CallRedirectionUrlValidationCallback(redirectionUrl.ToString()))
+            if (this.CallRedirectionUrlValidationCallback(_redirectionUrl.ToString()))
             {
                 for (int currentHop = 0; currentHop < AutodiscoverService.AutodiscoverMaxRedirections; currentHop++)
                 {
                     try
                     {
-                        settings = this.GetLegacyUserSettingsAtUrl<TSettings>(emailAddress, redirectionUrl);
+                        settings = this.GetLegacyUserSettingsAtUrl<TSettings>(emailAddress, _redirectionUrl);
 
                         switch (settings.ResponseType)
                         {
@@ -715,7 +706,7 @@
                             case AutodiscoverResponseType.RedirectUrl:
                                 try
                                 {
-                                    redirectionUrl = new Uri(settings.RedirectTarget);
+                                    _redirectionUrl = new Uri(settings.RedirectTarget);
                                 }
                                 catch (UriFormatException)
                                 {
@@ -730,7 +721,7 @@
                             default:
                                 String failureMessage = string.Format(
                                     "Autodiscover call at {0} failed with error {1}, target {2}",
-                                    redirectionUrl,
+                                    _redirectionUrl,
                                     settings.ResponseType,
                                     settings.RedirectTarget);
                                 this.TraceMessage(TraceFlags.AutodiscoverConfiguration, failureMessage);
@@ -742,11 +733,11 @@
                         if (ex.Response != null)
                         {
                             IEwsHttpWebResponse response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
-                            if (this.TryGetRedirectionResponse(response, out redirectionUrl))
+                            if (this.TryGetRedirectionResponse(response, out _redirectionUrl))
                             {
                                 this.TraceMessage(
                                     TraceFlags.AutodiscoverConfiguration,
-                                    string.Format("Host returned a redirection to url {0}", redirectionUrl));
+                                    string.Format("Host returned a redirection to url {0}", _redirectionUrl));
                                 continue;
                             }
                             else
@@ -766,14 +757,14 @@
                         // If the response is malformed, it wasn't a valid Autodiscover endpoint.
                         this.TraceMessage(
                             TraceFlags.AutodiscoverConfiguration,
-                            string.Format("{0} failed: XML parsing error: {1}", redirectionUrl, ex.Message));
+                            string.Format("{0} failed: XML parsing error: {1}", _redirectionUrl, ex.Message));
                         return false;
                     }
                     catch (IOException ex)
                     {
                         this.TraceMessage(
                             TraceFlags.AutodiscoverConfiguration,
-                            string.Format("{0} failed: I/O error: {1}", redirectionUrl, ex.Message));
+                            string.Format("{0} failed: I/O error: {1}", _redirectionUrl, ex.Message));
                         return false;
                     }
                 }
@@ -1832,9 +1823,7 @@
 
             return true;
         }
-        #endregion
 
-        #region Properties
         /// <summary>
         /// Gets or sets the domain this service is bound to. When this property is set, the domain
         /// name is used to automatically determine the Autodiscover service URL.

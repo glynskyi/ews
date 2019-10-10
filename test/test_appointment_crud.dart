@@ -17,4 +17,12 @@ main() {
     await appointment.SaveWithSendInvitationsMode(SendInvitationsMode.SendToNone);
     await appointment.Delete(DeleteMode.HardDelete);
   });
+
+  test('tests an autodiscovery', () async {
+    final service = ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
+      ..Credentials = primaryUserCredential
+      ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse]
+      ..TraceEnabled = true;
+    service.AutodiscoverUrl(userEmailAddress);
+  });
 }

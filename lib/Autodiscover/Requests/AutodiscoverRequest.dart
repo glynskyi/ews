@@ -31,7 +31,13 @@
 
 
 
-    /// <summary>
+    import 'package:ews/Autodiscover/AutodiscoverService.dart';
+import 'package:ews/Autodiscover/Responses/AutodiscoverResponse.dart';
+import 'package:ews/Enumerations/TraceFlags.dart';
+import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
+import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+
+/// <summary>
     /// Represents the base class for all requested made to the Autodiscover service.
     /// </summary>
     abstract class AutodiscoverRequest
@@ -66,7 +72,7 @@
         /// <summary>
         /// Validates the request.
         /// </summary>
-        virtual void Validate()
+        void Validate()
         {
             this.Service.Validate();
         }
