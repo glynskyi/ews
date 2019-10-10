@@ -33,6 +33,8 @@ import 'package:ews/Xml/XmlWriter.dart';
     /// </summary>
  abstract class ExchangeCredentials implements ICredentials
     {
+        static final String WsSecurityPathSuffix = "/wssecurity";
+
         /// <summary>
         /// Performs an implicit conversion from <see cref="System.Net.NetworkCredential"/> to <see cref="Microsoft.Exchange.WebServices.Data.ExchangeCredentials"/>.
         /// This allows a NetworkCredential object to be implictly converted to an ExchangeCredential which is useful when setting
@@ -78,18 +80,18 @@ import 'package:ews/Xml/XmlWriter.dart';
         /// </summary>
         /// <param name="url">The url</param>
         /// <returns>The absolute uri base.</returns>
-//        static String GetUriWithoutSuffix(Uri url)
-//        {
-//            String absoluteUri = url.AbsoluteUri;
-//
-//            int index = absoluteUri.IndexOf(WSSecurityBasedCredentials.WsSecurityPathSuffix, StringComparison.OrdinalIgnoreCase);
-//            if (index != -1)
-//            {
-//                return absoluteUri.Substring(0, index);
-//            }
-//
-//            return absoluteUri;
-//        }
+        static String GetUriWithoutSuffix(Uri url)
+        {
+            String absoluteUri = url.toString();
+
+            int index = absoluteUri.indexOf(WsSecurityPathSuffix);
+            if (index != -1)
+            {
+                return absoluteUri.substring(0, index);
+            }
+
+            return absoluteUri;
+        }
 
         /// <summary>
         /// This method is called to pre-authenticate credentials before a service request is made.
@@ -142,10 +144,10 @@ import 'package:ews/Xml/XmlWriter.dart';
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Adjust URL.</returns>
-//        Uri AdjustUrl(Uri url)
-//        {
-//            return new Uri(GetUriWithoutSuffix(url));
-//        }
+        Uri AdjustUrl(Uri url)
+        {
+            return new Uri(GetUriWithoutSuffix(url));
+        }
 
         /// <summary>
         /// Gets the flag indicating whether any sign action need taken.

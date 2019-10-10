@@ -30,39 +30,39 @@
 
 
 
-    /// <summary>
+    import 'dart:core';
+import 'dart:math';
+
+import 'package:ews/Autodiscover/AutodiscoverService.dart';
+import 'package:ews/Core/EwsUtilities.dart';
+import 'package:ews/Enumerations/TraceFlags.dart';
+import 'package:ews/misc/StringUtils.dart';
+
+/// <summary>
     /// Class that reads AutoDiscover configuration information from DNS.
     /// </summary>
     class AutodiscoverDnsClient
     {
-        #region Constants
         /// <summary>
         /// SRV DNS prefix to lookup.
         /// </summary>
-        /* private */ const String AutoDiscoverSrvPrefix = "_autodiscover._tcp.";
+        /* private */ static const String AutoDiscoverSrvPrefix = "_autodiscover._tcp.";
 
         /// <summary>
         /// We are only interested in records that use SSL.
         /// </summary>
-        /* private */ const int SslPort = 443;
-        #endregion
+        /* private */static  const int SslPort = 443;
 
-        #region Static fields
         /// <summary>
         /// Random selector in the case of ties.
         /// </summary>
         /* private */ static Random randomTieBreakerSelector = new Random();
-        #endregion
 
-        #region Instance fields
         /// <summary>
 
         /// </summary>
         /* private */ AutodiscoverService service;
 
-        #endregion
-
-        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverDnsClient"/> class.
         /// </summary>
@@ -71,10 +71,6 @@
         {
             this.service = service;
         }
-
-        #endregion
-
-        #region Instance methods
 
         /// <summary>
         /// Finds the Autodiscover host from DNS SRV records.
@@ -103,7 +99,7 @@
             {
                 this.service.TraceMessage(
                     TraceFlags.AutodiscoverConfiguration,
-                    string.Format("DNS query for SRV record for domain {0} found {1}", domain, dnsSrvRecord.NameTarget));
+                    "DNS query for SRV record for domain $domain found ${dnsSrvRecord.NameTarget}");
 
                 return dnsSrvRecord.NameTarget;
             }
@@ -122,7 +118,7 @@
                 // Make DnsQuery call to get collection of SRV records.
                 dnsSrvRecordList = DnsClient.DnsQuery<DnsSrvRecord>(domain, this.service.DnsServerAddress);
             }
-            catch (DnsException ex)
+            on DnsException catch (ex)
             {
                 String dnsExcMessage = string.Format(
                         "DnsQuery returned error error '{0}' error code 0x{1:X8}.",
@@ -131,7 +127,7 @@
                 this.service.TraceMessage(TraceFlags.AutodiscoverConfiguration, dnsExcMessage);
                 return null;
             }
-            catch (SecurityException ex)
+            on SecurityException catch (ex)
             {
                 // In restricted environments, we may not be allowed to call unmanaged code.
                 this.service.TraceMessage(
@@ -142,7 +138,7 @@
 
             this.service.TraceMessage(
                 TraceFlags.AutodiscoverConfiguration,
-                string.Format("{0} SRV records were returned.", dnsSrvRecordList.Count));
+                "${dnsSrvRecordList.length} SRV records were returned.");
 
             // If multiple records were returned, they will be returned sorted by priority
             // (and weight) order. Need to find the index of the first record that supports SSL.
@@ -177,7 +173,7 @@
 
             // The list must contain at least one matching record since we found one earlier.
             EwsUtilities.Assert(
-                dnsSrvRecordList.Count > 0,
+                dnsSrvRecordList.length > 0,
                 "AutodiscoverDnsClient.FindBestMatchingSrvRecord",
                 "At least one DNS SRV record must match the criteria.");
 
@@ -188,16 +184,10 @@
 
             DnsSrvRecord bestDnsSrvRecord = bestDnsSrvRecordList[recordIndex];
 
-            String traceMessage = string.Format(
-                 "Returning SRV record {0} of {1} records. Target: {2}, Priority: {3}, Weight: {4}",
-                 recordIndex,
-                 dnsSrvRecordList.Count,
-                 bestDnsSrvRecord.NameTarget,
-                 bestDnsSrvRecord.Priority,
-                 bestDnsSrvRecord.Weight);
+            String traceMessage = "Returning SRV record $recordIndex of ${dnsSrvRecordList.length} records. Target: ${bestDnsSrvRecord.NameTarget}, Priority: ${bestDnsSrvRecord.Priority}, Weight: ${bestDnsSrvRecord.Weight}";
+
              this.service.TraceMessage( TraceFlags.AutodiscoverConfiguration, traceMessage);
 
             return bestDnsSrvRecord;
         }
-        #endregion
     }

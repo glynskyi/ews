@@ -117,7 +117,7 @@ export 'TraceFlags.dart';
 //export 'UserConfigurationDictionaryObjectType.cs
 //export 'UserConfigurationProperties.cs
 //export 'UserPhotoSize.cs
-//export 'UserSettingName.cs
+//export 'UserSettingName.dart
 export 'ViewFilter.dart';
 export 'WellKnownFolderName.dart';
 export 'XmlNamespace.dart';

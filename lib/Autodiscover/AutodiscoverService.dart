@@ -26,10 +26,16 @@
 
 import 'dart:core';
 
+import 'package:ews/Autodiscover/ConfigurationSettings/ConfigurationSettingsBase.dart';
+import 'package:ews/Autodiscover/Responses/GetUserSettingsResponse.dart';
 import 'package:ews/Core/ExchangeServiceBase.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
+import 'package:ews/Enumerations/UserSettingName.dart';
+import 'package:ews/Exceptions/AutodiscoverLocalException.dart';
+import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/misc/OutParam.dart';
+import 'package:ews/misc/Std/MemoryStream.dart';
 
 /// <summary>
     /// Defines a delegate that is used by the AutodiscoverService to ask whether a redirectionUrl can be used.
@@ -141,7 +147,7 @@ import 'package:ews/misc/OutParam.dart';
         /* private */ Uri url;
         /* private */ AutodiscoverRedirectionUrlValidationCallback redirectionUrlValidationCallback;
         /* private */ AutodiscoverDnsClient dnsClient;
-        /* private */ IPAddress dnsServerAddress;
+//        /* private */ IPAddress dnsServerAddress;
         /* private */ bool enableScpLookup = true;
 
 
@@ -153,7 +159,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <returns>Returns true.</returns>
         /* private */ bool DefaultAutodiscoverRedirectionUrlValidationCallback(String redirectionUrl)
         {
-            throw new AutodiscoverLocalException(string.Format(Strings.AutodiscoverRedirectBlocked, redirectionUrl));
+            throw new AutodiscoverLocalException("string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
         }
 
         /// <summary>
@@ -163,8 +169,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="emailAddress">The email address to retrieve configuration settings for.</param>
         /// <param name="url">The URL of the Autodiscover service.</param>
         /// <returns>The requested configuration settings.</returns>
-        /* private */ TSettings GetLegacyUserSettingsAtUrl<TSettings>(String emailAddress, Uri url)
-            where TSettings : ConfigurationSettingsBase, new()
+        /* private */ TSettings GetLegacyUserSettingsAtUrl<TSettings extends ConfigurationSettingsBase>(String emailAddress, Uri url)
         {
             this.TraceMessage(
                 TraceFlags.AutodiscoverConfiguration,
@@ -410,7 +415,7 @@ import 'package:ews/misc/OutParam.dart';
             {
                 // No Url or Domain specified, need to figure out which endpoint to use.
                 int currentHop = 1;
-                List<string> redirectionEmailAddresses = new List<string>();
+                List<String> redirectionEmailAddresses = new List<String>();
                 return this.InternalGetLegacyUserSettings<TSettings>(
                     emailAddress,
                     redirectionEmailAddresses,
@@ -428,7 +433,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <returns>The requested configuration settings.</returns>
         /* private */ TSettings InternalGetLegacyUserSettings<TSettings>(
             String emailAddress,
-            List<string> redirectionEmailAddresses,
+            List<String> redirectionEmailAddresses,
             ref int currentHop)
             where TSettings : ConfigurationSettingsBase, new()
         {
@@ -674,7 +679,7 @@ import 'package:ews/misc/OutParam.dart';
         {
             settings = null;
 
-            List<string> redirectionEmailAddresses = new List<string>();
+            List<String> redirectionEmailAddresses = new List<String>();
 
             // Bug 60274: Performing a non-SSL HTTP GET to retrieve a redirection URL is potentially unsafe. We allow the caller
             // to specify delegate to be called to determine whether we are allowed to use the redirection URL.
@@ -778,7 +783,7 @@ import 'package:ews/misc/OutParam.dart';
         /// </summary>
         /// <param name="emailAddress">The email address to use.</param>
         /// <param name="redirectionEmailAddresses">The list of prior redirection email addresses.</param>
-        /* private */ void DisableScpLookupIfDuplicateRedirection(String emailAddress, List<string> redirectionEmailAddresses)
+        /* private */ void DisableScpLookupIfDuplicateRedirection(String emailAddress, List<String> redirectionEmailAddresses)
         {
             // SMTP addresses are case-insensitive so entries are converted to lower-case.
             emailAddress = emailAddress.ToLowerInvariant();
@@ -811,9 +816,6 @@ import 'package:ews/misc/OutParam.dart';
 
             return settings.ConvertSettings(emailAddress, requestedSettings);
         }
-        #endregion
-
-        #region SOAP-based Autodiscover
 
         /// <summary>
         /// Calls the SOAP Autodiscover service for user settings for a single SMTP address.
@@ -823,11 +825,11 @@ import 'package:ews/misc/OutParam.dart';
         /// <returns></returns>
         GetUserSettingsResponse InternalGetSoapUserSettings(String smtpAddress, List<UserSettingName> requestedSettings)
         {
-            List<string> smtpAddresses = new List<string>();
-            smtpAddresses.Add(smtpAddress);
+            List<String> smtpAddresses = new List<String>();
+            smtpAddresses.add(smtpAddress);
 
-            List<string> redirectionEmailAddresses = new List<string>();
-            redirectionEmailAddresses.Add(smtpAddress.ToLowerInvariant());
+            List<String> redirectionEmailAddresses = new List<String>();
+            redirectionEmailAddresses.add(smtpAddress.toLowerCase());
 
             for (int currentHop = 0; currentHop < AutodiscoverService.AutodiscoverMaxRedirections; currentHop++)
             {
@@ -874,7 +876,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="settings">The settings.</param>
         /// <returns></returns>
         GetUserSettingsResponseCollection GetUserSettings(
-            List<string> smtpAddresses,
+            List<String> smtpAddresses,
             List<UserSettingName> settings)
         {
             EwsUtilities.ValidateParam(smtpAddresses, "smtpAddresses");
@@ -900,11 +902,11 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="getDomainMethod">The method to calculate the domain value.</param>
         /// <returns></returns>
         /* private */ TGetSettingsResponseCollection GetSettings<TGetSettingsResponseCollection, TSettingName>(
-            List<string> identities,
+            List<String> identities,
             List<TSettingName> settings,
             ExchangeVersion? requestedVersion,
             GetSettingsMethod<TGetSettingsResponseCollection, TSettingName> getSettingsMethod,
-            System.Func<string> getDomainMethod)
+            System.Func<String> getDomainMethod)
         {
             TGetSettingsResponseCollection response;
 
@@ -959,7 +961,7 @@ import 'package:ews/misc/OutParam.dart';
 
                 String domainName = getDomainMethod();
                 int scpHostCount;
-                List<string> hosts = this.GetAutodiscoverServiceHosts(domainName, out scpHostCount);
+                List<String> hosts = this.GetAutodiscoverServiceHosts(domainName, out scpHostCount);
 
                 if (hosts.Count == 0)
                 {
@@ -1055,7 +1057,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="autodiscoverUrl">The autodiscover URL.</param>
         /// <returns>GetUserSettingsResponse collection.</returns>
         /* private */ GetUserSettingsResponseCollection InternalGetUserSettings(
-            List<string> smtpAddresses,
+            List<String> smtpAddresses,
             List<UserSettingName> settings,
             ExchangeVersion? requestedVersion,
             ref Uri autodiscoverUrl)
@@ -1101,7 +1103,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="requestedVersion">Requested version of the Exchange service.</param>
         /// <returns>GetDomainSettingsResponse collection.</returns>
         GetDomainSettingsResponseCollection GetDomainSettings(
-            List<string> domains,
+            List<String> domains,
             List<DomainSettingName> settings,
             ExchangeVersion? requestedVersion)
         {
@@ -1125,7 +1127,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="autodiscoverUrl">The autodiscover URL.</param>
         /// <returns>GetDomainSettingsResponse collection.</returns>
         /* private */ GetDomainSettingsResponseCollection InternalGetDomainSettings(
-            List<string> domains,
+            List<String> domains,
             List<DomainSettingName> settings,
             ExchangeVersion? requestedVersion,
             ref Uri autodiscoverUrl)
@@ -1276,7 +1278,7 @@ import 'package:ews/misc/OutParam.dart';
         /// </summary>
         /// <param name="domainName">Name of the domain.</param>
         /// <returns></returns>
-        /* private */ ICollection<string> DefaultGetScpUrlsForDomain(String domainName)
+        /* private */ ICollection<String> DefaultGetScpUrlsForDomain(String domainName)
         {
             DirectoryHelper helper = new DirectoryHelper(this);
             return helper.GetAutodiscoverScpUrlsForDomain(domainName);
@@ -1295,8 +1297,8 @@ import 'package:ews/misc/OutParam.dart';
             if (this.enableScpLookup)
             {
                 // Get SCP URLs
-                Func<string, ICollection<string>> callback = this.GetScpUrlsForDomainCallback ?? this.DefaultGetScpUrlsForDomain;
-                ICollection<string> scpUrls = callback(domainName);
+                Func<string, ICollection<String>> callback = this.GetScpUrlsForDomainCallback ?? this.DefaultGetScpUrlsForDomain;
+                ICollection<String> scpUrls = callback(domainName);
                 for (String str in scpUrls)
                 {
                     urls.Add(new Uri(str));
@@ -1318,9 +1320,9 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="domainName">Name of the domain.</param>
         /// <param name="scpHostCount">Count of SCP hosts that were found.</param>
         /// <returns>List of host names.</returns>
-        List<string> GetAutodiscoverServiceHosts(String domainName, out int scpHostCount)
+        List<String> GetAutodiscoverServiceHosts(String domainName, out int scpHostCount)
         {
-            List<string> serviceHosts = new List<string>();
+            List<String> serviceHosts = new List<String>();
             for (Uri url in this.GetAutodiscoverServiceUrls(domainName, out scpHostCount))
             {
                 serviceHosts.Add(url.Host);
@@ -1475,10 +1477,7 @@ import 'package:ews/misc/OutParam.dart';
                 }
             }
         }
-
-        #endregion
-
-        #region Utilities
+        
         /// <summary>
         /// Creates an HttpWebRequest instance and initializes it with the appropriate parameters,
         /// based on the configuration of this service object.
@@ -1523,9 +1522,6 @@ import 'package:ews/misc/OutParam.dart';
                 TraceFlags.AutodiscoverResponseHttpHeaders,
                 TraceFlags.AutodiscoverResponse);
         }
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
@@ -1636,9 +1632,6 @@ import 'package:ews/misc/OutParam.dart';
         {
         }
 
-        #endregion
-
-        #region Public Methods
         /// <summary>
         /// Retrieves the specified settings for single SMTP address.
         /// </summary>
@@ -1681,7 +1674,7 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="userSettingNames">The user setting names.</param>
         /// <returns>A GetUserSettingsResponseCollection object containing the responses for each individual user.</returns>
  GetUserSettingsResponseCollection GetUsersSettings(
-            Iterable<string> userSmtpAddresses,
+            Iterable<String> userSmtpAddresses,
             params UserSettingName[] userSettingNames)
         {
             if (this.RequestedServerVersion < MinimumRequestVersionForAutoDiscoverSoapService)
@@ -1690,7 +1683,7 @@ import 'package:ews/misc/OutParam.dart';
                     string.Format(Strings.AutodiscoverServiceIncompatibleWithRequestVersion, MinimumRequestVersionForAutoDiscoverSoapService));
             }
 
-            List<string> smtpAddresses = new List<string>(userSmtpAddresses);
+            List<String> smtpAddresses = new List<String>(userSmtpAddresses);
             List<UserSettingName> settings = new List<UserSettingName>(userSettingNames);
 
             return this.GetUserSettings(smtpAddresses, settings);
@@ -1705,10 +1698,10 @@ import 'package:ews/misc/OutParam.dart';
         /// <returns>A DomainResponse object containing the requested settings for the specified domain.</returns>
  GetDomainSettingsResponse GetDomainSettings(
             String domain,
-            ExchangeVersion? requestedVersion,
+            ExchangeVersion requestedVersion,
             params DomainSettingName[] domainSettingNames)
         {
-            List<string> domains = new List<string>(1);
+            List<String> domains = new List<String>(1);
             domains.Add(domain);
             List<DomainSettingName> settings = new List<DomainSettingName>(domainSettingNames);
             return this.GetDomainSettings(domains, settings, requestedVersion)[0];
@@ -1722,13 +1715,13 @@ import 'package:ews/misc/OutParam.dart';
         /// <param name="domainSettingNames">The domain setting names.</param>
         /// <returns>A GetDomainSettingsResponseCollection object containing the responses for each individual domain.</returns>
  GetDomainSettingsResponseCollection GetDomainSettings(
-            Iterable<string> domains,
+            Iterable<String> domains,
             ExchangeVersion? requestedVersion,
             params DomainSettingName[] domainSettingNames)
         {
             List<DomainSettingName> settings = new List<DomainSettingName>(domainSettingNames);
 
-            return this.GetDomainSettings(new List<string>(domains), settings, requestedVersion);
+            return this.GetDomainSettings(new List<String>(domains), settings, requestedVersion);
         }
 
         /// <summary>
@@ -1770,7 +1763,7 @@ import 'package:ews/misc/OutParam.dart';
             }
 
             GetUserSettingsRequest request = new GetUserSettingsRequest(this, this.Url, true /* expectPartnerToken */);
-            request.SmtpAddresses = new List<string>(new[] { smtpAddress });
+            request.SmtpAddresses = new List<String>(new[] { smtpAddress });
             request.Settings = new List<UserSettingName>(new[] { UserSettingName.ExternalEwsUrl });
 
             GetUserSettingsResponseCollection response = null;
@@ -1828,37 +1821,29 @@ import 'package:ews/misc/OutParam.dart';
         /// Gets or sets the domain this service is bound to. When this property is set, the domain
         /// name is used to automatically determine the Autodiscover service URL.
         /// </summary>
- String Domain
-        {
-            get { return this.domain; }
-            set
-            {
-                EwsUtilities.ValidateDomainNameAllowNull(value, "Domain");
+        String get Domain => this.domain;
+        set Domain(String value) {
+            EwsUtilities.ValidateDomainNameAllowNull(value, "Domain");
 
-                // If Domain property is set to non-null value, Url property is nulled.
-                if (value != null)
-                {
-                    this.url = null;
-                }
-                this.domain = value;
+            // If Domain property is set to non-null value, Url property is nulled.
+            if (value != null)
+            {
+                this.url = null;
             }
+            this.domain = value;
         }
 
         /// <summary>
         /// Gets or sets the URL this service is bound to.
         /// </summary>
- Uri Url
-        {
-            get { return this.url; }
-            set
+        Uri get Url => this.url;
+        set Url(Uri value) {
+            // If Url property is set to non-null value, Domain property is set to host portion of Url.
+            if (value != null)
             {
-                // If Url property is set to non-null value, Domain property is set to host portion of Url.
-                if (value != null)
-                {
-                    this.domain = value.Host;
-                }
-                this.url = value;
+                this.domain = value.host;
             }
+            this.url = value;
         }
 
         /// <summary>
@@ -1870,50 +1855,39 @@ import 'package:ews/misc/OutParam.dart';
         /// - This instance has been created with a domain name and no method has been called,
         /// - This instance has been created with a URL.
         /// </remarks>
- bool? IsExternal
-        {
-            get { return this.isExternal; }
-            set { this.isExternal = value; }
-        }
+        bool get IsExternal => this.isExternal;
+        set IsExternal(bool value) => this.isExternal = value;
 
         /// <summary>
         /// Gets or sets the redirection URL validation callback.
         /// </summary>
         /// <value>The redirection URL validation callback.</value>
- AutodiscoverRedirectionUrlValidationCallback RedirectionUrlValidationCallback
-        {
-            get { return this.redirectionUrlValidationCallback; }
-            set { this.redirectionUrlValidationCallback = value; }
-        }
+        AutodiscoverRedirectionUrlValidationCallback get RedirectionUrlValidationCallback => this.redirectionUrlValidationCallback;
+        set RedirectionUrlValidationCallback(AutodiscoverRedirectionUrlValidationCallback value) => this.redirectionUrlValidationCallback = value;
 
         /// <summary>
         /// Gets or sets the DNS server address.
         /// </summary>
         /// <value>The DNS server address.</value>
-        IPAddress DnsServerAddress
-        {
-            get { return this.dnsServerAddress; }
-            set { this.dnsServerAddress = value; }
-        }
+//        IPAddress DnsServerAddress
+//        {
+//            get { return this.dnsServerAddress; }
+//            set { this.dnsServerAddress = value; }
+//        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the AutodiscoverService should perform SCP (ServiceConnectionPoint) record lookup when determining
         /// the Autodiscover service URL.
         /// </summary>
- bool EnableScpLookup
-        {
-            get { return this.enableScpLookup; }
-            set { this.enableScpLookup = value; }
-        }
+        bool get EnableScpLookup => this.enableScpLookup;
+        set EnableScpLookup(bool value) => this.enableScpLookup = value;
 
         /// <summary>
         /// Gets or sets the delegate used to resolve Autodiscover SCP urls for a specified domain.
         /// </summary>
- Func<string, ICollection<string>> GetScpUrlsForDomainCallback
-        {
-            get;
-            set;
-        }
-
-        #endregion
+// Func<string, ICollection<String>> GetScpUrlsForDomainCallback
+//        {
+//            get;
+//            set;
+//        }
     }

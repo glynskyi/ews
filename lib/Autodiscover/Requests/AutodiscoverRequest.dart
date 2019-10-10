@@ -33,7 +33,14 @@
 
     import 'package:ews/Autodiscover/AutodiscoverService.dart';
 import 'package:ews/Autodiscover/Responses/AutodiscoverResponse.dart';
+import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
+import 'package:ews/Core/EwsXmlReader.dart';
+import 'package:ews/Core/ExchangeServerInfo.dart';
+import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/TraceFlags.dart';
+import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ServiceRequestException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 
@@ -177,7 +184,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
                     }
                 }
             }
-            catch (WebException ex)
+            on WebException catch (ex)
             {
                 if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                 {
@@ -204,7 +211,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
                 // Wrap exception if the above code block didn't throw
                 throw new ServiceRequestException(string.Format(Strings.ServiceRequestFailed, ex.Message), ex);
             }
-            catch (XmlException ex)
+            on XmlException catch (ex)
             {
                 this.Service.TraceMessage(
                     TraceFlags.AutodiscoverConfiguration,
@@ -213,7 +220,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
                 // Wrap exception
                 throw new ServiceRequestException(string.Format(Strings.ServiceRequestFailed, ex.Message), ex);
             }
-            catch (IOException ex)
+            on IOException catch (ex)
             {
                 this.Service.TraceMessage(
                     TraceFlags.AutodiscoverConfiguration,
@@ -353,35 +360,35 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
                 reader.Read();
 
                 // Skip SOAP header.
-                if (reader.IsStartElement(soapNamespace, XmlElementNames.SOAPHeaderElementName))
+                if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPHeaderElementName))
                 {
                     do
                     {
                         reader.Read();
                     }
-                    while (!reader.IsEndElement(soapNamespace, XmlElementNames.SOAPHeaderElementName));
+                    while (!reader.IsEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPHeaderElementName));
 
                     // Queue up the next read
                     reader.Read();
                 }
 
                 // Parse the fault element contained within the SOAP body.
-                if (reader.IsStartElement(soapNamespace, XmlElementNames.SOAPBodyElementName))
+                if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPBodyElementName))
                 {
                     do
                     {
                         reader.Read();
 
                         // Parse Fault element
-                        if (reader.IsStartElement(soapNamespace, XmlElementNames.SOAPFaultElementName))
+                        if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPFaultElementName))
                         {
                             soapFaultDetails = SoapFaultDetails.Parse(reader, soapNamespace);
                         }
                     }
-                    while (!reader.IsEndElement(soapNamespace, XmlElementNames.SOAPBodyElementName));
+                    while (!reader.IsEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPBodyElementName));
                 }
 
-                reader.ReadEndElement(soapNamespace, XmlElementNames.SOAPEnvelopeElementName);
+                reader.ReadEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPEnvelopeElementName);
             }
             catch (XmlException)
             {
@@ -417,20 +424,20 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
                 this.Service.Credentials.EmitExtraSoapHeaderNamespaceAliases(writer.InternalWriter);
             }
 
-            writer.WriteElementValue(
+            writer.WriteElementValueWithNamespace(
                 XmlNamespace.Autodiscover,
                 XmlElementNames.RequestedServerVersion,
-                this.Service.RequestedServerVersion.ToString());
+                this.Service.RequestedServerVersion.toString());
 
-            writer.WriteElementValue(
+            writer.WriteElementValueWithNamespace(
                 XmlNamespace.WSAddressing,
                 XmlElementNames.Action,
                this.GetWsAddressingActionName());
 
-            writer.WriteElementValue(
+            writer.WriteElementValueWithNamespace(
                 XmlNamespace.WSAddressing,
                 XmlElementNames.To,
-               requestUrl.AbsoluteUri);
+               requestUrl.toString());
 
             this.WriteExtraCustomSoapHeadersToXml(writer);
 
@@ -480,7 +487,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// </summary>
         /// <param name="response">HttpWebResponse.</param>
         /// <returns>ResponseStream</returns>
-        protected static Stream GetResponseStream(IEwsHttpWebResponse response)
+        static Stream GetResponseStream(IEwsHttpWebResponse response)
         {
             String contentEncoding = response.ContentEncoding;
             Stream responseStream = response.GetResponseStream();
@@ -505,21 +512,21 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// <param name="reader">EwsXmlReader</param>
         void ReadSoapHeaders(EwsXmlReader reader)
         {
-            reader.ReadStartElement(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
+            reader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
             do
             {
                 reader.Read();
 
                 this.ReadSoapHeader(reader);
             }
-            while (!reader.IsEndElement(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName));
+            while (!reader.IsEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName));
         }
 
         /// <summary>
         /// Reads a single SOAP header.
         /// </summary>
         /// <param name="reader">EwsXmlReader</param>
-        virtual void ReadSoapHeader(EwsXmlReader reader)
+        void ReadSoapHeader(EwsXmlReader reader)
         {
             // Is this the ServerVersionInfo?
             if (reader.IsStartElement(XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo))
@@ -563,7 +570,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
                     }
                 }
             }
-            while (!reader.IsEndElement(XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo));
+            while (!reader.IsEndElementWithNamespace(XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo));
 
             return serverInfo;
         }
@@ -574,9 +581,9 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// <param name="reader">EwsXmlReader</param>
         AutodiscoverResponse ReadSoapBody(EwsXmlReader reader)
         {
-            reader.ReadStartElement(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
+            reader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
             AutodiscoverResponse responses = this.LoadFromXml(reader);
-            reader.ReadEndElement(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
+            reader.ReadEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
             return responses;
         }
 
@@ -588,7 +595,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         AutodiscoverResponse LoadFromXml(EwsXmlReader reader)
         {
             String elementName = this.GetResponseXmlElementName();
-            reader.ReadStartElement(XmlNamespace.Autodiscover, elementName);
+            reader.ReadStartElementWithNamespace(XmlNamespace.Autodiscover, elementName);
             AutodiscoverResponse response = this.CreateServiceResponse();
             response.LoadFromXml(reader, elementName);
             return response;
@@ -598,51 +605,45 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// Gets the name of the request XML element.
         /// </summary>
         /// <returns></returns>
-        abstract String GetRequestXmlElementName();
+        String GetRequestXmlElementName();
 
         /// <summary>
         /// Gets the name of the response XML element.
         /// </summary>
         /// <returns></returns>
-        abstract String GetResponseXmlElementName();
+        String GetResponseXmlElementName();
 
         /// <summary>
         /// Gets the WS-Addressing action name.
         /// </summary>
         /// <returns></returns>
-        abstract String GetWsAddressingActionName();
+        String GetWsAddressingActionName();
 
         /// <summary>
         /// Creates the service response.
         /// </summary>
         /// <returns>AutodiscoverResponse</returns>
-        abstract AutodiscoverResponse CreateServiceResponse();
+        AutodiscoverResponse CreateServiceResponse();
 
         /// <summary>
         /// Writes attributes to request XML.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        abstract void WriteAttributesToXml(EwsServiceXmlWriter writer);
+        void WriteAttributesToXml(EwsServiceXmlWriter writer);
 
         /// <summary>
         /// Writes elements to request XML.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        abstract void WriteElementsToXml(EwsServiceXmlWriter writer);
+        void WriteElementsToXml(EwsServiceXmlWriter writer);
 
         /// <summary>
         /// Gets the service.
         /// </summary>
-        AutodiscoverService Service
-        {
-            get { return this.service; }
-        }
+        AutodiscoverService get Service => this.service;
 
         /// <summary>
         /// Gets the URL.
         /// </summary>
-        Uri Url
-        {
-            get { return this.url; }
-        }
+        Uri get Url => this.url;
     }

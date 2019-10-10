@@ -23,6 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Autodiscover/AutodiscoverService.dart';
 import 'package:ews/ComplexProperties/Attachment.dart';
 import 'package:ews/ComplexProperties/FolderId.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
@@ -4849,7 +4850,7 @@ bool DefaultAutodiscoverRedirectionUrlValidationCallback(String redirectionUrl)
   /// <param name="emailAddress">The email address to use.</param>
   Future<void> AutodiscoverUrl(String emailAddress)
         {
-            return this.AutodiscoverUrl(emailAddress, this.DefaultAutodiscoverRedirectionUrlValidationCallback);
+            return this.AutodiscoverUrlWithCallback(emailAddress, this.DefaultAutodiscoverRedirectionUrlValidationCallback);
         }
 
   /// <summary>
@@ -4874,13 +4875,13 @@ Future<void> AutodiscoverUrlWithCallback(String emailAddress, AutodiscoverRedire
                     this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
                     return;
                 }
-                catch (AutodiscoverLocalException ex)
+                on AutodiscoverLocalException catch (ex)
                 {
                     this.TraceMessage(
                         TraceFlags.AutodiscoverResponse,
                         string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
                 }
-                catch (ServiceRemoteException ex)
+                on ServiceRemoteException catch (ex)
                 {
                     // Special case: if the caller's account is locked we want to return this exception, not continue.
                     if (ex is AccountIsLockedException)
@@ -4912,12 +4913,12 @@ Future<void> AutodiscoverUrlWithCallback(String emailAddress, AutodiscoverRedire
   /// </remarks>
   /// <param name="uri">The URI.</param>
   /// <returns>Adjusted URL.</returns>
-//Uri AdjustServiceUriFromCredentials(Uri uri)
-//        {
-//            return (this.Credentials != null)
-//                ? this.Credentials.AdjustUrl(uri)
-//                : uri;
-//        }
+Uri AdjustServiceUriFromCredentials(Uri uri)
+        {
+            return (this.Credentials != null)
+                ? this.Credentials.AdjustUrl(uri)
+                : uri;
+        }
 
   /// <summary>
   /// Gets the EWS URL from Autodiscover.
