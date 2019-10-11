@@ -146,7 +146,7 @@ import 'package:ews/Xml/XmlWriter.dart';
         /// <returns>Adjust URL.</returns>
         Uri AdjustUrl(Uri url)
         {
-            return new Uri(GetUriWithoutSuffix(url));
+            return Uri.parse(GetUriWithoutSuffix(url));
         }
 
         /// <summary>

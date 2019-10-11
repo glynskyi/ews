@@ -24,6 +24,7 @@
  */
 
 import 'package:ews/Autodiscover/AutodiscoverError.dart';
+import 'package:ews/Autodiscover/Responses/GetUserSettingsResponse.dart';
 import 'package:ews/Core/EwsXmlReader.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/AutodiscoverResponseType.dart';

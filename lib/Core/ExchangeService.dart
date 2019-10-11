@@ -65,6 +65,7 @@ import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/ServiceObjects/ServiceObject.dart';
 import 'package:ews/Enumerations/AffectedTaskOccurrence.dart';
+import 'package:ews/Enumerations/AutodiscoverErrorCode.dart';
 import 'package:ews/Enumerations/BodyType.dart';
 import 'package:ews/Enumerations/ConflictResolutionMode.dart';
 import 'package:ews/Enumerations/DeleteMode.dart';
@@ -78,9 +79,12 @@ import 'package:ews/Enumerations/SendInvitationsOrCancellationsMode.dart';
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TraceFlags.dart' as enumerations;
+import 'package:ews/Enumerations/UserSettingName.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
+import 'package:ews/Exceptions/AccountIsLockedException.dart';
 import 'package:ews/Exceptions/AutodiscoverLocalException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
+import 'package:ews/Exceptions/ServiceRemoteException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
@@ -99,6 +103,7 @@ import 'package:ews/Sync/ChangeCollection.dart';
 import 'package:ews/Sync/FolderChange.dart';
 import 'package:ews/Sync/ItemChange.dart';
 import 'package:ews/misc/NameResolutionCollection.dart';
+import 'package:ews/misc/OutParam.dart';
 import 'package:ews/misc/StringUtils.dart';
 
 import 'ExchangeServiceBase.dart';
@@ -134,14 +139,15 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>The list of items created or modified as a result of the "creation" of the response object.</returns>
   Future<List<Item>> InternalCreateResponseObject(ServiceObject responseObject,
       FolderId parentFolderId, MessageDisposition messageDisposition) async {
-    CreateResponseObjectRequest request =
-        new CreateResponseObjectRequest(this, ServiceErrorHandling.ThrowOnError);
+    CreateResponseObjectRequest request = new CreateResponseObjectRequest(
+        this, ServiceErrorHandling.ThrowOnError);
 
     request.ParentFolderId = parentFolderId;
     request.Items = [responseObject];
     request.MessageDisposition = messageDisposition;
 
-    ServiceResponseCollection<CreateResponseObjectResponse> responses = await request.Execute();
+    ServiceResponseCollection<CreateResponseObjectResponse> responses =
+        await request.Execute();
 
     return responses[0].Items;
   }
@@ -152,7 +158,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="folder">The folder.</param>
   /// <param name="parentFolderId">The parent folder id.</param>
   Future<void> CreateFolder(Folder folder, FolderId parentFolderId) async {
-    CreateFolderRequest request = new CreateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
+    CreateFolderRequest request =
+        new CreateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
 
     request.Folders = [folder];
     request.ParentFolderId = parentFolderId;
@@ -165,7 +172,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="folder">The folder.</param>
   Future<void> UpdateFolder(Folder folder) {
-    UpdateFolderRequest request = new UpdateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
+    UpdateFolderRequest request =
+        new UpdateFolderRequest(this, ServiceErrorHandling.ThrowOnError);
 
     request.Folders.add(folder);
 
@@ -245,14 +253,15 @@ class ExchangeService extends ExchangeServiceBase {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of folders returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindFoldersResults> FindFoldersWithFolderId(
-      FolderId parentFolderId, SearchFilter searchFilter, FolderView view) async {
+  Future<FindFoldersResults> FindFoldersWithFolderId(FolderId parentFolderId,
+      SearchFilter searchFilter, FolderView view) async {
     EwsUtilities.ValidateParam(parentFolderId, "parentFolderId");
     EwsUtilities.ValidateParam(view, "view");
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-    ServiceResponseCollection<FindFolderResponse> responses = await this.InternalFindFolders(
-        [parentFolderId], searchFilter, view, ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindFolderResponse> responses = await this
+        .InternalFindFolders([parentFolderId], searchFilter, view,
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Results;
   }
@@ -309,7 +318,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of folders returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
   Future<FindFoldersResults> FindFoldersWithWellKnownFolder(
-      WellKnownFolderName parentFolderName, SearchFilter searchFilter, FolderView view) {
+      WellKnownFolderName parentFolderName,
+      SearchFilter searchFilter,
+      FolderView view) {
     return this.FindFoldersWithFolderId(
         new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view);
   }
@@ -349,12 +360,14 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="folderId">The folder id.</param>
   /// <param name="propertySet">The property set.</param>
   /// <returns>Folder</returns>
-  Future<Folder> BindToFolder(FolderId folderId, PropertySet propertySet) async {
+  Future<Folder> BindToFolder(
+      FolderId folderId, PropertySet propertySet) async {
 //            EwsUtilities.ValidateParam(folderId, "folderId");
 //            EwsUtilities.ValidateParam(propertySet, "propertySet");
 
     ServiceResponseCollection<GetFolderResponse> responses = await this
-        .InternalBindToFolders([folderId], propertySet, ServiceErrorHandling.ThrowOnError);
+        .InternalBindToFolders(
+            [folderId], propertySet, ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Folder;
   }
@@ -427,7 +440,8 @@ class ExchangeService extends ExchangeServiceBase {
   Future<void> DeleteFolder(FolderId folderId, DeleteMode deleteMode) {
     EwsUtilities.ValidateParam(folderId, "folderId");
 
-    DeleteFolderRequest request = new DeleteFolderRequest(this, ServiceErrorHandling.ThrowOnError);
+    DeleteFolderRequest request =
+        new DeleteFolderRequest(this, ServiceErrorHandling.ThrowOnError);
 
     request.FolderIds.AddFolderId(folderId);
     request.DeleteMode = deleteMode;
@@ -548,10 +562,13 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="parentFolderId">The Id of the folder in which to place the newly created item. If null, the item is created in its default folders.</param>
   /// <param name="messageDisposition">Indicates the disposition mode for items of type EmailMessage. Required if item is an EmailMessage instance.</param>
   /// <param name="sendInvitationsMode">Indicates if and how invitations should be sent for item of type Appointment. Required if item is an Appointment instance.</param>
-  Future<void> CreateItem(Item item, FolderId parentFolderId, MessageDisposition messageDisposition,
+  Future<void> CreateItem(
+      Item item,
+      FolderId parentFolderId,
+      MessageDisposition messageDisposition,
       SendInvitationsMode sendInvitationsMode) {
-    return this.InternalCreateItems([item], parentFolderId, messageDisposition, sendInvitationsMode,
-        ServiceErrorHandling.ThrowOnError);
+    return this.InternalCreateItems([item], parentFolderId, messageDisposition,
+        sendInvitationsMode, ServiceErrorHandling.ThrowOnError);
   }
 
   /// <summary>
@@ -579,7 +596,8 @@ class ExchangeService extends ExchangeServiceBase {
     request.SavedItemsDestinationFolder = savedItemsDestinationFolderId;
     request.MessageDisposition = messageDisposition;
     request.ConflictResolutionMode = conflictResolution;
-    request.SendInvitationsOrCancellationsMode = sendInvitationsOrCancellationsMode;
+    request.SendInvitationsOrCancellationsMode =
+        sendInvitationsOrCancellationsMode;
     request.SuppressReadReceipts = suppressReadReceipt;
 
     return request.Execute();
@@ -623,12 +641,14 @@ class ExchangeService extends ExchangeServiceBase {
       bool suppressReadReceipts) {
     // All items have to exist on the server (!new) and modified (dirty)
     if (!items.every((item) => (!item.IsNew && item.IsDirty))) {
-      throw new ServiceValidationException("Strings.UpdateItemsDoesNotSupportNewOrUnchangedItems");
+      throw new ServiceValidationException(
+          "Strings.UpdateItemsDoesNotSupportNewOrUnchangedItems");
     }
 
     // Make sure that all items do *not* have unprocessed attachments.
     if (!items.every((item) => !item.HasUnprocessedAttachmentChanges())) {
-      throw new ServiceValidationException("Strings.UpdateItemsDoesNotAllowAttachments");
+      throw new ServiceValidationException(
+          "Strings.UpdateItemsDoesNotAllowAttachments");
     }
 
     return this.InternalUpdateItems(
@@ -677,14 +697,15 @@ class ExchangeService extends ExchangeServiceBase {
       MessageDisposition messageDisposition,
       SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
       [bool suppressReadReceipts = false]) async {
-    ServiceResponseCollection<UpdateItemResponse> responses = await this.InternalUpdateItems(
-        [item],
-        savedItemsDestinationFolderId,
-        conflictResolution,
-        messageDisposition,
-        sendInvitationsOrCancellationsMode,
-        ServiceErrorHandling.ThrowOnError,
-        suppressReadReceipts);
+    ServiceResponseCollection<UpdateItemResponse> responses = await this
+        .InternalUpdateItems(
+            [item],
+            savedItemsDestinationFolderId,
+            conflictResolution,
+            messageDisposition,
+            sendInvitationsOrCancellationsMode,
+            ServiceErrorHandling.ThrowOnError,
+            suppressReadReceipts);
 
     return responses[0].ReturnedItem;
   }
@@ -695,7 +716,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="item">The item.</param>
   /// <param name="savedCopyDestinationFolderId">The saved copy destination folder id.</param>
   Future<void> SendItem(Item item, FolderId savedCopyDestinationFolderId) {
-    SendItemRequest request = new SendItemRequest(this, ServiceErrorHandling.ThrowOnError);
+    SendItemRequest request =
+        new SendItemRequest(this, ServiceErrorHandling.ThrowOnError);
 
     request.Items = [item];
     request.SavedCopyDestinationFolderId = savedCopyDestinationFolderId;
@@ -895,20 +917,22 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="groupBy">The group by.</param>
   /// <param name="errorHandlingMode">Indicates the type of error handling should be done.</param>
   /// <returns>Service response collection.</returns>
-  Future<ServiceResponseCollection<FindItemResponse<TItem>>> FindItemsGeneric<TItem extends Item>(
-      Iterable<FolderId> parentFolderIds,
-      SearchFilter searchFilter,
-      String queryString,
-      ViewBase view,
-      Grouping groupBy,
-      ServiceErrorHandling errorHandlingMode) async {
+  Future<ServiceResponseCollection<FindItemResponse<TItem>>>
+      FindItemsGeneric<TItem extends Item>(
+          Iterable<FolderId> parentFolderIds,
+          SearchFilter searchFilter,
+          String queryString,
+          ViewBase view,
+          Grouping groupBy,
+          ServiceErrorHandling errorHandlingMode) async {
     EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
     EwsUtilities.ValidateParam(view, "view");
     EwsUtilities.ValidateParamAllowNull(groupBy, "groupBy");
     EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-    FindItemRequest<TItem> request = await new FindItemRequest<TItem>(this, errorHandlingMode);
+    FindItemRequest<TItem> request =
+        await new FindItemRequest<TItem>(this, errorHandlingMode);
 
     request.ParentFolderIds.AddRangeFolderIds(parentFolderIds);
     request.SearchFilter = searchFilter;
@@ -930,15 +954,16 @@ class ExchangeService extends ExchangeServiceBase {
       FolderId parentFolderId, String queryString, ViewBase view) async {
     EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-        [parentFolderId],
-        null,
-        /* searchFilter */
-        queryString,
-        view,
-        null,
-        /* groupBy */
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await this.FindItemsGeneric<Item>(
+            [parentFolderId],
+            null,
+            /* searchFilter */
+            queryString,
+            view,
+            null,
+            /* groupBy */
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Results;
   }
@@ -953,15 +978,18 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="returnHighlightTerms">Flag indicating if highlight terms should be returned in the response</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndHighlightAndView(
-      FolderId parentFolderId, String queryString, bool returnHighlightTerms, ViewBase view) async {
+  Future<FindItemsResults<Item>>
+      FindItemsWithFolderIdAndQueryAndHighlightAndView(FolderId parentFolderId,
+          String queryString, bool returnHighlightTerms, ViewBase view) async {
     List<FolderId> parentFolderIds = [parentFolderId];
 
     EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
     EwsUtilities.ValidateParam(view, "view");
     EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
-    EwsUtilities.ValidateParamAllowNull(returnHighlightTerms, "returnHighlightTerms");
-    EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2013, "FindItems");
+    EwsUtilities.ValidateParamAllowNull(
+        returnHighlightTerms, "returnHighlightTerms");
+    EwsUtilities.ValidateMethodVersion(
+        this, ExchangeVersion.Exchange2013, "FindItems");
 
     FindItemRequest<Item> request =
         new FindItemRequest<Item>(this, ServiceErrorHandling.ThrowOnError);
@@ -971,7 +999,8 @@ class ExchangeService extends ExchangeServiceBase {
     request.ReturnHighlightTerms = returnHighlightTerms;
     request.View = view;
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await request.Execute();
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await request.Execute();
     return responses[0].Results;
   }
 
@@ -986,20 +1015,23 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndHighlightAndViewAndGrouping(
-      FolderId parentFolderId,
-      String queryString,
-      bool returnHighlightTerms,
-      ViewBase view,
-      Grouping groupBy) async {
+  Future<GroupedFindItemsResults<Item>>
+      FindItemsWithFolderIdAndQueryAndHighlightAndViewAndGrouping(
+          FolderId parentFolderId,
+          String queryString,
+          bool returnHighlightTerms,
+          ViewBase view,
+          Grouping groupBy) async {
     List<FolderId> parentFolderIds = [parentFolderId];
 
     EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
     EwsUtilities.ValidateParam(view, "view");
     EwsUtilities.ValidateParam(groupBy, "groupBy");
     EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
-    EwsUtilities.ValidateParamAllowNull(returnHighlightTerms, "returnHighlightTerms");
-    EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2013, "FindItems");
+    EwsUtilities.ValidateParamAllowNull(
+        returnHighlightTerms, "returnHighlightTerms");
+    EwsUtilities.ValidateMethodVersion(
+        this, ExchangeVersion.Exchange2013, "FindItems");
 
     FindItemRequest<Item> request =
         new FindItemRequest<Item>(this, ServiceErrorHandling.ThrowOnError);
@@ -1010,7 +1042,8 @@ class ExchangeService extends ExchangeServiceBase {
     request.View = view;
     request.GroupBy = groupBy;
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await request.Execute();
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await request.Execute();
     return responses[0].GroupedFindResults;
   }
 
@@ -1027,15 +1060,16 @@ class ExchangeService extends ExchangeServiceBase {
       FolderId parentFolderId, SearchFilter searchFilter, ViewBase view) async {
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-        [parentFolderId],
-        searchFilter,
-        null,
-        /* queryString */
-        view,
-        null,
-        /* groupBy */
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await this.FindItemsGeneric<Item>(
+            [parentFolderId],
+            searchFilter,
+            null,
+            /* queryString */
+            view,
+            null,
+            /* groupBy */
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Results;
   }
@@ -1048,16 +1082,17 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>An object representing the results of the search operation.</returns>
   Future<FindItemsResults<Item>> FindItemsWithFolderIdAndView(
       FolderId parentFolderId, ViewBase view) async {
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-        [parentFolderId],
-        null,
-        /* searchFilter */
-        null,
-        /* queryString */
-        view,
-        null,
-        /* groupBy */
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await this.FindItemsGeneric<Item>(
+            [parentFolderId],
+            null,
+            /* searchFilter */
+            null,
+            /* queryString */
+            view,
+            null,
+            /* groupBy */
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Results;
   }
@@ -1085,7 +1120,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
   Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndFilterAndView(
-      WellKnownFolderName parentFolderName, SearchFilter searchFilter, ViewBase view) {
+      WellKnownFolderName parentFolderName,
+      SearchFilter searchFilter,
+      ViewBase view) {
     return this.FindItemsWithFolderIdAndFilterAndView(
         new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view);
   }
@@ -1110,19 +1147,21 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
-  Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndViewAndGrouping(
-      FolderId parentFolderId, String queryString, ViewBase view, Grouping groupBy) async {
+  Future<GroupedFindItemsResults<Item>>
+      FindItemsWithFolderIdAndQueryAndViewAndGrouping(FolderId parentFolderId,
+          String queryString, ViewBase view, Grouping groupBy) async {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
     EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-        [parentFolderId],
-        null,
-        /* searchFilter */
-        queryString,
-        view,
-        groupBy,
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await this.FindItemsGeneric<Item>(
+            [parentFolderId],
+            null,
+            /* searchFilter */
+            queryString,
+            view,
+            groupBy,
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].GroupedFindResults;
   }
@@ -1137,19 +1176,21 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
-  Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndFilterAndViewAndGrouping(
-      FolderId parentFolderId, SearchFilter searchFilter, ViewBase view, Grouping groupBy) async {
+  Future<GroupedFindItemsResults<Item>>
+      FindItemsWithFolderIdAndFilterAndViewAndGrouping(FolderId parentFolderId,
+          SearchFilter searchFilter, ViewBase view, Grouping groupBy) async {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-        [parentFolderId],
-        searchFilter,
-        null,
-        /* queryString */
-        view,
-        groupBy,
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await this.FindItemsGeneric<Item>(
+            [parentFolderId],
+            searchFilter,
+            null,
+            /* queryString */
+            view,
+            groupBy,
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].GroupedFindResults;
   }
@@ -1165,15 +1206,16 @@ class ExchangeService extends ExchangeServiceBase {
       FolderId parentFolderId, ViewBase view, Grouping groupBy) async {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses = await this.FindItemsGeneric<Item>(
-        [parentFolderId],
-        null,
-        /* searchFilter */
-        null,
-        /* queryString */
-        view,
-        groupBy,
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> responses =
+        await this.FindItemsGeneric<Item>(
+            [parentFolderId],
+            null,
+            /* searchFilter */
+            null,
+            /* queryString */
+            view,
+            groupBy,
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].GroupedFindResults;
   }
@@ -1214,11 +1256,17 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A collection of grouped items representing the contents of the specified.</returns>
   Future<GroupedFindItemsResults<Item>> FindItems(
-      WellKnownFolderName parentFolderName, String queryString, ViewBase view, Grouping groupBy) {
+      WellKnownFolderName parentFolderName,
+      String queryString,
+      ViewBase view,
+      Grouping groupBy) {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
 
     return this.FindItemsWithFolderIdAndQueryAndViewAndGrouping(
-        new FolderId.fromWellKnownFolder(parentFolderName), queryString, view, groupBy);
+        new FolderId.fromWellKnownFolder(parentFolderName),
+        queryString,
+        view,
+        groupBy);
   }
 
   /// <summary>
@@ -1231,13 +1279,17 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A collection of grouped items representing the contents of the specified.</returns>
-  Future<GroupedFindItemsResults<Item>> FindItemsWithWellKnownFolderAndFilterAndViewAndGrouping(
-      WellKnownFolderName parentFolderName,
-      SearchFilter searchFilter,
-      ViewBase view,
-      Grouping groupBy) {
+  Future<GroupedFindItemsResults<Item>>
+      FindItemsWithWellKnownFolderAndFilterAndViewAndGrouping(
+          WellKnownFolderName parentFolderName,
+          SearchFilter searchFilter,
+          ViewBase view,
+          Grouping groupBy) {
     return this.FindItemsWithFolderIdAndFilterAndViewAndGrouping(
-        new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view, groupBy);
+        new FolderId.fromWellKnownFolder(parentFolderName),
+        searchFilter,
+        view,
+        groupBy);
   }
 
   /// <summary>
@@ -1281,8 +1333,8 @@ class ExchangeService extends ExchangeServiceBase {
     EwsUtilities.ValidateParamCollection(items, "items");
     EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-    return this
-        .InternalLoadPropertiesForItems(items, propertySet, ServiceErrorHandling.ReturnErrors);
+    return this.InternalLoadPropertiesForItems(
+        items, propertySet, ServiceErrorHandling.ReturnErrors);
   }
 
   /// <summary>
@@ -1292,9 +1344,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="propertySet">The set of properties to load.</param>
   /// <param name="errorHandling">Indicates the type of error handling should be done.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified items.</returns>
-  Future<ServiceResponseCollection<ServiceResponse>> InternalLoadPropertiesForItems(
-      Iterable<Item> items, PropertySet propertySet, ServiceErrorHandling errorHandling) {
-    GetItemRequestForLoad request = new GetItemRequestForLoad(this, errorHandling);
+  Future<ServiceResponseCollection<ServiceResponse>>
+      InternalLoadPropertiesForItems(Iterable<Item> items,
+          PropertySet propertySet, ServiceErrorHandling errorHandling) {
+    GetItemRequestForLoad request =
+        new GetItemRequestForLoad(this, errorHandling);
 
     request.ItemIds.AddRange(items);
     request.PropertySet = propertySet;
@@ -1310,8 +1364,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="anchorMailbox">The SmtpAddress of mailbox that hosts all items we need to bind to</param>
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified item Ids.</returns>
-  Future<ServiceResponseCollection<GetItemResponse>> InternalBindToItems(Iterable<ItemId> itemIds,
-      PropertySet propertySet, String anchorMailbox, ServiceErrorHandling errorHandling) {
+  Future<ServiceResponseCollection<GetItemResponse>> InternalBindToItems(
+      Iterable<ItemId> itemIds,
+      PropertySet propertySet,
+      String anchorMailbox,
+      ServiceErrorHandling errorHandling) {
     GetItemRequest request = new GetItemRequest(this, errorHandling);
 
     request.ItemIds.AddRangeItemIds(itemIds);
@@ -1377,12 +1434,13 @@ class ExchangeService extends ExchangeServiceBase {
     EwsUtilities.ValidateParam(itemId, "itemId");
     EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-    ServiceResponseCollection<GetItemResponse> responses = await this.InternalBindToItems(
-        [itemId],
-        propertySet,
-        null,
-        /* anchorMailbox */
-        ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<GetItemResponse> responses =
+        await this.InternalBindToItems(
+            [itemId],
+            propertySet,
+            null,
+            /* anchorMailbox */
+            ServiceErrorHandling.ThrowOnError);
 
     return responses[0].Item;
   }
@@ -1470,8 +1528,13 @@ class ExchangeService extends ExchangeServiceBase {
       [bool suppressReadReceipt = false]) {
     EwsUtilities.ValidateParamCollection(itemIds, "itemIds");
 
-    return this.InternalDeleteItems(itemIds, deleteMode, sendCancellationsMode,
-        affectedTaskOccurrences, ServiceErrorHandling.ReturnErrors, suppressReadReceipt);
+    return this.InternalDeleteItems(
+        itemIds,
+        deleteMode,
+        sendCancellationsMode,
+        affectedTaskOccurrences,
+        ServiceErrorHandling.ReturnErrors,
+        suppressReadReceipt);
   }
 
   /// <summary>
@@ -1506,8 +1569,13 @@ class ExchangeService extends ExchangeServiceBase {
       bool suppressReadReceipts) {
     EwsUtilities.ValidateParam(itemId, "itemId");
 
-    return this.InternalDeleteItems([itemId], deleteMode, sendCancellationsMode,
-        affectedTaskOccurrences, ServiceErrorHandling.ThrowOnError, suppressReadReceipts);
+    return this.InternalDeleteItems(
+        [itemId],
+        deleteMode,
+        sendCancellationsMode,
+        affectedTaskOccurrences,
+        ServiceErrorHandling.ThrowOnError,
+        suppressReadReceipts);
   }
 
   /// <summary>
@@ -1795,12 +1863,14 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="additionalProperties">The additional properties.</param>
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <returns>Service response collection.</returns>
-  Future<ServiceResponseCollection<GetAttachmentResponse>> InternalGetAttachments(
-      Iterable<Attachment> attachments,
-      BodyType bodyType,
-      Iterable<PropertyDefinitionBase> additionalProperties,
-      ServiceErrorHandling errorHandling) {
-    GetAttachmentRequest request = new GetAttachmentRequest(this, errorHandling);
+  Future<ServiceResponseCollection<GetAttachmentResponse>>
+      InternalGetAttachments(
+          Iterable<Attachment> attachments,
+          BodyType bodyType,
+          Iterable<PropertyDefinitionBase> additionalProperties,
+          ServiceErrorHandling errorHandling) {
+    GetAttachmentRequest request =
+        new GetAttachmentRequest(this, errorHandling);
 
     request.Attachments.addAll(attachments);
     request.BodyType = bodyType;
@@ -1864,8 +1934,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="additionalProperties">The additional properties.</param>
   Future<void> GetAttachment(Attachment attachment, BodyType bodyType,
       Iterable<PropertyDefinitionBase> additionalProperties) {
-    return this.InternalGetAttachments(
-        [attachment], bodyType, additionalProperties, ServiceErrorHandling.ThrowOnError);
+    return this.InternalGetAttachments([attachment], bodyType,
+        additionalProperties, ServiceErrorHandling.ThrowOnError);
   }
 
   /// <summary>
@@ -1920,12 +1990,14 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="searchScope">The scope of the search.</param>
   /// <param name="returnContactDetails">Indicates whether full contact information should be returned for each of the found contacts.</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
-  Future<NameResolutionCollection> ResolveNameWithFolderIdsAndSearchScopeAndDetails(
-      String nameToResolve,
-      Iterable<FolderId> parentFolderIds,
-      ResolveNameSearchLocation searchScope,
-      bool returnContactDetails) {
-    return ResolveName(nameToResolve, parentFolderIds, searchScope, returnContactDetails, null);
+  Future<NameResolutionCollection>
+      ResolveNameWithFolderIdsAndSearchScopeAndDetails(
+          String nameToResolve,
+          Iterable<FolderId> parentFolderIds,
+          ResolveNameSearchLocation searchScope,
+          bool returnContactDetails) {
+    return ResolveName(nameToResolve, parentFolderIds, searchScope,
+        returnContactDetails, null);
   }
 
   /// <summary>
@@ -1945,7 +2017,8 @@ class ExchangeService extends ExchangeServiceBase {
       bool returnContactDetails,
       PropertySet contactDataPropertySet) async {
     if (contactDataPropertySet != null) {
-      EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2010_SP1, "ResolveName");
+      EwsUtilities.ValidateMethodVersion(
+          this, ExchangeVersion.Exchange2010_SP1, "ResolveName");
     }
 
     EwsUtilities.ValidateParam(nameToResolve, "nameToResolve");
@@ -1973,13 +2046,14 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="returnContactDetails">Indicates whether full contact information should be returned for each of the found contacts.</param>
   /// <param name="contactDataPropertySet">Propety set for contact details</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
-  Future<NameResolutionCollection> ResolveNameWithSearchScopeAndDetailsAndPropertySet(
-      String nameToResolve,
-      ResolveNameSearchLocation searchScope,
-      bool returnContactDetails,
-      PropertySet contactDataPropertySet) {
-    return this.ResolveName(
-        nameToResolve, null, searchScope, returnContactDetails, contactDataPropertySet);
+  Future<NameResolutionCollection>
+      ResolveNameWithSearchScopeAndDetailsAndPropertySet(
+          String nameToResolve,
+          ResolveNameSearchLocation searchScope,
+          bool returnContactDetails,
+          PropertySet contactDataPropertySet) {
+    return this.ResolveName(nameToResolve, null, searchScope,
+        returnContactDetails, contactDataPropertySet);
   }
 
   /// <summary>
@@ -1991,7 +2065,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="returnContactDetails">Indicates whether full contact information should be returned for each of the found contacts.</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
   Future<NameResolutionCollection> ResolveNameWithSearchScopeAndDetails(
-      String nameToResolve, ResolveNameSearchLocation searchScope, bool returnContactDetails) {
+      String nameToResolve,
+      ResolveNameSearchLocation searchScope,
+      bool returnContactDetails) {
     return this.ResolveNameWithFolderIdsAndSearchScopeAndDetails(
         nameToResolve, null, searchScope, returnContactDetails);
   }
@@ -2761,12 +2837,13 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>A StreamingSubscription representing the new subscription.</returns>
   Future<StreamingSubscription> SubscribeToStreamingNotifications(
       Iterable<FolderId> folderIds, List<EventType> eventTypes) async {
-    EwsUtilities.ValidateMethodVersion(
-        this, ExchangeVersion.Exchange2010_SP1, "SubscribeToStreamingNotifications");
+    EwsUtilities.ValidateMethodVersion(this, ExchangeVersion.Exchange2010_SP1,
+        "SubscribeToStreamingNotifications");
 
     EwsUtilities.ValidateParamCollection(folderIds, "folderIds");
-    final response =
-        await this.BuildSubscribeToStreamingNotificationsRequest(folderIds, eventTypes).Execute();
+    final response = await this
+        .BuildSubscribeToStreamingNotificationsRequest(folderIds, eventTypes)
+        .Execute();
     return response[0].Subscription;
   }
 
@@ -2853,8 +2930,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="folderIds">The Ids of the folder to subscribe to.</param>
   /// <param name="eventTypes">The event types to subscribe to.</param>
   /// <returns>A request to subscribe to streaming notifications in the authenticated user's mailbox. </returns>
-  SubscribeToStreamingNotificationsRequest BuildSubscribeToStreamingNotificationsRequest(
-      Iterable<FolderId> folderIds, List<EventType> eventTypes) {
+  SubscribeToStreamingNotificationsRequest
+      BuildSubscribeToStreamingNotificationsRequest(
+          Iterable<FolderId> folderIds, List<EventType> eventTypes) {
     EwsUtilities.ValidateParamCollection(eventTypes, "eventTypes");
 
     SubscribeToStreamingNotificationsRequest request =
@@ -2916,8 +2994,8 @@ class ExchangeService extends ExchangeServiceBase {
       int numberOfDays,
       SyncFolderItemsScope syncScope,
       String syncState) async {
-    final request = this.BuildSyncFolderItemsRequest(syncFolderId, propertySet, ignoredItemIds,
-        maxChangesReturned, numberOfDays, syncScope, syncState);
+    final request = this.BuildSyncFolderItemsRequest(syncFolderId, propertySet,
+        ignoredItemIds, maxChangesReturned, numberOfDays, syncScope, syncState);
     final response = await request.Execute();
     return response[0].Changes;
   }
@@ -3048,8 +3126,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
   Future<ChangeCollection<FolderChange>> SyncFolderHierarchy(
       FolderId syncFolderId, PropertySet propertySet, String syncState) async {
-    final request =
-        await this.BuildSyncFolderHierarchyRequest(syncFolderId, propertySet, syncState);
+    final request = await this
+        .BuildSyncFolderHierarchyRequest(syncFolderId, propertySet, syncState);
     final response = await request.Execute();
     return response[0].Changes;
   }
@@ -3137,7 +3215,8 @@ class ExchangeService extends ExchangeServiceBase {
         syncFolderId, "syncFolderId"); // Null syncFolderId is allowed
     EwsUtilities.ValidateParam(propertySet, "propertySet");
 
-    SyncFolderHierarchyRequest request = await new SyncFolderHierarchyRequest(this);
+    SyncFolderHierarchyRequest request =
+        await new SyncFolderHierarchyRequest(this);
 
     request.PropertySet = propertySet;
     request.SyncFolderId = syncFolderId;
@@ -4839,20 +4918,21 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="redirectionUrl">The redirection URL.</param>
   /// <returns>Returns true.</returns>
-bool DefaultAutodiscoverRedirectionUrlValidationCallback(String redirectionUrl)
-        {
-            throw new AutodiscoverLocalException("string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
-        }
+  bool DefaultAutodiscoverRedirectionUrlValidationCallback(
+      String redirectionUrl) {
+    throw new AutodiscoverLocalException(
+        "string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
+  }
 
   /// <summary>
   /// Initializes the Url property to the Exchange Web Services URL for the specified e-mail address by
   /// calling the Autodiscover service.
   /// </summary>
   /// <param name="emailAddress">The email address to use.</param>
-  Future<void> AutodiscoverUrl(String emailAddress)
-        {
-            return this.AutodiscoverUrlWithCallback(emailAddress, this.DefaultAutodiscoverRedirectionUrlValidationCallback);
-        }
+  Future<void> AutodiscoverUrl(String emailAddress) {
+    return this.AutodiscoverUrlWithCallback(
+        emailAddress, this.DefaultAutodiscoverRedirectionUrlValidationCallback);
+  }
 
   /// <summary>
   /// Initializes the Url property to the Exchange Web Services URL for the specified e-mail address by
@@ -4860,50 +4940,42 @@ bool DefaultAutodiscoverRedirectionUrlValidationCallback(String redirectionUrl)
   /// </summary>
   /// <param name="emailAddress">The email address to use.</param>
   /// <param name="validateRedirectionUrlCallback">The callback used to validate redirection URL.</param>
-Future<void> AutodiscoverUrlWithCallback(String emailAddress, AutodiscoverRedirectionUrlValidationCallback validateRedirectionUrlCallback)
-        {
-            Uri exchangeServiceUrl;
+  Future<void> AutodiscoverUrlWithCallback(
+      String emailAddress,
+      AutodiscoverRedirectionUrlValidationCallback
+          validateRedirectionUrlCallback) async {
+    Uri exchangeServiceUrl;
 
-            if (this.RequestedServerVersion.index > ExchangeVersion.Exchange2007_SP1.index)
-            {
-                try
-                {
-                    exchangeServiceUrl = this.GetAutodiscoverUrl(
-                        emailAddress,
-                        this.RequestedServerVersion,
-                        validateRedirectionUrlCallback);
+    if (this.RequestedServerVersion.index >
+        ExchangeVersion.Exchange2007_SP1.index) {
+      try {
+        exchangeServiceUrl = await this
+            .GetAutodiscoverUrlWithExchangeVersionAndCallback(emailAddress,
+                this.RequestedServerVersion, validateRedirectionUrlCallback);
 
-                    this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
-                    return;
-                }
-                on AutodiscoverLocalException catch (ex)
-                {
-                    this.TraceMessage(
-                        TraceFlags.AutodiscoverResponse,
-                        string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
-                }
-                on ServiceRemoteException catch (ex)
-                {
-                    // Special case: if the caller's account is locked we want to return this exception, not continue.
-                    if (ex is AccountIsLockedException)
-                    {
-                        throw;
-                    }
-
-                    this.TraceMessage(
-                        TraceFlags.AutodiscoverResponse,
-                        string.Format("Autodiscover service call failed with error '{0}'. Will try legacy service", ex.Message));
-                }
-            }
-
-            // Try legacy Autodiscover provider
-            exchangeServiceUrl = this.GetAutodiscoverUrlWithExchangeVersionAndCallback(
-                emailAddress,
-                ExchangeVersion.Exchange2007_SP1,
-                validateRedirectionUrlCallback);
-
-            this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
+        this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
+        return;
+      } on AutodiscoverLocalException catch (ex) {
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverResponse,
+            "Autodiscover service call failed with error '${ex.message}'. Will try legacy service");
+      } on ServiceRemoteException catch (ex) {
+        // Special case: if the caller's account is locked we want to return this exception, not continue.
+        if (ex is AccountIsLockedException) {
+          throw ex;
         }
+
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverResponse,
+            "Autodiscover service call failed with error '${ex.message}'. Will try legacy service");
+      }
+    }
+
+    // Try legacy Autodiscover provider
+    exchangeServiceUrl = await this
+        .GetAutodiscoverUrlWithExchangeVersionAndCallback(emailAddress,
+            ExchangeVersion.Exchange2007_SP1, validateRedirectionUrlCallback);
+
+    this.Url = this.AdjustServiceUriFromCredentials(exchangeServiceUrl);
+  }
 
   /// <summary>
   /// Adjusts the service URI based on the current type of credentials.
@@ -4914,12 +4986,9 @@ Future<void> AutodiscoverUrlWithCallback(String emailAddress, AutodiscoverRedire
   /// </remarks>
   /// <param name="uri">The URI.</param>
   /// <returns>Adjusted URL.</returns>
-Uri AdjustServiceUriFromCredentials(Uri uri)
-        {
-            return (this.Credentials != null)
-                ? this.Credentials.AdjustUrl(uri)
-                : uri;
-        }
+  Uri AdjustServiceUriFromCredentials(Uri uri) {
+    return (this.Credentials != null) ? this.Credentials.AdjustUrl(uri) : uri;
+  }
 
   /// <summary>
   /// Gets the EWS URL from Autodiscover.
@@ -4928,43 +4997,41 @@ Uri AdjustServiceUriFromCredentials(Uri uri)
   /// <param name="requestedServerVersion">Exchange version.</param>
   /// <param name="validateRedirectionUrlCallback">The validate redirection URL callback.</param>
   /// <returns>Ews URL</returns>
-Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
-            String emailAddress,
-            ExchangeVersion requestedServerVersion,
-            AutodiscoverRedirectionUrlValidationCallback validateRedirectionUrlCallback)
-        {
-            AutodiscoverService autodiscoverService = new AutodiscoverService(this, requestedServerVersion)
-            {
-                RedirectionUrlValidationCallback = validateRedirectionUrlCallback,
-                EnableScpLookup = this.EnableScpLookup
-            };
+  Future<Uri> GetAutodiscoverUrlWithExchangeVersionAndCallback(
+      String emailAddress,
+      ExchangeVersion requestedServerVersion,
+      AutodiscoverRedirectionUrlValidationCallback
+          validateRedirectionUrlCallback) async {
+    AutodiscoverService autodiscoverService =
+        new AutodiscoverService.withExchangeServiceAndExchangeVersion(
+            this, requestedServerVersion)
+          ..RedirectionUrlValidationCallback = validateRedirectionUrlCallback
+          ..EnableScpLookup = this.EnableScpLookup;
 
-            GetUserSettingsResponse response = autodiscoverService.GetUserSettings(
-                emailAddress,
-                UserSettingName.InternalEwsUrl,
-                UserSettingName.ExternalEwsUrl);
+    GetUserSettingsResponse response =
+        await autodiscoverService.GetUserSettingsWithSmtpAddress(emailAddress,
+            [UserSettingName.InternalEwsUrl, UserSettingName.ExternalEwsUrl]);
 
-            switch (response.ErrorCode)
-            {
-                case AutodiscoverErrorCode.NoError:
-                    return this.GetEwsUrlFromResponse(response, autodiscoverService.IsExternal.GetValueOrDefault(true));
+    switch (response.ErrorCode) {
+      case AutodiscoverErrorCode.NoError:
+        return this.GetEwsUrlFromResponse(
+            response, autodiscoverService.IsExternal ?? true);
 
-                case AutodiscoverErrorCode.InvalidUser:
-                    throw new ServiceRemoteException(
-                        string.Format(Strings.InvalidUser, emailAddress));
+      case AutodiscoverErrorCode.InvalidUser:
+        throw new ServiceRemoteException(
+            "string.Format(Strings.InvalidUser, $emailAddress)");
 
-                case AutodiscoverErrorCode.InvalidRequest:
-                    throw new ServiceRemoteException(
-                        string.Format(Strings.InvalidAutodiscoverRequest, response.ErrorMessage));
+      case AutodiscoverErrorCode.InvalidRequest:
+        throw new ServiceRemoteException(
+            "Strings.InvalidAutodiscoverRequest, ${response.ErrorMessage}");
 
-                default:
-                    this.TraceMessage(
-                        TraceFlags.AutodiscoverConfiguration,
-                        string.Format("No EWS Url returned for user {0}, error code is {1}", emailAddress, response.ErrorCode));
+      default:
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+            "No EWS Url returned for user $emailAddress, error code is ${response.ErrorCode}");
 
-                    throw new ServiceRemoteException(response.ErrorMessage);
-            }
-        }
+        throw new ServiceRemoteException(response.ErrorMessage);
+    }
+  }
 
   /// <summary>
   /// Gets the EWS URL from Autodiscover GetUserSettings response.
@@ -4972,29 +5039,29 @@ Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
   /// <param name="response">The response.</param>
   /// <param name="isExternal">If true, Autodiscover call was made externally.</param>
   /// <returns>EWS URL.</returns>
-//Uri GetEwsUrlFromResponse(GetUserSettingsResponse response, bool isExternal)
-//        {
-//            string uriString;
-//
-//            // Figure out which URL to use: Internal or External.
-//            // AutoDiscover may not return an external protocol. First try external, then internal.
-//            // Either protocol may be returned without a configured URL.
-//            if ((isExternal &&
-//                response.TryGetSettingValue<string>(UserSettingName.ExternalEwsUrl, out uriString)) &&
-//                !StringUtils.IsNullOrEmpty(uriString))
-//            {
-//                return new Uri(uriString);
-//            }
-//            else if ((response.TryGetSettingValue<string>(UserSettingName.InternalEwsUrl, out uriString) ||
-//                     response.TryGetSettingValue<string>(UserSettingName.ExternalEwsUrl, out uriString)) &&
-//                     !StringUtils.IsNullOrEmpty(uriString))
-//            {
-//                return new Uri(uriString);
-//            }
-//
-//            // If Autodiscover doesn't return an or external EWS URL, throw an exception.
-//            throw new AutodiscoverLocalException(Strings.AutodiscoverDidNotReturnEwsUrl);
-//        }
+  Uri GetEwsUrlFromResponse(GetUserSettingsResponse response, bool isExternal) {
+    OutParam<String> uriStringOutParam = OutParam();
+
+    // Figure out which URL to use: Internal or External.
+    // AutoDiscover may not return an external protocol. First try external, then internal.
+    // Either protocol may be returned without a configured URL.
+    if ((isExternal &&
+            response.TryGetSettingValue<String>(
+                UserSettingName.ExternalEwsUrl, uriStringOutParam)) &&
+        !StringUtils.IsNullOrEmpty(uriStringOutParam.param)) {
+      return Uri.parse(uriStringOutParam.param);
+    } else if ((response.TryGetSettingValue<String>(
+                UserSettingName.InternalEwsUrl, uriStringOutParam) ||
+            response.TryGetSettingValue<String>(
+                UserSettingName.ExternalEwsUrl, uriStringOutParam)) &&
+        !StringUtils.IsNullOrEmpty(uriStringOutParam.param)) {
+      return Uri.parse(uriStringOutParam.param);
+    }
+
+    // If Autodiscover doesn't return an or external EWS URL, throw an exception.
+    throw new AutodiscoverLocalException(
+        "Strings.AutodiscoverDidNotReturnEwsUrl");
+  }
 
   /// <summary>
   /// GetClientAccessToken
@@ -5395,7 +5462,8 @@ Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
         } else if (ExchangeService.IsMajorMinor(part1)) {
           // Also close enough; misses corner cases like ".5".
         } else {
-          throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
+          throw new ArgumentError(
+              "Target version must match X.Y or Exchange20XX.");
         }
 
         break;
@@ -5413,13 +5481,15 @@ Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
           } else if (ExchangeService.IsMajorMinor(part1)) {
             // Also close enough; misses corner cases like ".5".
           } else {
-            throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
+            throw new ArgumentError(
+                "Target version must match X.Y or Exchange20XX.");
           }
 
           break;
         }
 
-        throw new ArgumentError("Target version must match X.Y or Exchange20XX.");
+        throw new ArgumentError(
+            "Target version must match X.Y or Exchange20XX.");
 
       default:
         throw new ArgumentError("Target version should have the form.");
@@ -5535,11 +5605,12 @@ Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
 //
 //    endpoint = this.AdjustServiceUriFromCredentials(endpoint);
 
-    IEwsHttpWebRequest request =
-        this.PrepareHttpWebRequestForUrl(endpoint, this.AcceptGzipEncoding, true);
+    IEwsHttpWebRequest request = this
+        .PrepareHttpWebRequestForUrl(endpoint, this.AcceptGzipEncoding, true);
 
     if (!StringUtils.IsNullOrEmpty(this.TargetServerVersion)) {
-      request.Headers.Set(ExchangeService.TargetServerVersionHeaderName, this.TargetServerVersion);
+      request.Headers.Set(ExchangeService.TargetServerVersionHeaderName,
+          this.TargetServerVersion);
     }
 
     return request;
@@ -5561,9 +5632,13 @@ Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
   /// <param name="httpWebResponse">The HTTP web response.</param>
   /// <param name="webException">The web exception.</param>
 //        @override
-  void ProcessHttpErrorResponse(IEwsHttpWebResponse httpWebResponse, WebException webException) {
-    this.InternalProcessHttpErrorResponse(httpWebResponse, webException,
-        enumerations.TraceFlags.EwsResponseHttpHeaders, enumerations.TraceFlags.EwsResponse);
+  void ProcessHttpErrorResponse(
+      IEwsHttpWebResponse httpWebResponse, WebException webException) {
+    this.InternalProcessHttpErrorResponse(
+        httpWebResponse,
+        webException,
+        enumerations.TraceFlags.EwsResponseHttpHeaders,
+        enumerations.TraceFlags.EwsResponse);
   }
 
   /// <summary>
@@ -5657,11 +5732,9 @@ Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
   /// Gets or sets a value indicating whether the AutodiscoverUrl method should perform SCP (Service Connection Point) record lookup when determining
   /// the Autodiscover service URL.
   /// </summary>
-//bool EnableScpLookup
-//        {
-//            get { return this.enableScpLookup; }
-//            set { this.enableScpLookup = value; }
-//        }
+  bool get EnableScpLookup => this._enableScpLookup;
+
+  set EnableScpLookup(bool value) => this._enableScpLookup = value;
 
   /// <summary>
   /// Exchange 2007 compatibility mode flag. (Off by default)

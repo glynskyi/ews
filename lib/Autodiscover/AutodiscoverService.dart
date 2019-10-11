@@ -25,6 +25,7 @@
 
 
 import 'dart:core';
+import 'dart:io';
 
 import 'package:ews/Autodiscover/ConfigurationSettings/ConfigurationSettingsBase.dart';
 import 'package:ews/Autodiscover/Requests/AutodiscoverRequest.dart';
@@ -42,11 +43,15 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/UserSettingName.dart';
 import 'package:ews/Enumerations/TraceFlags.dart' as enumerations;
 import 'package:ews/Exceptions/AutodiscoverLocalException.dart';
+import 'package:ews/Exceptions/ServiceValidationException.dart';
+import 'package:ews/Exceptions/ServiceVersionException.dart';
+import 'package:ews/Http/WebException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/misc/OutParam.dart';
 import 'package:ews/misc/Std/MemoryStream.dart';
 import 'package:ews/misc/StringUtils.dart';
+import 'package:ews/misc/UriHelper.dart';
 
 /// <summary>
     /// Defines a delegate that is used by the AutodiscoverService to ask whether a redirectionUrl can be used.
@@ -55,7 +60,9 @@ import 'package:ews/misc/StringUtils.dart';
     /// <returns>Delegate returns true if Autodiscover is allowed to use this URL.</returns>
  typedef AutodiscoverRedirectionUrlValidationCallback =  bool Function(String redirectionUrl);
 
-/* private */ typedef GetSettingsMethod = TGetSettingsResponseCollection Function<TGetSettingsResponseCollection, TSettingName>(
+ typedef GetDomainCallback = String Function();
+
+/* private */ typedef GetSettingsMethod<TGetSettingsResponseCollection, TSettingName> = Future<TGetSettingsResponseCollection> Function(
     List<String> smtpAddresses,
     List<TSettingName> settings,
     ExchangeVersion requestedVersion,
@@ -271,83 +278,83 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="emailAddress">The email address.</param>
         /// <param name="settings">The settings.</param>
         /// <param name="writer">The writer.</param>
-        void _WriteLegacyAutodiscoverRequest(
-            String emailAddress,
-            ConfigurationSettingsBase settings,
-            StreamWriter writer)
-        {
-            writer.Write("<Autodiscover xmlns=\"$AutodiscoverRequestNamespace\">");
-            writer.Write("<Request>");
-            writer.Write("<EMailAddress>$emailAddress</EMailAddress>");
-            writer.Write("<AcceptableResponseSchema>${settings.GetNamespace()}</AcceptableResponseSchema>");
-            writer.Write("</Request>");
-            writer.Write("</Autodiscover>");
-        }
+//        void _WriteLegacyAutodiscoverRequest(
+//            String emailAddress,
+//            ConfigurationSettingsBase settings,
+//            StreamWriter writer)
+//        {
+//            writer.Write("<Autodiscover xmlns=\"$AutodiscoverRequestNamespace\">");
+//            writer.Write("<Request>");
+//            writer.Write("<EMailAddress>$emailAddress</EMailAddress>");
+//            writer.Write("<AcceptableResponseSchema>${settings.GetNamespace()}</AcceptableResponseSchema>");
+//            writer.Write("</Request>");
+//            writer.Write("</Autodiscover>");
+//        }
 
         /// <summary>
         /// Gets a redirection URL to an SSL-enabled Autodiscover service from the standard non-SSL Autodiscover URL.
         /// </summary>
         /// <param name="domainName">The name of the domain to call Autodiscover on.</param>
         /// <returns>A valid SSL-enabled redirection URL. (May be null).</returns>
-//        /* private */ Uri GetRedirectUrl(String domainName)
-//        {
-//            String url = string.Format(AutodiscoverLegacyHttpUrl, "autodiscover." + domainName);
-//
-//            this.TraceMessage(
-//                TraceFlags.AutodiscoverConfiguration,
-//                string.Format("Trying to get Autodiscover redirection URL from {0}.", url));
-//
-//            IEwsHttpWebRequest request = this.HttpWebRequestFactory.CreateRequest(new Uri(url));
-//
-//            request.Method = "GET";
-//            request.AllowAutoRedirect = false;
-//            request.PreAuthenticate = false;
-//
-//            IEwsHttpWebResponse response = null;
-//
-//            try
-//            {
-//                response = request.GetResponse();
-//            }
-//            catch (WebException ex)
-//            {
-//                this.TraceMessage(
-//                    TraceFlags.AutodiscoverConfiguration,
-//                    string.Format("Request error: {0}", ex.Message));
-//
-//                // The exception response factory requires a valid HttpWebResponse,
-//                // but there will be no web response if the web request couldn't be
-//                // actually be issued (e.g. due to DNS error).
-//                if (ex.Response != null)
-//                {
-//                    response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
-//                }
-//            }
-//            catch (IOException ex)
-//            {
-//                this.TraceMessage(
-//                    TraceFlags.AutodiscoverConfiguration,
-//                    string.Format("I/O error: {0}", ex.Message));
-//            }
-//
-//            if (response != null)
-//            {
-//
-//                {
-//                    Uri redirectUrl;
-//                    if (this._TryGetRedirectionResponse(response, out redirectUrl))
-//                    {
-//                        return redirectUrl;
-//                    }
-//                }
-//            }
-//
-//            this.TraceMessage(
-//                TraceFlags.AutodiscoverConfiguration,
-//                "No Autodiscover redirection URL was returned.");
-//
-//            return null;
-//        }
+        Future<Uri> _GetRedirectUrl(String domainName) async
+        {
+            String url = AutodiscoverLegacyHttpUrl.replaceAll("{0}", "autodiscover." + domainName);
+
+            this.TraceMessage(
+                enumerations.TraceFlags.AutodiscoverConfiguration,
+                "Trying to get Autodiscover redirection URL from $url.");
+
+            IEwsHttpWebRequest request = this.HttpWebRequestFactory.CreateRequestWithUrl(Uri.parse(url));
+
+            request.Method = "GET";
+            request.AllowAutoRedirect = false;
+            request.PreAuthenticate = false;
+
+            IEwsHttpWebResponse response = null;
+
+            try
+            {
+                response = await request.GetResponse();
+            }
+            on WebException catch (ex)
+            {
+                this.TraceMessage(
+                    enumerations.TraceFlags.AutodiscoverConfiguration,
+                    "Request error: $ex");
+
+                // The exception response factory requires a valid HttpWebResponse,
+                // but there will be no web response if the web request couldn't be
+                // actually be issued (e.g. due to DNS error).
+                if (ex.Response != null)
+                {
+                    response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
+                }
+            }
+            on IOException catch (ex)
+            {
+                this.TraceMessage(
+                    enumerations.TraceFlags.AutodiscoverConfiguration,
+                    "I/O error: $ex");
+            }
+
+            if (response != null)
+            {
+
+                {
+                    OutParam<Uri> redirectUrl = OutParam();
+                    if (this._TryGetRedirectionResponse(response, redirectUrl))
+                    {
+                        return redirectUrl.param;
+                    }
+                }
+            }
+
+            this.TraceMessage(
+                enumerations.TraceFlags.AutodiscoverConfiguration,
+                "No Autodiscover redirection URL was returned.");
+
+            return null;
+        }
 
         /// <summary>
         /// Tries the get redirection response.
@@ -355,9 +362,9 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="response">The response.</param>
         /// <param name="redirectUrl">The redirect URL.</param>
         /// <returns>True if a valid redirection URL was found.</returns>
-        bool _TryGetRedirectionResponse(IEwsHttpWebResponse response, OutParam<Uri> redirectUrl)
+        bool _TryGetRedirectionResponse(IEwsHttpWebResponse response, OutParam<Uri> redirectUrlOutParam)
         {
-            redirectUrl = null;
+            redirectUrlOutParam.param = null;
             if (AutodiscoverRequest.IsRedirectionResponse(response))
             {
                 // Get the redirect location and verify that it's valid.
@@ -367,16 +374,17 @@ import 'package:ews/misc/StringUtils.dart';
                 {
                     try
                     {
-                        redirectUrl = new Uri(response.ResponseUri, location);
+                        redirectUrlOutParam.param = UriHelper.concat(response.ResponseUri, Uri.parse(location));
 
                         // Check if URL is SSL and that the path matches.
-                        Match match = LegacyPathRegex.Match(redirectUrl.AbsolutePath);
-                        if ((redirectUrl.param.scheme == "https") &&
-                            match.Success)
+                        // TODO check absolute path of the redirectUrl
+                        bool hasMatches = LegacyPathRegex.hasMatch(redirectUrlOutParam.param.path);
+                        if ((redirectUrlOutParam.param.scheme == "https") &&
+                            hasMatches)
                         {
                             this.TraceMessage(
                                 enumerations.TraceFlags.AutodiscoverConfiguration,
-                                "Redirection URL found: '$redirectUrl'");
+                                "Redirection URL found: '${redirectUrlOutParam.param}'");
 
                             return true;
                         }
@@ -512,7 +520,7 @@ import 'package:ews/misc/StringUtils.dart';
 //
 //                                // If this email address was already tried, we may have a loop
 //                                // in SCP lookups. Disable consideration of SCP records.
-//                                this.DisableScpLookupIfDuplicateRedirection(settings.RedirectTarget, redirectionEmailAddresses);
+//                                this._DisableScpLookupIfDuplicateRedirection(settings.RedirectTarget, redirectionEmailAddresses);
 //
 //                                return this.InternalGetLegacyUserSettings<TSettings>(
 //                                                settings.RedirectTarget,
@@ -711,7 +719,7 @@ import 'package:ews/misc/StringUtils.dart';
 //
 //                                // If this email address was already tried, we may have a loop
 //                                // in SCP lookups. Disable consideration of SCP records.
-//                                this.DisableScpLookupIfDuplicateRedirection(_settings.RedirectTarget, redirectionEmailAddresses);
+//                                this._DisableScpLookupIfDuplicateRedirection(_settings.RedirectTarget, redirectionEmailAddresses);
 //
 //                                _settings = this.InternalGetLegacyUserSettings<TSettings>(
 //                                    _settings.RedirectTarget,
@@ -793,20 +801,20 @@ import 'package:ews/misc/StringUtils.dart';
         /// </summary>
         /// <param name="emailAddress">The email address to use.</param>
         /// <param name="redirectionEmailAddresses">The list of prior redirection email addresses.</param>
-//        /* private */ void DisableScpLookupIfDuplicateRedirection(String emailAddress, List<String> redirectionEmailAddresses)
-//        {
-//            // SMTP addresses are case-insensitive so entries are converted to lower-case.
-//            emailAddress = emailAddress.ToLowerInvariant();
-//
-//            if (redirectionEmailAddresses.Contains(emailAddress))
-//            {
-//                this.EnableScpLookup = false;
-//            }
-//            else
-//            {
-//                redirectionEmailAddresses.Add(emailAddress);
-//            }
-//        }
+        void _DisableScpLookupIfDuplicateRedirection(String emailAddress, List<String> redirectionEmailAddresses)
+        {
+            // SMTP addresses are case-insensitive so entries are converted to lower-case.
+            emailAddress = emailAddress.toLowerCase();
+
+            if (redirectionEmailAddresses.contains(emailAddress))
+            {
+                this.EnableScpLookup = false;
+            }
+            else
+            {
+                redirectionEmailAddresses.add(emailAddress);
+            }
+        }
 
         /// <summary>
         /// Gets user settings from Autodiscover legacy endpoint.
@@ -833,7 +841,7 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="smtpAddress">SMTP address.</param>
         /// <param name="requestedSettings">The requested settings.</param>
         /// <returns></returns>
-        GetUserSettingsResponse InternalGetSoapUserSettings(String smtpAddress, List<UserSettingName> requestedSettings)
+        Future<GetUserSettingsResponse> InternalGetSoapUserSettings(String smtpAddress, List<UserSettingName> requestedSettings) async
         {
             List<String> smtpAddresses = new List<String>();
             smtpAddresses.add(smtpAddress);
@@ -843,7 +851,7 @@ import 'package:ews/misc/StringUtils.dart';
 
             for (int currentHop = 0; currentHop < AutodiscoverService.AutodiscoverMaxRedirections; currentHop++)
             {
-                GetUserSettingsResponse response = this.GetUserSettings(smtpAddresses, requestedSettings)[0];
+                GetUserSettingsResponse response = (await this.GetUserSettingsWithSmptAddresses(smtpAddresses, requestedSettings))[0];
 
                 switch (response.ErrorCode)
                 {
@@ -859,15 +867,15 @@ import 'package:ews/misc/StringUtils.dart';
 
                         // If this email address was already tried, we may have a loop
                         // in SCP lookups. Disable consideration of SCP records.
-                        this.DisableScpLookupIfDuplicateRedirection(response.RedirectTarget, redirectionEmailAddresses);
+                        this._DisableScpLookupIfDuplicateRedirection(response.RedirectTarget, redirectionEmailAddresses);
                         break;
 
                     case AutodiscoverErrorCode.RedirectUrl:
                         this.TraceMessage(
                             enumerations.TraceFlags.AutodiscoverResponse,
-                            string.Format("Autodiscover service returned redirection URL '{0}'.", response.RedirectTarget));
+                            "Autodiscover service returned redirection URL '${response.RedirectTarget}'");
 
-                        this.Url = this.Credentials.AdjustUrl(new Uri(response.RedirectTarget));
+                        this.Url = this.Credentials.AdjustUrl(Uri.parse(response.RedirectTarget));
                         break;
 
                     case AutodiscoverErrorCode.NoError:
@@ -885,7 +893,7 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="smtpAddresses">The SMTP addresses of the users.</param>
         /// <param name="settings">The settings.</param>
         /// <returns></returns>
-        GetUserSettingsResponseCollection GetUserSettings(
+        Future<GetUserSettingsResponseCollection> GetUserSettingsWithSmptAddresses(
             List<String> smtpAddresses,
             List<UserSettingName> settings)
         {
@@ -911,130 +919,137 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="getSettingsMethod">The method to use.</param>
         /// <param name="getDomainMethod">The method to calculate the domain value.</param>
         /// <returns></returns>
-//        /* private */ TGetSettingsResponseCollection GetSettings<TGetSettingsResponseCollection, TSettingName>(
-//            List<String> identities,
-//            List<TSettingName> settings,
-//            ExchangeVersion requestedVersion,
-//            GetSettingsMethod<TGetSettingsResponseCollection, TSettingName> getSettingsMethod,
-//            System.Func<String> getDomainMethod)
-//        {
-//            TGetSettingsResponseCollection response;
-//
-//            // Autodiscover service only exists in E14 or later.
-//            if (this.RequestedServerVersion < MinimumRequestVersionForAutoDiscoverSoapService)
-//            {
-//                throw new ServiceVersionException(
-//                    string.Format(
-//                        Strings.AutodiscoverServiceIncompatibleWithRequestVersion,
-//                        MinimumRequestVersionForAutoDiscoverSoapService));
-//            }
-//
-//            // If Url is specified, call service directly.
-//            if (this.Url != null)
-//            {
-//                Uri autodiscoverUrl = this.Url;
-//
-//                response = getSettingsMethod(
-//                            identities,
-//                            settings,
-//                            requestedVersion,
-//                            ref autodiscoverUrl);
-//
-//                this.Url = autodiscoverUrl;
-//                return response;
-//            }
-//
-//            // If Domain is specified, determine endpoint Url and call service.
-//            else if (!StringUtils.IsNullOrEmpty(this.Domain))
-//            {
-//                Uri autodiscoverUrl = this.GetAutodiscoverEndpointUrl(this.Domain);
-//                response = getSettingsMethod(
-//                                identities,
-//                                settings,
-//                                requestedVersion,
-//                                ref autodiscoverUrl);
-//
-//                // If we got this far, response was successful, set Url.
-//                this.Url = autodiscoverUrl;
-//                return response;
-//            }
-//
-//            // No Url or Domain specified, need to figure out which endpoint(s) to try.
-//            else
-//            {
-//                // Assume caller is not inside the Intranet, regardless of whether SCP Urls
-//                // were returned or not. SCP Urls are only relevent if one of them returns
-//                // valid Autodiscover settings.
-//                this.IsExternal = true;
-//
-//                Uri autodiscoverUrl;
-//
-//                String domainName = getDomainMethod();
-//                int scpHostCount;
-//                List<String> hosts = this.GetAutodiscoverServiceHosts(domainName, out scpHostCount);
-//
-//                if (hosts.Count == 0)
-//                {
-//                    throw new ServiceValidationException(Strings.AutodiscoverServiceRequestRequiresDomainOrUrl);
-//                }
-//
-//                for (int currentHostIndex = 0; currentHostIndex < hosts.Count; currentHostIndex++)
-//                {
-//                    String host = hosts[currentHostIndex];
-//                    bool isScpHost = currentHostIndex < scpHostCount;
-//
-//                    if (this.TryGetAutodiscoverEndpointUrl(host, out autodiscoverUrl))
-//                    {
-//                        try
-//                        {
-//                            response = getSettingsMethod(
-//                                            identities,
-//                                            settings,
-//                                            requestedVersion,
-//                                            ref autodiscoverUrl);
-//
-//                            // If we got this far, the response was successful, set Url.
-//                            this.Url = autodiscoverUrl;
-//
-//                            // Not external if Autodiscover endpoint found via SCP returned the settings.
-//                            if (isScpHost)
-//                            {
-//                                this.IsExternal = false;
-//                            }
-//
-//                            return response;
-//                        }
-//                        catch (AutodiscoverResponseException)
-//                        {
-//                            // skip
-//                        }
-//                        catch (ServiceRequestException)
-//                        {
-//                            // skip
-//                        }
-//                    }
-//                }
-//
-//                // Next-to-last chance: try unauthenticated GET over HTTP to be redirected to appropriate service endpoint.
-//                autodiscoverUrl = this.GetRedirectUrl(domainName);
-//                if ((autodiscoverUrl != null) &&
-//                    this.CallRedirectionUrlValidationCallback(autodiscoverUrl.ToString()) &&
-//                    this.TryGetAutodiscoverEndpointUrl(autodiscoverUrl.Host, out autodiscoverUrl))
-//                {
-//                    response = getSettingsMethod(
-//                                    identities,
-//                                    settings,
-//                                    requestedVersion,
-//                                    ref autodiscoverUrl);
-//
-//                    // If we got this far, the response was successful, set Url.
-//                    this.Url = autodiscoverUrl;
-//
-//                    return response;
-//                }
-//
-//                // Last Chance: try to read autodiscover SRV Record from DNS. If we find one, use
-//                // the hostname returned to construct an Autodiscover endpoint URL.
+        /* private */ Future<TGetSettingsResponseCollection> GetSettings<TGetSettingsResponseCollection, TSettingName>(
+            List<String> identities,
+            List<TSettingName> settings,
+            ExchangeVersion requestedVersion,
+            GetSettingsMethod<TGetSettingsResponseCollection, TSettingName> getSettingsMethod,
+            GetDomainCallback getDomainMethod) async
+        {
+            TGetSettingsResponseCollection response;
+
+            // Autodiscover service only exists in E14 or later.
+            if (this.RequestedServerVersion.index < MinimumRequestVersionForAutoDiscoverSoapService.index)
+            {
+                throw new ServiceVersionException(
+                    """string.Format(
+                        Strings.AutodiscoverServiceIncompatibleWithRequestVersion,
+                        MinimumRequestVersionForAutoDiscoverSoapService)""");
+            }
+
+            // If Url is specified, call service directly.
+            if (this.Url != null)
+            {
+                OutParam<Uri> autodiscoverUrl = OutParam();
+                autodiscoverUrl.param = this.Url;
+
+                response = await getSettingsMethod(
+                            identities,
+                            settings,
+                            requestedVersion,
+                            autodiscoverUrl);
+
+                this.Url = autodiscoverUrl.param;
+                return response;
+            }
+
+            // If Domain is specified, determine endpoint Url and call service.
+            else if (!StringUtils.IsNullOrEmpty(this.Domain))
+            {
+                OutParam<String> hostOutParam = OutParam()
+                    ..param = this.Domain;
+                OutParam<Uri> autodiscoverUrl = OutParam();
+                autodiscoverUrl.param = await this._GetAutodiscoverEndpointUrl(hostOutParam);
+                this.Domain = hostOutParam.param;
+                response = await getSettingsMethod(
+                                identities,
+                                settings,
+                                requestedVersion,
+                                autodiscoverUrl);
+
+                // If we got this far, response was successful, set Url.
+                this.Url = autodiscoverUrl.param;
+                return response;
+            }
+
+            // No Url or Domain specified, need to figure out which endpoint(s) to try.
+            else
+            {
+                // Assume caller is not inside the Intranet, regardless of whether SCP Urls
+                // were returned or not. SCP Urls are only relevent if one of them returns
+                // valid Autodiscover settings.
+                this.IsExternal = true;
+
+                OutParam<Uri> autodiscoverUrlOutParam = OutParam();
+
+                String domainName = getDomainMethod();
+                OutParam<int> scpHostCountOutParam = OutParam();
+                List<String> hosts = await this.GetAutodiscoverServiceHosts(domainName, scpHostCountOutParam);
+
+                if (hosts.length == 0)
+                {
+                    throw new ServiceValidationException("Strings.AutodiscoverServiceRequestRequiresDomainOrUrl");
+                }
+
+                for (int currentHostIndex = 0; currentHostIndex < hosts.length; currentHostIndex++)
+                {
+                    OutParam<String> hostOutParam = OutParam()
+                        ..param = hosts[currentHostIndex];
+                    bool isScpHost = currentHostIndex < scpHostCountOutParam.param;
+
+                    if (await this._TryGetAutodiscoverEndpointUrl(hostOutParam, autodiscoverUrlOutParam))
+                    {
+                        try
+                        {
+                            response = await getSettingsMethod(
+                                            identities,
+                                            settings,
+                                            requestedVersion,
+                                             autodiscoverUrlOutParam);
+
+                            // If we got this far, the response was successful, set Url.
+                            this.Url = autodiscoverUrlOutParam.param;
+
+                            // Not external if Autodiscover endpoint found via SCP returned the settings.
+                            if (isScpHost)
+                            {
+                                this.IsExternal = false;
+                            }
+
+                            return response;
+                        }
+                        catch (AutodiscoverResponseException)
+                        {
+                            // skip
+                        }
+                        catch (ServiceRequestException)
+                        {
+                            // skip
+                        }
+                    }
+                }
+
+                // Next-to-last chance: try unauthenticated GET over HTTP to be redirected to appropriate service endpoint.
+                autodiscoverUrlOutParam.param = await this._GetRedirectUrl(domainName);
+                if ((autodiscoverUrlOutParam.param != null) &&
+                    this.CallRedirectionUrlValidationCallback(autodiscoverUrlOutParam.param.toString()) &&
+                    await this._TryGetAutodiscoverEndpointUrl(OutParam()..param = autodiscoverUrlOutParam.param.host, autodiscoverUrlOutParam))
+                {
+                    response = await getSettingsMethod(
+                                    identities,
+                                    settings,
+                                    requestedVersion,
+                                     autodiscoverUrlOutParam);
+
+                    // If we got this far, the response was successful, set Url.
+                    this.Url = autodiscoverUrlOutParam.param;
+
+                    return response;
+                }
+
+                // Last Chance: try to read autodiscover SRV Record from DNS. If we find one, use
+                // the hostname returned to construct an Autodiscover endpoint URL.
+                // TODO: Implement SVR Record from DNS
 //                autodiscoverUrl = this.GetRedirectionUrlFromDnsSrvRecord(domainName);
 //                if ((autodiscoverUrl != null) &&
 //                    this.CallRedirectionUrlValidationCallback(autodiscoverUrl.ToString()) &&
@@ -1053,10 +1068,10 @@ import 'package:ews/misc/StringUtils.dart';
 //                }
 //                else
 //                {
-//                    throw new AutodiscoverLocalException(Strings.AutodiscoverCouldNotBeLocated);
+                    throw new AutodiscoverLocalException("Strings.AutodiscoverCouldNotBeLocated");
 //                }
-//            }
-//        }
+            }
+        }
 
         /// <summary>
         /// Gets settings for one or more users.
@@ -1066,44 +1081,44 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="requestedVersion">Requested version of the Exchange service.</param>
         /// <param name="autodiscoverUrl">The autodiscover URL.</param>
         /// <returns>GetUserSettingsResponse collection.</returns>
-//        /* private */ GetUserSettingsResponseCollection InternalGetUserSettings(
-//            List<String> smtpAddresses,
-//            List<UserSettingName> settings,
-//            ExchangeVersion? requestedVersion,
-//            ref Uri autodiscoverUrl)
-//        {
-//            // The response to GetUserSettings can be a redirection. Execute GetUserSettings until we get back
-//            // a valid response or we've followed too many redirections.
-//            for (int currentHop = 0; currentHop < AutodiscoverService.AutodiscoverMaxRedirections; currentHop++)
-//            {
-//                GetUserSettingsRequest request = new GetUserSettingsRequest(this, autodiscoverUrl);
-//                request.SmtpAddresses = smtpAddresses;
-//                request.Settings = settings;
-//                GetUserSettingsResponseCollection response = request.Execute();
-//
-//                // Did we get redirected?
-//                if (response.ErrorCode == AutodiscoverErrorCode.RedirectUrl && response.RedirectionUrl != null)
-//                {
-//                    this.TraceMessage(
-//                        TraceFlags.AutodiscoverConfiguration,
-//                        string.Format("Request to {0} returned redirection to {1}", autodiscoverUrl.ToString(), response.RedirectionUrl));
-//
-//                    // this url need be brought back to the caller.
-//                    //
-//                    autodiscoverUrl = response.RedirectionUrl;
-//                }
-//                else
-//                {
-//                    return response;
-//                }
-//            }
-//
-//            this.TraceMessage(
-//                TraceFlags.AutodiscoverConfiguration,
-//                string.Format("Maximum number of redirection hops {0} exceeded", AutodiscoverMaxRedirections));
-//
-//            throw new AutodiscoverLocalException(Strings.MaximumRedirectionHopsExceeded);
-//        }
+        /* private */ Future<GetUserSettingsResponseCollection> InternalGetUserSettings(
+            List<String> smtpAddresses,
+            List<UserSettingName> settings,
+            ExchangeVersion requestedVersion,
+            OutParam<Uri> autodiscoverUrlOutParam) async
+        {
+            // The response to GetUserSettings can be a redirection. Execute GetUserSettings until we get back
+            // a valid response or we've followed too many redirections.
+            for (int currentHop = 0; currentHop < AutodiscoverService.AutodiscoverMaxRedirections; currentHop++)
+            {
+                GetUserSettingsRequest request = new GetUserSettingsRequest(this, autodiscoverUrlOutParam.param);
+                request.SmtpAddresses = smtpAddresses;
+                request.Settings = settings;
+                GetUserSettingsResponseCollection response = await request.Execute();
+
+                // Did we get redirected?
+                if (response.ErrorCode == AutodiscoverErrorCode.RedirectUrl && response.RedirectionUrl != null)
+                {
+                    this.TraceMessage(
+                        enumerations.TraceFlags.AutodiscoverConfiguration,
+                        "Request to ${autodiscoverUrlOutParam.param} returned redirection to ${response.RedirectionUrl}");
+
+                    // this url need be brought back to the caller.
+                    //
+                    autodiscoverUrlOutParam.param = response.RedirectionUrl;
+                }
+                else
+                {
+                    return response;
+                }
+            }
+
+            this.TraceMessage(
+                enumerations.TraceFlags.AutodiscoverConfiguration,
+                "Maximum number of redirection hops $AutodiscoverMaxRedirections exceeded");
+
+            throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+        }
 
         /// <summary>
 
@@ -1175,11 +1190,11 @@ import 'package:ews/misc/StringUtils.dart';
         /// </summary>
         /// <param name="host">The host.</param>
         /// <returns></returns>
-        Uri _GetAutodiscoverEndpointUrl(String host)
+        Future<Uri> _GetAutodiscoverEndpointUrl(OutParam<String> host) async
         {
             OutParam<Uri> autodiscoverUrlOutParam = OutParam();
 
-            if (this._TryGetAutodiscoverEndpointUrl(host, autodiscoverUrlOutParam))
+            if (await this._TryGetAutodiscoverEndpointUrl(host, autodiscoverUrlOutParam))
             {
                 return autodiscoverUrlOutParam.param;
             }
@@ -1195,25 +1210,25 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="host">The host.</param>
         /// <param name="url">The URL.</param>
         /// <returns></returns>
-        bool _TryGetAutodiscoverEndpointUrl(String host, OutParam<Uri> url)
+        Future<bool> _TryGetAutodiscoverEndpointUrl(OutParam<String> hostOutParam, OutParam<Uri> urlOutParam) async
         {
-            url = null;
+            urlOutParam.param = null;
 
-            Set<AutodiscoverEndpoints> endpoints;
-            if (this.TryGetEnabledEndpointsForHost(ref host, out endpoints))
+            OutParam<Set<AutodiscoverEndpoints>> endpointsOutParam = OutParam();
+            if (await this._TryGetEnabledEndpointsForHost(hostOutParam, endpointsOutParam))
             {
-                url = new Uri(string.Format(AutodiscoverSoapHttpsUrl, host));
+                urlOutParam.param = Uri.parse(AutodiscoverSoapHttpsUrl.replaceAll("{0}", hostOutParam.param));
 
                 // Make sure that at least one of the non-legacy endpoints is available.
-                if (((endpoints & AutodiscoverEndpoints.Soap) != AutodiscoverEndpoints.Soap) &&
-                    ((endpoints & AutodiscoverEndpoints.WsSecurity) != AutodiscoverEndpoints.WsSecurity) &&
-                    ((endpoints & AutodiscoverEndpoints.WSSecuritySymmetricKey) != AutodiscoverEndpoints.WSSecuritySymmetricKey) &&
-                    ((endpoints & AutodiscoverEndpoints.WSSecurityX509Cert) != AutodiscoverEndpoints.WSSecurityX509Cert) &&
-                    ((endpoints & AutodiscoverEndpoints.OAuth) != AutodiscoverEndpoints.OAuth))
+                if (endpointsOutParam.param.contains(AutodiscoverEndpoints.Soap) &&
+                    endpointsOutParam.param.contains(AutodiscoverEndpoints.WsSecurity) &&
+                    endpointsOutParam.param.contains(AutodiscoverEndpoints.WSSecuritySymmetricKey) &&
+                    endpointsOutParam.param.contains(AutodiscoverEndpoints.WSSecurityX509Cert) &&
+                    endpointsOutParam.param.contains(AutodiscoverEndpoints.OAuth))
                 {
                     this.TraceMessage(
                         enumerations.TraceFlags.AutodiscoverConfiguration,
-                        "No Autodiscover endpoints are available  for host $host");
+                        "No Autodiscover endpoints are available  for host ${hostOutParam.param}");
 
                     return false;
                 }
@@ -1221,7 +1236,7 @@ import 'package:ews/misc/StringUtils.dart';
                 // If we have WLID credentials, make sure that we have a WS-Security endpoint
 //                if (this.Credentials is WindowsLiveCredentials)
 //                {
-//                    if ((endpoints & AutodiscoverEndpoints.WsSecurity) != AutodiscoverEndpoints.WsSecurity)
+//                    if (endpoints.contains(utodiscoverEndpoints.WsSecurity)
 //                    {
 //                        this.TraceMessage(
 //                            TraceFlags.AutodiscoverConfiguration,
@@ -1236,7 +1251,7 @@ import 'package:ews/misc/StringUtils.dart';
 //                }
 //                else if (this.Credentials is PartnerTokenCredentials)
 //                {
-//                    if ((endpoints & AutodiscoverEndpoints.WSSecuritySymmetricKey) != AutodiscoverEndpoints.WSSecuritySymmetricKey)
+//                    if (endpoints.contains(utodiscoverEndpoints.WSSecuritySymmetricKey)
 //                    {
 //                        this.TraceMessage(
 //                            enumerations.TraceFlags.AutodiscoverConfiguration,
@@ -1251,7 +1266,7 @@ import 'package:ews/misc/StringUtils.dart';
 //                }
 //                else if (this.Credentials is X509CertificateCredentials)
 //                {
-//                    if ((endpoints & AutodiscoverEndpoints.WSSecurityX509Cert) != AutodiscoverEndpoints.WSSecurityX509Cert)
+//                    if (endpoints.contains(utodiscoverEndpoints.WSSecurityX509Cert)
 //                    {
 //                        this.TraceMessage(
 //                            enumerations.TraceFlags.AutodiscoverConfiguration,
@@ -1277,7 +1292,7 @@ import 'package:ews/misc/StringUtils.dart';
             {
                 this.TraceMessage(
                     enumerations.TraceFlags.AutodiscoverConfiguration,
-                    "No Autodiscover endpoints are available for host $host");
+                    "No Autodiscover endpoints are available for host ${hostOutParam.param}");
 
                 return false;
             }
@@ -1300,29 +1315,30 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="domainName">Domain name.</param>
         /// <param name="scpHostCount">Count of hosts found via SCP lookup.</param>
         /// <returns>List of Autodiscover URLs.</returns>
-//        List<Uri> GetAutodiscoverServiceUrls(String domainName, out int scpHostCount)
-//        {
-//            List<Uri> urls = new List<Uri>();
-//
-//            if (this.enableScpLookup)
-//            {
-//                // Get SCP URLs
+        List<Uri> GetAutodiscoverServiceUrls(String domainName, OutParam<int> scpHostCountOutParam)
+        {
+            List<Uri> urls = new List<Uri>();
+
+            if (this.enableScpLookup)
+            {
+                // Get SCP URLs
+                throw UnimplementedError("Unimplemented ScpLookup");
 //                Func<string, ICollection<String>> callback = this.GetScpUrlsForDomainCallback ?? this.DefaultGetScpUrlsForDomain;
-//                ICollection<String> scpUrls = callback(domainName);
+//                List<String> scpUrls = callback(domainName);
 //                for (String str in scpUrls)
 //                {
-//                    urls.Add(new Uri(str));
+//                    urls.add(Uri.parse(str));
 //                }
-//            }
-//
-//            scpHostCount = urls.Count;
-//
-//            // As a fallback, add autodiscover URLs base on the domain name.
-//            urls.Add(new Uri(string.Format(AutodiscoverLegacyHttpsUrl, domainName)));
-//            urls.Add(new Uri(string.Format(AutodiscoverLegacyHttpsUrl, "autodiscover." + domainName)));
-//
-//            return urls;
-//        }
+            }
+
+            scpHostCountOutParam.param = urls.length;
+
+            // As a fallback, add autodiscover URLs base on the domain name.
+            urls.add(Uri.parse(AutodiscoverLegacyHttpsUrl.replaceAll("{0}", domainName)));
+            urls.add(Uri.parse(AutodiscoverLegacyHttpsUrl.replaceAll("{0}", "autodiscover." + domainName)));
+
+            return urls;
+        }
 
         /// <summary>
         /// Gets the list of autodiscover service hosts.
@@ -1330,16 +1346,16 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="domainName">Name of the domain.</param>
         /// <param name="scpHostCount">Count of SCP hosts that were found.</param>
         /// <returns>List of host names.</returns>
-//        List<String> GetAutodiscoverServiceHosts(String domainName, out int scpHostCount)
-//        {
-//            List<String> serviceHosts = new List<String>();
-//            for (Uri url in this.GetAutodiscoverServiceUrls(domainName, out scpHostCount))
-//            {
-//                serviceHosts.Add(url.Host);
-//            }
-//
-//            return serviceHosts;
-//        }
+        List<String> GetAutodiscoverServiceHosts(String domainName, OutParam<int> scpHostCountOutParam)
+        {
+            List<String> serviceHosts = new List<String>();
+            for (Uri url in this.GetAutodiscoverServiceUrls(domainName, scpHostCountOutParam))
+            {
+                serviceHosts.add(url.host);
+            }
+
+            return serviceHosts;
+        }
 
         /// <summary>
         /// Gets the enabled autodiscover endpoints on a specific host.
@@ -1347,91 +1363,91 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="host">The host.</param>
         /// <param name="endpoints">Endpoints found for host.</param>
         /// <returns>Flags indicating which endpoints are enabled.</returns>
-//        /* private */ bool TryGetEnabledEndpointsForHost(ref String host, out AutodiscoverEndpoints endpoints)
-//        {
-//            this.TraceMessage(
-//                TraceFlags.AutodiscoverConfiguration,
-//                string.Format("Determining which endpoints are enabled for host {0}", host));
-//
-//            // We may get redirected to another host. And therefore need to limit the number
-//            // of redirections we'll tolerate.
-//            for (int currentHop = 0; currentHop < AutodiscoverMaxRedirections; currentHop++)
-//            {
-//                Uri autoDiscoverUrl = new Uri(string.Format(AutodiscoverLegacyHttpsUrl, host));
-//
-//                endpoints = AutodiscoverEndpoints.None;
-//
-//                IEwsHttpWebRequest request = this.HttpWebRequestFactory.CreateRequest(autoDiscoverUrl);
-//
-//                request.Method = "GET";
-//                request.AllowAutoRedirect = false;
-//                request.PreAuthenticate = false;
-//                request.UseDefaultCredentials = false;
-//
-//                IEwsHttpWebResponse response = null;
-//
-//                try
-//                {
-//                    response = request.GetResponse();
-//                }
-//                catch (WebException ex)
-//                {
-//                    this.TraceMessage(
-//                        TraceFlags.AutodiscoverConfiguration,
-//                        string.Format("Request error: {0}", ex.Message));
-//
-//                    // The exception response factory requires a valid HttpWebResponse,
-//                    // but there will be no web response if the web request couldn't be
-//                    // actually be issued (e.g. due to DNS error).
-//                    if (ex.Response != null)
-//                    {
-//                        response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
-//                    }
-//                }
-//                catch (IOException ex)
-//                {
-//                    this.TraceMessage(
-//                        TraceFlags.AutodiscoverConfiguration,
-//                        string.Format("I/O error: {0}", ex.Message));
-//                }
-//
-//                if (response != null)
-//                {
-//
-//                    {
-//                        Uri redirectUrl;
-//                        if (this._TryGetRedirectionResponse(response, out redirectUrl))
-//                        {
-//                            this.TraceMessage(
-//                                TraceFlags.AutodiscoverConfiguration,
-//                                string.Format("Host returned redirection to host '{0}'", redirectUrl.Host));
-//
-//                            host = redirectUrl.Host;
-//                        }
-//                        else
-//                        {
-//                            endpoints = this._GetEndpointsFromHttpWebResponse(response);
-//
-//                            this.TraceMessage(
-//                                TraceFlags.AutodiscoverConfiguration,
-//                                string.Format("Host returned enabled endpoint flags: {0}", endpoints));
-//
-//                            return true;
-//                        }
-//                    }
-//                }
-//                else
-//                {
-//                    return false;
-//                }
-//            }
-//
-//            this.TraceMessage(
-//                TraceFlags.AutodiscoverConfiguration,
-//                string.Format("Maximum number of redirection hops {0} exceeded", AutodiscoverMaxRedirections));
-//
-//            throw new AutodiscoverLocalException(Strings.MaximumRedirectionHopsExceeded);
-//        }
+        Future<bool> _TryGetEnabledEndpointsForHost(OutParam<String> hostOutParam, OutParam<Set<AutodiscoverEndpoints>> endpointsOutParam) async
+        {
+            this.TraceMessage(
+                enumerations.TraceFlags.AutodiscoverConfiguration,
+                "Determining which endpoints are enabled for host ${hostOutParam.param}");
+
+            // We may get redirected to another host. And therefore need to limit the number
+            // of redirections we'll tolerate.
+            for (int currentHop = 0; currentHop < AutodiscoverMaxRedirections; currentHop++)
+            {
+                Uri autoDiscoverUrl = Uri.parse(AutodiscoverLegacyHttpsUrl.replaceAll("{0}", hostOutParam.param));
+
+                endpointsOutParam.param = Set.of([AutodiscoverEndpoints.None]);
+
+                IEwsHttpWebRequest request = this.HttpWebRequestFactory.CreateRequestWithUrl(autoDiscoverUrl);
+
+                request.Method = "GET";
+                request.AllowAutoRedirect = false;
+                request.PreAuthenticate = false;
+                request.UseDefaultCredentials = false;
+
+                IEwsHttpWebResponse response = null;
+
+                try
+                {
+                    response = await request.GetResponse();
+                }
+                on WebException catch(ex)
+                {
+                    this.TraceMessage(
+                        enumerations.TraceFlags.AutodiscoverConfiguration,
+                        "Request error: ${ex.message}");
+
+                    // The exception response factory requires a valid HttpWebResponse,
+                    // but there will be no web response if the web request couldn't be
+                    // actually be issued (e.g. due to DNS error).
+                    if (ex.Response != null)
+                    {
+                        response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
+                    }
+                }
+                on IOException catch (ex)
+                {
+                    this.TraceMessage(
+                        enumerations.TraceFlags.AutodiscoverConfiguration,
+                        "I/O error: $ex");
+                }
+
+                if (response != null)
+                {
+
+                    {
+                        OutParam<Uri> redirectUrlOutParam = OutParam();
+                        if (this._TryGetRedirectionResponse(response, redirectUrlOutParam))
+                        {
+                            this.TraceMessage(
+                                enumerations.TraceFlags.AutodiscoverConfiguration,
+                                "Host returned redirection to host '${redirectUrlOutParam.param.host}'");
+
+                            hostOutParam.param = redirectUrlOutParam.param.host;
+                        }
+                        else
+                        {
+                            endpointsOutParam.param = await this._GetEndpointsFromHttpWebResponse(response);
+
+                            this.TraceMessage(
+                                enumerations.TraceFlags.AutodiscoverConfiguration,
+                                "Host returned enabled endpoint flags: ${endpointsOutParam.param}");
+
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            this.TraceMessage(
+                enumerations.TraceFlags.AutodiscoverConfiguration,
+                "Maximum number of redirection hops $AutodiscoverMaxRedirections exceeded");
+
+            throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+        }
 
         /// <summary>
         /// Gets the endpoints from HTTP web response.
@@ -1493,13 +1509,13 @@ import 'package:ews/misc/StringUtils.dart';
         /// based on the configuration of this service object.
         /// </summary>
         /// <param name="url">The URL that the HttpWebRequest should target.</param>
-        IEwsHttpWebRequest PrepareHttpWebRequestForUrl(Uri url)
-        {
-            return this.PrepareHttpWebRequestForUrl(
-                            url,
-                            false,      // acceptGzipEncoding
-                            false);     // allowAutoRedirect
-        }
+//           IEwsHttpWebRequest PrepareHttpWebRequestForUrl(Uri url)
+//        {
+//            return this.PrepareHttpWebRequestForUrl(
+//                            url,
+//                            false,      // acceptGzipEncoding
+//                            false);     // allowAutoRedirect
+//        }
 
         /// <summary>
         /// Calls the redirection URL validation callback.
@@ -1536,91 +1552,91 @@ import 'package:ews/misc/StringUtils.dart';
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
- AutodiscoverService()
-            : this(ExchangeVersion.Exchange2010)
-        {
-        }
+// AutodiscoverService()
+//            : this(ExchangeVersion.Exchange2010)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="requestedServerVersion">The requested server version.</param>
- AutodiscoverService.withExchangeVersion(ExchangeVersion requestedServerVersion)
-            : this(null, null, requestedServerVersion)
-        {
-        }
+// AutodiscoverService.withExchangeVersion(ExchangeVersion requestedServerVersion)
+//            : this(null, null, requestedServerVersion)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="domain">The domain that will be used to determine the URL of the service.</param>
- AutodiscoverService.withDomain(String domain)
-            : this(null, domain)
-        {
-        }
+// AutodiscoverService.withDomain(String domain)
+//            : this(null, domain)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="domain">The domain that will be used to determine the URL of the service.</param>
         /// <param name="requestedServerVersion">The requested server version.</param>
- AutodiscoverService.withDomainAndExchangeVersion(String domain, ExchangeVersion requestedServerVersion)
-            : this(null, domain, requestedServerVersion)
-        {
-        }
+// AutodiscoverService.withDomainAndExchangeVersion(String domain, ExchangeVersion requestedServerVersion)
+//            : this(null, domain, requestedServerVersion)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="url">The URL of the service.</param>
- AutodiscoverService.withUrl(Uri url)
-            : this(url, url.Host)
-        {
-        }
+// AutodiscoverService.withUrl(Uri url)
+//            : this(url, url.Host)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="url">The URL of the service.</param>
         /// <param name="requestedServerVersion">The requested server version.</param>
- AutodiscoverService.withUrlAndExchangeVersion(Uri url, ExchangeVersion requestedServerVersion)
-            : this(url, url.Host, requestedServerVersion)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
-        /// </summary>
-        /// <param name="url">The URL of the service.</param>
-        /// <param name="domain">The domain that will be used to determine the URL of the service.</param>
-        AutodiscoverService.withUrlAndDomain(Uri url, String domain)
-            : super()
-        {
-            EwsUtilities.ValidateDomainNameAllowNull(domain, "domain");
-
-            this.url = url;
-            this.domain = domain;
-            this.dnsClient = new AutodiscoverDnsClient(this);
-        }
+// AutodiscoverService.withUrlAndExchangeVersion(Uri url, ExchangeVersion requestedServerVersion)
+//            : this(url, url.Host, requestedServerVersion)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="url">The URL of the service.</param>
         /// <param name="domain">The domain that will be used to determine the URL of the service.</param>
-        /// <param name="requestedServerVersion">The requested server version.</param>
-        AutodiscoverService.withUrlAndDomainAndExchangeVersion(
-            Uri url,
-            String domain,
-            ExchangeVersion requestedServerVersion)
-            : super(requestedServerVersion)
-        {
-            EwsUtilities.ValidateDomainNameAllowNull(domain, "domain");
+//        AutodiscoverService.withUrlAndDomain(Uri url, String domain)
+//            : super()
+//        {
+//            EwsUtilities.ValidateDomainNameAllowNull(domain, "domain");
+//
+//            this.url = url;
+//            this.domain = domain;
+//            this.dnsClient = new AutodiscoverDnsClient(this);
+//        }
 
-            this.url = url;
-            this.domain = domain;
-            this.dnsClient = new AutodiscoverDnsClient(this);
-        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
+        /// </summary>
+        /// <param name="url">The URL of the service.</param>
+        /// <param name="domain">The domain that will be used to determine the URL of the service.</param>
+        /// <param name="requestedServerVersion">The requested server version.</param>
+//        AutodiscoverService.withUrlAndDomainAndExchangeVersion(
+//            Uri url,
+//            String domain,
+//            ExchangeVersion requestedServerVersion)
+//            : super(requestedServerVersion)
+//        {
+//            EwsUtilities.ValidateDomainNameAllowNull(domain, "domain");
+//
+//            this.url = url;
+//            this.domain = domain;
+//            this.dnsClient = new AutodiscoverDnsClient(this);
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
@@ -1628,19 +1644,20 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="service">The other service.</param>
         /// <param name="requestedServerVersion">The requested server version.</param>
         AutodiscoverService.withExchangeServiceAndExchangeVersion(ExchangeServiceBase service, ExchangeVersion requestedServerVersion)
-            : super(service, requestedServerVersion)
-        {
-            this.dnsClient = new AutodiscoverDnsClient(this);
-        }
+            : super.withExchangeServiceAndExchangeVersion(service, requestedServerVersion);
+        // TODO fix dns client
+//        {
+//            this.dnsClient = new AutodiscoverDnsClient(this);
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverService"/> class.
         /// </summary>
         /// <param name="service">The service.</param>
-        AutodiscoverService.withExchangeService(ExchangeServiceBase service)
-            : this(service, service.RequestedServerVersion)
-        {
-        }
+//        AutodiscoverService.withExchangeService(ExchangeServiceBase service)
+//            : this(service, service.RequestedServerVersion)
+//        {
+//        }
 
         /// <summary>
         /// Retrieves the specified settings for single SMTP address.
@@ -1651,31 +1668,33 @@ import 'package:ews/misc/StringUtils.dart';
         /// <remarks>
         /// This method handles will run the entire Autodiscover "discovery" algorithm and will follow address and URL redirections.
         /// </remarks>
-// GetUserSettingsResponse GetUserSettings(
-//            String userSmtpAddress,
-//            params UserSettingName[] userSettingNames)
-//        {
-//            List<UserSettingName> requestedSettings = new List<UserSettingName>(userSettingNames);
-//
-//            if (StringUtils.IsNullOrEmpty(userSmtpAddress))
-//            {
-//                throw new ServiceValidationException(Strings.InvalidAutodiscoverSmtpAddress);
-//            }
-//
-//            if (requestedSettings.Count == 0)
-//            {
-//                throw new ServiceValidationException(Strings.InvalidAutodiscoverSettingsCount);
-//            }
-//
-//            if (this.RequestedServerVersion < MinimumRequestVersionForAutoDiscoverSoapService)
-//            {
-//                return this.InternalGetLegacyUserSettings(userSmtpAddress, requestedSettings);
-//            }
-//            else
-//            {
-//                return this.InternalGetSoapUserSettings(userSmtpAddress, requestedSettings);
-//            }
-//        }
+ Future<GetUserSettingsResponse> GetUserSettingsWithSmtpAddress(
+            String userSmtpAddress,
+            List<UserSettingName> userSettingNames) async
+        {
+            List<UserSettingName> requestedSettings = new List<UserSettingName>.of(userSettingNames);
+
+            if (StringUtils.IsNullOrEmpty(userSmtpAddress))
+            {
+                throw new ServiceValidationException("Strings.InvalidAutodiscoverSmtpAddress");
+            }
+
+            if (requestedSettings.length == 0)
+            {
+                throw new ServiceValidationException("Strings.InvalidAutodiscoverSettingsCount");
+            }
+
+            if (this.RequestedServerVersion.index < MinimumRequestVersionForAutoDiscoverSoapService.index)
+            {
+                // TODO implement autodiscovery for Exchange 2007
+                throw UnsupportedError("Doesn't support autodiscovery for Exchange2007");
+//                return await this.InternalGetLegacyUserSettings(userSmtpAddress, requestedSettings);
+            }
+            else
+            {
+                return await this.InternalGetSoapUserSettings(userSmtpAddress, requestedSettings);
+            }
+        }
 
         /// <summary>
         /// Retrieves the specified settings for a set of users.
@@ -1724,15 +1743,15 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="requestedVersion">Requested version of the Exchange service.</param>
         /// <param name="domainSettingNames">The domain setting names.</param>
         /// <returns>A GetDomainSettingsResponseCollection object containing the responses for each individual domain.</returns>
- GetDomainSettingsResponseCollection GetDomainSettings(
-            Iterable<String> domains,
-            ExchangeVersion requestedVersion,
-            List<DomainSettingName> domainSettingNames)
-        {
-            List<DomainSettingName> settings = new List<DomainSettingName>(domainSettingNames);
-
-            return this.GetDomainSettings(domains.toList(), settings, requestedVersion);
-        }
+// GetDomainSettingsResponseCollection GetDomainSettings(
+//            Iterable<String> domains,
+//            ExchangeVersion requestedVersion,
+//            List<DomainSettingName> domainSettingNames)
+//        {
+//            List<DomainSettingName> settings = new List<DomainSettingName>.of(domainSettingNames);
+//
+//            return this.GetDomainSettings(domains.toList(), settings, requestedVersion);
+//        }
 
         /// <summary>
         /// Try to get the partner access information for the given target tenant.

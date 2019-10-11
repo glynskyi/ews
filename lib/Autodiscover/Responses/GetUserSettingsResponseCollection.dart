@@ -23,56 +23,44 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-
-
-
-    import 'package:ews/Autodiscover/Responses/GetUserSettingsResponse.dart';
+import 'package:ews/Autodiscover/AutodiscoverResponseCollection.dart';
+import 'package:ews/Autodiscover/Responses/GetUserSettingsResponse.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 
 /// <summary>
-    /// Represents a collection of responses to GetUserSettings
-    /// </summary>
- class GetUserSettingsResponseCollection extends AutodiscoverResponseCollection<GetUserSettingsResponse>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AutodiscoverResponseCollection&lt;TResponse&gt;"/> class.
-        /// </summary>
-        GetUserSettingsResponseCollection()
-        {
-        }
+/// Represents a collection of responses to GetUserSettings
+/// </summary>
+class GetUserSettingsResponseCollection
+    extends AutodiscoverResponseCollection<GetUserSettingsResponse> {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AutodiscoverResponseCollection&lt;TResponse&gt;"/> class.
+  /// </summary>
+  GetUserSettingsResponseCollection() {}
 
-        /// <summary>
-        /// Create a response instance.
-        /// </summary>
-        /// <returns>GetUserSettingsResponse.</returns>
-@override
-        GetUserSettingsResponse CreateResponseInstance()
-        {
-            return new GetUserSettingsResponse();
-        }
+  /// <summary>
+  /// Create a response instance.
+  /// </summary>
+  /// <returns>GetUserSettingsResponse.</returns>
+  @override
+  GetUserSettingsResponse CreateResponseInstance() {
+    return new GetUserSettingsResponse();
+  }
 
-        /// <summary>
-        /// Gets the name of the response collection XML element.
-        /// </summary>
-        /// <returns>Response collection XMl element name.</returns>
-@override
-        String GetResponseCollectionXmlElementName()
-        {
-            return XmlElementNames.UserResponses;
-        }
+  /// <summary>
+  /// Gets the name of the response collection XML element.
+  /// </summary>
+  /// <returns>Response collection XMl element name.</returns>
+  @override
+  String GetResponseCollectionXmlElementName() {
+    return XmlElementNames.UserResponses;
+  }
 
-        /// <summary>
-        /// Gets the name of the response instance XML element.
-        /// </summary>
-        /// <returns>Response instance XMl element name.</returns>
-@override
-        String GetResponseInstanceXmlElementName()
-        {
-            return XmlElementNames.UserResponse;
-        }
-    }
+  /// <summary>
+  /// Gets the name of the response instance XML element.
+  /// </summary>
+  /// <returns>Response instance XMl element name.</returns>
+  @override
+  String GetResponseInstanceXmlElementName() {
+    return XmlElementNames.UserResponse;
+  }
+}

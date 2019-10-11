@@ -6,7 +6,9 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 abstract class IEwsHttpWebRequestFactory {
   IEwsHttpWebRequest CreateRequest();
 
-  IEwsHttpWebRequest CreateRequestWithUrl(ExchangeService exchangeService, Uri url) {}
+  IEwsHttpWebRequest CreateRequestWithExchangeServiceAndUrl(ExchangeService exchangeService, Uri url);
 
-  IEwsHttpWebResponse CreateExceptionResponse(WebException e) {}
+  IEwsHttpWebRequest CreateRequestWithUrl(Uri url);
+
+  IEwsHttpWebResponse CreateExceptionResponse(WebException e);
 }

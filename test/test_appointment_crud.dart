@@ -14,15 +14,19 @@ main() {
       ..Start = startTime
       ..End = startTime.add(Duration(hours: 2));
 
-    await appointment.SaveWithSendInvitationsMode(SendInvitationsMode.SendToNone);
+    await appointment.SaveWithSendInvitationsMode(
+        SendInvitationsMode.SendToNone);
     await appointment.Delete(DeleteMode.HardDelete);
   });
 
   test('tests an autodiscovery', () async {
-    final service = ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
-      ..Credentials = primaryUserCredential
-      ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse]
-      ..TraceEnabled = true;
-    service.AutodiscoverUrl(userEmailAddress);
+    final service =
+        ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
+          ..Credentials = primaryUserCredential
+          ..EnableScpLookup = false
+          ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse]
+          ..TraceEnabled = true;
+    await service.AutodiscoverUrl("qa1@shafersystems.com");
+    print(service.Url);
   });
 }

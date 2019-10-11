@@ -5,4 +5,6 @@ class WebException implements Exception {
   final Object Response;
 
   WebException(this.Status, this.Response);
+
+  String get message => "$Status $Response";
 }

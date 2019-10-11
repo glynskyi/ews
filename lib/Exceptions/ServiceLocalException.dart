@@ -56,6 +56,4 @@ class ServiceLocalException implements Exception {
   /// <param name="info">The object that holds the serialized object data.</param>
   /// <param name="context">The contextual information about the source or destination.</param>
 // ServiceLocalException(SerializationInfo info, StreamingContext context) : super(info, context);
-
-
 }

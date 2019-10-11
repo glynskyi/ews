@@ -31,30 +31,41 @@
 
 
 
-    import 'package:ews/Autodiscover/AutodiscoverService.dart';
+    import 'dart:io';
+
+import 'package:ews/Autodiscover/AutodiscoverService.dart';
 import 'package:ews/Autodiscover/Responses/AutodiscoverResponse.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/EwsXmlReader.dart';
 import 'package:ews/Core/ExchangeServerInfo.dart';
+import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Core/XmlElementNames.dart';
+import 'package:ews/Enumerations/AutodiscoverErrorCode.dart';
 import 'package:ews/Enumerations/TraceFlags.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ServiceRemoteException.dart';
 import 'package:ews/Exceptions/ServiceRequestException.dart';
+import 'package:ews/Exceptions/ServiceResponseException.dart';
+import 'package:ews/Exceptions/ServiceXmlDeserializationException.dart';
 import 'package:ews/Http/WebException.dart';
+import 'package:ews/Http/WebExceptionStatus.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+import 'package:ews/Xml/XmlException.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
+import 'package:ews/misc/HttpStatusCode.dart';
 import 'package:ews/misc/SoapFaultDetails.dart';
 import 'package:ews/misc/StringUtils.dart';
+import 'package:ews/misc/UriHelper.dart';
 
 /// <summary>
     /// Represents the base class for all requested made to the Autodiscover service.
     /// </summary>
     abstract class AutodiscoverRequest
     {
-        /* private */ AutodiscoverService service;
-        /* private */ Uri url;
+        AutodiscoverService _service;
+        Uri _url;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverRequest"/> class.
@@ -63,8 +74,8 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="url">URL of Autodiscover service.</param>
         AutodiscoverRequest(AutodiscoverService service, Uri url)
         {
-            this.service = service;
-            this.url = url;
+            this._service = service;
+            this._url = url;
         }
 
         /// <summary>
@@ -94,145 +105,145 @@ import 'package:ews/misc/StringUtils.dart';
         /// <returns></returns>
         Future<AutodiscoverResponse> InternalExecute()
         {
-            this.Validate();
-
-            try
-            {
-                IEwsHttpWebRequest request = this.Service.PrepareHttpWebRequestForUrl(this.Url);
-
-                this.Service.TraceHttpRequestHeaders(TraceFlags.AutodiscoverRequestHttpHeaders, request);
-
-                bool needSignature = this.Service.Credentials != null && this.Service.Credentials.NeedSignature;
-                bool needTrace = this.Service.IsTraceEnabledFor(TraceFlags.AutodiscoverRequest);
-
-
-                {
-
-                    {
-
-                        {
-                            writer.RequireWSSecurityUtilityNamespace = needSignature;
-                            this.WriteSoapRequest(
-                                this.Url,
-                                writer);
-                        }
-
-                        if (needSignature)
-                        {
-                            this.service.Credentials.Sign(memoryStream);
-                        }
-
-                        if (needTrace)
-                        {
-                            memoryStream.Position = 0;
-                            this.Service.TraceXml(TraceFlags.AutodiscoverRequest, memoryStream);
-                        }
-
-                        EwsUtilities.CopyStream(memoryStream, requestStream);
-                    }
-                }
-
-
-                {
-                    if (AutodiscoverRequest.IsRedirectionResponse(webResponse))
-                    {
-                        AutodiscoverResponse response = this.CreateRedirectionResponse(webResponse);
-                        if (response != null)
-                        {
-                            return response;
-                        }
-                        else
-                        {
-                            throw new ServiceRemoteException(Strings.InvalidRedirectionResponseReturned);
-                        }
-                    }
-
-
-                    {
-
-                        {
-                            // Copy response stream to in-memory stream and reset to start
-                            EwsUtilities.CopyStream(responseStream, memoryStream);
-                            memoryStream.Position = 0;
-
-                            this.Service.TraceResponse(webResponse, memoryStream);
-
-                            EwsXmlReader ewsXmlReader = new EwsXmlReader(memoryStream);
-
-                            // WCF may not generate an XML declaration.
-                            ewsXmlReader.Read();
-                            if (ewsXmlReader.NodeType == XmlNodeType.XmlDeclaration)
-                            {
-                                ewsXmlReader.ReadStartElement(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-                            }
-                            else if ((ewsXmlReader.NodeType != XmlNodeType.Element) || (ewsXmlReader.LocalName != XmlElementNames.SOAPEnvelopeElementName) || (ewsXmlReader.NamespaceUri != EwsUtilities.GetNamespaceUri(XmlNamespace.Soap)))
-                            {
-                                throw new ServiceXmlDeserializationException(Strings.InvalidAutodiscoverServiceResponse);
-                            }
-
-                            this.ReadSoapHeaders(ewsXmlReader);
-
-                            AutodiscoverResponse response = this.ReadSoapBody(ewsXmlReader);
-
-                            ewsXmlReader.ReadEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-
-                            if (response.ErrorCode == AutodiscoverErrorCode.NoError)
-                            {
-                                return response;
-                            }
-                            else
-                            {
-                                throw new AutodiscoverResponseException(response.ErrorCode, response.ErrorMessage);
-                            }
-                        }
-                    }
-                }
-            }
-            on WebException catch (ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                {
-                    IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(ex);
-
-                    if (AutodiscoverRequest.IsRedirectionResponse(httpWebResponse))
-                    {
-                        this.Service.ProcessHttpResponseHeaders(
-                            TraceFlags.AutodiscoverResponseHttpHeaders,
-                            httpWebResponse);
-
-                        AutodiscoverResponse response = this.CreateRedirectionResponse(httpWebResponse);
-                        if (response != null)
-                        {
-                            return response;
-                        }
-                    }
-                    else
-                    {
-                        this.ProcessWebException(ex);
-                    }
-                }
-
-                // Wrap exception if the above code block didn't throw
-                throw new ServiceRequestException(string.Format(Strings.ServiceRequestFailed, ex.Message), ex);
-            }
-            on XmlException catch (ex)
-            {
-                this.Service.TraceMessage(
-                    TraceFlags.AutodiscoverConfiguration,
-                    string.Format("XML parsing error: {0}", ex.Message));
-
-                // Wrap exception
-                throw new ServiceRequestException(string.Format(Strings.ServiceRequestFailed, ex.Message), ex);
-            }
-            on IOException catch (ex)
-            {
-                this.Service.TraceMessage(
-                    TraceFlags.AutodiscoverConfiguration,
-                    string.Format("I/O error: {0}", ex.Message));
-
-                // Wrap exception
-                throw new ServiceRequestException(string.Format(Strings.ServiceRequestFailed, ex.Message), ex);
-            }
+            throw UnimplementedError("InternalExecute");
+//            this.Validate();
+//
+//            try
+//            {
+//                IEwsHttpWebRequest request = this.Service.PrepareHttpWebRequestForUrl(this.Url);
+//
+//                this.Service.TraceHttpRequestHeaders(TraceFlags.AutodiscoverRequestHttpHeaders, request);
+//
+//                bool needSignature = this.Service.Credentials != null && this.Service.Credentials.NeedSignature;
+//                bool needTrace = this.Service.IsTraceEnabledFor(TraceFlags.AutodiscoverRequest);
+//
+//                using (Stream requestStream = request.GetRequestStream())
+//                {
+//                    using (MemoryStream memoryStream = new MemoryStream())
+//                    {
+//                        using (EwsServiceXmlWriter writer = new EwsServiceXmlWriter(this.Service, memoryStream))
+//                        {
+//                            writer.RequireWSSecurityUtilityNamespace = needSignature;
+//                            this.WriteSoapRequest(
+//                                this.Url,
+//                                writer);
+//                        }
+//
+//                        if (needSignature)
+//                        {
+//                            this._service.Credentials.Sign(memoryStream);
+//                        }
+//
+//                        if (needTrace)
+//                        {
+//                            memoryStream.Position = 0;
+//                            this.Service.TraceXml(TraceFlags.AutodiscoverRequest, memoryStream);
+//                        }
+//
+//                        EwsUtilities.CopyStream(memoryStream, requestStream);
+//                    }
+//                }
+//
+//                using (IEwsHttpWebResponse webResponse = request.GetResponse())
+//                {
+//                    if (AutodiscoverRequest.IsRedirectionResponse(webResponse))
+//                    {
+//                        AutodiscoverResponse response = this.CreateRedirectionResponse(webResponse);
+//                        if (response != null)
+//                        {
+//                            return response;
+//                        }
+//                        else
+//                        {
+//                            throw new ServiceRemoteException("Strings.InvalidRedirectionResponseReturned");
+//                        }
+//                    }
+//
+//                    using (Stream responseStream = AutodiscoverRequest.GetResponseStream(webResponse))
+//                    {
+//                        using (MemoryStream memoryStream = new MemoryStream())
+//                        {
+//                            // Copy response stream to in-memory stream and reset to start
+//                            EwsUtilities.CopyStream(responseStream, memoryStream);
+//                            memoryStream.Position = 0;
+//
+//                            this.Service.TraceResponse(webResponse, memoryStream);
+//
+//                            EwsXmlReader ewsXmlReader = new EwsXmlReader(memoryStream);
+//
+//                            // WCF may not generate an XML declaration.
+//                            ewsXmlReader.Read();
+//                            if (ewsXmlReader.NodeType == XmlNodeType.XmlDeclaration)
+//                            {
+//                                ewsXmlReader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
+//                            }
+//                            else if ((ewsXmlReader.NodeType != XmlNodeType.Element) || (ewsXmlReader.LocalName != XmlElementNames.SOAPEnvelopeElementName) || (ewsXmlReader.NamespaceUri != EwsUtilities.GetNamespaceUri(XmlNamespace.Soap)))
+//                            {
+//                                throw new ServiceXmlDeserializationException("Strings.InvalidAutodiscoverServiceResponse");
+//                            }
+//
+//                            this.ReadSoapHeaders(ewsXmlReader);
+//
+//                            AutodiscoverResponse response = this.ReadSoapBody(ewsXmlReader);
+//
+//                            ewsXmlReader.ReadEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
+//
+//                            if (response.ErrorCode == AutodiscoverErrorCode.NoError)
+//                            {
+//                                return response;
+//                            }
+//                            else
+//                            {
+//                                throw new AutodiscoverResponseException(response.ErrorCode, response.ErrorMessage);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            on WebException catch (ex)
+//            {
+//                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+//                {
+//                    IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(ex);
+//
+//                    if (AutodiscoverRequest.IsRedirectionResponse(httpWebResponse))
+//                    {
+//                        this.Service.ProcessHttpResponseHeaders(
+//                            TraceFlags.AutodiscoverResponseHttpHeaders,
+//                            httpWebResponse);
+//
+//                        AutodiscoverResponse response = this.CreateRedirectionResponse(httpWebResponse);
+//                        if (response != null)
+//                        {
+//                            return response;
+//                        }
+//                    }
+//                    else
+//                    {
+//                        this.ProcessWebException(ex);
+//                    }
+//                }
+//
+//                // Wrap exception if the above code block didn't throw
+//                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, ex.Message), ex");
+//            }
+//            on XmlException catch (ex)
+//            {
+//                this.Service.TraceMessage(
+//                    TraceFlags.AutodiscoverConfiguration,
+//                    "XML parsing error: $ex", );
+//
+//                // Wrap exception
+//                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, ex.Message), ex");
+//            }
+//            on IOException catch (ex) {
+//                this.Service.TraceMessage(
+//                    TraceFlags.AutodiscoverConfiguration,
+//                    "I/O error: $ex");
+//
+//                // Wrap exception
+//                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, ex.Message), ex");
+//            }
         }
 
         /// <summary>
@@ -241,52 +252,53 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="webException">The web exception.</param>
         /* private */ void ProcessWebException(WebException webException)
         {
-            if (webException.Response != null)
-            {
-                IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(webException);
-                SoapFaultDetails soapFaultDetails;
-
-                if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    // If tracing is enabled, we read the entire response into a MemoryStream so that we
-                    // can pass it along to the ITraceListener. Then we parse the response from the
-                    // MemoryStream.
-                    if (this.Service.IsTraceEnabledFor(TraceFlags.AutodiscoverRequest))
-                    {
-
-                        {
-
-                            {
-                                // Copy response to in-memory stream and reset position to start.
-                                EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
-                                memoryStream.Position = 0;
-                            }
-
-                            this.Service.TraceResponse(httpWebResponse, memoryStream);
-
-                            EwsXmlReader reader = new EwsXmlReader(memoryStream);
-                            soapFaultDetails = this.ReadSoapFault(reader);
-                        }
-                    }
-                    else
-                    {
-
-                        {
-                            EwsXmlReader reader = new EwsXmlReader(stream);
-                            soapFaultDetails = this.ReadSoapFault(reader);
-                        }
-                    }
-
-                    if (soapFaultDetails != null)
-                    {
-                        throw new ServiceResponseException(new ServiceResponse(soapFaultDetails));
-                    }
-                }
-                else
-                {
-                    this.Service.ProcessHttpErrorResponse(httpWebResponse, webException);
-                }
-            }
+            throw UnimplementedError("ProcessWebException");
+//            if (webException.Response != null)
+//            {
+//                IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(webException);
+//                SoapFaultDetails soapFaultDetails;
+//
+//                if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError)
+//                {
+//                    // If tracing is enabled, we read the entire response into a MemoryStream so that we
+//                    // can pass it along to the ITraceListener. Then we parse the response from the
+//                    // MemoryStream.
+//                    if (this.Service.IsTraceEnabledFor(TraceFlags.AutodiscoverRequest))
+//                    {
+//
+//                        {
+//
+//                            {
+//                                // Copy response to in-memory stream and reset position to start.
+//                                EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
+//                                memoryStream.Position = 0;
+//                            }
+//
+//                            this.Service.TraceResponse(httpWebResponse, memoryStream);
+//
+//                            EwsXmlReader reader = new EwsXmlReader(memoryStream);
+//                            soapFaultDetails = this.ReadSoapFault(reader);
+//                        }
+//                    }
+//                    else
+//                    {
+//
+//                        {
+//                            EwsXmlReader reader = new EwsXmlReader(stream);
+//                            soapFaultDetails = this.ReadSoapFault(reader);
+//                        }
+//                    }
+//
+//                    if (soapFaultDetails != null)
+//                    {
+//                        throw new ServiceResponseException(new ServiceResponse(soapFaultDetails));
+//                    }
+//                }
+//                else
+//                {
+//                    this.Service.ProcessHttpErrorResponse(httpWebResponse, webException);
+//                }
+//            }
         }
 
         /// <summary>
@@ -295,13 +307,13 @@ import 'package:ews/misc/StringUtils.dart';
         /// <param name="httpWebResponse">The HTTP web response.</param>
         /* private */ AutodiscoverResponse CreateRedirectionResponse(IEwsHttpWebResponse httpWebResponse)
         {
-            String location = httpWebResponse.Headers[HttpResponseHeader.Location];
+            String location = httpWebResponse.Headers["Location"];
             if (!StringUtils.IsNullOrEmpty(location))
             {
                 try
                 {
-                    Uri redirectionUri = new Uri(this.Url, location);
-                    if ((redirectionUri.Scheme == Uri.UriSchemeHttp) || (redirectionUri.Scheme == Uri.UriSchemeHttps))
+                    Uri redirectionUri = UriHelper.concat(this.Url, Uri.parse(location));
+                    if ((redirectionUri.scheme == "http") || (redirectionUri.scheme == "https"))
                     {
                         AutodiscoverResponse response = this.CreateServiceResponse();
                         response.ErrorCode = AutodiscoverErrorCode.RedirectUrl;
@@ -311,13 +323,13 @@ import 'package:ews/misc/StringUtils.dart';
 
                     this.Service.TraceMessage(
                         TraceFlags.AutodiscoverConfiguration,
-                        string.Format("Invalid redirection URL '{0}' returned by Autodiscover service.", redirectionUri));
+                        "Invalid redirection URL '$redirectionUri' returned by Autodiscover service.");
                 }
                 catch (UriFormatException)
                 {
                     this.Service.TraceMessage(
                         TraceFlags.AutodiscoverConfiguration,
-                        string.Format("Invalid redirection location '{0}' returned by Autodiscover service.", location));
+                        "Invalid redirection location '$location' returned by Autodiscover service.");
                 }
             }
             else
@@ -413,12 +425,12 @@ import 'package:ews/misc/StringUtils.dart';
             EwsServiceXmlWriter writer)
         {
             writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-            writer.WriteAttributeValue("xmlns", EwsUtilities.AutodiscoverSoapNamespacePrefix, EwsUtilities.AutodiscoverSoapNamespace);
-            writer.WriteAttributeValue("xmlns", EwsUtilities.WSAddressingNamespacePrefix, EwsUtilities.WSAddressingNamespace);
-            writer.WriteAttributeValue("xmlns", EwsUtilities.EwsXmlSchemaInstanceNamespacePrefix, EwsUtilities.EwsXmlSchemaInstanceNamespace);
+            writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.AutodiscoverSoapNamespacePrefix, EwsUtilities.AutodiscoverSoapNamespace);
+            writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.WSAddressingNamespacePrefix, EwsUtilities.WSAddressingNamespace);
+            writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.EwsXmlSchemaInstanceNamespacePrefix, EwsUtilities.EwsXmlSchemaInstanceNamespace);
             if (writer.RequireWSSecurityUtilityNamespace)
             {
-                writer.WriteAttributeValue("xmlns", EwsUtilities.WSSecurityUtilityNamespacePrefix, EwsUtilities.WSSecurityUtilityNamespace);
+                writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.WSSecurityUtilityNamespacePrefix, EwsUtilities.WSSecurityUtilityNamespace);
             }
 
             writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
@@ -496,13 +508,15 @@ import 'package:ews/misc/StringUtils.dart';
             String contentEncoding = response.ContentEncoding;
             Stream responseStream = response.GetResponseStream();
 
-            if (contentEncoding.ToLowerInvariant().Contains("gzip"))
+            if (contentEncoding.toLowerCase().contains("gzip"))
             {
-                return new GZipStream(responseStream, CompressionMode.Decompress);
+                throw UnsupportedError("Unsupported gzip streams");
+//                return new GZipStream(responseStream, CompressionMode.Decompress);
             }
-            else if (contentEncoding.ToLowerInvariant().Contains("deflate"))
+            else if (contentEncoding.toLowerCase().contains("deflate"))
             {
-                return new DeflateStream(responseStream, CompressionMode.Decompress);
+                throw UnsupportedError("Unsupported deflate streams");
+//                return new DeflateStream(responseStream, CompressionMode.Decompress);
             }
             else
             {
@@ -535,7 +549,7 @@ import 'package:ews/misc/StringUtils.dart';
             // Is this the ServerVersionInfo?
             if (reader.IsStartElementWithNamespace(XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo))
             {
-                this.service.ServerInfo = this.ReadServerVersionInfo(reader);
+                this._service.ServerInfo = this.ReadServerVersionInfo(reader);
             }
         }
 
@@ -644,10 +658,10 @@ import 'package:ews/misc/StringUtils.dart';
         /// <summary>
         /// Gets the service.
         /// </summary>
-        AutodiscoverService get Service => this.service;
+        AutodiscoverService get Service => this._service;
 
         /// <summary>
         /// Gets the URL.
         /// </summary>
-        Uri get Url => this.url;
+        Uri get Url => this._url;
     }

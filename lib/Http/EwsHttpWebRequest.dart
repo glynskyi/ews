@@ -72,20 +72,34 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
 
   @override
   Future<StreamConsumer<List<int>>> GetRequestStream() async {
-    final user = (Credentials as WebCredentials).user;
-    String password = (Credentials as WebCredentials).pwd;
-    String auth = 'Basic ' + base64Encode(utf8.encode('$user:$password'));
+    return _InternalGetRequest();
+  }
 
-    final client = HttpClient();
-    _request = await client.postUrl(RequestUri);
-    _request.headers.add("authorization", auth);
+  Future<HttpClientRequest> _InternalGetRequest() async {
+    if (_request == null) {
+      final client = HttpClient();
+      if (Method == "POST") {
+        _request = await client.postUrl(RequestUri);
+      } else if (Method == "GET") {
+        _request = await client.getUrl(RequestUri);
+      } else {
+        throw ArgumentError.value(Method, "Method", "Unknown HTTP method");
+      }
+
+      if (Credentials != null) {
+        final user = (Credentials as WebCredentials).user;
+        String password = (Credentials as WebCredentials).pwd;
+        String auth = 'Basic ' + base64Encode(utf8.encode('$user:$password'));
+        _request.headers.add("authorization", auth);
+      }
+    }
     return _request;
   }
 
   @override
   Future<IEwsHttpWebResponse> GetResponse() async {
-
-    final HttpClientResponse response = await _request.close();
+    final request = await _InternalGetRequest();
+    final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw new WebException(WebExceptionStatus.ProtocolError, response);
