@@ -1,5 +1,5 @@
 import 'package:ews/Core/ExchangeService.dart';
-import 'package:ews/Exceptions/NotImplementedException.dart';
+import 'package:ews/Http/EwsHttpWebExceptionResponse.dart';
 import 'package:ews/Http/EwsHttpWebRequest.dart';
 import 'package:ews/Http/IEwsHttpWebRequestFactory.dart';
 import 'package:ews/Http/WebException.dart';
@@ -27,7 +27,6 @@ class EwsHttpWebRequestFactory implements IEwsHttpWebRequestFactory {
 
   @override
   IEwsHttpWebResponse CreateExceptionResponse(WebException e) {
-    // TODO: implement CreateExceptionResponse
-    return throw NotImplementedException("CreateExceptionResponse");
+    return new EwsHttpWebExceptionResponse(e);
   }
 }

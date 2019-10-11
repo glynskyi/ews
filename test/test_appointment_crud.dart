@@ -21,10 +21,10 @@ main() {
 
   test('tests an autodiscovery', () async {
     final service =
-        ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
+        ExchangeService.withVersion(ExchangeVersion.Exchange2013)
           ..Credentials = primaryUserCredential
           ..EnableScpLookup = false
-          ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse]
+          ..TraceFlags = TraceFlags.values
           ..TraceEnabled = true;
     await service.AutodiscoverUrl("qa1@shafersystems.com");
     print(service.Url);
