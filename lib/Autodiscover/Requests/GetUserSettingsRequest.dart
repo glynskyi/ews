@@ -28,30 +28,44 @@
 
 
 
-    /// <summary>
+    import 'package:ews/Autodiscover/AutodiscoverService.dart';
+import 'package:ews/Autodiscover/Requests/AutodiscoverRequest.dart';
+import 'package:ews/Autodiscover/Responses/AutodiscoverResponse.dart';
+import 'package:ews/Autodiscover/Responses/GetUserSettingsResponseCollection.dart';
+import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
+import 'package:ews/Core/EwsXmlReader.dart';
+import 'package:ews/Core/ExchangeServiceBase.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+import 'package:ews/Enumerations/UserSettingName.dart';
+import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ServiceValidationException.dart';
+import 'package:ews/misc/StringUtils.dart';
+
+/// <summary>
     /// Represents a GetUserSettings request.
     /// </summary>
-    class GetUserSettingsRequest : AutodiscoverRequest
+    class GetUserSettingsRequest extends AutodiscoverRequest
     {
         /// <summary>
         /// Action Uri of Autodiscover.GetUserSettings method.
         /// </summary>
-        /* private */ const String GetUserSettingsActionUri = EwsUtilities.AutodiscoverSoapNamespace + "/Autodiscover/GetUserSettings";
+        /* private */ static const String GetUserSettingsActionUri = EwsUtilities.AutodiscoverSoapNamespace + "/Autodiscover/GetUserSettings";
 
         /// <summary>
         /// Expect this request to return the partner token.
         /// </summary>
-        /* private */ readonly bool expectPartnerToken = false;
+        /* private */ final bool expectPartnerToken = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetUserSettingsRequest"/> class.
         /// </summary>
         /// <param name="service">Autodiscover service associated with this request.</param>
         /// <param name="url">URL of Autodiscover service.</param>
-        GetUserSettingsRequest(AutodiscoverService service, Uri url)
-            : this(service, url, false)
-        {
-        }
+//        GetUserSettingsRequest(AutodiscoverService service, Uri url)
+//            : this(service, url, false)
+//        {
+//        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetUserSettingsRequest"/> class.
@@ -59,17 +73,17 @@
         /// <param name="service">Autodiscover service associated with this request.</param>
         /// <param name="url">URL of Autodiscover service.</param>
         /// <param name="expectPartnerToken"></param>
-        GetUserSettingsRequest(AutodiscoverService service, Uri url, bool expectPartnerToken)
-            : super(service, url)
-        {
-            this.expectPartnerToken = expectPartnerToken;
-
-            // make an explicit https check.
-            if (expectPartnerToken && !url.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new ServiceValidationException(Strings.HttpsIsRequired);
-            }
-        }
+//        GetUserSettingsRequest(AutodiscoverService service, Uri url, bool expectPartnerToken)
+//            : super(service, url)
+//        {
+//            this.expectPartnerToken = expectPartnerToken;
+//
+//            // make an explicit https check.
+//            if (expectPartnerToken && !url.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+//            {
+//                throw new ServiceValidationException(Strings.HttpsIsRequired);
+//            }
+//        }
 
         /// <summary>
         /// Validates the request.
@@ -82,21 +96,21 @@
             EwsUtilities.ValidateParam(this.SmtpAddresses, "smtpAddresses");
             EwsUtilities.ValidateParam(this.Settings, "settings");
 
-            if (this.Settings.Count == 0)
+            if (this.Settings.length == 0)
             {
-                throw new ServiceValidationException(Strings.InvalidAutodiscoverSettingsCount);
+                throw new ServiceValidationException("Strings.InvalidAutodiscoverSettingsCount");
             }
 
-            if (this.SmtpAddresses.Count == 0)
+            if (this.SmtpAddresses.length == 0)
             {
-                throw new ServiceValidationException(Strings.InvalidAutodiscoverSmtpAddressesCount);
+                throw new ServiceValidationException("Strings.InvalidAutodiscoverSmtpAddressesCount");
             }
 
             for (String smtpAddress in this.SmtpAddresses)
             {
                 if (StringUtils.IsNullOrEmpty(smtpAddress))
                 {
-                    throw new ServiceValidationException(Strings.InvalidAutodiscoverSmtpAddress);
+                    throw new ServiceValidationException("Strings.InvalidAutodiscoverSmtpAddress");
                 }
             }
         }
@@ -105,9 +119,9 @@
         /// Executes this instance.
         /// </summary>
         /// <returns></returns>
-        GetUserSettingsResponseCollection Execute()
+        Future<GetUserSettingsResponseCollection> Execute() async
         {
-            GetUserSettingsResponseCollection responses = (GetUserSettingsResponseCollection)this.InternalExecute();
+            GetUserSettingsResponseCollection responses = (await this.InternalExecute()) as GetUserSettingsResponseCollection;
             if (responses.ErrorCode == AutodiscoverErrorCode.NoError)
             {
                 this.PostProcessResponses(responses);
@@ -190,7 +204,7 @@
         {
             if (this.expectPartnerToken)
             {
-                writer.WriteElementValue(
+                writer.WriteElementValueWithNamespace(
                     XmlNamespace.Autodiscover,
                     XmlElementNames.BinarySecret,
                     Convert.ToBase64String(ExchangeServiceBase.SessionKey));
@@ -214,7 +228,7 @@
 
                 if (!StringUtils.IsNullOrEmpty(smtpAddress))
                 {
-                    writer.WriteElementValue(
+                    writer.WriteElementValueWithNamespace(
                         XmlNamespace.Autodiscover,
                         XmlElementNames.Mailbox,
                         smtpAddress);
@@ -226,7 +240,7 @@
             writer.WriteStartElement(XmlNamespace.Autodiscover, XmlElementNames.RequestedSettings);
             for (UserSettingName setting in this.Settings)
             {
-                writer.WriteElementValue(
+                writer.WriteElementValueWithNamespace(
                     XmlNamespace.Autodiscover,
                     XmlElementNames.Setting,
                     setting);
@@ -244,7 +258,7 @@
 @override
         void ReadSoapHeader(EwsXmlReader reader)
         {
-            base.ReadSoapHeader(reader);
+            super.ReadSoapHeader(reader);
 
             if (this.expectPartnerToken)
             {
@@ -263,20 +277,12 @@
         /// <summary>
         /// Gets or sets the SMTP addresses.
         /// </summary>
-        List<string> SmtpAddresses
-        {
-            get;
-            set;
-        }
+        List<String> SmtpAddresses;
 
         /// <summary>
         /// Gets or sets the settings.
         /// </summary>
-        List<UserSettingName> Settings
-        {
-            get;
-            set;
-        }
+        List<UserSettingName> Settings;
 
         /// <summary>
         /// Gets the partner token.

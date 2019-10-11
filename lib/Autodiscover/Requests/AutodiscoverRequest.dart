@@ -41,8 +41,12 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/TraceFlags.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceRequestException.dart';
+import 'package:ews/Http/WebException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+import 'package:ews/Xml/XmlNodeType.dart';
+import 'package:ews/misc/SoapFaultDetails.dart';
+import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
     /// Represents the base class for all requested made to the Autodiscover service.
@@ -88,7 +92,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// Executes this instance.
         /// </summary>
         /// <returns></returns>
-        AutodiscoverResponse InternalExecute()
+        Future<AutodiscoverResponse> InternalExecute()
         {
             this.Validate();
 
@@ -170,7 +174,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 
                             AutodiscoverResponse response = this.ReadSoapBody(ewsXmlReader);
 
-                            ewsXmlReader.ReadEndElement(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
+                            ewsXmlReader.ReadEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
 
                             if (response.ErrorCode == AutodiscoverErrorCode.NoError)
                             {
@@ -463,7 +467,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         /// Write extra headers.
         /// </summary>
         /// <param name="writer">The writer</param>
-        virtual void WriteExtraCustomSoapHeadersToXml(EwsServiceXmlWriter writer)
+        void WriteExtraCustomSoapHeadersToXml(EwsServiceXmlWriter writer)
         {
             // do nothing here.
             // currently used only by GetUserSettingRequest to emit the BinarySecret header.
@@ -529,7 +533,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
         void ReadSoapHeader(EwsXmlReader reader)
         {
             // Is this the ServerVersionInfo?
-            if (reader.IsStartElement(XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo))
+            if (reader.IsStartElementWithNamespace(XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo))
             {
                 this.service.ServerInfo = this.ReadServerVersionInfo(reader);
             }

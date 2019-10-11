@@ -31,26 +31,29 @@
 
 
 
-    /// <summary>
-    /// Represents a collection of responses to GetDomainSettings
+    import 'package:ews/Autodiscover/Responses/GetUserSettingsResponse.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+
+/// <summary>
+    /// Represents a collection of responses to GetUserSettings
     /// </summary>
- class GetDomainSettingsResponseCollection extends AutodiscoverResponseCollection<GetDomainSettingsResponse>
+ class GetUserSettingsResponseCollection extends AutodiscoverResponseCollection<GetUserSettingsResponse>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AutodiscoverResponseCollection&lt;TResponse&gt;"/> class.
         /// </summary>
-        GetDomainSettingsResponseCollection()
+        GetUserSettingsResponseCollection()
         {
         }
 
         /// <summary>
         /// Create a response instance.
         /// </summary>
-        /// <returns>GetDomainSettingsResponse.</returns>
+        /// <returns>GetUserSettingsResponse.</returns>
 @override
-        GetDomainSettingsResponse CreateResponseInstance()
+        GetUserSettingsResponse CreateResponseInstance()
         {
-            return new GetDomainSettingsResponse();
+            return new GetUserSettingsResponse();
         }
 
         /// <summary>
@@ -60,7 +63,7 @@
 @override
         String GetResponseCollectionXmlElementName()
         {
-            return XmlElementNames.DomainResponses;
+            return XmlElementNames.UserResponses;
         }
 
         /// <summary>
@@ -70,6 +73,6 @@
 @override
         String GetResponseInstanceXmlElementName()
         {
-            return XmlElementNames.DomainResponse;
+            return XmlElementNames.UserResponse;
         }
     }

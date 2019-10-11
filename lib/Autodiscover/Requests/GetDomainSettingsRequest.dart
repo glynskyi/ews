@@ -31,19 +31,34 @@
 
 
 
-    /// <summary>
+    import 'package:ews/Autodiscover/Requests/AutodiscoverRequest.dart';
+import 'package:ews/Autodiscover/Responses/AutodiscoverResponse.dart';
+import 'package:ews/Autodiscover/Responses/GetDomainSettingsResponseCollection.dart';
+import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+import 'package:ews/Enumerations/AutodiscoverErrorCode.dart';
+import 'package:ews/Enumerations/DomainSettingName.dart';
+import 'package:ews/Enumerations/ExchangeVersion.dart';
+import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ServiceValidationException.dart';
+import 'package:ews/misc/StringUtils.dart';
+
+import '../AutodiscoverService.dart';
+
+/// <summary>
     /// Represents a GetDomainSettings request.
     /// </summary>
-    class GetDomainSettingsRequest : AutodiscoverRequest
+    class GetDomainSettingsRequest extends AutodiscoverRequest
     {
         /// <summary>
         /// Action Uri of Autodiscover.GetDomainSettings method.
         /// </summary>
-        /* private */ const String GetDomainSettingsActionUri = EwsUtilities.AutodiscoverSoapNamespace + "/Autodiscover/GetDomainSettings";
+        /* private */ static const String GetDomainSettingsActionUri = EwsUtilities.AutodiscoverSoapNamespace + "/Autodiscover/GetDomainSettings";
 
-        /* private */ List<string> domains;
+        /* private */ List<String> domains;
         /* private */ List<DomainSettingName> settings;
-        /* private */ ExchangeVersion? requestedVersion;
+        /* private */ ExchangeVersion requestedVersion;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetDomainSettingsRequest"/> class.
@@ -66,21 +81,21 @@
             EwsUtilities.ValidateParam(this.Domains, "domains");
             EwsUtilities.ValidateParam(this.Settings, "settings");
 
-            if (this.Settings.Count == 0)
+            if (this.Settings.length == 0)
             {
-                throw new ServiceValidationException(Strings.InvalidAutodiscoverSettingsCount);
+                throw new ServiceValidationException("Strings.InvalidAutodiscoverSettingsCount");
             }
 
-            if (domains.Count == 0)
+            if (domains.length == 0)
             {
-                throw new ServiceValidationException(Strings.InvalidAutodiscoverDomainsCount);
+                throw new ServiceValidationException("Strings.InvalidAutodiscoverDomainsCount");
             }
 
             for (String domain in this.domains)
             {
                 if (StringUtils.IsNullOrEmpty(domain))
                 {
-                    throw new ServiceValidationException(Strings.InvalidAutodiscoverDomain);
+                    throw new ServiceValidationException("Strings.InvalidAutodiscoverDomain");
                 }
             }
         }
@@ -89,9 +104,9 @@
         /// Executes this instance.
         /// </summary>
         /// <returns></returns>
-        GetDomainSettingsResponseCollection Execute()
+        Future<GetDomainSettingsResponseCollection> Execute() async
         {
-            GetDomainSettingsResponseCollection responses = (GetDomainSettingsResponseCollection)this.InternalExecute();
+            GetDomainSettingsResponseCollection responses = (await this.InternalExecute()) as GetDomainSettingsResponseCollection;
             if (responses.ErrorCode == AutodiscoverErrorCode.NoError)
             {
                 this.PostProcessResponses(responses);
@@ -159,7 +174,7 @@
 @override
         void WriteAttributesToXml(EwsServiceXmlWriter writer)
         {
-            writer.WriteAttributeValue(
+            writer.WriteAttributeValueWithPrefix(
                 "xmlns",
                 EwsUtilities.AutodiscoverSoapNamespacePrefix,
                 EwsUtilities.AutodiscoverSoapNamespace);
@@ -180,7 +195,7 @@
             {
                 if (!StringUtils.IsNullOrEmpty(domain))
                 {
-                    writer.WriteElementValue(
+                    writer.WriteElementValueWithNamespace(
                         XmlNamespace.Autodiscover,
                         XmlElementNames.Domain,
                         domain);
@@ -191,7 +206,7 @@
             writer.WriteStartElement(XmlNamespace.Autodiscover, XmlElementNames.RequestedSettings);
             for (DomainSettingName setting in settings)
             {
-                writer.WriteElementValue(
+                writer.WriteElementValueWithNamespace(
                     XmlNamespace.Autodiscover,
                     XmlElementNames.Setting,
                     setting);
@@ -199,9 +214,9 @@
 
             writer.WriteEndElement(); // RequestedSettings
 
-            if (this.requestedVersion.HasValue)
+            if (this.requestedVersion != null)
             {
-                writer.WriteElementValue(XmlNamespace.Autodiscover, XmlElementNames.RequestedVersion, this.requestedVersion.Value);
+                writer.WriteElementValueWithNamespace(XmlNamespace.Autodiscover, XmlElementNames.RequestedVersion, this.requestedVersion.Value);
             }
 
             writer.WriteEndElement(); // Request
@@ -210,27 +225,20 @@
         /// <summary>
         /// Gets or sets the domains.
         /// </summary>
-        List<string> Domains
-        {
-            get { return domains; }
-            set { domains = value; }
-        }
+    List<String> get Domains => this.domains;
+    set Domains(List<String> value) => this.domains = value;
+
 
         /// <summary>
         /// Gets or sets the settings.
         /// </summary>
-        List<DomainSettingName> Settings
-        {
-            get { return settings; }
-            set { settings = value; }
-        }
+    List<DomainSettingName> get Settings => this.settings;
+    set Settings(List<DomainSettingName> value) => this.settings = value;
+
 
         /// <summary>
         /// Gets or sets the RequestedVersion.
         /// </summary>
-        ExchangeVersion? RequestedVersion
-        {
-            get { return requestedVersion; }
-            set { requestedVersion = value; }
-        }
+      ExchangeVersion get RequestedVersion => this.requestedVersion;
+      set RequestedVersion(ExchangeVersion value) => this.requestedVersion = value;
     }

@@ -24,6 +24,7 @@
  */
 
 import 'package:ews/Autodiscover/AutodiscoverService.dart';
+import 'package:ews/Autodiscover/Responses/GetUserSettingsResponse.dart';
 import 'package:ews/ComplexProperties/Attachment.dart';
 import 'package:ews/ComplexProperties/FolderId.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
@@ -4896,7 +4897,7 @@ Future<void> AutodiscoverUrlWithCallback(String emailAddress, AutodiscoverRedire
             }
 
             // Try legacy Autodiscover provider
-            exchangeServiceUrl = this.GetAutodiscoverUrl(
+            exchangeServiceUrl = this.GetAutodiscoverUrlWithExchangeVersionAndCallback(
                 emailAddress,
                 ExchangeVersion.Exchange2007_SP1,
                 validateRedirectionUrlCallback);
@@ -4927,43 +4928,43 @@ Uri AdjustServiceUriFromCredentials(Uri uri)
   /// <param name="requestedServerVersion">Exchange version.</param>
   /// <param name="validateRedirectionUrlCallback">The validate redirection URL callback.</param>
   /// <returns>Ews URL</returns>
-//Uri GetAutodiscoverUrl(
-//            string emailAddress,
-//            ExchangeVersion requestedServerVersion,
-//            AutodiscoverRedirectionUrlValidationCallback validateRedirectionUrlCallback)
-//        {
-//            AutodiscoverService autodiscoverService = new AutodiscoverService(this, requestedServerVersion)
-//            {
-//                RedirectionUrlValidationCallback = validateRedirectionUrlCallback,
-//                EnableScpLookup = this.EnableScpLookup
-//            };
-//
-//            GetUserSettingsResponse response = autodiscoverService.GetUserSettings(
-//                emailAddress,
-//                UserSettingName.InternalEwsUrl,
-//                UserSettingName.ExternalEwsUrl);
-//
-//            switch (response.ErrorCode)
-//            {
-//                case AutodiscoverErrorCode.NoError:
-//                    return this.GetEwsUrlFromResponse(response, autodiscoverService.IsExternal.GetValueOrDefault(true));
-//
-//                case AutodiscoverErrorCode.InvalidUser:
-//                    throw new ServiceRemoteException(
-//                        string.Format(Strings.InvalidUser, emailAddress));
-//
-//                case AutodiscoverErrorCode.InvalidRequest:
-//                    throw new ServiceRemoteException(
-//                        string.Format(Strings.InvalidAutodiscoverRequest, response.ErrorMessage));
-//
-//                default:
-//                    this.TraceMessage(
-//                        TraceFlags.AutodiscoverConfiguration,
-//                        string.Format("No EWS Url returned for user {0}, error code is {1}", emailAddress, response.ErrorCode));
-//
-//                    throw new ServiceRemoteException(response.ErrorMessage);
-//            }
-//        }
+Uri GetAutodiscoverUrlWithExchangeVersionAndCallback(
+            String emailAddress,
+            ExchangeVersion requestedServerVersion,
+            AutodiscoverRedirectionUrlValidationCallback validateRedirectionUrlCallback)
+        {
+            AutodiscoverService autodiscoverService = new AutodiscoverService(this, requestedServerVersion)
+            {
+                RedirectionUrlValidationCallback = validateRedirectionUrlCallback,
+                EnableScpLookup = this.EnableScpLookup
+            };
+
+            GetUserSettingsResponse response = autodiscoverService.GetUserSettings(
+                emailAddress,
+                UserSettingName.InternalEwsUrl,
+                UserSettingName.ExternalEwsUrl);
+
+            switch (response.ErrorCode)
+            {
+                case AutodiscoverErrorCode.NoError:
+                    return this.GetEwsUrlFromResponse(response, autodiscoverService.IsExternal.GetValueOrDefault(true));
+
+                case AutodiscoverErrorCode.InvalidUser:
+                    throw new ServiceRemoteException(
+                        string.Format(Strings.InvalidUser, emailAddress));
+
+                case AutodiscoverErrorCode.InvalidRequest:
+                    throw new ServiceRemoteException(
+                        string.Format(Strings.InvalidAutodiscoverRequest, response.ErrorMessage));
+
+                default:
+                    this.TraceMessage(
+                        TraceFlags.AutodiscoverConfiguration,
+                        string.Format("No EWS Url returned for user {0}, error code is {1}", emailAddress, response.ErrorCode));
+
+                    throw new ServiceRemoteException(response.ErrorMessage);
+            }
+        }
 
   /// <summary>
   /// Gets the EWS URL from Autodiscover GetUserSettings response.
