@@ -72,6 +72,7 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 import 'package:ews/Enumerations/StandardUser.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TaskStatus.dart';
+import 'package:ews/Enumerations/UserSettingName.dart';
 import 'package:ews/Enumerations/ViewFilter.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
@@ -559,7 +560,7 @@ typedef R Converter<T,R>(T);
           //todo("correct FormatLogMessage");
           print("correct FormatLogMessage");
 
-          return "$entryKind\n$logEntry";
+          return "$entryKind => $logEntry";
 //            StringBuffer sb = new StringBuffer();
 //            using (StringWriter writer = new StringWriter(sb))
 //            {
@@ -888,7 +889,8 @@ typedef R Converter<T,R>(T);
         ComparisonMode,
         EmailAddressKey,
         PhoneNumberKey,
-        PhysicalAddressKey
+        PhysicalAddressKey,
+        UserSettingName,
       ];
 
 

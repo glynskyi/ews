@@ -30,15 +30,21 @@ class EwsHttpWebExceptionResponse implements IEwsHttpWebResponse {
   }
 
   @override
-  WebHeaderCollection get Headers => throw NotImplementedException();
+  WebHeaderCollection get Headers {
+    final headerCollection = WebHeaderCollection();
+    _webException.Response.headers.forEach((headerName, headerValue) {
+      headerCollection[headerName] = headerValue.join(";");
+    });
+    return headerCollection;
+  }
 
   @override
-  Uri get ResponseUri => throw NotImplementedException();
+  Uri get ResponseUri => _webException.Request.uri;
 
   @override
   int get StatusCode => _webException.Response.statusCode;
 
   @override
-  String get StatusDescription => throw NotImplementedException();
+  String get StatusDescription => _webException.Response.reasonPhrase;
 
 }

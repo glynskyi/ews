@@ -4,12 +4,12 @@ class WebHeaderCollection {
   List<String> get AllKeys => _headers.keys.toList();
 
   void Set(String headerName, String headerValue) {
-    _headers[headerName] = headerValue;
+    _headers[headerName.toLowerCase()] = headerValue;
   }
 
-  void Add(String headerName, String headerValue) => _headers[headerName] = headerValue;
+  void Add(String headerName, String headerValue) => _headers[headerName.toLowerCase()] = headerValue;
 
-  String operator[](String headerName) => _headers[headerName];
+  String operator[](String headerName) => _headers[headerName.toLowerCase()];
 
-  operator[]=(String headerName, String headerValue) => _headers[headerName] = headerValue;
+  operator[]=(String headerName, String headerValue) => _headers[headerName.toLowerCase()] = headerValue;
 }

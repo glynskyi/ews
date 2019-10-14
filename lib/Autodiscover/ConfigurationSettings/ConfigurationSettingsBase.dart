@@ -35,7 +35,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the base class for configuration settings.
 /// </summary>
 abstract class ConfigurationSettingsBase {
-  /* private */ AutodiscoverError error;
+  AutodiscoverError _error;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ConfigurationSettingsBase"/> class.
@@ -49,7 +49,7 @@ abstract class ConfigurationSettingsBase {
   /// <returns>True is the current element was read, false otherwise.</returns>
   bool TryReadCurrentXmlElement(EwsXmlReader reader) {
     if (reader.LocalName == XmlElementNames.Error) {
-      this.error = AutodiscoverError.Parse(reader);
+      this._error = AutodiscoverError.Parse(reader);
 
       return true;
     } else {
@@ -119,5 +119,5 @@ abstract class ConfigurationSettingsBase {
   /// Gets the error.
   /// </summary>
   /// <value>The error.</value>
-  AutodiscoverError get Error => this.error;
+  AutodiscoverError get Error => this._error;
 }

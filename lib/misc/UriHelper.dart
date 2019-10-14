@@ -1,10 +1,13 @@
 abstract class UriHelper {
-  static Uri concat(Uri base, Uri relative) {
-    String baseUri = base.toString();
-    String relativeUri = relative.toString();
-    if (baseUri.endsWith("/")) {
-      baseUri.substring(0, baseUri.length - 2);
+  static Uri concat(Uri base, String relative) {
+    Uri relativeUri = Uri.parse(relative);
+    if (relativeUri.isAbsolute) {
+      return relativeUri;
+    } else {
+      return relativeUri.replace(scheme: base.scheme,
+          userInfo: base.userInfo,
+          host: base.host,
+          port: base.port);
     }
-    return Uri.parse(baseUri + relativeUri);
   }
 }

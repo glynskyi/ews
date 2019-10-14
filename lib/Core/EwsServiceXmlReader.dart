@@ -24,6 +24,7 @@
  */
 
 import 'package:ews/Core/EwsUtilities.dart';
+import 'package:ews/Core/ExchangeServiceBase.dart';
 import 'package:ews/Core/Responses/IGetObjectInstanceDelegate.dart';
 import 'package:ews/Core/ServiceObjects/ServiceObject.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
@@ -39,19 +40,19 @@ import 'PropertySet.dart';
     /// </summary>
     class EwsServiceXmlReader extends EwsXmlReader
     {
-       /* private */ ExchangeService service;
+        ExchangeServiceBase _service;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EwsServiceXmlReader"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="service">The service.</param>
-        EwsServiceXmlReader(XmlReader xmlReader, ExchangeService service): super(xmlReader)
+        EwsServiceXmlReader(XmlReader xmlReader, ExchangeServiceBase service): super(xmlReader)
         {
-         this.service = service;
+         this._service = service;
         }
 
-        static Future<EwsServiceXmlReader> Create(Stream<List<int>> stream, ExchangeService service) async {
+        static Future<EwsServiceXmlReader> Create(Stream<List<int>> stream, ExchangeServiceBase service) async {
           final xmlReader = await XmlReader.Create(stream);
           return EwsServiceXmlReader(xmlReader, service);
         }
@@ -210,6 +211,6 @@ import 'PropertySet.dart';
         /// Gets the service.
         /// </summary>
         /// <value>The service.</value>
- ExchangeService get Service => this.service;
+ ExchangeService get Service => this._service;
 
     }

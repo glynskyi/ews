@@ -85,6 +85,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
       } else {
         throw ArgumentError.value(Method, "Method", "Unknown HTTP method");
       }
+      _request.followRedirects = AllowAutoRedirect;
 
       if (Credentials != null) {
         final user = (Credentials as WebCredentials).user;
@@ -102,7 +103,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(WebExceptionStatus.ProtocolError, response);
+      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }

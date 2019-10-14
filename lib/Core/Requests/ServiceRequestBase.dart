@@ -51,6 +51,7 @@ import 'package:ews/Http/WebExceptionStatus.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+import 'package:ews/misc/HttpStatusCode.dart';
 import 'package:ews/misc/Std/MemoryStream.dart';
 import 'package:ews/Xml/XmlException.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
@@ -732,9 +733,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
             {
                 if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                 {
-                    // todo("implement ProcessWebException");
-                    print("implement ProcessWebException");
-//                    this.ProcessWebException(ex);
+                    await this.ProcessWebException(ex);
                 }
 
                 // Wrap exception if the above code block didn't throw
@@ -817,90 +816,90 @@ import 'package:ews/misc/Std/EnumToString.dart';
         /// Processes the web exception.
         /// </summary>
         /// <param name="webException">The web exception.</param>
-//        /* private */ void ProcessWebException(WebException webException)
-//        {
-//            if (webException.Response != null)
-//            {
-//                IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(webException);
-//                SoapFaultDetails soapFaultDetails = null;
-//
-//                if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError)
-//                {
-//                    this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, httpWebResponse);
-//
-//                    // If tracing is enabled, we read the entire response into a MemoryStream so that we
-//                    // can pass it along to the ITraceListener. Then we parse the response from the
-//                    // MemoryStream.
-//                    if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse))
-//                    {
-//
-//                        {
-//
-//                            {
-//                                // Copy response to in-memory stream and reset position to start.
-//                                EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
-//                                memoryStream.Position = 0;
-//                            }
-//
-//                            this.TraceResponseXml(httpWebResponse, memoryStream);
-//
-//                            EwsServiceXmlReader reader = new EwsServiceXmlReader(memoryStream, this.Service);
-//                            soapFaultDetails = this.ReadSoapFault(reader);
-//                        }
-//                    }
-//                    else
-//                    {
-//
-//                        {
-//                            EwsServiceXmlReader reader = new EwsServiceXmlReader(stream, this.Service);
-//                            soapFaultDetails = this.ReadSoapFault(reader);
-//                        }
-//                    }
-//
-//                    if (soapFaultDetails != null)
-//                    {
-//                        switch (soapFaultDetails.ResponseCode)
-//                        {
-//                            case ServiceError.ErrorInvalidServerVersion:
-//                                throw new ServiceVersionException("Strings.ServerVersionNotSupported");
-//
-//                            case ServiceError.ErrorSchemaValidation:
-//                                // If we're talking to an E12 server (8.00.xxxx.xxx), a schema validation error is the same as a version mismatch error.
-//                                // (Which only will happen if we send a request that's not valid for E12).
-//                                if ((this.Service.ServerInfo != null) &&
-//                                    (this.Service.ServerInfo.MajorVersion == 8) && (this.Service.ServerInfo.MinorVersion == 0))
-//                                {
-//                                    throw new ServiceVersionException("Strings.ServerVersionNotSupported");
-//                                }
-//
-//                                break;
-//
-//                            case ServiceError.ErrorIncorrectSchemaVersion:
-//                                // This shouldn't happen. It indicates that a request wasn't valid for the version that was specified.
-////                                EwsUtilities.Assert(
-////                                    false,
-////                                    "ServiceRequestBase.ProcessWebException",
-////                                    "Exchange server supports requested version but request was invalid for that version");
-//                                break;
-//
-//                            case ServiceError.ErrorServerBusy:
-//                                throw new ServerBusyException(new ServiceResponse.withSoapFault(soapFaultDetails));
-//
-//                            default:
-//                                // Other error codes will be reported as remote error
-//                                break;
-//                        }
-//
-//                        // General fall-through case: throw a ServiceResponseException
-//                        throw new ServiceResponseException(new ServiceResponse.withSoapFault(soapFaultDetails));
-//                    }
-//                }
-//                else
-//                {
-//                    this.Service.ProcessHttpErrorResponse(httpWebResponse, webException);
-//                }
-//            }
-//        }
+        /* private */ Future<void> ProcessWebException(WebException webException) async
+        {
+            if (webException.Response != null)
+            {
+                IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(webException);
+                SoapFaultDetails soapFaultDetails = null;
+
+                if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, httpWebResponse);
+
+                    // If tracing is enabled, we read the entire response into a MemoryStream so that we
+                    // can pass it along to the ITraceListener. Then we parse the response from the
+                    // MemoryStream.
+                    if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse))
+                    {
+                        MemoryStream memoryStream = new MemoryStream();
+                            Stream serviceResponseStream = ServiceRequestBase.GetResponseStream(httpWebResponse);
+
+                                // Copy response to in-memory stream and reset position to start.
+                                await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
+                                memoryStream.Position = 0;
+
+//                            await serviceResponseStream.close();
+
+                            this.TraceResponseXml(httpWebResponse, memoryStream);
+
+                            EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(memoryStream, this.Service);
+                            soapFaultDetails = this.ReadSoapFault(reader);
+                        await memoryStream.close();
+                    }
+                    else
+                    {
+                        Stream stream = ServiceRequestBase.GetResponseStream(httpWebResponse);
+
+                            EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(stream, this.Service);
+                            soapFaultDetails = this.ReadSoapFault(reader);
+//                        await stream.close();
+                    }
+
+                    if (soapFaultDetails != null)
+                    {
+                        switch (soapFaultDetails.ResponseCode)
+                        {
+                            case ServiceError.ErrorInvalidServerVersion:
+                                throw new ServiceVersionException("Strings.ServerVersionNotSupported");
+
+                            case ServiceError.ErrorSchemaValidation:
+                                // If we're talking to an E12 server (8.00.xxxx.xxx), a schema validation error is the same as a version mismatch error.
+                                // (Which only will happen if we send a request that's not valid for E12).
+                                if ((this.Service.ServerInfo != null) &&
+                                    (this.Service.ServerInfo.MajorVersion == 8) && (this.Service.ServerInfo.MinorVersion == 0))
+                                {
+                                    throw new ServiceVersionException("Strings.ServerVersionNotSupported");
+                                }
+
+                                break;
+
+                            case ServiceError.ErrorIncorrectSchemaVersion:
+                                // This shouldn't happen. It indicates that a request wasn't valid for the version that was specified.
+//                                EwsUtilities.Assert(
+//                                    false,
+//                                    "ServiceRequestBase.ProcessWebException",
+//                                    "Exchange server supports requested version but request was invalid for that version");
+                                break;
+
+                            case ServiceError.ErrorServerBusy:
+                                throw new ServerBusyException(new ServiceResponse.withSoapFault(soapFaultDetails));
+
+                            default:
+                                // Other error codes will be reported as remote error
+                                break;
+                        }
+
+                        // General fall-through case: throw a ServiceResponseException
+                        throw new ServiceResponseException(new ServiceResponse.withSoapFault(soapFaultDetails));
+                    }
+                }
+                else
+                {
+                    this.Service.ProcessHttpErrorResponse(httpWebResponse, webException);
+                }
+            }
+        }
 
         /// <summary>
         /// Traces an XML request.  This should only be used for synchronous requests, or synchronous situations

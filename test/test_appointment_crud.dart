@@ -26,7 +26,7 @@ main() {
           ..EnableScpLookup = false
           ..TraceFlags = TraceFlags.values
           ..TraceEnabled = true;
-    await service.AutodiscoverUrl("qa1@shafersystems.com");
+    await service.GetAutodiscoverUrlWithExchangeVersionAndCallback("qa1@shafersystems.com", ExchangeVersion.Exchange2013_SP1, (url) => true);
     print(service.Url);
   });
 }
