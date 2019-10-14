@@ -172,7 +172,7 @@ import 'package:ews/misc/UriHelper.dart';
                         MemoryStream memoryStream2 = new MemoryStream();
 
                             // Copy response stream to in-memory stream and reset to start
-                            EwsUtilities.CopyStream(responseStream, memoryStream2);
+                            await EwsUtilities.CopyStream(responseStream, memoryStream2);
                             memoryStream2.Position = 0;
 
                             this.Service.TraceResponse(webResponse, memoryStream2);
@@ -516,7 +516,8 @@ import 'package:ews/misc/UriHelper.dart';
 
             if (contentEncoding.toLowerCase().contains("gzip"))
             {
-                throw UnsupportedError("Unsupported gzip streams");
+                return responseStream;
+//                return responseStream.transform(gzip.decoder);
 //                return new GZipStream(responseStream, CompressionMode.Decompress);
             }
             else if (contentEncoding.toLowerCase().contains("deflate"))

@@ -91,7 +91,14 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
         final user = (Credentials as WebCredentials).user;
         String password = (Credentials as WebCredentials).pwd;
         String auth = 'Basic ' + base64Encode(utf8.encode('$user:$password'));
-        _request.headers.add("authorization", auth);
+        _request.headers.add("Authorization", auth);
+      }
+
+      if (this.Accept != null) {
+        _request.headers.add("Accept", this.Accept);
+      }
+      if (this.ContentType != null) {
+        _request.headers.add("Content-Type", this.ContentType);
       }
     }
     return _request;

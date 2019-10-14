@@ -21,12 +21,12 @@ main() {
 
   test('tests an autodiscovery', () async {
     final service =
-        ExchangeService.withVersion(ExchangeVersion.Exchange2013)
+        ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
           ..Credentials = primaryUserCredential
           ..EnableScpLookup = false
           ..TraceFlags = TraceFlags.values
           ..TraceEnabled = true;
-    await service.GetAutodiscoverUrlWithExchangeVersionAndCallback("qa1@shafersystems.com", ExchangeVersion.Exchange2013_SP1, (url) => true);
+    await service.GetAutodiscoverUrlWithExchangeVersionAndCallback("qa1@shafersystems.com", ExchangeVersion.Exchange2007_SP1, (url) => true);
     print(service.Url);
   });
 }
