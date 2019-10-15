@@ -891,6 +891,7 @@ typedef R Converter<T,R>(T);
         PhoneNumberKey,
         PhysicalAddressKey,
         UserSettingName,
+        ExchangeVersion
       ];
 
 

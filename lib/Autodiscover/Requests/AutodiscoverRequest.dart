@@ -449,7 +449,7 @@ import 'package:ews/misc/UriHelper.dart';
             writer.WriteElementValueWithNamespace(
                 XmlNamespace.Autodiscover,
                 XmlElementNames.RequestedServerVersion,
-                this.Service.RequestedServerVersion.toString());
+                this.Service.RequestedServerVersion);
 
             writer.WriteElementValueWithNamespace(
                 XmlNamespace.WSAddressing,
