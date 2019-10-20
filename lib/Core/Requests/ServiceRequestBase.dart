@@ -26,7 +26,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
