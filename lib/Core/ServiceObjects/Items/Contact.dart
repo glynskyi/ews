@@ -31,6 +31,7 @@ import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/EmailAddressDictionary.dart';
 import 'package:ews/ComplexProperties/FileAttachment.dart';
+import 'package:ews/ComplexProperties/ImAddressDictionary.dart';
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
 import 'package:ews/ComplexProperties/PhoneNumberDictionary.dart';
@@ -304,13 +305,15 @@ class Contact extends Item {
   /// Gets an indexed list of physical addresses for the contact. For example, to set the business address,
   /// use the following syntax: PhysicalAddresses[PhysicalAddressKey.Business] = new PhysicalAddressEntry()
   /// </summary>
-  PhysicalAddressDictionary get PhysicalAddresses => this.PropertyBag[ContactSchema.PhysicalAddresses];
+  PhysicalAddressDictionary get PhysicalAddresses =>
+      this.PropertyBag[ContactSchema.PhysicalAddresses];
 
   /// <summary>
   /// Gets an indexed list of phone numbers for the contact. For example, to set the home phone number,
   /// use the following syntax: PhoneNumbers[PhoneNumberKey.HomePhone] = "phone number"
   /// </summary>
-  PhoneNumberDictionary get PhoneNumbers => this.PropertyBag[ContactSchema.PhoneNumbers];
+  PhoneNumberDictionary get PhoneNumbers =>
+      this.PropertyBag[ContactSchema.PhoneNumbers];
 
   /// <summary>
   /// Gets or sets the contact's assistant name.
@@ -379,7 +382,8 @@ class Contact extends Item {
   /// Gets an indexed list of Instant Messaging addresses for the contact. For example, to set the first
   /// IM address, use the following syntax: ImAddresses[ImAddressKey.ImAddress1] = "john.doe@contoso.com"
   /// </summary>
-//        ImAddressDictionary get ImAddresses => this.PropertyBag[ContactSchema.ImAddresses];
+  ImAddressDictionary get ImAddresses =>
+      this.PropertyBag[ContactSchema.ImAddresses];
 
   /// <summary>
   /// Gets or sets the contact's job title.

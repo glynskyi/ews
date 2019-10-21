@@ -27,6 +27,7 @@ import 'package:ews/ComplexProperties/CompleteName.dart' as complex;
 import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/EmailAddressDictionary.dart';
+import 'package:ews/ComplexProperties/ImAddressDictionary.dart';
 import 'package:ews/ComplexProperties/PhoneNumberDictionary.dart';
 import 'package:ews/ComplexProperties/PhysicalAddressDictionary.dart';
 import 'package:ews/ComplexProperties/StringList.dart';
@@ -404,13 +405,18 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the ImAddresses property.
   /// </summary>
-// static PropertyDefinition ImAddresses =
-//            new ComplexPropertyDefinition<ImAddressDictionary>(
-//                XmlElementNames.ImAddresses,
-//                ContactSchemaFieldUris.ImAddresses,
-//                [PropertyDefinitionFlags.AutoInstantiateOnRead, PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate],
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new ImAddressDictionary(); });
+  static PropertyDefinition ImAddresses =
+      new ComplexPropertyDefinition<ImAddressDictionary>.withUriAndFlags(
+          XmlElementNames.ImAddresses,
+          _ContactSchemaFieldUris.ImAddresses,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new ImAddressDictionary();
+  });
 
   /// <summary>
   /// Defines the JobTitle property.
@@ -952,7 +958,7 @@ class ContactSchema extends ItemSchema {
     this.RegisterProperty(ContactSource);
     this.RegisterProperty(Department);
     this.RegisterProperty(Generation);
-//    this.RegisterProperty(ImAddresses);
+    this.RegisterProperty(ImAddresses);
     this.RegisterProperty(JobTitle);
     this.RegisterProperty(Manager);
     this.RegisterProperty(Mileage);

@@ -1,11 +1,19 @@
+## 
+
+* Removed `DIO` from dependencies
+* Added `ImAddress` to `Contact`
+
 ## 0.0.11
+
 * Added `PhoneNumber` to `Contact`
 * Added `PhysicalAddress` to `Contact`
 
 ## 0.0.10
+
 * Added `EmailAddress` to `Contact`
 
 ## 0.0.9
+
 * Fixed the equals operators
 * Added the `ResolveName` function
 * Added the `FindItems` function

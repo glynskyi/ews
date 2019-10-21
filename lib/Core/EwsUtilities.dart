@@ -25,7 +25,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:core' as prefix0;
 import 'dart:core';
 
 import 'package:ews/Attributes/EwsEnumAttribute.dart';
@@ -853,6 +852,7 @@ typedef R Converter<T,R>(T);
           EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
           PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
           PhysicalAddressKey: (stringValue) => EnumToString.fromString(PhysicalAddressKey.values, stringValue),
+          ImAddressKey: (stringValue) => EnumToString.fromString(ImAddressKey.values, stringValue),
       };
 
         static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
@@ -888,7 +888,8 @@ typedef R Converter<T,R>(T);
         ComparisonMode,
         EmailAddressKey,
         PhoneNumberKey,
-        PhysicalAddressKey
+        PhysicalAddressKey,
+        ImAddressKey
       ];
 
 
@@ -3132,7 +3133,7 @@ typedef R Converter<T,R>(T);
         {
             if (param == null)
             {
-                throw new prefix0.ArgumentError.notNull(paramName);
+                throw ArgumentError.notNull(paramName);
             }
 
             ValidateNonBlankStringParamAllowNull(param, paramName);
