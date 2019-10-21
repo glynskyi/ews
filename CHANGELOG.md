@@ -1,4 +1,4 @@
-## 
+## 0.0.12
 
 * Removed `DIO` from dependencies
 * Added `ImAddress` to `Contact`
