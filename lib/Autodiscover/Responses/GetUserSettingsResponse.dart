@@ -172,7 +172,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
             name = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Value:
-            value = reader.ReadElementValue();
+            value = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.WebClientUrls:
             value = WebClientUrlCollection.LoadFromXml(reader);

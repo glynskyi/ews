@@ -18,15 +18,4 @@ main() {
         SendInvitationsMode.SendToNone);
     await appointment.Delete(DeleteMode.HardDelete);
   });
-
-  test('tests an autodiscovery', () async {
-    final service =
-        ExchangeService.withVersion(ExchangeVersion.Exchange2007_SP1)
-          ..Credentials = primaryUserCredential
-          ..EnableScpLookup = false
-          ..TraceFlags = TraceFlags.values
-          ..TraceEnabled = true;
-    await service.GetAutodiscoverUrlWithExchangeVersionAndCallback("qa1@shafersystems.com", ExchangeVersion.Exchange2007_SP1, (url) => true);
-    print(service.Url);
-  });
 }

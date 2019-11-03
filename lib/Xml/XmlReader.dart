@@ -50,7 +50,8 @@ class XmlReader {
         // TODO: Handle this case.
         break;
     }
-    throw NotImplementedException("Can't convert NodeType of ${events.current}");
+    throw NotImplementedException(
+        "Can't convert NodeType of ${events.current}");
   }
 
   String get Name {
@@ -64,7 +65,7 @@ class XmlReader {
     }
   }
 
-  get NamespaceURI => namespaces[Prefix];
+  get NamespaceURI => namespaces[Prefix ?? "xmlns"];
 
   get Prefix {
     XmlEvent event = events.current;
@@ -83,6 +84,8 @@ class XmlReader {
       return event.localName;
     } else if (event is XmlEndElementEvent) {
       return event.localName;
+    } else if (event is XmlTextEvent) {
+      return "#text";
     } else {
       throw StateError("Can't retrieve LocalName for $event");
     }
@@ -105,7 +108,8 @@ class XmlReader {
       if (events.current is XmlStartElementEvent) {
         final attributes = (events.current as XmlStartElementEvent)
             .attributes
-            .where((attr) => attr.namespacePrefix == "xmlns")
+            .where((attr) =>
+                attr.namespacePrefix == "xmlns" || attr.name == "xmlns")
             .toList();
         attributes.forEach((attr) {
           namespaces[attr.localName] = attr.value;
@@ -119,12 +123,23 @@ class XmlReader {
   String GetAttribute(String attributeName) {
     return (events.current as XmlStartElementEvent)
         .attributes
-        .firstWhere((attr) => attr.localName == attributeName, orElse: () => null)
+        .firstWhere((attr) => attr.localName == attributeName,
+            orElse: () => null)
         ?.value;
   }
 
   String GetAttributeWithNamespace(String attributeName, String namespace) {
-    throw NotImplementedException("GetAttributeWithNamespace($attributeName, $namespace)");
+    var namespacePrefix = namespaces.keys.firstWhere(
+        (prefix) => namespaces[prefix] == namespace,
+        orElse: () => null);
+    return (events.current as XmlStartElementEvent)
+        .attributes
+        .firstWhere(
+            (attr) =>
+                attr.localName == attributeName &&
+                attr.namespacePrefix == namespacePrefix,
+            orElse: () => null)
+        ?.value;
   }
 
   String ReadString() {
@@ -153,7 +168,8 @@ class XmlReader {
   }
 
   void ReadToDescendant(String localName, String getNamespaceUri) {
-    throw NotImplementedException("ReadToDescendant($localName, $getNamespaceUri)");
+    throw NotImplementedException(
+        "ReadToDescendant($localName, $getNamespaceUri)");
   }
 
   static Future<XmlReader> Create(Stream<List<int>> inputStream) async {

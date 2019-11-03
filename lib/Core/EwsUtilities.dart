@@ -854,6 +854,8 @@ typedef R Converter<T,R>(T);
           EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
           PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
           PhysicalAddressKey: (stringValue) => EnumToString.fromString(PhysicalAddressKey.values, stringValue),
+          AutodiscoverErrorCode: (stringValue) => EnumToString.fromString(AutodiscoverErrorCode.values, stringValue),
+          UserSettingName: (stringValue) => EnumToString.fromString(UserSettingName.values, stringValue),
       };
 
         static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
