@@ -23,37 +23,44 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Exceptions/ServiceLocalException.dart';
+
 /// <summary>
-/// Represents an error that occurs when a service operation fails locally (e.g. validation error).
+/// Represents an exception that is thrown when the Autodiscover service could not be contacted.
 /// </summary>
 //    [Serializable]
-class ServiceLocalException implements Exception {
-  final String message;
+class AutodiscoverLocalException extends ServiceLocalException {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AutodiscoverLocalException"/> class.
+  /// </summary>
+// AutodiscoverLocalException()
+//            : super()
+//        {
+//        }
 
   /// <summary>
-  /// ServiceLocalException Constructor.
+  /// Initializes a new instance of the <see cref="AutodiscoverLocalException"/> class.
   /// </summary>
-  /// <param name="message">Error message text.</param>
-  ServiceLocalException([this.message = ""]) : super();
-
-  @override
-  String toString() {
-    return 'ServiceLocalException{message: $message}';
-  }
-
-
-/// <summary>
-  /// ServiceLocalException Constructor.
-  /// </summary>
-  /// <param name="message">Error message text.</param>
-  /// <param name="innerException">Inner exception.</param>
-//  ServiceLocalException(String message, Exception innerException)
-//      : super(message, innerException);
+  /// <param name="message">The message.</param>
+  AutodiscoverLocalException([String message = ""]) : super(message) {}
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceLocalException"/> class with serialized data.
+  /// Initializes a new instance of the <see cref="AutodiscoverLocalException"/> class.
+  /// </summary>
+  /// <param name="message">The message.</param>
+  /// <param name="innerException">The inner exception.</param>
+// AutodiscoverLocalException.withMessageAndInnerException(String message, Exception innerException)
+//            : super.(message, innerException)
+//        {
+//		}
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.AutodiscoverLocalException"/> class with serialized data.
   /// </summary>
   /// <param name="info">The object that holds the serialized object data.</param>
   /// <param name="context">The contextual information about the source or destination.</param>
-// ServiceLocalException(SerializationInfo info, StreamingContext context) : super(info, context);
+//		protected AutodiscoverLocalException(SerializationInfo info, StreamingContext context)
+//			: super(info, context)
+//		{
+//		}
 }

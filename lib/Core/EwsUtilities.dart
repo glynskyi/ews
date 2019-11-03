@@ -71,6 +71,7 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 import 'package:ews/Enumerations/StandardUser.dart';
 import 'package:ews/Enumerations/SyncFolderItemsScope.dart';
 import 'package:ews/Enumerations/TaskStatus.dart';
+import 'package:ews/Enumerations/UserSettingName.dart';
 import 'package:ews/Enumerations/ViewFilter.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
@@ -558,7 +559,7 @@ typedef R Converter<T,R>(T);
           //todo("correct FormatLogMessage");
           print("correct FormatLogMessage");
 
-          return "$entryKind\n$logEntry";
+          return "$entryKind => $logEntry";
 //            StringBuffer sb = new StringBuffer();
 //            using (StringWriter writer = new StringWriter(sb))
 //            {
@@ -853,6 +854,8 @@ typedef R Converter<T,R>(T);
           PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
           PhysicalAddressKey: (stringValue) => EnumToString.fromString(PhysicalAddressKey.values, stringValue),
           ImAddressKey: (stringValue) => EnumToString.fromString(ImAddressKey.values, stringValue),
+          AutodiscoverErrorCode: (stringValue) => EnumToString.fromString(AutodiscoverErrorCode.values, stringValue),
+          UserSettingName: (stringValue) => EnumToString.fromString(UserSettingName.values, stringValue),
       };
 
         static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
@@ -890,6 +893,8 @@ typedef R Converter<T,R>(T);
         PhoneNumberKey,
         PhysicalAddressKey,
         ImAddressKey
+        UserSettingName,
+        ExchangeVersion
       ];
 
 
@@ -1920,11 +1925,11 @@ typedef R Converter<T,R>(T);
 //        const String AutodiscoverSoapNamespace = "http://schemas.microsoft.com/exchange/2010/Autodiscover";
 //        const String WSSecurityUtilityNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
 //        const String WSSecuritySecExtNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
-//
-//        /// <summary>
-//        /// Regular expression for legal domain names.
-//        /// </summary>
-//        const String DomainRegex = "^[-a-zA-Z0-9_.]+$";
+
+        /// <summary>
+        /// Regular expression for legal domain names.
+        /// </summary>
+        static const String DomainRegex = "^[-a-zA-Z0-9_.]+\$";
 //        #endregion
 
         /// <summary>
@@ -2987,24 +2992,24 @@ typedef R Converter<T,R>(T);
 //        #endregion
 //
 //        #region EmailAddress parsing
-//
-//        /// <summary>
-//        /// Gets the domain name from an email address.
-//        /// </summary>
-//        /// <param name="emailAddress">The email address.</param>
-//        /// <returns>Domain name.</returns>
-//        static String DomainFromEmailAddress(String emailAddress)
-//        {
-//            string[] emailAddressParts = emailAddress.Split('@');
-//
-//            if (emailAddressParts.Length != 2 || StringUtils.IsNullOrEmpty(emailAddressParts[1]))
-//            {
-//                throw new FormatException(Strings.InvalidEmailAddress);
-//            }
-//
-//            return emailAddressParts[1];
-//        }
-//
+
+        /// <summary>
+        /// Gets the domain name from an email address.
+        /// </summary>
+        /// <param name="emailAddress">The email address.</param>
+        /// <returns>Domain name.</returns>
+        static String DomainFromEmailAddress(String emailAddress)
+        {
+            List<String> emailAddressParts = emailAddress.split('@');
+
+            if (emailAddressParts.length != 2 || StringUtils.IsNullOrEmpty(emailAddressParts[1]))
+            {
+                throw new FormatException("Strings.InvalidEmailAddress");
+            }
+
+            return emailAddressParts[1];
+        }
+
 //        #endregion
 //
 //        #region Method parameters validation routines
@@ -3246,24 +3251,24 @@ typedef R Converter<T,R>(T);
             }
         }
 
-//        /// <summary>
-//        /// Validates domain name (null value allowed)
-//        /// </summary>
-//        /// <param name="domainName">Domain name.</param>
-//        /// <param name="paramName">Parameter name.</param>
-//        static void ValidateDomainNameAllowNull(String domainName, String paramName)
-//        {
-//            if (domainName != null)
-//            {
-//                Regex regex = new Regex(DomainRegex);
-//
-//                if (!regex.IsMatch(domainName))
-//                {
-//                    throw new ArgumentError(string.Format(Strings.InvalidDomainName, domainName), paramName);
-//                }
-//            }
-//        }
-//
+        /// <summary>
+        /// Validates domain name (null value allowed)
+        /// </summary>
+        /// <param name="domainName">Domain name.</param>
+        /// <param name="paramName">Parameter name.</param>
+        static void ValidateDomainNameAllowNull(String domainName, String paramName)
+        {
+            if (domainName != null)
+            {
+                RegExp regex = new RegExp(DomainRegex);
+
+                if (!regex.hasMatch(domainName))
+                {
+                    throw new ArgumentError.value(domainName, paramName, "string.Format(Strings.InvalidDomainName, $domainName)");
+                }
+            }
+        }
+
 //        /// <summary>
 //        /// Gets version for enum member.
 //        /// </summary>

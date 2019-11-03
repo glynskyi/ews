@@ -23,37 +23,48 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Core/EwsXmlReader.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Xml/XmlNodeType.dart';
+
+import 'WebClientUrl.dart';
+
 /// <summary>
-/// Represents an error that occurs when a service operation fails locally (e.g. validation error).
+/// Represents a user setting that is a collection of Exchange web client URLs.
 /// </summary>
-//    [Serializable]
-class ServiceLocalException implements Exception {
-  final String message;
+class WebClientUrlCollection {
+  List<WebClientUrl> _urls;
 
   /// <summary>
-  /// ServiceLocalException Constructor.
+  /// Initializes a new instance of the <see cref="WebClientUrlCollection"/> class.
   /// </summary>
-  /// <param name="message">Error message text.</param>
-  ServiceLocalException([this.message = ""]) : super();
-
-  @override
-  String toString() {
-    return 'ServiceLocalException{message: $message}';
+  WebClientUrlCollection() {
+    this._urls = new List<WebClientUrl>();
   }
 
-
-/// <summary>
-  /// ServiceLocalException Constructor.
+  /// <summary>
+  /// Loads instance of WebClientUrlCollection from XML.
   /// </summary>
-  /// <param name="message">Error message text.</param>
-  /// <param name="innerException">Inner exception.</param>
-//  ServiceLocalException(String message, Exception innerException)
-//      : super(message, innerException);
+  /// <param name="reader">The reader.</param>
+  static WebClientUrlCollection LoadFromXml(EwsXmlReader reader) {
+    WebClientUrlCollection instance = new WebClientUrlCollection();
+
+    do {
+      reader.Read();
+
+      if ((reader.NodeType == XmlNodeType.Element) &&
+          (reader.LocalName == XmlElementNames.WebClientUrl)) {
+        instance.Urls.add(WebClientUrl.LoadFromXml(reader));
+      }
+    } while (!reader.IsEndElementWithNamespace(
+        XmlNamespace.Autodiscover, XmlElementNames.WebClientUrls));
+
+    return instance;
+  }
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceLocalException"/> class with serialized data.
+  /// Gets the URLs.
   /// </summary>
-  /// <param name="info">The object that holds the serialized object data.</param>
-  /// <param name="context">The contextual information about the source or destination.</param>
-// ServiceLocalException(SerializationInfo info, StreamingContext context) : super(info, context);
+  List<WebClientUrl> get Urls => this._urls;
 }

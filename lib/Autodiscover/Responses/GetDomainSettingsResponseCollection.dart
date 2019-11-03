@@ -23,37 +23,44 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Autodiscover/AutodiscoverResponseCollection.dart';
+import 'package:ews/Autodiscover/Responses/GetDomainSettingsResponse.dart';
+import 'package:ews/Core/XmlElementNames.dart';
+
 /// <summary>
-/// Represents an error that occurs when a service operation fails locally (e.g. validation error).
+/// Represents a collection of responses to GetDomainSettings
 /// </summary>
-//    [Serializable]
-class ServiceLocalException implements Exception {
-  final String message;
+class GetDomainSettingsResponseCollection
+    extends AutodiscoverResponseCollection<GetDomainSettingsResponse> {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AutodiscoverResponseCollection&lt;TResponse&gt;"/> class.
+  /// </summary>
+  GetDomainSettingsResponseCollection() {}
 
   /// <summary>
-  /// ServiceLocalException Constructor.
+  /// Create a response instance.
   /// </summary>
-  /// <param name="message">Error message text.</param>
-  ServiceLocalException([this.message = ""]) : super();
-
+  /// <returns>GetDomainSettingsResponse.</returns>
   @override
-  String toString() {
-    return 'ServiceLocalException{message: $message}';
+  GetDomainSettingsResponse CreateResponseInstance() {
+    return new GetDomainSettingsResponse();
   }
 
-
-/// <summary>
-  /// ServiceLocalException Constructor.
+  /// <summary>
+  /// Gets the name of the response collection XML element.
   /// </summary>
-  /// <param name="message">Error message text.</param>
-  /// <param name="innerException">Inner exception.</param>
-//  ServiceLocalException(String message, Exception innerException)
-//      : super(message, innerException);
+  /// <returns>Response collection XMl element name.</returns>
+  @override
+  String GetResponseCollectionXmlElementName() {
+    return XmlElementNames.DomainResponses;
+  }
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceLocalException"/> class with serialized data.
+  /// Gets the name of the response instance XML element.
   /// </summary>
-  /// <param name="info">The object that holds the serialized object data.</param>
-  /// <param name="context">The contextual information about the source or destination.</param>
-// ServiceLocalException(SerializationInfo info, StreamingContext context) : super(info, context);
+  /// <returns>Response instance XMl element name.</returns>
+  @override
+  String GetResponseInstanceXmlElementName() {
+    return XmlElementNames.DomainResponse;
+  }
 }

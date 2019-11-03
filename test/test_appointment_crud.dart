@@ -14,7 +14,8 @@ main() {
       ..Start = startTime
       ..End = startTime.add(Duration(hours: 2));
 
-    await appointment.SaveWithSendInvitationsMode(SendInvitationsMode.SendToNone);
+    await appointment.SaveWithSendInvitationsMode(
+        SendInvitationsMode.SendToNone);
     await appointment.Delete(DeleteMode.HardDelete);
   });
 }

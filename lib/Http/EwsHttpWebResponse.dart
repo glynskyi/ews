@@ -43,7 +43,7 @@ class EwsHttpWebResponse implements IEwsHttpWebResponse {
   }
 
   @override
-  Uri get ResponseUri => throw NotImplementedException("Headers");
+  Uri get ResponseUri => throw NotImplementedException("ResponseUri");
 
   @override
   int get StatusCode => httpClientResponse.statusCode;

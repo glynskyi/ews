@@ -107,11 +107,11 @@ class EwsXmlReader {
           (this.NamespaceUri != EwsUtilities.GetNamespaceUri(xmlNamespace))) {
         throw new ServiceXmlDeserializationException("""string.Format(
                             Strings.UnexpectedElement,
-                            EwsUtilities.GetNamespacePrefix(xmlNamespace),
-                            localName,
-                            nodeType,
-                            this.xmlReader.Name,
-                            this.NodeType)""");
+                            ${EwsUtilities.GetNamespacePrefix(xmlNamespace)},
+                            $localName,
+                            $nodeType,
+                            ${this._xmlReader.Name},
+                            ${this.NodeType})""");
       }
     }
   }
