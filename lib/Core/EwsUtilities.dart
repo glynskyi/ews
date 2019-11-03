@@ -892,7 +892,7 @@ typedef R Converter<T,R>(T);
         EmailAddressKey,
         PhoneNumberKey,
         PhysicalAddressKey,
-        ImAddressKey
+        ImAddressKey,
         UserSettingName,
         ExchangeVersion
       ];

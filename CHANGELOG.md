@@ -1,3 +1,6 @@
+## 0.0.13
+* Added the autodiscovery
+
 ## 0.0.12
 
 * Removed `DIO` from dependencies
