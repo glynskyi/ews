@@ -21,86 +21,57 @@
  * THE SOFTWARE.
  */
 
+/// The Class TimeSpan.
+class TimeSpan
+    implements Comparable<TimeSpan> //{, java.io.Serializable, Cloneable {
+{
+  /// Constant serialized ID used for compatibility.
+  static final int serialVersionUID = 1;
 
-/**
- * The Class TimeSpan.
- */ 
-class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Cloneable {
-    {
+  /// The time.
+  int time = 0;
 
-//   static final Log LOG = LogFactory.getLog(TimeSpan.class);
-
-  /**
-   * Constant serialized ID used for compatibility.
-   */
-   static final int serialVersionUID = 1;
-
-  /**
-   * The time.
-   */
-   int time = 0;
-
-  /**
-   * Constant for milliseconds unit and conversion.
-   */
+  /// Constant for milliseconds unit and conversion.
   static const int MILLISECONDS = 1;
 
-  /**
-   * Constant for seconds unit and conversion.
-   */
+  /// Constant for seconds unit and conversion.
   static const int SECONDS = MILLISECONDS * 1000;
 
-  /**
-   * Constant for minutes unit and conversion.
-   */
+  /// Constant for minutes unit and conversion.
   static const int MINUTES = SECONDS * 60;
 
-  /**
-   * Constant for hours unit and conversion.
-   */
+  /// Constant for hours unit and conversion.
   static const int HOURS = MINUTES * 60;
 
-  /**
-   * Constant for days unit and conversion.
-   */
+  /// Constant for days unit and conversion.
   static const int DAYS = HOURS * 24;
 
-  /**
-   * Represents the Maximum TimeSpan value.
-   */
-//  static final TimeSpan MAX_VALUE = new TimeSpan(Long.MAX_VALUE);
+  /// Represents the Maximum TimeSpan value.
+  /// static final TimeSpan MAX_VALUE = new TimeSpan(Long.MAX_VALUE);
 
-  /**
-   * Represents the Minimum TimeSpan value.
-   */
-//  static final TimeSpan MIN_VALUE = new TimeSpan(Long.MIN_VALUE);
+  /// Represents the Minimum TimeSpan value.
+  /// static final TimeSpan MIN_VALUE = new TimeSpan(Long.MIN_VALUE);
 
-  /**
-   * Represents the TimeSpan with a value of zero.
-   */
+  /// Represents the TimeSpan with a value of zero.
   static final TimeSpan ZERO = new TimeSpan(0);
 
-  /**
-   * Creates a new instance of TimeSpan based on the number of milliseconds
-   * entered.
-   *
-   * @param time the number of milliseconds for this TimeSpan.
-   */
+  /// Creates a new instance of TimeSpan based on the number of milliseconds
+  /// entered.
+  ///
+  /// @param time the number of milliseconds for this TimeSpan.
   TimeSpan(int time) {
     this.time = time;
   }
 
-  /**
-   * Creates a new TimeSpan object based on the unit and value entered.
-   *
-   * @param units the type of unit to use to create a TimeSpan instance.
-   * @param value the number of units to use to create a TimeSpan instance.
-   */
+  /// Creates a new TimeSpan object based on the unit and value entered.
+  ///
+  /// @param units the type of unit to use to create a TimeSpan instance.
+  /// @param value the number of units to use to create a TimeSpan instance.
   TimeSpan.fromUnitAndValue(int units, int value) {
     this.time = TimeSpan.toMilliseconds(units, value);
   }
 
-	/*
+  /*
          * static TimeSpan fromMinutes(int value) { int l = value*60*100;
 	 * return l; }
 	 */
@@ -118,16 +89,14 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
 //    return new TimeSpan(date1.getTime() - date2.getTime());
 //  }
 
-  /**
-   * Compares this object with the specified object for order. Returns a
-   * negative integer, zero, or a positive integer as this object is less
-   * than, equal to, or greater than the specified object. Comparison is based
-   * on the number of milliseconds in this TimeSpan.
-   *
-   * @param o the Object to be compared.
-   * @return a negative integer, zero, or a positive integer as this object is
-   * less than, equal to, or greater than the specified object.
-   */
+  /// Compares this object with the specified object for order. Returns a
+  /// negative integer, zero, or a positive integer as this object is less
+  /// than, equal to, or greater than the specified object. Comparison is based
+  /// on the number of milliseconds in this TimeSpan.
+  ///
+  /// @param o the Object to be compared.
+  /// @return a negative integer, zero, or a positive integer as this object is
+  /// less than, equal to, or greater than the specified object.
   int compareTo(TimeSpan o) {
     TimeSpan compare = o;
     if (this.time == compare.time) {
@@ -139,14 +108,12 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
     return -1;
   }
 
-  /**
-   * Indicates whether some other object is "equal to" this one. Comparison is
-   * based on the number of milliseconds in this TimeSpan.
-   *
-   * @param obj the reference object with which to compare.
-   * @return if the obj argument is a TimeSpan object with the exact same
-   * number of milliseconds. otherwise.
-   */
+  /// Indicates whether some other object is "equal to" this one. Comparison is
+  /// based on the number of milliseconds in this TimeSpan.
+  ///
+  /// @param obj the reference object with which to compare.
+  /// @return if the obj argument is a TimeSpan object with the exact same
+  /// number of milliseconds. otherwise.
   bool equals(Object obj) {
     if (obj is TimeSpan) {
       TimeSpan compare = obj;
@@ -172,14 +139,12 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
 //    return Long.valueOf(this.time).hashCode();
 //  }
 
-  /**
-   * Returns a string representation of the object in the format.
-   * "[-]d.hh:mm:ss.ff" where "-" is an optional sign for negative TimeSpan
-   * values, the "d" component is days, "hh" is hours, "mm" is minutes, "ss"
-   * is seconds, and "ff" is milliseconds
-   *
-   * @return a string containing the number of milliseconds.
-   */
+  /// Returns a string representation of the object in the format.
+  /// "[-]d.hh:mm:ss.ff" where "-" is an optional sign for negative TimeSpan
+  /// values, the "d" component is days, "hh" is hours, "mm" is minutes, "ss"
+  /// is seconds, and "ff" is milliseconds
+  ///
+  /// @return a string containing the number of milliseconds.
   String toString() {
     StringBuffer sb = new StringBuffer();
     int millis = this.time;
@@ -227,114 +192,93 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
 //    }
 //  }
 
-  /**
-   * Indicates whether the value of the TimeSpan is positive.
-   *
-   * @return if the value of the TimeSpan is greater than
-   * zero.  otherwise.
-   */
+  /// Indicates whether the value of the TimeSpan is positive.
+  ///
+  /// @return if the value of the TimeSpan is greater than
+  /// zero.  otherwise.
   bool isPositive() {
     return this.compareTo(TimeSpan.ZERO) > 0 ? true : false;
   }
 
-  /**
-   * Indicates whether the value of the TimeSpan is negative.
-   *
-   * @return if the value of the TimeSpan is less than zero.
-   * otherwise.
-   */
+  /// Indicates whether the value of the TimeSpan is negative.
+  ///
+  /// @return if the value of the TimeSpan is less than zero.
+  /// otherwise.
   bool isNegative() {
     return this.compareTo(TimeSpan.ZERO) < 0 ? true : false;
   }
 
-  /**
-   * Indicates whether the value of the TimeSpan is zero.
-   *
-   * @return if the value of the TimeSpan is equal to zero.
-   * otherwise.
-   */
+  /// Indicates whether the value of the TimeSpan is zero.
+  ///
+  /// @return if the value of the TimeSpan is equal to zero.
+  /// otherwise.
   bool isZero() {
     return this.equals(TimeSpan.ZERO);
   }
 
-  /**
-   * Gets the number of milliseconds.
-   *
-   * @return the number of milliseconds.
-   */
+  /// Gets the number of milliseconds.
+  ///
+  /// @return the number of milliseconds.
   int get Milliseconds {
-    return (((this.time % TimeSpan.HOURS) % TimeSpan.MINUTES) % TimeSpan.MILLISECONDS)
-        ~/ TimeSpan.MILLISECONDS;
+    return (((this.time % TimeSpan.HOURS) % TimeSpan.MINUTES) %
+            TimeSpan.MILLISECONDS) ~/
+        TimeSpan.MILLISECONDS;
   }
 
-  /**
-   * Gets the number of milliseconds.
-   *
-   * @return the number of milliseconds.
-   */
+  /// Gets the number of milliseconds.
+  ///
+  /// @return the number of milliseconds.
   int getTotalMilliseconds() {
     return this.time;
   }
 
-  /**
-   * Gets the number of seconds (truncated).
-   *
-   * @return the number of seconds.
-   */
+  /// Gets the number of seconds (truncated).
+  ///
+  /// @return the number of seconds.
   int get Seconds {
-    return ((this.time % TimeSpan.HOURS) % TimeSpan.MINUTES) ~/ TimeSpan.SECONDS;
+    return ((this.time % TimeSpan.HOURS) % TimeSpan.MINUTES) ~/
+        TimeSpan.SECONDS;
   }
 
-  /**
-   * Gets the number of seconds including fractional seconds.
-   *
-   * @return the number of seconds.
-   */
+  /// Gets the number of seconds including fractional seconds.
+  ///
+  /// @return the number of seconds.
   double get TotalSeconds {
     return this.time / 1000.0;
   }
 
-  /**
-   * Gets the number of minutes (truncated).
-   *
-   * @return the number of minutes.
-   */
+  /// Gets the number of minutes (truncated).
+  ///
+  /// @return the number of minutes.
   int get Minutes {
-    return (this.time % TimeSpan.HOURS) ~/ TimeSpan.MINUTES;// (this.time/1000)/60;
+    return (this.time % TimeSpan.HOURS) ~/
+        TimeSpan.MINUTES; // (this.time/1000)/60;
   }
 
-  /**
-   * Gets the number of minutes including fractional minutes.
-   *
-   * @return the number of minutes.
-   */
+  /// Gets the number of minutes including fractional minutes.
+  ///
+  /// @return the number of minutes.
   double getTotalMinutes() {
     return (this.time / 1000.0) / 60.0;
   }
 
-  /**
-   * Gets the number of hours (truncated).
-   *
-   * @return the number of hours.
-   */
+  /// Gets the number of hours (truncated).
+  ///
+  /// @return the number of hours.
   int get Hours {
     return ((this.time / 1000) / 60) ~/ 60;
   }
 
-  /**
-   * Gets the number of hours including fractional hours.
-   *
-   * @return the number of hours.
-   */
+  /// Gets the number of hours including fractional hours.
+  ///
+  /// @return the number of hours.
   double getTotalHours() {
     return ((this.time / 1000.0) / 60.0) / 60.0;
   }
 
-  /**
-   * Gets the number of days (truncated).
-   *
-   * @return the number of days.
-   */
+  /// Gets the number of days (truncated).
+  ///
+  /// @return the number of days.
   int get Days {
     return (((this.time / 1000) / 60) / 60) ~/ 24;
   }
@@ -367,15 +311,13 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
 //    this.time += TimeSpan.toMilliseconds(units, value);
 //  }
 
-  /**
-   * Compares two TimeSpan objects.
-   *
-   * @param first  first TimeSpan to use in the compare.
-   * @param second second TimeSpan to use in the compare.
-   * @return a negative integer, zero, or a positive integer as the first
-   * TimeSpan is less than, equal to, or greater than the second
-   * TimeSpan.
-   */
+  /// Compares two TimeSpan objects.
+  ///
+  /// @param first  first TimeSpan to use in the compare.
+  /// @param second second TimeSpan to use in the compare.
+  /// @return a negative integer, zero, or a positive integer as the first
+  /// TimeSpan is less than, equal to, or greater than the second
+  /// TimeSpan.
   static int compare(TimeSpan first, TimeSpan second) {
     if (first.time == second.time) {
       return 0;
@@ -386,22 +328,18 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
     return -1;
   }
 
-  /**
-   * Returns a TimeSpan whose value is the absolute value of this TimeSpan.
-   *
-   * @return a TimeSpan whose value is the absolute value of this TimeSpan.
-   */
+  /// Returns a TimeSpan whose value is the absolute value of this TimeSpan.
+  ///
+  /// @return a TimeSpan whose value is the absolute value of this TimeSpan.
   TimeSpan duration() {
     return new TimeSpan(_abs(this.time));
   }
 
   int _abs(int value) => value < 0 ? -value : value;
 
-  /**
-   * Returns a TimeSpan whose value is the negated value of this TimeSpan.
-   *
-   * @return a TimeSpan whose value is the negated value of this TimeSpan.
-   */
+  /// Returns a TimeSpan whose value is the negated value of this TimeSpan.
+  ///
+  /// @return a TimeSpan whose value is the negated value of this TimeSpan.
   TimeSpan negate() {
     return new TimeSpan(-this.time);
   }
@@ -425,13 +363,11 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
 //    add(units, -value);
 //  }
 
-  /**
-   * To milliseconds.
-   *
-   * @param units the units
-   * @param value the value
-   * @return the long
-   */
+  /// To milliseconds.
+  ///
+  /// @param units the units
+  /// @param value the value
+  /// @return the long
   static int toMilliseconds(int units, int value) {
     int millis;
     switch (units) {
@@ -473,7 +409,6 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
         break;
       default:
         throw new FormatException("Bad Format");
-
     }
     List<String> st = data.split(":");
     switch (st.length) {
@@ -481,16 +416,19 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
         totMillSec = int.parse(str) * 24 * 60 * 60 * 1000;
         break;
       case 2:
-        totMillSec = (int.parse(st[0]) * 60 * 60 * 1000) + (int.parse(st[1]) * 60 * 1000);
+        totMillSec = (int.parse(st[0]) * 60 * 60 * 1000) +
+            (int.parse(st[1]) * 60 * 1000);
         break;
       case 3:
-        totMillSec = (int.parse(st[0]) * 60 * 60 * 1000) + (int.parse(st[1]) * 60 * 1000) + (
-            int.parse(st[2]) * 1000);
+        totMillSec = (int.parse(st[0]) * 60 * 60 * 1000) +
+            (int.parse(st[1]) * 60 * 1000) +
+            (int.parse(st[2]) * 1000);
         break;
       case 4:
-        totMillSec =
-            (int.parse(st[0]) * 24 * 60 * 60 * 1000) + (int.parse(st[1]) * 60 * 60 * 1000) + (
-                int.parse(st[2]) * 60 * 1000) + (int.parse(st[3]) * 1000);
+        totMillSec = (int.parse(st[0]) * 24 * 60 * 60 * 1000) +
+            (int.parse(st[1]) * 60 * 60 * 1000) +
+            (int.parse(st[2]) * 60 * 1000) +
+            (int.parse(st[3]) * 1000);
         break;
       default:
         throw new FormatException("Bad Format/Overflow");
@@ -498,5 +436,4 @@ class TimeSpan implements Comparable<TimeSpan> //{, java.io.Serializable, Clonea
     totMillSec += (days * 24 * 60 * 60 * 1000) + millsec;
     return new TimeSpan(totMillSec);
   }
-
 }
