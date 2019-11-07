@@ -1,4 +1,9 @@
+## 0.0.14
+
+* Fixed extended properties with tags   
+
 ## 0.0.13
+
 * Added the autodiscovery
 
 ## 0.0.12
