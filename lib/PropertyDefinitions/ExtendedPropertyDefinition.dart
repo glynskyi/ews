@@ -81,8 +81,8 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <param name="tag">The tag of the extended property.</param>
   /// <param name="mapiType">The MAPI type of the extended property.</param>
   ExtendedPropertyDefinition.withTag(int tag, this._mapiType) {
-    if (tag < 0x00 || tag > 0xFF) {
-      throw new RangeError.range(tag, 0x00, 0xFF, "tag", "Strings.TagValueIsOutOfRange");
+    if (tag < 0x00 || tag > 0xFFFF) {
+      throw new RangeError.range(tag, 0x00, 0xFFFF, "tag", "Strings.TagValueIsOutOfRange");
     }
     this._tag = tag;
   }
