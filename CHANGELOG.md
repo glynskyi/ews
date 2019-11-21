@@ -1,3 +1,7 @@
+## 0.0.16
+
+* Fixed the requests validation
+
 ## 0.0.15
 
 * Fixed the server version argument in requests
