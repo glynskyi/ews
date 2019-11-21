@@ -1,3 +1,7 @@
+## 0.0.15
+
+* Fixed the server version argument in requests
+
 ## 0.0.14
 
 * Fixed extended properties with tags   
