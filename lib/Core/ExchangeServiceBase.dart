@@ -60,8 +60,7 @@ abstract class ExchangeServiceBase {
   /* private */
 //  static Lock lockObj = new Lock();
 
-  /* private */
-  var requestedServerVersion = ExchangeVersion.Exchange2013_SP1;
+  var _requestedServerVersion = ExchangeVersion.Exchange2013_SP1;
 
   /// <summary>
   /// Special HTTP status code that indicates that the account is locked.
@@ -71,14 +70,12 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// The binary secret.
   /// </summary>
-  /* private */
-  static Uint8List binarySecret;
+  static Uint8List _binarySecret;
 
   /// <summary>
   /// Default UserAgent
   /// </summary>
-  /* private */
-  static String defaultUserAgent =
+  static String _defaultUserAgent =
       "ExchangeServicesClient/" + EwsUtilities.BuildVersion;
 
   /// <summary>
@@ -95,7 +92,7 @@ abstract class ExchangeServiceBase {
   List<enumerations.TraceFlags> _traceFlags = enumerations.TraceFlags.values;
   ITraceListener _traceListener = new EwsTraceListener();
   bool _preAuthenticate = false;
-  String _userAgent = defaultUserAgent;
+  String _userAgent = _defaultUserAgent;
   bool _acceptGzipEncoding = true;
   bool _keepAlive = true;
   String _connectionGroupName;
@@ -514,7 +511,9 @@ abstract class ExchangeServiceBase {
   /// <param name="requestedServerVersion">The requested server version.</param>
   ExchangeServiceBase.withVersion(ExchangeVersion requestedServerVersion)
   //: this(requestedServerVersion, TimeZoneInfo.Local)
-  {}
+  {
+    this._requestedServerVersion = requestedServerVersion;
+  }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExchangeServiceBase"/> class.
@@ -536,6 +535,7 @@ abstract class ExchangeServiceBase {
       ExchangeServiceBase service, ExchangeVersion requestedServerVersion)
   //: this(requestedServerVersion, TimeZoneInfo.Local)
   {
+    this._requestedServerVersion = requestedServerVersion;
     this._useDefaultCredentials = service._useDefaultCredentials;
     this._credentials = service._credentials;
     this._traceEnabled = service._traceEnabled;
@@ -707,7 +707,7 @@ abstract class ExchangeServiceBase {
   /// Gets the requested server version.
   /// </summary>
   /// <value>The requested server version.</value>
-  ExchangeVersion get RequestedServerVersion => this.requestedServerVersion;
+  ExchangeVersion get RequestedServerVersion => this._requestedServerVersion;
 
   /// <summary>
   /// Gets or sets the user agent.
@@ -791,15 +791,15 @@ abstract class ExchangeServiceBase {
   /// </summary>
   static Uint8List get SessionKey {
     // this has to be computed only once.
-    if (ExchangeServiceBase.binarySecret == null) {
+    if (ExchangeServiceBase._binarySecret == null) {
       Random randomNumberGenerator = Random();
-      ExchangeServiceBase.binarySecret = Uint8List(256 ~/ 8);
-      for (int i = 0; i < ExchangeServiceBase.binarySecret.length; i++) {
-        ExchangeServiceBase.binarySecret[i] =
+      ExchangeServiceBase._binarySecret = Uint8List(256 ~/ 8);
+      for (int i = 0; i < ExchangeServiceBase._binarySecret.length; i++) {
+        ExchangeServiceBase._binarySecret[i] =
             randomNumberGenerator.nextInt(256);
       }
     }
-    return ExchangeServiceBase.binarySecret;
+    return ExchangeServiceBase._binarySecret;
   }
 
   /// <summary>

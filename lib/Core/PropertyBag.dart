@@ -323,7 +323,7 @@ class PropertyBag {
       // If the owner is new and if the property cannot be set, throw.
       if (this.Owner.IsNew &&
           !propertyDefinition.HasFlag(
-              PropertyDefinitionFlags.CanSet, _owner.Service.requestedServerVersion)) {
+              PropertyDefinitionFlags.CanSet, _owner.Service.RequestedServerVersion)) {
         throw new ServiceObjectPropertyException(/*Strings.PropertyIsReadOnly, */
             propertyDefinition);
       }
@@ -546,7 +546,7 @@ class PropertyBag {
       // The following test should not be necessary since the property bag prevents
       // properties to be set if they don't have the CanSet flag, but it doesn't hurt...
       if (propertyDefinition.HasFlag(
-          PropertyDefinitionFlags.CanSet, writer.service.requestedServerVersion)) {
+          PropertyDefinitionFlags.CanSet, writer.service.RequestedServerVersion)) {
         if (this.Contains(propertyDefinition)) {
           propertyDefinition.WritePropertyValueToXml(writer, this, false /* isUpdateOperation */);
         }

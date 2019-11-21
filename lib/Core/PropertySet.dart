@@ -453,7 +453,7 @@ class PropertySet
 
         if (summaryPropertiesOnly &&
             !propertyDefinition.HasFlag(
-                PropertyDefinitionFlags.CanFind, request.Service.requestedServerVersion)) {
+                PropertyDefinitionFlags.CanFind, request.Service.RequestedServerVersion)) {
           throw new ServiceValidationException("""string.Format(
                                 Strings.NonSummaryPropertyCannotBeUsed,
                                 propertyDefinition.Name,
