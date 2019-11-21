@@ -24,6 +24,7 @@
  */
 
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/PropertySet.dart' as core;
 import 'package:ews/Core/Requests/MultiResponseServiceRequest.dart';
@@ -33,56 +34,55 @@ import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/ServiceObjectType.dart';
 
 /// <summary>
-    /// Represents an abstract Get request.
-    /// </summary>
-    /// <typeparam name="TServiceObject">The type of the service object.</typeparam>
-    /// <typeparam name="TResponse">The type of the response.</typeparam>
-    abstract class GetRequest<TServiceObject extends ServiceObject, TResponse extends ServiceResponse> extends MultiResponseServiceRequest<TResponse> {
-      /* private */ core.PropertySet propertySet;
+/// Represents an abstract Get request.
+/// </summary>
+/// <typeparam name="TServiceObject">The type of the service object.</typeparam>
+/// <typeparam name="TResponse">The type of the response.</typeparam>
+abstract class GetRequest<TServiceObject extends ServiceObject,
+        TResponse extends ServiceResponse>
+    extends MultiResponseServiceRequest<TResponse> {
+  core.PropertySet _propertySet;
 
-      /// <summary>
-      /// Initializes a new instance of the <see cref="GetRequest&lt;TServiceObject, TResponse&gt;"/> class.
-      /// </summary>
-      /// <param name="service">The service.</param>
-      /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-      GetRequest(ExchangeService service,
-          ServiceErrorHandling errorHandlingMode)
-          : super(service, errorHandlingMode) {
-      }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="GetRequest&lt;TServiceObject, TResponse&gt;"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
+  GetRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+      : super(service, errorHandlingMode) {}
 
-      /// <summary>
-      /// Validate request.
-      /// </summary>
-      @override
-      void Validate() {
-        super.Validate();
-//            EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
-        this.PropertySet.ValidateForRequest(
-            this, false /*summaryPropertiesOnly*/);
-      }
+  /// <summary>
+  /// Validate request.
+  /// </summary>
+  @override
+  void Validate() {
+    super.Validate();
+    EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
+    this.PropertySet.ValidateForRequest(this, false /*summaryPropertiesOnly*/);
+  }
 
-      /// <summary>
-      /// Gets the type of the service object this request applies to.
-      /// </summary>
-      /// <returns>The type of service object the request applies to.</returns>
-      ServiceObjectType GetServiceObjectType();
+  /// <summary>
+  /// Gets the type of the service object this request applies to.
+  /// </summary>
+  /// <returns>The type of service object the request applies to.</returns>
+  ServiceObjectType GetServiceObjectType();
 
-      /// <summary>
-      /// Writes XML elements.
-      /// </summary>
-      /// <param name="writer">The writer.</param>
-      @override
-      void WriteElementsToXml(EwsServiceXmlWriter writer) {
-        this.propertySet.WriteToXml(writer, this.GetServiceObjectType());
-      }
+  /// <summary>
+  /// Writes XML elements.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    this._propertySet.WriteToXml(writer, this.GetServiceObjectType());
+  }
 
-      /// <summary>
-      /// Gets or sets the property set.
-      /// </summary>
-      /// <value>The property set.</value>
-      core.PropertySet get PropertySet => this.propertySet;
+  /// <summary>
+  /// Gets or sets the property set.
+  /// </summary>
+  /// <value>The property set.</value>
+  core.PropertySet get PropertySet => this._propertySet;
 
-      set PropertySet(core.PropertySet value) {
-        this.propertySet = value;
-      }
-    }
+  set PropertySet(core.PropertySet value) {
+    this._propertySet = value;
+  }
+}

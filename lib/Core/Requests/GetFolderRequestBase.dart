@@ -24,6 +24,7 @@
  */
 
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/Requests/GetRequest.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
@@ -41,8 +42,8 @@ import 'package:ews/misc/FolderIdWrapperList.dart';
 /// <typeparam name="TResponse">The type of ServiceResponse.</typeparam>
 abstract class GetFolderRequestBase<TResponse extends ServiceResponse>
     extends GetRequest<Folder, TResponse> {
-  /* private */
-  FolderIdWrapperList folderIds = new FolderIdWrapperList();
+
+  FolderIdWrapperList _folderIds = new FolderIdWrapperList();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetFolderRequestBase&lt;TResponse&gt;"/> class.
@@ -59,7 +60,7 @@ abstract class GetFolderRequestBase<TResponse extends ServiceResponse>
   @override
   void Validate() {
     super.Validate();
-//            EwsUtilities.ValidateParamCollection(this.FolderIds, "FolderIds");
+    EwsUtilities.ValidateParamCollection(this.FolderIds, "FolderIds");
     this.FolderIds.Validate(this.Service.RequestedServerVersion);
   }
 
@@ -134,5 +135,5 @@ abstract class GetFolderRequestBase<TResponse extends ServiceResponse>
   /// Gets the folder ids.
   /// </summary>
   /// <value>The folder ids.</value>
-  FolderIdWrapperList get FolderIds => this.folderIds;
+  FolderIdWrapperList get FolderIds => this._folderIds;
 }

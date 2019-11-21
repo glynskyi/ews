@@ -104,12 +104,12 @@ class PropertySet
   /// <summary>
   /// Value indicating whether or not the server should filter HTML content.
   /// </summary>
-  bool _filterHtml = false;
+  bool _filterHtml;
 
   /// <summary>
   /// Value indicating whether or not the server should convert HTML code page to UTF8.
   /// </summary>
-  bool _convertHtmlCodePageToUTF8 = false;
+  bool _convertHtmlCodePageToUTF8;
 
   /// <summary>
   /// Value of the URL template to use for the src attribute of inline IMG elements.
@@ -119,12 +119,12 @@ class PropertySet
   /// <summary>
   /// Value indicating whether or not the server should block references to external images.
   /// </summary>
-  bool _blockExternalImages = false;
+  bool _blockExternalImages;
 
   /// <summary>
   /// Value indicating whether or not to add a blank target attribute to anchor links.
   /// </summary>
-  bool _addTargetToLinks = false;
+  bool _addTargetToLinks;
 
   /// <summary>
   /// Value indicating whether or not this PropertySet can be modified.

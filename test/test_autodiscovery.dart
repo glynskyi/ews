@@ -13,7 +13,7 @@ main() {
           ..TraceEnabled = true;
     final url = await service.GetAutodiscoverUrlWithExchangeVersionAndCallback(
         "qa1@shafersystems.com",
-        ExchangeVersion.Exchange2007_SP1,
+        ExchangeVersion.Exchange2010,
         (url) => true);
     expect(url, Uri.parse("https://outlook.office365.com/EWS/Exchange.asmx"));
   });
