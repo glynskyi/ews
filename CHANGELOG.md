@@ -1,3 +1,7 @@
+## 0.0.17
+
+# Fixed the XML attributes processing
+
 ## 0.0.16
 
 * Fixed the requests validation
