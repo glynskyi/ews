@@ -47,7 +47,7 @@ class XmlWriter {
 
   void WriteAttributeString(
       {String prefix, String localName, String ns, String value}) {
-    builder.attribute(localName, value, namespace: ns);
+    builder.attribute("$prefix:$localName", value, namespace: ns);
   }
 
   void WriteAttributeStringJust(String localName, String stringValue) {
@@ -203,9 +203,11 @@ class XmlBuilder {
   ///
   void attribute(String name, Object value,
       {String namespace, XmlAttributeType attributeType}) {
-    final attribute = XmlAttribute(_buildName(name, namespace),
-        value.toString(), attributeType ?? XmlAttributeType.DOUBLE_QUOTE);
-    _stack.last.attributes.add(attribute);
+    if (!_stack.last.attributes.any((attr) => attr.name.qualified == name)) {
+      final attribute = XmlAttribute(_buildName(name, namespace),
+          value.toString(), attributeType ?? XmlAttributeType.DOUBLE_QUOTE);
+      _stack.last.attributes.add(attribute);
+    }
   }
 
   /// Binds a namespace [prefix] to the provided [uri]. The [prefix] can be
