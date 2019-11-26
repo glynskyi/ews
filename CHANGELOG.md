@@ -1,3 +1,7 @@
+## 0.0.18
+
+# Removed the broken timezone from requests
+
 ## 0.0.17
 
 # Fixed the XML attributes processing
