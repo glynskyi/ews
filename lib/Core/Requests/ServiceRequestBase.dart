@@ -317,12 +317,12 @@ import 'package:ews/misc/Std/EnumToString.dart';
             if ((this.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1 || this.EmitTimeZoneHeader) &&
                 (!this.Service.Exchange2007CompatibilityMode))
             {
-                writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.TimeZoneContext);
+//                writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.TimeZoneContext);
 
                 // todo("implement time zone definitions")
 //                this.Service.TimeZoneDefinition.WriteToXml(writer);
 
-                writer.WriteEndElement(); // TimeZoneContext
+//                writer.WriteEndElement(); // TimeZoneContext
 
                 writer.IsTimeZoneHeaderEmitted = true;
             }
