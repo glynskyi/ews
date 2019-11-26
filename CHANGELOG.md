@@ -1,10 +1,14 @@
+## 0.0.19
+
+* Added `FileAsMapping` to `Contact`
+
 ## 0.0.18
 
-# Removed the broken timezone from requests
+* Removed the broken timezone from requests
 
 ## 0.0.17
 
-# Fixed the XML attributes processing
+* Fixed the XML attributes processing
 
 ## 0.0.16
 
