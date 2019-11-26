@@ -23,6 +23,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Enumerations/ExchangeVersion.dart';
+
 /// <summary>
 /// Defines the way the FileAs property of a contact is automatically formatted.
 /// </summary>
@@ -136,3 +138,11 @@ enum FileAsMapping {
   /// [RequiredServerVersion(ExchangeVersion.Exchange2010)]
   Empty
 }
+
+const FileAsMappingRequiredServerVersion = {
+  FileAsMapping.DisplayName: ExchangeVersion.Exchange2010,
+  FileAsMapping.GivenName: ExchangeVersion.Exchange2010,
+  FileAsMapping.SurnameGivenNameMiddleSuffix: ExchangeVersion.Exchange2010,
+  FileAsMapping.Surname: ExchangeVersion.Exchange2010,
+  FileAsMapping.Empty: ExchangeVersion.Exchange2010,
+};

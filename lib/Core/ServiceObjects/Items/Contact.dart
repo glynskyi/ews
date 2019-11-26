@@ -218,8 +218,7 @@ class Contact extends Item {
     if (this
         .TryGetProperty(ContactSchema.FileAsMapping, fileAsMappingOutParam)) {
       // FileAsMapping is extended by 5 new values in 2010 mode. Validate that they are used according the version.
-//                EwsUtilities.ValidateEnumVersionValue(fileAsMappingOutParam, this.Service.RequestedServerVersion);
-      throw UnsupportedError("ValidateEnumVersionValue");
+      EwsUtilities.ValidateEnumVersionValue(fileAsMappingOutParam, this.Service.RequestedServerVersion);
     }
   }
 

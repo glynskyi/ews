@@ -868,6 +868,26 @@ typedef R Converter<T,R>(T);
             EventType.Copied: "CopiedEvent",
             EventType.Created: "CreatedEvent",
             EventType.FreeBusyChanged: "FreeBusyChangedEvent",
+          },
+          FileAsMapping: {
+            FileAsMapping.None: "None",
+            FileAsMapping.SurnameCommaGivenName: "LastCommaFirst",
+            FileAsMapping.GivenNameSpaceSurname: "FirstSpaceLast",
+            FileAsMapping.Company: "Company",
+            FileAsMapping.SurnameCommaGivenNameCompany: "LastCommaFirstCompany",
+            FileAsMapping.CompanySurnameGivenName: "CompanyLastFirst",
+            FileAsMapping.SurnameGivenName: "LastFirst",
+            FileAsMapping.SurnameGivenNameCompany: "LastFirstCompany",
+            FileAsMapping.CompanySurnameCommaGivenName: "CompanyLastCommaFirst",
+            FileAsMapping.SurnameGivenNameSuffix: "LastFirstSuffix",
+            FileAsMapping.SurnameSpaceGivenNameCompany: "LastSpaceFirstCompany",
+            FileAsMapping.CompanySurnameSpaceGivenName: "CompanyLastSpaceFirst",
+            FileAsMapping.SurnameSpaceGivenName: "LastSpaceFirst",
+            FileAsMapping.DisplayName: "DisplayName",
+            FileAsMapping.GivenName: "FirstName",
+            FileAsMapping.SurnameGivenNameMiddleSuffix: "LastFirstMiddleSuffix",
+            FileAsMapping.Surname: "LastName",
+            FileAsMapping.Empty: "Empty",
           }
         };
 
@@ -3152,6 +3172,18 @@ typedef R Converter<T,R>(T);
         /// <exception cref="ServiceVersionException">Raised if this enum value requires a later version of Exchange.</exception>
         static void ValidateEnumVersionValue(Object enumValue, ExchangeVersion requestVersion)
         {
+          if (enumValue is FileAsMapping) {
+            final requiredServerVersion = FileAsMappingRequiredServerVersion[enumValue];
+            if (requiredServerVersion != null && requestVersion.index < requiredServerVersion.index) {
+                              throw new ServiceVersionException("""string.Format(
+                                  Strings.EnumValueIncompatibleWithRequestVersion,
+                                  $enumValue,
+                                  enumType.Name,
+                                  enumVersion)""");
+            }
+            return;
+          }
+
           // todo : implement ValidateEnumVersionValue
           print("!! unsafe ValidateEnumVersionValue");
 //            Type enumType = enumValue.GetType();

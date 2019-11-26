@@ -58,6 +58,7 @@ main() {
       ..City = "Kharkiv"
       ..Street = "Hrushevsky 23";
     contact.ImAddresses[ImAddressKey.ImAddress1] = "1234566";
+    contact.FileAsMapping = FileAsMapping.SurnameCommaGivenName;
     await contact.Save();
     await contact.Delete(DeleteMode.HardDelete);
   });
