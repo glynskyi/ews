@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Added an example of the library using
+
 ## 1.0.0
 
 * Stabilized the public APIs
