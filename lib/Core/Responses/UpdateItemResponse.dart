@@ -36,23 +36,20 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the response to an individual item update operation.
 /// </summary>
 class UpdateItemResponse extends ServiceResponse {
-  /* private */ Item item;
+  Item _item;
 
-  /* private */
-  Item returnedItem;
+  Item _returnedItem;
 
-  /* private */
-  int conflictCount;
+  int _conflictCount;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UpdateItemResponse"/> class.
   /// </summary>
   /// <param name="item">The item.</param>
   UpdateItemResponse(Item item) : super() {
-    EwsUtilities.Assert(
-        item != null, "UpdateItemResponse.ctor", "item is null");
+    EwsUtilities.Assert(item != null, "UpdateItemResponse.ctor", "item is null");
 
-    this.item = item;
+    this._item = item;
   }
 
   /// <summary>
@@ -65,7 +62,7 @@ class UpdateItemResponse extends ServiceResponse {
 
     reader.ReadServiceObjectsCollectionFromXml<Item>(
         XmlElementNames.Items,
-        this.GetObjectInstance,
+        this._GetObjectInstance,
         false,
         /* clearPropertyBag */
         null,
@@ -74,12 +71,10 @@ class UpdateItemResponse extends ServiceResponse {
 
     // ConflictResults was only added in 2007 SP1 so if this was a 2007 RTM request we shouldn't expect to find the element
     if (!reader.Service.Exchange2007CompatibilityMode) {
-      reader.ReadStartElementWithNamespace(
-          XmlNamespace.Messages, XmlElementNames.ConflictResults);
-      this.conflictCount = reader.ReadElementValueWithNamespace<int>(
-          XmlNamespace.Types, XmlElementNames.Count);
-      reader.ReadEndElementWithNamespace(
-          XmlNamespace.Messages, XmlElementNames.ConflictResults);
+      reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.ConflictResults);
+      this._conflictCount =
+          reader.ReadElementValueWithNamespace<int>(XmlNamespace.Types, XmlElementNames.Count);
+      reader.ReadEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.ConflictResults);
     }
 
     // If UpdateItem returned an item that has the same Id as the item that
@@ -93,10 +88,10 @@ class UpdateItemResponse extends ServiceResponse {
     //
     // Note that there can be no returned item at all, as in an UpdateItem call
     // with MessageDisposition set to SendOnly or SendAndSaveCopy.
-    if (this.returnedItem != null) {
-      if (this.item.Id.UniqueId == this.returnedItem.Id.UniqueId) {
-        this.item.Id.ChangeKey = this.returnedItem.Id.ChangeKey;
-        this.returnedItem = null;
+    if (this._returnedItem != null) {
+      if (this._item.Id.UniqueId == this._returnedItem.Id.UniqueId) {
+        this._item.Id.ChangeKey = this._returnedItem.Id.ChangeKey;
+        this._returnedItem = null;
       }
     }
   }
@@ -107,7 +102,7 @@ class UpdateItemResponse extends ServiceResponse {
   @override
   void Loaded() {
     if (this.Result == ServiceResult.Success) {
-      this.item.ClearChangeLog();
+      this._item.ClearChangeLog();
     }
   }
 
@@ -117,22 +112,21 @@ class UpdateItemResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
-  /* private */
-  Item GetObjectInstance(ExchangeService service, String xmlElementName) {
-    this.returnedItem = EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
-        service, xmlElementName);
+  Item _GetObjectInstance(ExchangeService service, String xmlElementName) {
+    this._returnedItem =
+        EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(service, xmlElementName);
 
-    return this.returnedItem;
+    return this._returnedItem;
   }
 
   /// <summary>
   /// Gets the item that was returned by the update operation. ReturnedItem is set only when a recurring Task
   /// is marked as complete or when its recurrence pattern changes.
   /// </summary>
-  Item get ReturnedItem => this.returnedItem;
+  Item get ReturnedItem => this._returnedItem;
 
   /// <summary>
   /// Gets the number of property conflicts that were resolved during the update operation.
   /// </summary>
-  int get ConflictCount => this.conflictCount;
+  int get ConflictCount => this._conflictCount;
 }

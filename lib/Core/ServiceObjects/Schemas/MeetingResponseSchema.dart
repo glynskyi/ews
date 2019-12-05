@@ -29,8 +29,7 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// <summary>
 /// Field URIs for MeetingMessage.
 /// </summary>
-/* private */
-class MeetingResponseSchemaFieldUris {
+class _MeetingResponseSchemaFieldUris {
   static const String ProposedStart = "meeting:ProposedStart";
   static const String ProposedEnd = "meeting:ProposedEnd";
 }
@@ -101,7 +100,7 @@ class MeetingResponseSchema extends MeetingMessageSchema {
   static PropertyDefinition EnhancedLocation = AppointmentSchema.EnhancedLocation;
 
   // This must be after the declaration of property definitions
-        static MeetingResponseSchema Instance = new MeetingResponseSchema();
+  static MeetingResponseSchema Instance = new MeetingResponseSchema();
 
   /// <summary>
   /// Registers properties.

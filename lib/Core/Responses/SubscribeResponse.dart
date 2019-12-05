@@ -33,7 +33,7 @@ import 'package:ews/Notifications/SubscriptionBase.dart';
 /// </summary>
 /// <typeparam name="TSubscription">Subscription type.</typeparam>
 class SubscribeResponse<TSubscription extends SubscriptionBase> extends ServiceResponse {
-  /* private */ TSubscription subscription;
+  TSubscription _subscription;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SubscribeResponse&lt;TSubscription&gt;"/> class.
@@ -42,7 +42,7 @@ class SubscribeResponse<TSubscription extends SubscriptionBase> extends ServiceR
   SubscribeResponse(TSubscription subscription) : super() {
     EwsUtilities.Assert(subscription != null, "SubscribeResponse.ctor", "subscription is null");
 
-    this.subscription = subscription;
+    this._subscription = subscription;
   }
 
   /// <summary>
@@ -53,11 +53,11 @@ class SubscribeResponse<TSubscription extends SubscriptionBase> extends ServiceR
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    this.subscription.LoadFromXml(reader);
+    this._subscription.LoadFromXml(reader);
   }
 
   /// <summary>
   /// Gets the subscription that was created.
   /// </summary>
-  TSubscription get Subscription => this.subscription;
+  TSubscription get Subscription => this._subscription;
 }

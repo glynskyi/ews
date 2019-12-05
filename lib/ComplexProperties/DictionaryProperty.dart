@@ -39,30 +39,25 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// </summary>
 /// <typeparam name="TKey">The type of key.</typeparam>
 /// <typeparam name="TEntry">The type of entry.</typeparam>
-abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<TKey>> extends ComplexProperty
-    implements ICustomUpdateSerializer {
-  /* private */
-  Map<TKey, TEntry> entries = new Map<TKey, TEntry>();
+abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<TKey>>
+    extends ComplexProperty implements ICustomUpdateSerializer {
+  Map<TKey, TEntry> _entries = new Map<TKey, TEntry>();
 
-  /* private */
-  Map<TKey, TEntry> removedEntries = new Map<TKey, TEntry>();
+  Map<TKey, TEntry> _removedEntries = new Map<TKey, TEntry>();
 
-  /* private */
-  List<TKey> addedEntries = new List<TKey>();
+  List<TKey> _addedEntries = new List<TKey>();
 
-  /* private */
-  List<TKey> modifiedEntries = new List<TKey>();
+  List<TKey> _modifiedEntries = new List<TKey>();
 
   /// <summary>
   /// Entry was changed.
   /// </summary>
   /// <param name="complexProperty">The complex property.</param>
-  /* private */
-  void EntryChanged(ComplexProperty complexProperty) {
+  void _EntryChanged(ComplexProperty complexProperty) {
     TKey key = (complexProperty as TEntry).Key;
 
-    if (!this.addedEntries.contains(key) && !this.modifiedEntries.contains(key)) {
-      this.modifiedEntries.add(key);
+    if (!this._addedEntries.contains(key) && !this._modifiedEntries.contains(key)) {
+      this._modifiedEntries.add(key);
       this.Changed();
     }
   }
@@ -72,8 +67,7 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// </summary>
   /// <param name="writer">The writer.</param>
   /// <param name="key">The key.</param>
-  /* private */
-  void WriteUriToXml(EwsServiceXmlWriter writer, TKey key) {
+  void _WriteUriToXml(EwsServiceXmlWriter writer, TKey key) {
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.IndexedFieldURI);
     writer.WriteAttributeValue(XmlAttributeNames.FieldURI, this.GetFieldURI());
     writer.WriteAttributeValue(XmlAttributeNames.FieldIndex, this.GetFieldIndex(key));
@@ -130,11 +124,11 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// </summary>
   @override
   void ClearChangeLog() {
-    this.addedEntries.clear();
-    this.removedEntries.clear();
-    this.modifiedEntries.clear();
+    this._addedEntries.clear();
+    this._removedEntries.clear();
+    this._modifiedEntries.clear();
 
-    for (TEntry entry in this.entries.values) {
+    for (TEntry entry in this._entries.values) {
       entry.ClearChangeLog();
     }
   }
@@ -144,11 +138,11 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// </summary>
   /// <param name="entry">The entry.</param>
   void InternalAdd(TEntry entry) {
-    entry.addOnChangeEvent(this.EntryChanged);
+    entry.addOnChangeEvent(this._EntryChanged);
 
-    this.entries[entry.Key] = entry;
-    this.addedEntries.add(entry.Key);
-    this.removedEntries.remove(entry.Key);
+    this._entries[entry.Key] = entry;
+    this._addedEntries.add(entry.Key);
+    this._removedEntries.remove(entry.Key);
 
     this.Changed();
   }
@@ -158,15 +152,15 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// </summary>
   /// <param name="entry">The entry.</param>
   void InternalAddOrReplace(TEntry entry) {
-    if (this.entries.containsKey(entry.Key)) {
-      TEntry oldEntry = this.entries[entry.Key];
-      oldEntry.removeChangeEvent(this.EntryChanged);
+    if (this._entries.containsKey(entry.Key)) {
+      TEntry oldEntry = this._entries[entry.Key];
+      oldEntry.removeChangeEvent(this._EntryChanged);
 
-      entry.addOnChangeEvent(this.EntryChanged);
+      entry.addOnChangeEvent(this._EntryChanged);
 
-      if (!this.addedEntries.contains(entry.Key)) {
-        if (!this.modifiedEntries.contains(entry.Key)) {
-          this.modifiedEntries.add(entry.Key);
+      if (!this._addedEntries.contains(entry.Key)) {
+        if (!this._modifiedEntries.contains(entry.Key)) {
+          this._modifiedEntries.add(entry.Key);
         }
       }
 
@@ -183,18 +177,18 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   void InternalRemove(TKey key) {
 //            TEntry entry;
 
-    if (this.entries.containsKey(key)) {
-      TEntry entry = this.entries[key];
-      entry.removeChangeEvent(this.EntryChanged);
+    if (this._entries.containsKey(key)) {
+      TEntry entry = this._entries[key];
+      entry.removeChangeEvent(this._EntryChanged);
 
-      this.entries.remove(key);
-      this.removedEntries[key] = entry;
+      this._entries.remove(key);
+      this._removedEntries[key] = entry;
 
       this.Changed();
     }
 
-    this.addedEntries.remove(key);
-    this.modifiedEntries.remove(key);
+    this._addedEntries.remove(key);
+    this._modifiedEntries.remove(key);
   }
 
   /// <summary>
@@ -231,9 +225,10 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void WriteToXmlWithNamespace(EwsServiceXmlWriter writer, XmlNamespace xmlNamespace, String xmlElementName) {
+  void WriteToXmlWithNamespace(
+      EwsServiceXmlWriter writer, XmlNamespace xmlNamespace, String xmlElementName) {
     // Only write collection if it has at least one element.
-    if (this.entries.length > 0) {
+    if (this._entries.length > 0) {
       super.WriteToXmlWithNamespace(writer, xmlNamespace, xmlElementName);
     }
   }
@@ -244,7 +239,7 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    for (MapEntry<TKey, TEntry> keyValuePair in this.entries.entries) {
+    for (MapEntry<TKey, TEntry> keyValuePair in this._entries.entries) {
       keyValuePair.value.WriteToXml(writer, this.GetEntryXmlElementName(keyValuePair.value));
     }
   }
@@ -253,7 +248,7 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// Gets the entries.
   /// </summary>
   /// <value>The entries.</value>
-  Map<TKey, TEntry> get Entries => this.entries;
+  Map<TKey, TEntry> get Entries => this._entries;
 
   /// <summary>
   /// Determines whether this instance contains the specified key.
@@ -275,20 +270,21 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
   /// <returns>
   /// True if property generated serialization.
   /// </returns>
-  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject, PropertyDefinition propertyDefinition) {
+  bool WriteSetUpdateToXml(
+      EwsServiceXmlWriter writer, ServiceObject ewsObject, PropertyDefinition propertyDefinition) {
     List<TEntry> tempEntries = new List<TEntry>();
 
-    for (TKey key in this.addedEntries) {
-      tempEntries.add(this.entries[key]);
+    for (TKey key in this._addedEntries) {
+      tempEntries.add(this._entries[key]);
     }
-    for (TKey key in this.modifiedEntries) {
-      tempEntries.add(this.entries[key]);
+    for (TKey key in this._modifiedEntries) {
+      tempEntries.add(this._entries[key]);
     }
 
     for (TEntry entry in tempEntries) {
       if (!entry.WriteSetUpdateToXml(writer, ewsObject, propertyDefinition.XmlElementName)) {
         writer.WriteStartElement(XmlNamespace.Types, ewsObject.GetSetFieldXmlElementName());
-        this.WriteUriToXml(writer, entry.Key);
+        this._WriteUriToXml(writer, entry.Key);
 
         writer.WriteStartElement(XmlNamespace.Types, ewsObject.GetXmlElementName());
         writer.WriteStartElement(XmlNamespace.Types, propertyDefinition.XmlElementName);
@@ -300,10 +296,10 @@ abstract class DictionaryProperty<TKey, TEntry extends DictionaryEntryProperty<T
       }
     }
 
-    for (TEntry entry in this.removedEntries.values) {
+    for (TEntry entry in this._removedEntries.values) {
       if (!entry.WriteDeleteUpdateToXml(writer, ewsObject)) {
         writer.WriteStartElement(XmlNamespace.Types, ewsObject.GetDeleteFieldXmlElementName());
-        this.WriteUriToXml(writer, entry.Key);
+        this._WriteUriToXml(writer, entry.Key);
         writer.WriteEndElement();
       }
     }

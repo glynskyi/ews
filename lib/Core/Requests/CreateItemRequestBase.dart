@@ -35,33 +35,31 @@ import 'package:ews/Enumerations/MessageDisposition.dart' as enumerations;
 import 'package:ews/Enumerations/SendInvitationsMode.dart' as enumerations;
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 
-
 /// <summary>
-    /// Represents an abstract CreateItem request.
-    /// </summary>
-    /// <typeparam name="TServiceObject">The type of the service object.</typeparam>
-    /// <typeparam name="TResponse">The type of the response.</typeparam>
-    abstract class CreateItemRequestBase<TServiceObject extends ServiceObject, TResponse extends ServiceResponse> extends CreateRequest<TServiceObject, TResponse> {
-      /* private */ enumerations.MessageDisposition messageDisposition;
+/// Represents an abstract CreateItem request.
+/// </summary>
+/// <typeparam name="TServiceObject">The type of the service object.</typeparam>
+/// <typeparam name="TResponse">The type of the response.</typeparam>
+abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
+    TResponse extends ServiceResponse> extends CreateRequest<TServiceObject, TResponse> {
+  enumerations.MessageDisposition _messageDisposition;
 
-      /* private */
-      enumerations.SendInvitationsMode sendInvitationsMode;
+  enumerations.SendInvitationsMode _sendInvitationsMode;
 
-      /// <summary>
-      /// Initializes a new instance of the <see cref="CreateItemRequestBase&lt;TServiceObject, TResponse&gt;"/> class.
-      /// </summary>
-      /// <param name="service">The service.</param>
-      /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-      CreateItemRequestBase(ExchangeService service,
-          ServiceErrorHandling errorHandlingMode)
-          : super(service, errorHandlingMode);
+  /// <summary>
+  /// Initializes a new instance of the <see cref="CreateItemRequestBase&lt;TServiceObject, TResponse&gt;"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
+  CreateItemRequestBase(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+      : super(service, errorHandlingMode);
 
-      /// <summary>
-      /// Gets a value indicating whether the TimeZoneContext SOAP header should be emitted.
-      /// </summary>
-      /// <value>
-      ///     <c>true</c> if the time zone should be emitted; otherwise, <c>false</c>.
-      /// </value>
+  /// <summary>
+  /// Gets a value indicating whether the TimeZoneContext SOAP header should be emitted.
+  /// </summary>
+  /// <value>
+  ///     <c>true</c> if the time zone should be emitted; otherwise, <c>false</c>.
+  /// </value>
 //@override
 //        bool EmitTimeZoneHeader
 //        {
@@ -79,110 +77,106 @@ import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 //            }
 //        }
 
-      /// <summary>
-      /// Validate the request.
-      /// </summary>
-      @override
-      void Validate() {
-        super.Validate();
+  /// <summary>
+  /// Validate the request.
+  /// </summary>
+  @override
+  void Validate() {
+    super.Validate();
 
-        EwsUtilities.ValidateParam(this.Items, "Items");
-      }
+    EwsUtilities.ValidateParam(this.Items, "Items");
+  }
 
-      /// <summary>
-      /// Gets the name of the XML element.
-      /// </summary>
-      /// <returns>XML element name.</returns>
-      @override
-      String GetXmlElementName() {
-        return XmlElementNames.CreateItem;
-      }
+  /// <summary>
+  /// Gets the name of the XML element.
+  /// </summary>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetXmlElementName() {
+    return XmlElementNames.CreateItem;
+  }
 
-      /// <summary>
-      /// Gets the name of the response XML element.
-      /// </summary>
-      /// <returns>XML element name.</returns>
-      @override
-      String GetResponseXmlElementName() {
-        return XmlElementNames.CreateItemResponse;
-      }
+  /// <summary>
+  /// Gets the name of the response XML element.
+  /// </summary>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetResponseXmlElementName() {
+    return XmlElementNames.CreateItemResponse;
+  }
 
-      /// <summary>
-      /// Gets the name of the response message XML element.
-      /// </summary>
-      /// <returns>XML element name.</returns>
-      @override
-      String GetResponseMessageXmlElementName() {
-        return XmlElementNames.CreateItemResponseMessage;
-      }
+  /// <summary>
+  /// Gets the name of the response message XML element.
+  /// </summary>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetResponseMessageXmlElementName() {
+    return XmlElementNames.CreateItemResponseMessage;
+  }
 
-      /// <summary>
-      /// Gets the name of the parent folder XML element.
-      /// </summary>
-      /// <returns>XML element name.</returns>
-      @override
-      String GetParentFolderXmlElementName() {
-        return XmlElementNames.SavedItemFolderId;
-      }
+  /// <summary>
+  /// Gets the name of the parent folder XML element.
+  /// </summary>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetParentFolderXmlElementName() {
+    return XmlElementNames.SavedItemFolderId;
+  }
 
-      /// <summary>
-      /// Gets the name of the object collection XML element.
-      /// </summary>
-      /// <returns>XML element name.</returns>
-      @override
-      String GetObjectCollectionXmlElementName() {
-        return XmlElementNames.Items;
-      }
+  /// <summary>
+  /// Gets the name of the object collection XML element.
+  /// </summary>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetObjectCollectionXmlElementName() {
+    return XmlElementNames.Items;
+  }
 
-      /// <summary>
-      /// Writes the attributes to XML.
-      /// </summary>
-      /// <param name="writer">The writer.</param>
-      @override
-      void WriteAttributesToXml(EwsServiceXmlWriter writer) {
-        super.WriteAttributesToXml(writer);
+  /// <summary>
+  /// Writes the attributes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteAttributesToXml(EwsServiceXmlWriter writer) {
+    super.WriteAttributesToXml(writer);
 
-        if (this.MessageDisposition != null) {
-          writer.WriteAttributeValue(
-              XmlAttributeNames.MessageDisposition, this.MessageDisposition);
-        }
-
-        if (this.SendInvitationsMode != null) {
-          writer.WriteAttributeValue(XmlAttributeNames.SendMeetingInvitations,
-              this.SendInvitationsMode);
-        }
-      }
-
-      /// <summary>
-      /// Gets or sets the message disposition.
-      /// </summary>
-      /// <value>The message disposition.</value>
-      enumerations.MessageDisposition get MessageDisposition =>
-          this.messageDisposition;
-
-      set MessageDisposition(enumerations.MessageDisposition value) {
-        this.messageDisposition = value;
-      }
-
-      /// <summary>
-      /// Gets or sets the send invitations mode.
-      /// </summary>
-      /// <value>The send invitations mode.</value>
-      enumerations.SendInvitationsMode get SendInvitationsMode =>
-          this.sendInvitationsMode;
-
-      set SendInvitationsMode(enumerations.SendInvitationsMode value) {
-        this.sendInvitationsMode = value;
-      }
-
-      /// <summary>
-      /// Gets or sets the items.
-      /// </summary>
-      /// <value>The items.</value>
-      Iterable<TServiceObject> get Items => this.Objects;
-
-      set Items(Iterable<TServiceObject> value) {
-        this.Objects = value;
-      }
+    if (this.MessageDisposition != null) {
+      writer.WriteAttributeValue(XmlAttributeNames.MessageDisposition, this.MessageDisposition);
     }
 
+    if (this.SendInvitationsMode != null) {
+      writer.WriteAttributeValue(
+          XmlAttributeNames.SendMeetingInvitations, this.SendInvitationsMode);
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets the message disposition.
+  /// </summary>
+  /// <value>The message disposition.</value>
+  enumerations.MessageDisposition get MessageDisposition => this._messageDisposition;
+
+  set MessageDisposition(enumerations.MessageDisposition value) {
+    this._messageDisposition = value;
+  }
+
+  /// <summary>
+  /// Gets or sets the send invitations mode.
+  /// </summary>
+  /// <value>The send invitations mode.</value>
+  enumerations.SendInvitationsMode get SendInvitationsMode => this._sendInvitationsMode;
+
+  set SendInvitationsMode(enumerations.SendInvitationsMode value) {
+    this._sendInvitationsMode = value;
+  }
+
+  /// <summary>
+  /// Gets or sets the items.
+  /// </summary>
+  /// <value>The items.</value>
+  Iterable<TServiceObject> get Items => this.Objects;
+
+  set Items(Iterable<TServiceObject> value) {
+    this.Objects = value;
+  }
+}

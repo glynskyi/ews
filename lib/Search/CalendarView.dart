@@ -37,16 +37,13 @@ import 'package:ews/Search/ViewBase.dart';
 /// Represents a date range view of appointments in calendar folder search operations.
 /// </summary>
 class CalendarView extends ViewBase {
-  /* private */ ItemTraversal traversal = ItemTraversal.Shallow;
+  ItemTraversal _traversal = ItemTraversal.Shallow;
 
-  /* private */
-  int maxItemsReturned;
+  int _maxItemsReturned;
 
-  /* private */
-  DateTime startDate;
+  DateTime _startDate;
 
-  /* private */
-  DateTime endDate;
+  DateTime _endDate;
 
   /// <summary>
   /// Writes the attributes to XML.
@@ -91,8 +88,8 @@ class CalendarView extends ViewBase {
   /// <param name="startDate">The start date.</param>
   /// <param name="endDate">The end date.</param>
   CalendarView(DateTime startDate, DateTime endDate) : super() {
-    this.startDate = startDate;
-    this.endDate = endDate;
+    this._startDate = startDate;
+    this._endDate = endDate;
   }
 
   /// <summary>
@@ -101,9 +98,10 @@ class CalendarView extends ViewBase {
   /// <param name="startDate">The start date.</param>
   /// <param name="endDate">The end date.</param>
   /// <param name="maxItemsReturned">The maximum number of items the search operation should return.</param>
-  CalendarView.withMaxItemsReturned(DateTime startDate, DateTime endDate, int maxItemsReturned) : super() {
-    this.startDate = startDate;
-    this.endDate = endDate;
+  CalendarView.withMaxItemsReturned(DateTime startDate, DateTime endDate, int maxItemsReturned)
+      : super() {
+    this._startDate = startDate;
+    this._endDate = endDate;
     this.MaxItemsReturned = maxItemsReturned;
   }
 
@@ -115,7 +113,7 @@ class CalendarView extends ViewBase {
     super.InternalValidate(request);
 
     // todo : review time comparision
-    if (this.endDate.millisecondsSinceEpoch < this.StartDate.millisecondsSinceEpoch) {
+    if (this._endDate.millisecondsSinceEpoch < this.StartDate.millisecondsSinceEpoch) {
       throw new ServiceValidationException("Strings.EndDateMustBeGreaterThanStartDate");
     }
   }
@@ -154,21 +152,21 @@ class CalendarView extends ViewBase {
   /// <summary>
   /// Gets or sets the start date.
   /// </summary>
-  DateTime get StartDate => this.startDate;
+  DateTime get StartDate => this._startDate;
 
-  set StartDate(DateTime value) => this.startDate = value;
+  set StartDate(DateTime value) => this._startDate = value;
 
   /// <summary>
   /// Gets or sets the end date.
   /// </summary>
-  DateTime get EndDate => this.endDate;
+  DateTime get EndDate => this._endDate;
 
-  set EndDate(DateTime value) => this.endDate = value;
+  set EndDate(DateTime value) => this._endDate = value;
 
   /// <summary>
   /// The maximum number of items the search operation should return.
   /// </summary>
-  int get MaxItemsReturned => this.maxItemsReturned;
+  int get MaxItemsReturned => this._maxItemsReturned;
 
   set MaxItemsReturned(int value) {
     if (value != null) {
@@ -177,13 +175,13 @@ class CalendarView extends ViewBase {
       }
     }
 
-    this.maxItemsReturned = value;
+    this._maxItemsReturned = value;
   }
 
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to ItemTraversal.Shallow.
   /// </summary>
-  ItemTraversal get Traversal => this.traversal;
+  ItemTraversal get Traversal => this._traversal;
 
-  set Traversal(ItemTraversal value) => this.traversal = value;
+  set Traversal(ItemTraversal value) => this._traversal = value;
 }

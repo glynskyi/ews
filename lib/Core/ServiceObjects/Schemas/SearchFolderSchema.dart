@@ -34,9 +34,7 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// <summary>
 /// Field URIs for search folders.
 /// </summary>
-/* private */
-
-class SearchFolderSchemaFieldUris {
+class _SearchFolderSchemaFieldUris {
   static const String SearchParameters = "folder:SearchParameters";
 }
 
@@ -48,15 +46,16 @@ class SearchFolderSchema extends FolderSchema {
   /// <summary>
   /// Defines the SearchParameters property.
   /// </summary>
-  static PropertyDefinition SearchParameters = new ComplexPropertyDefinition<SearchFolderParameters>.withUriAndFlags(
-      XmlElementNames.SearchParameters,
-      SearchFolderSchemaFieldUris.SearchParameters,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.AutoInstantiateOnRead
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition SearchParameters =
+      new ComplexPropertyDefinition<SearchFolderParameters>.withUriAndFlags(
+          XmlElementNames.SearchParameters,
+          _SearchFolderSchemaFieldUris.SearchParameters,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.AutoInstantiateOnRead
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new SearchFolderParameters();
   });
 

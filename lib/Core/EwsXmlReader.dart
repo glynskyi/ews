@@ -99,7 +99,7 @@ class EwsXmlReader {
   void InternalReadElementWithNamespace(
       XmlNamespace xmlNamespace, String localName, XmlNodeType nodeType) {
     if (xmlNamespace == XmlNamespace.NotSpecified) {
-      this.InternalReadElement("", localName, nodeType);
+      this._InternalReadElement("", localName, nodeType);
     } else {
       this.Read(nodeType: nodeType);
 
@@ -122,8 +122,7 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
   /// <param name="nodeType">Type of the node.</param>
-  /* private */
-  void InternalReadElement(String namespacePrefix, String localName, XmlNodeType nodeType) {
+  void _InternalReadElement(String namespacePrefix, String localName, XmlNodeType nodeType) {
     this.Read(nodeType: nodeType);
 
     if ((this.LocalName != localName) || (this.NamespacePrefix != namespacePrefix)) {
@@ -359,9 +358,8 @@ class EwsXmlReader {
   /// Reads the base64 element value.
   /// </summary>
   /// <param name="outputStream">The output stream.</param>
-  void ReadBase64ElementValueWithStream(Stream outputStream)
-        {
-          throw UnimplementedError("ReadBase64ElementValueWithStream");
+  void ReadBase64ElementValueWithStream(Stream outputStream) {
+    throw UnimplementedError("ReadBase64ElementValueWithStream");
 //            this.EnsureCurrentNodeIsStartElement();
 //
 //            Uint8List buffer = new byte[ReadWriteBufferSize];
@@ -379,7 +377,7 @@ class EwsXmlReader {
 //            while (bytesRead > 0);
 //
 //            outputStream.Flush();
-        }
+  }
 
   /// <summary>
   /// Reads the start element.
@@ -387,7 +385,7 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
   void ReadStartElement(String namespacePrefix, String localName) {
-    this.InternalReadElement(namespacePrefix, localName, XmlNodeType.Element);
+    this._InternalReadElement(namespacePrefix, localName, XmlNodeType.Element);
   }
 
   /// <summary>
@@ -405,7 +403,7 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="elementName">Name of the element.</param>
   void ReadEndElementWithPrefix(String namespacePrefix, String elementName) {
-    this.InternalReadElement(namespacePrefix, elementName, XmlNodeType.EndElement);
+    this._InternalReadElement(namespacePrefix, elementName, XmlNodeType.EndElement);
   }
 
   /// <summary>

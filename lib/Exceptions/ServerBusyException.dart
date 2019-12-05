@@ -27,21 +27,20 @@ import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Exceptions/ServiceResponseException.dart';
 
 /// <summary>
-    /// Represents a server busy exception found in a service response.
-    /// </summary>
+/// Represents a server busy exception found in a service response.
+/// </summary>
 //    [Serializable]
 // todo("refactor this class")
- class ServerBusyException extends ServiceResponseException
-    {
-        /* private */ static const  String BackOffMillisecondsKey = "BackOffMilliseconds";
-        /* private */ final int backOffMilliseconds = 30000;
+class ServerBusyException extends ServiceResponseException {
+  static const String _BackOffMillisecondsKey = "BackOffMilliseconds";
+  final int _backOffMilliseconds = 30000;
 
   ServerBusyException(ServiceResponse response) : super(response);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerBusyException"/> class.
-        /// </summary>
-        /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ServerBusyException"/> class.
+  /// </summary>
+  /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
 // ServerBusyException(ServiceResponse response)
 //            : super(response)
 //        {
@@ -51,21 +50,21 @@ import 'package:ews/Exceptions/ServiceResponseException.dart';
 //            }
 //		}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServerBusyException"/> class with serialized data.
-		/// </summary>
-		/// <param name="info">The object that holds the serialized object data.</param>
-		/// <param name="context">The contextual information about the source or destination.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServerBusyException"/> class with serialized data.
+  /// </summary>
+  /// <param name="info">The object that holds the serialized object data.</param>
+  /// <param name="context">The contextual information about the source or destination.</param>
 //		protected ServerBusyException(SerializationInfo info, StreamingContext context)
 //			: super(info, context)
 //		{
 //			this.backOffMilliseconds = info.GetInt32("BackOffMilliseconds");
 //		}
 
-		/// <summary>Sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object with the parameter name and additional exception information.</summary>
-		/// <param name="info">The object that holds the serialized object data. </param>
-		/// <param name="context">The contextual information about the source or destination. </param>
-		/// <exception cref="T:System.ArgumentNullException">The <paramref name="info" /> object is a null reference (Nothing in Visual Basic). </exception>
+  /// <summary>Sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> object with the parameter name and additional exception information.</summary>
+  /// <param name="info">The object that holds the serialized object data. </param>
+  /// <param name="context">The contextual information about the source or destination. </param>
+  /// <exception cref="T:System.ArgumentNullException">The <paramref name="info" /> object is a null reference (Nothing in Visual Basic). </exception>
 //@override
 // void GetObjectData(SerializationInfo info, StreamingContext context)
 //		{
@@ -76,9 +75,9 @@ import 'package:ews/Exceptions/ServiceResponseException.dart';
 //			info.AddValue("BackOffMilliseconds", this.backOffMilliseconds);
 //		}
 
-		/// <summary>
-		/// Suggested number of milliseconds to wait before attempting a request again. If zero,
-		/// there is no suggested backoff time.
-		/// </summary>
- int get BackOffMilliseconds => this.backOffMilliseconds;
-    }
+  /// <summary>
+  /// Suggested number of milliseconds to wait before attempting a request again. If zero,
+  /// there is no suggested backoff time.
+  /// </summary>
+  int get BackOffMilliseconds => this._backOffMilliseconds;
+}

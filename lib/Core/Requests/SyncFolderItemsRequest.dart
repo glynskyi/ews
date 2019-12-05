@@ -43,31 +43,26 @@ import 'package:ews/misc/ItemIdWrapperList.dart';
 /// Represents a SyncFolderItems request.
 /// </summary>
 class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItemsResponse> {
-  /* private */ core.PropertySet propertySet;
+  core.PropertySet _propertySet;
 
-  /* private */
-  FolderId syncFolderId;
+  FolderId _syncFolderId;
 
-  /* private */
-  SyncFolderItemsScope syncScope;
+  SyncFolderItemsScope _syncScope;
 
-  /* private */
-  String syncState;
+  String _syncState;
 
-  /* private */
-  ItemIdWrapperList ignoredItemIds = new ItemIdWrapperList();
+  ItemIdWrapperList _ignoredItemIds = new ItemIdWrapperList();
 
-  /* private */
-  int maxChangesReturned = 100;
+  int _maxChangesReturned = 100;
 
-  /* private */
-  int numberOfDays = 0;
+  int _numberOfDays = 0;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SyncFolderItemsRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  SyncFolderItemsRequest(ExchangeService service) : super(service, ServiceErrorHandling.ThrowOnError) {}
+  SyncFolderItemsRequest(ExchangeService service)
+      : super(service, ServiceErrorHandling.ThrowOnError) {}
 
   /// <summary>
   /// Creates service response.
@@ -129,7 +124,7 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
     // SyncFolderItemsScope enum was introduced with Exchange2010.  Only
     // value NormalItems is valid with previous server versions.
     if (this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2010.index &&
-        this.syncScope != SyncFolderItemsScope.NormalItems) {
+        this._syncScope != SyncFolderItemsScope.NormalItems) {
       throw new ServiceVersionException("""string.Format(
                                   Strings.EnumValueIncompatibleWithRequestVersion,
                                   this.syncScope.ToString(),
@@ -138,7 +133,8 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
     }
 
     // NumberOfDays was introduced with Exchange 2013.
-    if (this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index && this.NumberOfDays != 0) {
+    if (this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index &&
+        this.NumberOfDays != 0) {
       throw new ServiceVersionException("""string.Format(
                                   Strings.ParameterIncompatibleWithRequestVersion,
                                   "numberOfDays",
@@ -161,7 +157,8 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
     this.SyncFolderId.WriteToXmlElemenetName(writer);
     writer.WriteEndElement();
 
-    writer.WriteElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SyncState, this.SyncState);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.SyncState, this.SyncState);
 
     this.IgnoredItemIds.WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.Ignore);
 
@@ -169,11 +166,13 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
         XmlNamespace.Messages, XmlElementNames.MaxChangesReturned, this.MaxChangesReturned);
 
     if (this.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010.index) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SyncScope, this.syncScope);
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.SyncScope, this._syncScope);
     }
 
     if (this.NumberOfDays != 0) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.NumberOfDays, this.numberOfDays);
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.NumberOfDays, this._numberOfDays);
     }
   }
 
@@ -190,58 +189,58 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
   /// Gets or sets the property set.
   /// </summary>
   /// <value>The property set.</value>
-  core.PropertySet get PropertySet => this.propertySet;
+  core.PropertySet get PropertySet => this._propertySet;
 
   set PropertySet(core.PropertySet value) {
-    this.propertySet = value;
+    this._propertySet = value;
   }
 
   /// <summary>
   /// Gets or sets the sync folder id.
   /// </summary>
   /// <value>The sync folder id.</value>
-  FolderId get SyncFolderId => this.syncFolderId;
+  FolderId get SyncFolderId => this._syncFolderId;
 
   set SyncFolderId(FolderId value) {
-    this.syncFolderId = value;
+    this._syncFolderId = value;
   }
 
   /// <summary>
   /// Gets or sets the scope of the sync.
   /// </summary>
   /// <value>The scope of the sync.</value>
-  SyncFolderItemsScope get SyncScope => this.syncScope;
+  SyncFolderItemsScope get SyncScope => this._syncScope;
 
   set SyncScope(SyncFolderItemsScope value) {
-    this.syncScope = value;
+    this._syncScope = value;
   }
 
   /// <summary>
   /// Gets or sets the state of the sync.
   /// </summary>
   /// <value>The state of the sync.</value>
-  String get SyncState => this.syncState;
+  String get SyncState => this._syncState;
 
   set SyncState(String value) {
-    this.syncState = value;
+    this._syncState = value;
   }
 
   /// <summary>
   /// Gets the list of ignored item ids.
   /// </summary>
   /// <value>The ignored item ids.</value>
-  ItemIdWrapperList get IgnoredItemIds => this.ignoredItemIds;
+  ItemIdWrapperList get IgnoredItemIds => this._ignoredItemIds;
 
   /// <summary>
   /// Gets or sets the maximum number of changes returned by SyncFolderItems.
   /// Values must be between 1 and 512.
   /// Default is 100.
   /// </summary>
-  int get MaxChangesReturned => this.maxChangesReturned;
+  int get MaxChangesReturned => this._maxChangesReturned;
 
   set MaxChangesReturned(int value) {
     if (value >= 1 && value <= 512) {
-      this.maxChangesReturned = value;
+      this._maxChangesReturned = value;
     } else {
       throw new RangeError.range(value, 1, 512, "Strings.MaxChangesMustBeBetween1And512");
     }
@@ -252,11 +251,11 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
   /// Zero means return all content.
   /// Default is zero.
   /// </summary>
-  int get NumberOfDays => this.numberOfDays;
+  int get NumberOfDays => this._numberOfDays;
 
   set NumberOfDays(int value) {
     if (value >= 0) {
-      this.numberOfDays = value;
+      this._numberOfDays = value;
     } else {
       throw new RangeError("Strings.NumberOfDaysMustBePositive");
     }

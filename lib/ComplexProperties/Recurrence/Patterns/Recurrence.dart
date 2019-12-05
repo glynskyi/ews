@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
 import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/ComplexProperties/Recurrence/Ranges/EndDateRecurrenceRange.dart';
 import 'package:ews/ComplexProperties/Recurrence/Ranges/NoEndRecurrenceRange.dart';
@@ -38,13 +37,11 @@ import 'package:timezone/standalone.dart';
 /// Represents a recurrence pattern, as used by Appointment and Task items.
 /// </summary>
 class Recurrence extends ComplexProperty {
-  /* private */ TZDateTime startDate;
+  TZDateTime _startDate;
 
-  /* private */
-  int numberOfOccurrences;
+  int _numberOfOccurrences;
 
-  /* private */
-  TZDateTime endDate;
+  TZDateTime _endDate;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Recurrence"/> class.
@@ -55,7 +52,7 @@ class Recurrence extends ComplexProperty {
   /// Initializes a new instance of the <see cref="Recurrence"/> class.
   /// </summary>
   /// <param name="startDate">The start date.</param>
-  Recurrence.withStartDate(this.startDate) : super();
+  Recurrence.withStartDate(this._startDate) : super();
 
   /// <summary>
   /// Gets the name of the XML element.
@@ -75,8 +72,7 @@ class Recurrence extends ComplexProperty {
   /// Write properties to XML.
   /// </summary>
   /// <param name="writer">The writer.</param>
-  void InternalWritePropertiesToXml(EwsServiceXmlWriter writer) {
-  }
+  void InternalWritePropertiesToXml(EwsServiceXmlWriter writer) {}
 
   /// <summary>
   /// Writes elements to XML.
@@ -92,14 +88,10 @@ class Recurrence extends ComplexProperty {
 
     if (!this.HasEnd) {
       range = new NoEndRecurrenceRange.withStartDate(this.StartDate);
-    }
-    else if (this.NumberOfOccurrences != 0) {
-      range = new NumberedRecurrenceRange.withStartDate(
-          this.StartDate, this.NumberOfOccurrences);
-    }
-    else {
-      range = new EndDateRecurrenceRange.withStartAndEndDates(
-          this.StartDate, this.EndDate);
+    } else if (this.NumberOfOccurrences != 0) {
+      range = new NumberedRecurrenceRange.withStartDate(this.StartDate, this.NumberOfOccurrences);
+    } else {
+      range = new EndDateRecurrenceRange.withStartAndEndDates(this.StartDate, this.EndDate);
     }
 
     range.WriteToXml(writer, range.XmlElementName);
@@ -112,38 +104,34 @@ class Recurrence extends ComplexProperty {
   /// <param name="value">The value.</param>
   /// <param name="name">The property name.</param>
   /// <returns>Property value</returns>
-        T GetFieldValueOrThrowIfNull<T>(T value, String name)
-        {
-            if (value != null)
-            {
-                return value;
-            }
-            else
-            {
-                throw new ServiceValidationException("""
+  T GetFieldValueOrThrowIfNull<T>(T value, String name) {
+    if (value != null) {
+      return value;
+    } else {
+      throw new ServiceValidationException("""
                                 string.Format(Strings.PropertyValueMustBeSpecifiedForRecurrencePattern, name)""");
-            }
-        }
+    }
+  }
 
   /// <summary>
   /// Gets or sets the date and time when the recurrence start.
   /// </summary>
   TZDateTime get StartDate =>
-      this.GetFieldValueOrThrowIfNull<DateTime>(this.startDate, "StartDate");
+      this.GetFieldValueOrThrowIfNull<DateTime>(this._startDate, "StartDate");
 
-  set StartDate(TZDateTime value) => this.startDate = value;
+  set StartDate(TZDateTime value) => this._startDate = value;
 
   /// <summary>
   /// Gets a value indicating whether the pattern has a fixed number of occurrences or an end date.
   /// </summary>
-  bool get HasEnd => this.numberOfOccurrences != null || this.endDate != null;
+  bool get HasEnd => this._numberOfOccurrences != null || this._endDate != null;
 
   /// <summary>
   /// Sets up this recurrence so that it never ends. Calling NeverEnds is equivalent to setting both NumberOfOccurrences and EndDate to null.
   /// </summary>
   void NeverEnds() {
-    this.numberOfOccurrences = null;
-    this.endDate = null;
+    this._numberOfOccurrences = null;
+    this._endDate = null;
     this.Changed();
   }
 
@@ -154,38 +142,37 @@ class Recurrence extends ComplexProperty {
   void InternalValidate() {
     super.InternalValidate();
 
-    if (this.startDate == null) {
-      throw new ServiceValidationException(
-          "Strings.RecurrencePatternMustHaveStartDate");
+    if (this._startDate == null) {
+      throw new ServiceValidationException("Strings.RecurrencePatternMustHaveStartDate");
     }
   }
 
   /// <summary>
   /// Gets or sets the number of occurrences after which the recurrence ends. Setting NumberOfOccurrences resets EndDate.
   /// </summary>
-  int get NumberOfOccurrences => this.numberOfOccurrences;
+  int get NumberOfOccurrences => this._numberOfOccurrences;
 
   set NumberOfOccurrences(int value) {
     if (value < 1) {
-      throw new ArgumentError.value(value, "NumberOfOccurrences", "Strings.NumberOfOccurrencesMustBeGreaterThanZero");
+      throw new ArgumentError.value(
+          value, "NumberOfOccurrences", "Strings.NumberOfOccurrencesMustBeGreaterThanZero");
     }
-    if (this.CanSetFieldValue(this.numberOfOccurrences, value)) {
-      this.numberOfOccurrences = value;
-      this.endDate = null;
+    if (this.CanSetFieldValue(this._numberOfOccurrences, value)) {
+      this._numberOfOccurrences = value;
+      this._endDate = null;
       this.Changed();
     }
   }
 
-
   /// <summary>
   /// Gets or sets the date after which the recurrence ends. Setting EndDate resets NumberOfOccurrences.
   /// </summary>
-  TZDateTime get EndDate => this.endDate;
+  TZDateTime get EndDate => this._endDate;
 
   set EndDate(TZDateTime value) {
-    if (this.CanSetFieldValue(this.endDate, value)) {
-      this.endDate = value;
-      this.numberOfOccurrences = null;
+    if (this.CanSetFieldValue(this._endDate, value)) {
+      this._endDate = value;
+      this._numberOfOccurrences = null;
       this.Changed();
     }
   }
@@ -201,8 +188,8 @@ class Recurrence extends ComplexProperty {
     }
 
     return (this.runtimeType == otherRecurrence.runtimeType &&
-        this.numberOfOccurrences == otherRecurrence.numberOfOccurrences &&
-        this.endDate == otherRecurrence.endDate &&
-        this.startDate == otherRecurrence.startDate);
+        this._numberOfOccurrences == otherRecurrence._numberOfOccurrences &&
+        this._endDate == otherRecurrence._endDate &&
+        this._startDate == otherRecurrence._startDate);
   }
 }

@@ -36,17 +36,16 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents the response to an individual attachment deletion operation.
 /// </summary>
 class DeleteAttachmentResponse extends ServiceResponse {
-  /* private */ complex.Attachment attachment;
+  complex.Attachment _attachment;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteAttachmentResponse"/> class.
   /// </summary>
   /// <param name="attachment">The attachment.</param>
   DeleteAttachmentResponse(complex.Attachment attachment) : super() {
-    EwsUtilities.Assert(attachment != null, "DeleteAttachmentResponse.ctor",
-        "attachment is null");
+    EwsUtilities.Assert(attachment != null, "DeleteAttachmentResponse.ctor", "attachment is null");
 
-    this.attachment = attachment;
+    this._attachment = attachment;
   }
 
   /// <summary>
@@ -57,22 +56,18 @@ class DeleteAttachmentResponse extends ServiceResponse {
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    reader.ReadStartElementWithNamespace(
-        XmlNamespace.Messages, XmlElementNames.RootItemId);
+    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.RootItemId);
 
-    String changeKey =
-        reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
-    if (!StringUtils.IsNullOrEmpty(changeKey) &&
-        this.attachment.Owner != null) {
-      this.attachment.Owner.RootItemId.ChangeKey = changeKey;
+    String changeKey = reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
+    if (!StringUtils.IsNullOrEmpty(changeKey) && this._attachment.Owner != null) {
+      this._attachment.Owner.RootItemId.ChangeKey = changeKey;
     }
 
-    reader.ReadEndElementIfNecessary(
-        XmlNamespace.Messages, XmlElementNames.RootItemId);
+    reader.ReadEndElementIfNecessary(XmlNamespace.Messages, XmlElementNames.RootItemId);
   }
 
   /// <summary>
   /// Gets the attachment that was deleted.
   /// </summary>
-  complex.Attachment get Attachment => this.attachment;
+  complex.Attachment get Attachment => this._attachment;
 }

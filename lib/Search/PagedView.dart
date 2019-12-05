@@ -34,14 +34,11 @@ import 'package:ews/Search/ViewBase.dart';
 /// Represents a view settings that support paging in a search operation.
 /// </summary>
 abstract class PagedView extends ViewBase {
-  /* private */
-  int pageSize = 0;
+  int _pageSize = 0;
 
-  /* private */
-  enumerations.OffsetBasePoint offsetBasePoint = enumerations.OffsetBasePoint.Beginning;
+  enumerations.OffsetBasePoint _offsetBasePoint = enumerations.OffsetBasePoint.Beginning;
 
-  /* private */
-  int offset = 0;
+  int _offset = 0;
 
   /// <summary>
   /// Write to XML.
@@ -117,7 +114,8 @@ abstract class PagedView extends ViewBase {
   /// <param name="pageSize">The maximum number of elements the search operation should return.</param>
   /// <param name="offset">The offset of the view from the base point.</param>
   /// <param name="offsetBasePoint">The base point of the offset.</param>
-  PagedView.withPageSizeAndOffsetAndBasePoint(int pageSize, int offset, enumerations.OffsetBasePoint offsetBasePoint)
+  PagedView.withPageSizeAndOffsetAndBasePoint(
+      int pageSize, int offset, enumerations.OffsetBasePoint offsetBasePoint)
       : super() {
     this.PageSize = pageSize;
     this.Offset = offset;
@@ -127,31 +125,31 @@ abstract class PagedView extends ViewBase {
   /// <summary>
   /// The maximum number of items or folders the search operation should return.
   /// </summary>
-  int get PageSize => this.pageSize;
+  int get PageSize => this._pageSize;
 
   set PageSize(int value) {
     if (value <= 0) {
       throw new ArgumentError("Strings.ValueMustBeGreaterThanZero");
     }
 
-    this.pageSize = value;
+    this._pageSize = value;
   }
 
   /// <summary>
   /// Gets or sets the base point of the offset.
   /// </summary>
-  enumerations.OffsetBasePoint get OffsetBasePoint => this.offsetBasePoint;
+  enumerations.OffsetBasePoint get OffsetBasePoint => this._offsetBasePoint;
 
-  set OffsetBasePoint(enumerations.OffsetBasePoint value) => this.offsetBasePoint = value;
+  set OffsetBasePoint(enumerations.OffsetBasePoint value) => this._offsetBasePoint = value;
 
   /// <summary>
   /// Gets or sets the offset.
   /// </summary>
-  int get Offset => this.offset;
+  int get Offset => this._offset;
 
   set Offset(int value) {
     if (value >= 0) {
-      this.offset = value;
+      this._offset = value;
     } else {
       throw new ArgumentError("Strings.OffsetMustBeGreaterThanZero");
     }

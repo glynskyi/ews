@@ -28,33 +28,28 @@ import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
-import 'package:ews/Core/ServiceObjects/Folders/Folder.dart'
-    as ServiceObjects;
+import 'package:ews/Core/ServiceObjects/Folders/Folder.dart' as ServiceObjects;
 import 'package:ews/Core/XmlElementNames.dart';
 
 /// <summary>
 /// Represents the response to an individual folder retrieval operation.
 /// </summary>
 class GetFolderResponse extends ServiceResponse {
-  /* private */ ServiceObjects.Folder folder;
+  ServiceObjects.Folder _folder;
 
-  /* private */
-  PropertySet propertySet;
+  PropertySet _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetFolderResponse"/> class.
   /// </summary>
   /// <param name="folder">The folders.</param>
   /// <param name="propertySet">The property set from the request.</param>
-  GetFolderResponse(ServiceObjects.Folder folder, PropertySet propertySet)
-      : super() {
-    this.folder = folder;
-    this.propertySet = propertySet;
+  GetFolderResponse(ServiceObjects.Folder folder, PropertySet propertySet) : super() {
+    this._folder = folder;
+    this._propertySet = propertySet;
 
-            EwsUtilities.Assert(
-                this.propertySet != null,
-                "GetFolderResponse.ctor",
-                "PropertySet should not be null");
+    EwsUtilities.Assert(
+        this._propertySet != null, "GetFolderResponse.ctor", "PropertySet should not be null");
   }
 
   /// <summary>
@@ -68,14 +63,14 @@ class GetFolderResponse extends ServiceResponse {
     List<ServiceObjects.Folder> folders =
         reader.ReadServiceObjectsCollectionFromXml<ServiceObjects.Folder>(
             XmlElementNames.Folders,
-            this.GetObjectInstance,
+            this._GetObjectInstance,
             true,
             /* clearPropertyBag */
-            this.propertySet,
+            this._propertySet,
             /* requestedPropertySet */
             false); /* summaryPropertiesOnly */
 
-    this.folder = folders[0];
+    this._folder = folders[0];
   }
 
   /// <summary>
@@ -84,19 +79,17 @@ class GetFolderResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>folders.</returns>
-  /* private */
-  ServiceObjects.Folder GetObjectInstance(
-      ExchangeService service, String xmlElementName) {
+  ServiceObjects.Folder _GetObjectInstance(ExchangeService service, String xmlElementName) {
     if (this.Folder != null) {
       return this.Folder;
     } else {
-      return EwsUtilities.CreateEwsObjectFromXmlElementName<
-          ServiceObjects.Folder>(service, xmlElementName);
+      return EwsUtilities.CreateEwsObjectFromXmlElementName<ServiceObjects.Folder>(
+          service, xmlElementName);
     }
   }
 
   /// <summary>
   /// Gets the folder that was retrieved.
   /// </summary>
-  ServiceObjects.Folder get Folder => this.folder;
+  ServiceObjects.Folder get Folder => this._folder;
 }

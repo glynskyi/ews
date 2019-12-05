@@ -37,7 +37,7 @@ import 'package:ews/Search/Grouping.dart';
 /// </summary>
 /// <typeparam name="TItem">The type of the item.</typeparam>
 class FindItemRequest<TItem extends Item> extends FindRequest<FindItemResponse<TItem>> {
-  /* private */ Grouping groupBy;
+  Grouping _groupBy;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindItemRequest&lt;TItem&gt;"/> class.
@@ -107,7 +107,7 @@ class FindItemRequest<TItem extends Item> extends FindRequest<FindItemResponse<T
   /// Gets or sets the group by.
   /// </summary>
   /// <value>The group by.</value>
-  Grouping get GroupBy => this.groupBy;
+  Grouping get GroupBy => this._groupBy;
 
-  set GroupBy(Grouping value) => this.groupBy = value;
+  set GroupBy(Grouping value) => this._groupBy = value;
 }

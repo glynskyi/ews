@@ -23,125 +23,107 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'package:ews/ComplexProperties/ComplexProperty.dart';
+import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart' as complex;
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:timezone/standalone.dart';
 
 /// <summary>
-    /// Represents recurrence range with start and end dates.
-    /// </summary>
-    abstract class RecurrenceRange extends ComplexProperty
-    {
-        /* private */ DateTime startDate;
-        /* private */ complex.Recurrence recurrence;
+/// Represents recurrence range with start and end dates.
+/// </summary>
+abstract class RecurrenceRange extends ComplexProperty {
+  DateTime _startDate;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RecurrenceRange"/> class.
-        /// </summary>
-        RecurrenceRange()
-            : super();
+  complex.Recurrence _recurrence;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RecurrenceRange"/> class.
-        /// </summary>
-        /// <param name="startDate">The start date.</param>
-        RecurrenceRange.withStartDate(this.startDate)
-            : super();
+  /// <summary>
+  /// Initializes a new instance of the <see cref="RecurrenceRange"/> class.
+  /// </summary>
+  RecurrenceRange() : super();
 
-        /// <summary>
-        /// Changes handler.
-        /// </summary>
-@override
-        void Changed()
-        {
-            if (this.Recurrence != null)
-            {
-                this.Recurrence.Changed();
-            }
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="RecurrenceRange"/> class.
+  /// </summary>
+  /// <param name="startDate">The start date.</param>
+  RecurrenceRange.withStartDate(this._startDate) : super();
 
-        /// <summary>
-        /// Setup the recurrence.
-        /// </summary>
-        /// <param name="recurrence">The recurrence.</param>
-        void SetupRecurrence(complex.Recurrence recurrence)
-        {
-            recurrence.StartDate = this.StartDate;
-        }
-
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteElementValueWithNamespace(
-                XmlNamespace.Types,
-                XmlElementNames.StartDate,
-                EwsUtilities.DateTimeToXSDate(this.StartDate));
-        }
-
-        /// <summary>
-        /// Tries to read element from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>True if element was read.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            switch (reader.LocalName)
-            {
-                case XmlElementNames.StartDate:
-
-                    DateTime startDate = reader.ReadElementValueAsUnspecifiedDate();
-                    if (startDate != null)
-                    {
-                        this.startDate = startDate;
-                        return true;
-                    }
-
-                    return false;
-
-                default:
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the XML element.
-        /// </summary>
-        /// <value>The name of the XML element.</value>
-        String get XmlElementName;
-
-        /// <summary>
-        /// Gets or sets the recurrence.
-        /// </summary>
-        /// <value>The recurrence.</value>
-        complex.Recurrence get Recurrence => this.recurrence;
-        set Recurrence(complex.Recurrence value) => this.recurrence = value;
-
-
-        /// <summary>
-        /// Gets or sets the start date.
-        /// </summary>
-        /// <value>The start date.</value>
-        DateTime get StartDate => this.startDate;
-        set StartDate(DateTime value) {
-          if (this.CanSetFieldValue(this.startDate, value)) {
-            this.startDate = value;
-            Changed();
-          }
-        }
-
+  /// <summary>
+  /// Changes handler.
+  /// </summary>
+  @override
+  void Changed() {
+    if (this.Recurrence != null) {
+      this.Recurrence.Changed();
     }
+  }
+
+  /// <summary>
+  /// Setup the recurrence.
+  /// </summary>
+  /// <param name="recurrence">The recurrence.</param>
+  void SetupRecurrence(complex.Recurrence recurrence) {
+    recurrence.StartDate = this.StartDate;
+  }
+
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.StartDate,
+        EwsUtilities.DateTimeToXSDate(this.StartDate));
+  }
+
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    switch (reader.LocalName) {
+      case XmlElementNames.StartDate:
+        DateTime startDate = reader.ReadElementValueAsUnspecifiedDate();
+        if (startDate != null) {
+          this._startDate = startDate;
+          return true;
+        }
+
+        return false;
+
+      default:
+        return false;
+    }
+  }
+
+  /// <summary>
+  /// Gets the name of the XML element.
+  /// </summary>
+  /// <value>The name of the XML element.</value>
+  String get XmlElementName;
+
+  /// <summary>
+  /// Gets or sets the recurrence.
+  /// </summary>
+  /// <value>The recurrence.</value>
+  complex.Recurrence get Recurrence => this._recurrence;
+
+  set Recurrence(complex.Recurrence value) => this._recurrence = value;
+
+  /// <summary>
+  /// Gets or sets the start date.
+  /// </summary>
+  /// <value>The start date.</value>
+  DateTime get StartDate => this._startDate;
+
+  set StartDate(DateTime value) {
+    if (this.CanSetFieldValue(this._startDate, value)) {
+      this._startDate = value;
+      Changed();
+    }
+  }
+}

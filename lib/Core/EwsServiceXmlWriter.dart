@@ -32,41 +32,39 @@ import 'package:ews/Core/ExchangeServiceBase.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Exceptions/ServiceXmlSerializationException.dart';
-import 'package:ews/misc/IDisposable.dart';
-import 'package:ews/misc/OutParam.dart';
 import 'package:ews/Xml/XmlNode.dart';
 import 'package:ews/Xml/XmlWriter.dart';
+import 'package:ews/misc/IDisposable.dart';
+import 'package:ews/misc/OutParam.dart';
 import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
-    /// XML writer
-    /// </summary>
-    class EwsServiceXmlWriter implements IDisposable
-    {
-        /// <summary>
-        /// Buffer size for writing Base64 encoded content.
-        /// </summary>
-        /* private */ static const int BufferSize = 4096;
+/// XML writer
+/// </summary>
+class EwsServiceXmlWriter implements IDisposable {
+  /// <summary>
+  /// Buffer size for writing Base64 encoded content.
+  /// </summary>
+  static const int _BufferSize = 4096;
 
-        /// <summary>
-        /// UTF-8 encoding that does not create leading Byte order marks
-        /// </summary>
-        /* private */ static Encoding utf8Encoding = Encoding.getByName("utf8");
+  /// <summary>
+  /// UTF-8 encoding that does not create leading Byte order marks
+  /// </summary>
+  static Encoding _utf8Encoding = Encoding.getByName("utf8");
 
-        /* private */ bool isDisposed = false;
-        /* private */ ExchangeServiceBase service;
-        /* private */ XmlWriter xmlWriter;
-        /* private */ bool isTimeZoneHeaderEmitted = false;
-        /* private */ bool requireWSSecurityUtilityNamespace = false;
+  bool _isDisposed = false;
+  ExchangeServiceBase _service;
+  XmlWriter _xmlWriter;
+  bool _isTimeZoneHeaderEmitted = false;
+  bool _requireWSSecurityUtilityNamespace = false;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EwsServiceXmlWriter"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="stream">The stream.</param>
-        EwsServiceXmlWriter(ExchangeServiceBase service, StreamConsumer<List<int>> stream)
-        {
-            this.service = service;
+  /// <summary>
+  /// Initializes a new instance of the <see cref="EwsServiceXmlWriter"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  /// <param name="stream">The stream.</param>
+  EwsServiceXmlWriter(ExchangeServiceBase service, StreamConsumer<List<int>> stream) {
+    this._service = service;
 
 //            XmlWriterSettings settings = new XmlWriterSettings();
 //            settings.Indent = true;
@@ -74,26 +72,24 @@ import 'package:ews/misc/StringUtils.dart';
 //            settings.Encoding = EwsServiceXmlWriter.utf8Encoding;
 //
 //            this.xmlWriter = XmlWriter.Create(stream, settings);
-          // todo("implement constructor with arguments")
-          this.xmlWriter = XmlWriter(stream);
-        }
+    // todo("implement constructor with arguments")
+    this._xmlWriter = XmlWriter(stream);
+  }
 
-        /// <summary>
-        /// Try to convert object to a string.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="strValue">The String representation of value.</param>
-        /// <returns>True if object was converted, false otherwise.</returns>
-        /// <remarks>A null object will be "successfully" converted to a null string.</remarks>
-        bool TryConvertObjectToString(Object value, OutParam<String> strValueOut)
-        {
+  /// <summary>
+  /// Try to convert object to a string.
+  /// </summary>
+  /// <param name="value">The value.</param>
+  /// <param name="strValue">The String representation of value.</param>
+  /// <returns>True if object was converted, false otherwise.</returns>
+  /// <remarks>A null object will be "successfully" converted to a null string.</remarks>
+  bool TryConvertObjectToString(Object value, OutParam<String> strValueOut) {
 //          print("TryConvertObjectToString(${value.runtimeType} $value)");
-          bool converted = true;
-          strValueOut.param = null;
-          if (value != null) {
-            if (EwsUtilities.TrySerializeEnum(value, strValueOut))
-          {
-          }
+    bool converted = true;
+    strValueOut.param = null;
+    if (value != null) {
+      if (EwsUtilities.TrySerializeEnum(value, strValueOut)) {
+      }
 //            if (value.getClass().isEnum()) {
 //              str.setParam(EwsUtilities.serializeEnum(value));
 //            } else if (value.getClass().equals(Boolean.class)) {
@@ -113,23 +109,21 @@ import 'package:ews/misc/StringUtils.dart';
 //              str.setParam(searchStringProvider.getSearchString());
 //            } else if (value instanceof Number) {
 //              str.setParam(value.toString());
-            else if (value is DateTime) {
-              strValueOut.param = this.Service.ConvertDateTimeToUniversalDateTimeString(value);
-            }
-            else if (value is int) {
-              strValueOut.param = value.toString();
-            }
-            else if (value is bool) {
-              strValueOut.param = value.toString();
-            }
-            else if (value is String) {
-              strValueOut.param = value.toString();
-            } else {
-              converted = false;
-              throw new NotImplementedException("!!! TryConvertObjectToString ${value} of type ${value?.runtimeType}");
-            }
-          }
-          return converted;
+      else if (value is DateTime) {
+        strValueOut.param = this.Service.ConvertDateTimeToUniversalDateTimeString(value);
+      } else if (value is int) {
+        strValueOut.param = value.toString();
+      } else if (value is bool) {
+        strValueOut.param = value.toString();
+      } else if (value is String) {
+        strValueOut.param = value.toString();
+      } else {
+        converted = false;
+        throw new NotImplementedException(
+            "!!! TryConvertObjectToString ${value} of type ${value?.runtimeType}");
+      }
+    }
+    return converted;
 
 //            strValueOut.param = null;
 //            bool converted = true;
@@ -194,260 +188,211 @@ import 'package:ews/misc/StringUtils.dart';
 //            }
 //
 //            return converted;
-        }
+  }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        Future<void> Dispose() async
-        {
-            if (!this.isDisposed)
-            {
-                await this.xmlWriter.Close();
+  /// <summary>
+  /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  /// </summary>
+  Future<void> Dispose() async {
+    if (!this._isDisposed) {
+      await this._xmlWriter.Close();
 
-                this.isDisposed = true;
-            }
-        }
+      this._isDisposed = true;
+    }
+  }
 
-        /// <summary>
-        /// Flushes this instance.
-        /// </summary>
-        Future<void> Flush()
-        {
-            return this.xmlWriter.Flush();
-        }
+  /// <summary>
+  /// Flushes this instance.
+  /// </summary>
+  Future<void> Flush() {
+    return this._xmlWriter.Flush();
+  }
 
-        /// <summary>
-        /// Writes the start element.
-        /// </summary>
-        /// <param name="xmlNamespace">The XML namespace.</param>
-        /// <param name="localName">The local name of the element.</param>
- void WriteStartElement(XmlNamespace xmlNamespace, String localName)
-        {
-            this.xmlWriter.WriteStartElement(
-                prefix: EwsUtilities.GetNamespacePrefix(xmlNamespace),
-                localName: localName,
-                ns: EwsUtilities.GetNamespaceUri(xmlNamespace));
-        }
+  /// <summary>
+  /// Writes the start element.
+  /// </summary>
+  /// <param name="xmlNamespace">The XML namespace.</param>
+  /// <param name="localName">The local name of the element.</param>
+  void WriteStartElement(XmlNamespace xmlNamespace, String localName) {
+    this._xmlWriter.WriteStartElement(
+        prefix: EwsUtilities.GetNamespacePrefix(xmlNamespace),
+        localName: localName,
+        ns: EwsUtilities.GetNamespaceUri(xmlNamespace));
+  }
 
-        /// <summary>
-        /// Writes the end element.
-        /// </summary>
- void WriteEndElement()
-        {
-            this.xmlWriter.WriteEndElement();
-        }
+  /// <summary>
+  /// Writes the end element.
+  /// </summary>
+  void WriteEndElement() {
+    this._xmlWriter.WriteEndElement();
+  }
 
-        /// <summary>
-        /// Writes the attribute value.  Does not emit empty String values.
-        /// </summary>
-        /// <param name="localName">The local name of the attribute.</param>
+  /// <summary>
+  /// Writes the attribute value.  Does not emit empty String values.
+  /// </summary>
+  /// <param name="localName">The local name of the attribute.</param>
 //        /// <param name="value">The value.</param>
 // void WriteAttributeValue(String localName, Object value)
 //        {
 //            this.WriteAttributeStringValue(localName, false /* alwaysWriteEmptyString */, value);
 //        }
 
-        /// <summary>
-        /// Writes the attribute value.  Optionally emits empty String values.
-        /// </summary>
-        /// <param name="localName">The local name of the attribute.</param>
-        /// <param name="alwaysWriteEmptyString">Always emit the empty String as the value.</param>
-        /// <param name="value">The value.</param>
- void WriteAttributeValue(String localName, Object value, [bool alwaysWriteEmptyString = false])
-        {
-            OutParam<String> stringValue = new OutParam();
-            if (this.TryConvertObjectToString(value, stringValue))
-            {
-                if ((stringValue.param != null) &&
-                    (alwaysWriteEmptyString || (stringValue.param.length != 0)))
-                {
-                    this.WriteAttributeString(localName, stringValue.param);
-                }
-            }
-            else
-            {
-                throw new ServiceXmlSerializationException(
-                            "string.Format(Strings.AttributeValueCannotBeSerialized, value.GetType().Name, localName)");
-            }
-        }
+  /// <summary>
+  /// Writes the attribute value.  Optionally emits empty String values.
+  /// </summary>
+  /// <param name="localName">The local name of the attribute.</param>
+  /// <param name="alwaysWriteEmptyString">Always emit the empty String as the value.</param>
+  /// <param name="value">The value.</param>
+  void WriteAttributeValue(String localName, Object value, [bool alwaysWriteEmptyString = false]) {
+    OutParam<String> stringValue = new OutParam();
+    if (this.TryConvertObjectToString(value, stringValue)) {
+      if ((stringValue.param != null) &&
+          (alwaysWriteEmptyString || (stringValue.param.length != 0))) {
+        this.WriteAttributeString(localName, stringValue.param);
+      }
+    } else {
+      throw new ServiceXmlSerializationException(
+          "string.Format(Strings.AttributeValueCannotBeSerialized, value.GetType().Name, localName)");
+    }
+  }
 
-        /// <summary>
-        /// Writes the attribute value.
-        /// </summary>
-        /// <param name="namespacePrefix">The namespace prefix.</param>
-        /// <param name="localName">The local name of the attribute.</param>
-        /// <param name="value">The value.</param>
- void WriteAttributeValueWithPrefix(
-            String namespacePrefix,
-            String localName,
-            Object value)
-        {
-            OutParam<String> stringValue = new OutParam();
-            if (this.TryConvertObjectToString(value, stringValue))
-            {
-                if (!StringUtils.IsNullOrEmpty(stringValue.param))
-                {
-                    this.WriteAttributeStringWithPrefix(
-                        namespacePrefix,
-                        localName,
-                        stringValue.param);
-                }
-            }
-            else
-            {
-                throw new ServiceXmlSerializationException(
-                            "string.Format(Strings.AttributeValueCannotBeSerialized, value.GetType().Name, localName)");
-            }
-        }
+  /// <summary>
+  /// Writes the attribute value.
+  /// </summary>
+  /// <param name="namespacePrefix">The namespace prefix.</param>
+  /// <param name="localName">The local name of the attribute.</param>
+  /// <param name="value">The value.</param>
+  void WriteAttributeValueWithPrefix(String namespacePrefix, String localName, Object value) {
+    OutParam<String> stringValue = new OutParam();
+    if (this.TryConvertObjectToString(value, stringValue)) {
+      if (!StringUtils.IsNullOrEmpty(stringValue.param)) {
+        this.WriteAttributeStringWithPrefix(namespacePrefix, localName, stringValue.param);
+      }
+    } else {
+      throw new ServiceXmlSerializationException(
+          "string.Format(Strings.AttributeValueCannotBeSerialized, value.GetType().Name, localName)");
+    }
+  }
 
-        /// <summary>
-        /// Writes the attribute value.
-        /// </summary>
-        /// <param name="localName">The local name of the attribute.</param>
-        /// <param name="stringValue">The String value.</param>
-        /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
-        void WriteAttributeString(String localName, String stringValue)
-        {
-            try
-            {
-                this.xmlWriter.WriteAttributeStringJust(localName, stringValue);
-            }
-            on ArgumentError catch ( ex)
-            {
-                // XmlTextWriter will throw ArgumentError if String includes invalid characters.
-                throw new ServiceXmlSerializationException(
-                            """string.Format(Strings.InvalidAttributeValue, stringValue, localName),
-                            ex""");
-            }
-        }
+  /// <summary>
+  /// Writes the attribute value.
+  /// </summary>
+  /// <param name="localName">The local name of the attribute.</param>
+  /// <param name="stringValue">The String value.</param>
+  /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
+  void WriteAttributeString(String localName, String stringValue) {
+    try {
+      this._xmlWriter.WriteAttributeStringJust(localName, stringValue);
+    } on ArgumentError catch (ex) {
+      // XmlTextWriter will throw ArgumentError if String includes invalid characters.
+      throw new ServiceXmlSerializationException(
+          """string.Format(Strings.InvalidAttributeValue, stringValue, localName),
+                            $ex""");
+    }
+  }
 
-        /// <summary>
-        /// Writes the attribute value.
-        /// </summary>
-        /// <param name="namespacePrefix">The namespace prefix.</param>
-        /// <param name="localName">The local name of the attribute.</param>
-        /// <param name="stringValue">The String value.</param>
-        /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
-        void WriteAttributeStringWithPrefix(
-            String namespacePrefix,
-            String localName,
-            String stringValue)
-        {
-            try
-            {
-                this.xmlWriter.WriteAttributeString(
-                                    prefix: namespacePrefix,
-                                    localName: localName,
-                                    ns: null,
-                                    value: stringValue);
-            }
-            on ArgumentError catch ( ex)
-            {
-                // XmlTextWriter will throw ArgumentError if String includes invalid characters.
-                throw new ServiceXmlSerializationException("""
+  /// <summary>
+  /// Writes the attribute value.
+  /// </summary>
+  /// <param name="namespacePrefix">The namespace prefix.</param>
+  /// <param name="localName">The local name of the attribute.</param>
+  /// <param name="stringValue">The String value.</param>
+  /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
+  void WriteAttributeStringWithPrefix(
+      String namespacePrefix, String localName, String stringValue) {
+    try {
+      this._xmlWriter.WriteAttributeString(
+          prefix: namespacePrefix, localName: localName, ns: null, value: stringValue);
+    } on ArgumentError catch (ex) {
+      // XmlTextWriter will throw ArgumentError if String includes invalid characters.
+      throw new ServiceXmlSerializationException("""
                             string.Format(Strings.InvalidAttributeValue, stringValue, localName),
+                            $ex""");
+    }
+  }
+
+  /// <summary>
+  /// Writes String value.
+  /// </summary>
+  /// <param name="value">The value.</param>
+  /// <param name="name">Element name (used for error handling)</param>
+  /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
+  void WriteValue(String value, String name) {
+    try {
+      this._xmlWriter.WriteValue(value);
+    } on ArgumentError catch (ex) {
+      // XmlTextWriter will throw ArgumentError if String includes invalid characters.
+      throw new ServiceXmlSerializationException(
+          """String.Format(Strings.InvalidElementStringValue, value, name)
                             ex""");
-            }
-        }
+    }
+  }
 
-        /// <summary>
-        /// Writes String value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="name">Element name (used for error handling)</param>
-        /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
- void WriteValue(String value, String name)
-        {
-            try
-            {
-                this.xmlWriter.WriteValue(value);
-            }
-            on ArgumentError catch ( ex)
-            {
-                // XmlTextWriter will throw ArgumentError if String includes invalid characters.
-                throw new ServiceXmlSerializationException(
-                            """String.Format(Strings.InvalidElementStringValue, value, name)
-                            ex""");
-            }
-        }
+  /// <summary>
+  /// Writes the element value.
+  /// </summary>
+  /// <param name="xmlNamespace">The XML namespace.</param>
+  /// <param name="localName">The local name of the element.</param>
+  /// <param name="displayName">The name that should appear in the exception message when the value can not be serialized.</param>
+  /// <param name="value">The value.</param>
+  void WriteElementValue(
+      XmlNamespace xmlNamespace, String localName, String displayName, Object value) {
+    String stringValue;
+    OutParam<String> strOut = new OutParam<String>();
+    if (this.TryConvertObjectToString(value, strOut)) {
+      stringValue = strOut.param;
+      //  PS # 205106: The code here used to check IsNullOrEmpty on stringValue instead of just null.
+      //  Unfortunately, that meant that if someone really needed to update a String property to be the
 
-        /// <summary>
-        /// Writes the element value.
-        /// </summary>
-        /// <param name="xmlNamespace">The XML namespace.</param>
-        /// <param name="localName">The local name of the element.</param>
-        /// <param name="displayName">The name that should appear in the exception message when the value can not be serialized.</param>
-        /// <param name="value">The value.</param>
-        void WriteElementValue(XmlNamespace xmlNamespace, String localName, String displayName, Object value)
-        {
-            String stringValue;
-            OutParam<String> strOut = new OutParam<String>();
-            if (this.TryConvertObjectToString(value, strOut))
-            {
-                  stringValue = strOut.param;
-                //  PS # 205106: The code here used to check IsNullOrEmpty on stringValue instead of just null.
-                //  Unfortunately, that meant that if someone really needed to update a String property to be the
+      //  an error on the server because an update is required to have a single sub-element that is the
+      //  value to update.  So we need to allow an empty String to create an empty element (like <Value />).
+      //  Note that changing this check to just check for null is fine, because the other types that get
+      //  converted by TryConvertObjectToString() won't return an empty String if the conversion is
+      //  successful (for instance, converting an integer to a String won't return an empty String - it'll
+      //  always return the stringized integer).
+      if (stringValue != null) {
+        this.WriteStartElement(xmlNamespace, localName);
+        this.WriteValue(stringValue, displayName);
+        this.WriteEndElement();
+      }
+    } else {
+      throw new ServiceXmlSerializationException(
+          "string.Format(Strings.ElementValueCannotBeSerialized, value.GetType().Name, localName)");
+    }
+  }
 
-                //  an error on the server because an update is required to have a single sub-element that is the
-                //  value to update.  So we need to allow an empty String to create an empty element (like <Value />).
-                //  Note that changing this check to just check for null is fine, because the other types that get
-                //  converted by TryConvertObjectToString() won't return an empty String if the conversion is
-                //  successful (for instance, converting an integer to a String won't return an empty String - it'll
-                //  always return the stringized integer).
-                if (stringValue != null)
-                {
-                    this.WriteStartElement(xmlNamespace, localName);
-                    this.WriteValue(stringValue, displayName);
-                    this.WriteEndElement();
-                }
-            }
-            else
-            {
-                throw new ServiceXmlSerializationException(
-                        "string.Format(Strings.ElementValueCannotBeSerialized, value.GetType().Name, localName)");
-            }
-        }
+  /// <summary>
+  /// Writes the Xml Node
+  /// </summary>
+  /// <param name="xmlNode">The XML node.</param>
+  void WriteNode(XmlNode xmlNode) {
+    if (xmlNode != null) {
+      xmlNode.WriteTo(this._xmlWriter);
+    }
+  }
 
-        /// <summary>
-        /// Writes the Xml Node
-        /// </summary>
-        /// <param name="xmlNode">The XML node.</param>
- void WriteNode(XmlNode xmlNode)
-        {
-            if (xmlNode != null)
-            {
-                xmlNode.WriteTo(this.xmlWriter);
-            }
-        }
+  /// <summary>
+  /// Writes the element value.
+  /// </summary>
+  /// <param name="xmlNamespace">The XML namespace.</param>
+  /// <param name="localName">The local name of the element.</param>
+  /// <param name="value">The value.</param>
+  void WriteElementValueWithNamespace(XmlNamespace xmlNamespace, String localName, Object value) {
+    this.WriteElementValue(xmlNamespace, localName, localName, value);
+  }
 
-        /// <summary>
-        /// Writes the element value.
-        /// </summary>
-        /// <param name="xmlNamespace">The XML namespace.</param>
-        /// <param name="localName">The local name of the element.</param>
-        /// <param name="value">The value.</param>
- void WriteElementValueWithNamespace(
-            XmlNamespace xmlNamespace,
-            String localName,
-            Object value)
-        {
-            this.WriteElementValue(xmlNamespace, localName, localName, value);
-        }
+  /// <summary>
+  /// Writes the base64-encoded element value.
+  /// </summary>
+  /// <param name="buffer">The buffer.</param>
+  void WriteBase64ElementValue(Uint8List buffer) {
+    this._xmlWriter.WriteValue(base64.encode(buffer));
+  }
 
-        /// <summary>
-        /// Writes the base64-encoded element value.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-      void WriteBase64ElementValue(Uint8List buffer)
-        {
-          this.xmlWriter.WriteValue(base64.encode(buffer));
-        }
-
-        /// <summary>
-        /// Writes the base64-encoded element value.
-        /// </summary>
-        /// <param name="stream">The stream.</param>
+  /// <summary>
+  /// Writes the base64-encoded element value.
+  /// </summary>
+  /// <param name="stream">The stream.</param>
 // void WriteBase64ElementValue(Stream stream)
 //        {
 //            Uint8List buffer = new byte[BufferSize];
@@ -468,37 +413,36 @@ import 'package:ews/misc/StringUtils.dart';
 //            }
 //        }
 
-        /// <summary>
-        /// Gets the XML writer.
-        /// </summary>
-        /// <value>The writer.</value>
- XmlWriter get InternalWriter => this.xmlWriter;
+  /// <summary>
+  /// Gets the XML writer.
+  /// </summary>
+  /// <value>The writer.</value>
+  XmlWriter get InternalWriter => this._xmlWriter;
 
-        /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <value>The service.</value>
- ExchangeServiceBase get Service => this.service;
+  /// <summary>
+  /// Gets the service.
+  /// </summary>
+  /// <value>The service.</value>
+  ExchangeServiceBase get Service => this._service;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the time zone SOAP header was emitted through this writer.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if the time zone SOAP header was emitted; otherwise, <c>false</c>.
-        /// </value>
-        bool get IsTimeZoneHeaderEmitted => this.isTimeZoneHeaderEmitted;
+  /// <summary>
+  /// Gets or sets a value indicating whether the time zone SOAP header was emitted through this writer.
+  /// </summary>
+  /// <value>
+  ///     <c>true</c> if the time zone SOAP header was emitted; otherwise, <c>false</c>.
+  /// </value>
+  bool get IsTimeZoneHeaderEmitted => this._isTimeZoneHeaderEmitted;
 
-        set IsTimeZoneHeaderEmitted(bool value) {
-            this.isTimeZoneHeaderEmitted = value;
-        }
+  set IsTimeZoneHeaderEmitted(bool value) {
+    this._isTimeZoneHeaderEmitted = value;
+  }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the SOAP message need WSSecurity Utility namespace.
-        /// </summary>
-        bool get RequireWSSecurityUtilityNamespace => this.requireWSSecurityUtilityNamespace;
+  /// <summary>
+  /// Gets or sets a value indicating whether the SOAP message need WSSecurity Utility namespace.
+  /// </summary>
+  bool get RequireWSSecurityUtilityNamespace => this._requireWSSecurityUtilityNamespace;
 
-        set RequireWSSecurityUtilityNamespace(bool value) {
-            this.requireWSSecurityUtilityNamespace = value;
-        }
-
-    }
+  set RequireWSSecurityUtilityNamespace(bool value) {
+    this._requireWSSecurityUtilityNamespace = value;
+  }
+}

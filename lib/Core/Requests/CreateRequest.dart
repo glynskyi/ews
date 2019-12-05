@@ -40,14 +40,12 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <typeparam name="TResponse">The type of the response.</typeparam>
 abstract class CreateRequest<TServiceObject extends ServiceObject,
         TResponse extends ServiceResponse>
-    extends MultiResponseServiceRequest<
-        TResponse> //        where TServiceObject : ServiceObject
+    extends MultiResponseServiceRequest<TResponse> //        where TServiceObject : ServiceObject
 //        where TResponse : ServiceResponse
 {
-  /* private */ FolderId parentFolderId;
+  FolderId _parentFolderId;
 
-/* private */
-  Iterable<TServiceObject> objects;
+  Iterable<TServiceObject> _objects;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateRequest&lt;TServiceObject, TResponse&gt;"/> class.
@@ -64,9 +62,7 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   void Validate() {
     super.Validate();
     if (this.ParentFolderId != null) {
-      this
-          .ParentFolderId
-          .ValidateExchangeVersion(this.Service.RequestedServerVersion);
+      this.ParentFolderId.ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
   }
 
@@ -76,7 +72,7 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   /// <returns>Number of responses expected.</returns>
   @override
   int GetExpectedResponseMessageCount() {
-    return EwsUtilities.GetEnumeratedObjectCount(this.objects);
+    return EwsUtilities.GetEnumeratedObjectCount(this._objects);
   }
 
   /// <summary>
@@ -98,15 +94,13 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.ParentFolderId != null) {
-      writer.WriteStartElement(
-          XmlNamespace.Messages, this.GetParentFolderXmlElementName());
+      writer.WriteStartElement(XmlNamespace.Messages, this.GetParentFolderXmlElementName());
       this.ParentFolderId.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
 
-    writer.WriteStartElement(
-        XmlNamespace.Messages, this.GetObjectCollectionXmlElementName());
-    for (ServiceObject obj in this.objects) {
+    writer.WriteStartElement(XmlNamespace.Messages, this.GetObjectCollectionXmlElementName());
+    for (ServiceObject obj in this._objects) {
       obj.WriteToXml(writer);
     }
     writer.WriteEndElement();
@@ -116,19 +110,19 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   /// Gets or sets the service objects.
   /// </summary>
   /// <value>The objects.</value>
-  Iterable<TServiceObject> get Objects => this.objects;
+  Iterable<TServiceObject> get Objects => this._objects;
 
   set Objects(Iterable<TServiceObject> value) {
-    this.objects = value;
+    this._objects = value;
   }
 
   /// <summary>
   /// Gets or sets the parent folder id.
   /// </summary>
   /// <value>The parent folder id.</value>
-  FolderId get ParentFolderId => this.parentFolderId;
+  FolderId get ParentFolderId => this._parentFolderId;
 
   set ParentFolderId(FolderId value) {
-    this.parentFolderId = value;
+    this._parentFolderId = value;
   }
 }

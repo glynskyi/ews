@@ -35,14 +35,14 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 /// Represents the response to an individual folder creation operation.
 /// </summary>
 class CreateFolderResponse extends ServiceResponse {
-  /* private */ Folder folder;
+  Folder _folder;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateFolderResponse"/> class.
   /// </summary>
   /// <param name="folder">The folder.</param>
   CreateFolderResponse(Folder folder) : super() {
-    this.folder = folder;
+    this._folder = folder;
   }
 
   /// <summary>
@@ -51,13 +51,11 @@ class CreateFolderResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Folder.</returns>
-  /* private */
-  Folder GetObjectInstance(ExchangeService service, String xmlElementName) {
-    if (this.folder != null) {
-      return this.folder;
+  Folder _GetObjectInstance(ExchangeService service, String xmlElementName) {
+    if (this._folder != null) {
+      return this._folder;
     } else {
-      return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(
-          service, xmlElementName);
+      return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(service, xmlElementName);
     }
   }
 
@@ -71,14 +69,14 @@ class CreateFolderResponse extends ServiceResponse {
 
     List<Folder> folders = reader.ReadServiceObjectsCollectionFromXml<Folder>(
         XmlElementNames.Folders,
-        this.GetObjectInstance,
+        this._GetObjectInstance,
         false,
         /* clearPropertyBag */
         null,
         /* requestedPropertySet */
         false); /* summaryPropertiesOnly */
 
-    this.folder = folders[0];
+    this._folder = folders[0];
   }
 
   /// <summary>
@@ -87,7 +85,7 @@ class CreateFolderResponse extends ServiceResponse {
   @override
   void Loaded() {
     if (this.Result == ServiceResult.Success) {
-      this.folder.ClearChangeLog();
+      this._folder.ClearChangeLog();
     }
   }
 }

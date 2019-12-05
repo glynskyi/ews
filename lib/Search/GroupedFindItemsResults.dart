@@ -44,8 +44,7 @@ class GroupedFindItemsResults<TItem extends Item>
   /// <summary>
   /// List of ItemGroups.
   /// </summary>
-  /* private */
-  List<search.ItemGroup<TItem>> itemGroups = new List<search.ItemGroup<TItem>>();
+  List<search.ItemGroup<TItem>> _itemGroups = new List<search.ItemGroup<TItem>>();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GroupedFindItemsResults&lt;TItem&gt;"/> class.
@@ -77,7 +76,7 @@ class GroupedFindItemsResults<TItem extends Item>
   /// <summary>
   /// Gets the item groups returned by the search operation.
   /// </summary>
-  List<search.ItemGroup<TItem>> get ItemGroups => this.itemGroups;
+  List<search.ItemGroup<TItem>> get ItemGroups => this._itemGroups;
 
   /// <summary>
   /// Returns an enumerator that iterates through the collection.
@@ -86,5 +85,5 @@ class GroupedFindItemsResults<TItem extends Item>
   /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
   /// </returns>
   @override
-  Iterator<search.ItemGroup<TItem>> get iterator => this.itemGroups.iterator;
+  Iterator<search.ItemGroup<TItem>> get iterator => this._itemGroups.iterator;
 }

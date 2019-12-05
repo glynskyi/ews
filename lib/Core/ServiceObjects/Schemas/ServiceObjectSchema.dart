@@ -184,8 +184,7 @@ abstract class ServiceObjectSchema
   /// </summary>
   /// <param name="type">The type.</param>
   /// <param name="propertyNameDictionary">The property name dictionary.</param>
-  /* private */
-  static void AddSchemaPropertyNamesToDictionary(
+  static void _AddSchemaPropertyNamesToDictionary(
       Type type, Map<PropertyDefinition, String> propertyNameDictionary) {
 //            ServiceObjectSchema.ForeachPublicStaticPropertyFieldInType(
 //                type,
@@ -238,43 +237,37 @@ abstract class ServiceObjectSchema
     return new ExtendedPropertyCollection();
   });
 
-  /* private */
-  Map<String, PropertyDefinition> properties = new Map<String, PropertyDefinition>();
+  Map<String, PropertyDefinition> _properties = new Map<String, PropertyDefinition>();
 
-  /* private */
-  List<PropertyDefinition> visibleProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _visibleProperties = new List<PropertyDefinition>();
 
-  /* private */
-  List<PropertyDefinition> firstClassProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _firstClassProperties = new List<PropertyDefinition>();
 
-  /* private */
-  List<PropertyDefinition> firstClassSummaryProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _firstClassSummaryProperties = new List<PropertyDefinition>();
 
-  /* private */
-  List<IndexedPropertyDefinition> indexedProperties = new List<IndexedPropertyDefinition>();
+  List<IndexedPropertyDefinition> _indexedProperties = new List<IndexedPropertyDefinition>();
 
   /// <summary>
   /// Registers a schema property.
   /// </summary>
   /// <param name="property">The property to register.</param>
   /// <param name="isInternal">Indicates whether the property is or should be visible to developers.</param>
-  /* private */
-  void RegisterPropertyWithInternal(PropertyDefinition property, bool isInternal) {
-    this.properties[property.XmlElementName] = property;
+  void _RegisterPropertyWithInternal(PropertyDefinition property, bool isInternal) {
+    this._properties[property.XmlElementName] = property;
 
     if (!isInternal) {
-      this.visibleProperties.add(property);
+      this._visibleProperties.add(property);
     }
 
     // If this property does not have to be requested explicitly, add
     // it to the list of firstClassProperties.
     if (!property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.MustBeExplicitlyLoaded)) {
-      this.firstClassProperties.add(property);
+      this._firstClassProperties.add(property);
     }
 
     // If this property can be found, add it to the list of firstClassSummaryProperties
     if (property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanFind)) {
-      this.firstClassSummaryProperties.add(property);
+      this._firstClassSummaryProperties.add(property);
     }
   }
 
@@ -283,7 +276,7 @@ abstract class ServiceObjectSchema
   /// </summary>
   /// <param name="property">The property to register.</param>
   void RegisterProperty(PropertyDefinition property) {
-    this.RegisterPropertyWithInternal(property, false);
+    this._RegisterPropertyWithInternal(property, false);
   }
 
   /// <summary>
@@ -291,7 +284,7 @@ abstract class ServiceObjectSchema
   /// </summary>
   /// <param name="property">The property to register.</param>
   void RegisterInternalProperty(PropertyDefinition property) {
-    this.RegisterPropertyWithInternal(property, true);
+    this._RegisterPropertyWithInternal(property, true);
   }
 
   /// <summary>
@@ -299,7 +292,7 @@ abstract class ServiceObjectSchema
   /// </summary>
   /// <param name="indexedProperty">The indexed property to register.</param>
   void RegisterIndexedProperty(IndexedPropertyDefinition indexedProperty) {
-    this.indexedProperties.add(indexedProperty);
+    this._indexedProperties.add(indexedProperty);
   }
 
   /// <summary>
@@ -310,17 +303,17 @@ abstract class ServiceObjectSchema
   /// <summary>
   /// Gets the list of first class properties for this service object type.
   /// </summary>
-  List<PropertyDefinition> get FirstClassProperties => this.firstClassProperties;
+  List<PropertyDefinition> get FirstClassProperties => this._firstClassProperties;
 
   /// <summary>
   /// Gets the list of first class summary properties for this service object type.
   /// </summary>
-  List<PropertyDefinition> get FirstClassSummaryProperties => this.firstClassSummaryProperties;
+  List<PropertyDefinition> get FirstClassSummaryProperties => this._firstClassSummaryProperties;
 
   /// <summary>
   /// Gets the list of indexed properties for this service object type.
   /// </summary>
-  List<IndexedPropertyDefinition> get IndexedProperties => this.indexedProperties;
+  List<IndexedPropertyDefinition> get IndexedProperties => this._indexedProperties;
 
   /// <summary>
   /// Tries to get property definition.
@@ -330,8 +323,8 @@ abstract class ServiceObjectSchema
   /// <returns>True if property definition exists.</returns>
   bool TryGetPropertyDefinition(
       String xmlElementName, OutParam<PropertyDefinition> propertyDefinitionOutParam) {
-    if (this.properties.containsKey(xmlElementName)) {
-      propertyDefinitionOutParam.param = this.properties[xmlElementName];
+    if (this._properties.containsKey(xmlElementName)) {
+      propertyDefinitionOutParam.param = this._properties[xmlElementName];
       return true;
     } else {
       return false;
@@ -342,7 +335,7 @@ abstract class ServiceObjectSchema
   /// Obtains an enumerator for the properties of the schema.
   /// </summary>
   /// <returns>An IEnumerator instance.</returns>
-  Iterator<PropertyDefinition> get iterator => this.visibleProperties.iterator;
+  Iterator<PropertyDefinition> get iterator => this._visibleProperties.iterator;
 // Iterable<PropertyDefinition> GetEnumerator()
 //        {
 //            return this.visibleProperties.GetEnumerator();

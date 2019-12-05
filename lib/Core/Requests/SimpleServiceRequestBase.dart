@@ -25,7 +25,6 @@
 
 import 'dart:core';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsUtilities.dart';
@@ -33,43 +32,39 @@ import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/Requests/ServiceRequestBase.dart';
 import 'package:ews/Enumerations/TraceFlags.dart';
 import 'package:ews/Exceptions/ServiceRequestException.dart';
-import 'package:ews/Http/WebHeaderCollection.dart';
-import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
-import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/Http/WebException.dart';
+import 'package:ews/Http/WebHeaderCollection.dart';
+import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/misc/Std/MemoryStream.dart';
 
 /// <summary>
-    /// Represents an abstract, simple request-response service request.
-    /// </summary>
-    abstract class SimpleServiceRequestBase extends ServiceRequestBase
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleServiceRequestBase"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        SimpleServiceRequestBase(ExchangeService service) :
-            super(service);
+/// Represents an abstract, simple request-response service request.
+/// </summary>
+abstract class SimpleServiceRequestBase extends ServiceRequestBase {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="SimpleServiceRequestBase"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  SimpleServiceRequestBase(ExchangeService service) : super(service);
 
-        /// <summary>
-        /// Executes this request.
-        /// </summary>
-        /// <returns>Service response.</returns>
-        Future<Object> InternalExecute() async
-        {
+  /// <summary>
+  /// Executes this request.
+  /// </summary>
+  /// <returns>Service response.</returns>
+  Future<Object> InternalExecute() async {
 //            IEwsHttpWebRequest request;
-            IEwsHttpWebResponse response = await this.ValidateAndEmitRequest();
+    IEwsHttpWebResponse response = await this.ValidateAndEmitRequest();
 
-            Object responseObject = await this.ReadResponse(response);
+    Object responseObject = await this._ReadResponse(response);
 
-            return responseObject;
-        }
+    return responseObject;
+  }
 
-        /// <summary>
-        /// Ends executing this async request.
-        /// </summary>
-        /// <param name="asyncResult">The async result</param>
-        /// <returns>Service response object.</returns>
+  /// <summary>
+  /// Ends executing this async request.
+  /// </summary>
+  /// <param name="asyncResult">The async result</param>
+  /// <returns>Service response object.</returns>
 //        Object EndInternalExecute(IAsyncResult asyncResult)
 //        {
 //            // We have done enough validation before
@@ -79,12 +74,12 @@ import 'package:ews/misc/Std/MemoryStream.dart';
 //            return this.ReadResponse(response);
 //        }
 
-        /// <summary>
-        /// Begins executing this async request.
-        /// </summary>
-        /// <param name="callback">The AsyncCallback delegate.</param>
-        /// <param name="state">An object that contains state information for this request.</param>
-        /// <returns>An IAsyncResult that references the asynchronous request.</returns>
+  /// <summary>
+  /// Begins executing this async request.
+  /// </summary>
+  /// <param name="callback">The AsyncCallback delegate.</param>
+  /// <param name="state">An object that contains state information for this request.</param>
+  /// <returns>An IAsyncResult that references the asynchronous request.</returns>
 //        IAsyncResult BeginExecute(AsyncCallback callback, object state)
 //        {
 //            this.Validate();
@@ -99,10 +94,10 @@ import 'package:ews/misc/Std/MemoryStream.dart';
 //            return new AsyncRequestResult(this, request, webAsyncResult, state /* user state */);
 //        }
 
-        /// <summary>
-        /// Async callback method for HttpWebRequest async requests.
-        /// </summary>
-        /// <param name="webAsyncResult">An IAsyncResult that references the asynchronous request.</param>
+  /// <summary>
+  /// Async callback method for HttpWebRequest async requests.
+  /// </summary>
+  /// <param name="webAsyncResult">An IAsyncResult that references the asynchronous request.</param>
 //        /* private */ static void WebRequestAsyncCallback(IAsyncResult webAsyncResult)
 //        {
 //            WebAsyncCallStateAnchor wrappedState = webAsyncResult.AsyncState as WebAsyncCallStateAnchor;
@@ -120,86 +115,79 @@ import 'package:ews/misc/Std/MemoryStream.dart';
 //            }
 //        }
 
-        /// <summary>
-        /// Reads the response with error handling
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <returns>Service response.</returns>
-        /* private */ Future<Object> ReadResponse(IEwsHttpWebResponse response) async
+  /// <summary>
+  /// Reads the response with error handling
+  /// </summary>
+  /// <param name="response">The response.</param>
+  /// <returns>Service response.</returns>
+  Future<Object> _ReadResponse(IEwsHttpWebResponse response) async {
+    Object serviceResponse;
+
+    try {
+      this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, response);
+
+      // If tracing is enabled, we read the entire response into a MemoryStream so that we
+      // can pass it along to the ITraceListener. Then we parse the response from the
+      // MemoryStream.
+      if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse)) {
+        final memoryStream = new MemoryStream();
         {
-            Object serviceResponse;
+          Stream serviceResponseStream = ServiceRequestBase.GetResponseStream(response);
 
-            try
-            {
-                this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, response);
+          // Copy response to in-memory stream and reset position to start.
+          await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
+          memoryStream.Position = 0;
 
-                // If tracing is enabled, we read the entire response into a MemoryStream so that we
-                // can pass it along to the ITraceListener. Then we parse the response from the
-                // MemoryStream.
-                if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse))
-                {
-                    final memoryStream = new MemoryStream();
-                    {
-                        Stream serviceResponseStream = ServiceRequestBase.GetResponseStream(response);
+          //serviceResponseStream.Close();
 
-                            // Copy response to in-memory stream and reset position to start.
-                            await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
-                            memoryStream.Position = 0;
+          this.TraceResponseXml(response, memoryStream);
 
-                            //serviceResponseStream.Close();
-
-                        this.TraceResponseXml(response, memoryStream);
-
-                        serviceResponse = this.ReadResponseXml(memoryStream, response.Headers);
-                    }
-                    memoryStream.close();
-                }
-                else
-                {
-                    Stream responseStream = ServiceRequestBase.GetResponseStream(response);
-
-                        serviceResponse = this.ReadResponseXml(responseStream, response.Headers);
-
-                    // responseStream.Close();
-                }
-            }
-            on WebException catch (e)
-            {
-                if (e.Response != null)
-                {
-                    IEwsHttpWebResponse exceptionResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(e);
-                    this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, exceptionResponse);
-                }
-
-                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, e.Message)", e);
-            }
-            on IOException catch (e)
-            {
-            // Wrap exception.
-            throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, e.Message)", e);
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Close();
-                }
-            }
-
-            return serviceResponse;
+          serviceResponse = this._ReadResponseXml(memoryStream, response.Headers);
         }
+        memoryStream.close();
+      } else {
+        Stream responseStream = ServiceRequestBase.GetResponseStream(response);
 
-        /// <summary>
-        /// Reads the response XML.
-        /// </summary>
-        /// <param name="responseStream">The response stream.</param>
-        /// <param name="responseHeaders">The HTTP response headers</param>
-        /// <returns></returns>
-        /* private */ Future<Object> ReadResponseXml(Stream<List<int>> responseStream, [WebHeaderCollection responseHeaders = null]) async
-        {
-            Object serviceResponse;
-            EwsServiceXmlReader ewsXmlReader = await EwsServiceXmlReader.Create(responseStream, this.Service);
-            serviceResponse = this.ReadResponseWithHeaders(ewsXmlReader, responseHeaders);
-            return serviceResponse;
-        }
+        serviceResponse = this._ReadResponseXml(responseStream, response.Headers);
+
+        // responseStream.Close();
+      }
+    } on WebException catch (e) {
+      if (e.Response != null) {
+        IEwsHttpWebResponse exceptionResponse =
+            this.Service.HttpWebRequestFactory.CreateExceptionResponse(e);
+        this
+            .Service
+            .ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, exceptionResponse);
+      }
+
+      throw new ServiceRequestException(
+          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+    } on IOException catch (e) {
+      // Wrap exception.
+      throw new ServiceRequestException(
+          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+    } finally {
+      if (response != null) {
+        response.Close();
+      }
     }
+
+    return serviceResponse;
+  }
+
+  /// <summary>
+  /// Reads the response XML.
+  /// </summary>
+  /// <param name="responseStream">The response stream.</param>
+  /// <param name="responseHeaders">The HTTP response headers</param>
+  /// <returns></returns>
+  Future<Object> _ReadResponseXml(Stream<List<int>> responseStream,
+      [WebHeaderCollection responseHeaders = null]) async {
+    Object serviceResponse;
+    EwsServiceXmlReader ewsXmlReader =
+        await EwsServiceXmlReader.Create(responseStream, this.Service);
+    serviceResponse = this.ReadResponseWithHeaders(ewsXmlReader, responseHeaders);
+    return serviceResponse;
+  }
+}

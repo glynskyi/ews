@@ -30,27 +30,20 @@ import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
 import 'package:ews/PropertyDefinitions/TypedPropertyDefinition.dart';
-import 'package:ews/misc/Nullable.dart';
 
 /// <summary>
 /// Represents generic property definition.
 /// </summary>
 /// <typeparam name="TPropertyValue">Property value type. Constrained to be a value type.</typeparam>
-class GenericPropertyDefinition<TPropertyValue>
-    extends TypedPropertyDefinition {
+class GenericPropertyDefinition<TPropertyValue> extends TypedPropertyDefinition {
   /// <summary>
   /// Initializes a new instance of the <see cref="GenericPropertyDefinition&lt;T&gt;"/> class.
   /// </summary>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="uri">The URI.</param>
   /// <param name="version">The version.</param>
-  GenericPropertyDefinition.withUri(String xmlElementName,
-      String uri,
-      ExchangeVersion version)
-      : super.withUri(
-      xmlElementName,
-      uri,
-      version);
+  GenericPropertyDefinition.withUri(String xmlElementName, String uri, ExchangeVersion version)
+      : super.withUri(xmlElementName, uri, version);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GenericPropertyDefinition&lt;T&gt;"/> class.
@@ -59,15 +52,9 @@ class GenericPropertyDefinition<TPropertyValue>
   /// <param name="uri">The URI.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  GenericPropertyDefinition.withUriAndFlags(String xmlElementName,
-      String uri,
-      List<PropertyDefinitionFlags> flags,
-      ExchangeVersion version)
-      : super.withUriAndFlags(
-      xmlElementName,
-      uri,
-      flags,
-      version);
+  GenericPropertyDefinition.withUriAndFlags(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+      : super.withUriAndFlags(xmlElementName, uri, flags, version);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GenericPropertyDefinition&lt;T&gt;"/> class.
@@ -77,17 +64,9 @@ class GenericPropertyDefinition<TPropertyValue>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
   /// <param name="isNullable">if set to true, property value is nullable.</param>
-  GenericPropertyDefinition.withFlagsAndNullable(String xmlElementName,
-      String uri,
-      List<PropertyDefinitionFlags> flags,
-      ExchangeVersion version,
-      bool isNullable)
-      : super.withUriAndFlagsAndNullable(
-      xmlElementName,
-      uri,
-      flags,
-      version,
-      isNullable);
+  GenericPropertyDefinition.withFlagsAndNullable(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version, bool isNullable)
+      : super.withUriAndFlagsAndNullable(xmlElementName, uri, flags, version, isNullable);
 
   /// <summary>
   /// Parses the specified value.

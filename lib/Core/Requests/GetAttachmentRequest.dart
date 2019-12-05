@@ -42,17 +42,13 @@ import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 /// Represents a GetAttachment request.
 /// </summary>
 class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResponse> {
-  /* private */
-  List<Attachment> attachments = new List<Attachment>();
+  List<Attachment> _attachments = new List<Attachment>();
 
-  /* private */
-  List<String> attachmentIds = new List<String>();
+  List<String> _attachmentIds = new List<String>();
 
-  /* private */
-  List<PropertyDefinitionBase> additionalProperties = new List<PropertyDefinitionBase>();
+  List<PropertyDefinitionBase> _additionalProperties = new List<PropertyDefinitionBase>();
 
-  /* private */
-  enumerations.BodyType bodyType;
+  enumerations.BodyType _bodyType;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetAttachmentRequest"/> class.
@@ -92,7 +88,8 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   /// <returns>Service response.</returns>
   @override
   GetAttachmentResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
-    return new GetAttachmentResponse(this.Attachments.length > 0 ? this.Attachments[responseIndex] : null);
+    return new GetAttachmentResponse(
+        this.Attachments.length > 0 ? this.Attachments[responseIndex] : null);
   }
 
   /// <summary>
@@ -141,7 +138,8 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
       writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.AttachmentShape);
 
       if (this.BodyType != null) {
-        writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.BodyType, this.BodyType);
+        writer.WriteElementValueWithNamespace(
+            XmlNamespace.Types, XmlElementNames.BodyType, this.BodyType);
       }
 
       if (this.AdditionalProperties.length > 0) {
@@ -154,11 +152,11 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
     writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.AttachmentIds);
 
     for (Attachment attachment in this.Attachments) {
-      this.WriteAttachmentIdXml(writer, attachment.Id);
+      this._WriteAttachmentIdXml(writer, attachment.Id);
     }
 
     for (String attachmentId in this.AttachmentIds) {
-      this.WriteAttachmentIdXml(writer, attachmentId);
+      this._WriteAttachmentIdXml(writer, attachmentId);
     }
 
     writer.WriteEndElement();
@@ -178,27 +176,27 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   /// Gets the attachments.
   /// </summary>
   /// <value>The attachments.</value>
-  List<Attachment> get Attachments => this.attachments;
+  List<Attachment> get Attachments => this._attachments;
 
   /// <summary>
   /// Gets the attachment ids.
   /// </summary>
   /// <value>The attachment ids.</value>
-  List<String> get AttachmentIds => this.attachmentIds;
+  List<String> get AttachmentIds => this._attachmentIds;
 
   /// <summary>
   /// Gets the additional properties.
   /// </summary>
   /// <value>The additional properties.</value>
-  List<PropertyDefinitionBase> get AdditionalProperties => this.additionalProperties;
+  List<PropertyDefinitionBase> get AdditionalProperties => this._additionalProperties;
 
   /// <summary>
   /// Gets or sets the type of the body.
   /// </summary>
   /// <value>The type of the body.</value>
-  enumerations.BodyType get BodyType => this.bodyType;
+  enumerations.BodyType get BodyType => this._bodyType;
 
-  set BodyType(enumerations.BodyType value) => this.bodyType = value;
+  set BodyType(enumerations.BodyType value) => this._bodyType = value;
 
   /// <summary>
   /// Gets a value indicating whether the TimeZoneContext SOAP header should be emitted.
@@ -222,8 +220,7 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   /// </summary>
   /// <param name="writer">The writer.</param>
   /// <param name="attachmentId">The attachment id.</param>
-  /* private */
-  void WriteAttachmentIdXml(EwsServiceXmlWriter writer, String attachmentId) {
+  void _WriteAttachmentIdXml(EwsServiceXmlWriter writer, String attachmentId) {
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.AttachmentId);
     writer.WriteAttributeValue(XmlAttributeNames.Id, attachmentId);
     writer.WriteEndElement();

@@ -37,15 +37,14 @@ class ItemEvent extends NotificationEvent {
   /// <summary>
   /// Id of the item this event applies to.
   /// </summary>
-  /* private */ complex.ItemId itemId;
+  complex.ItemId _itemId;
 
   /// <summary>
   /// Id of the item that moved or copied. This is only meaningful when EventType
   /// is equal to either EventType.Moved or EventType.Copied. For all other event
   /// types, it's null.
   /// </summary>
-  /* private */
-  complex.ItemId oldItemId;
+  complex.ItemId _oldItemId;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ItemEvent"/> class.
@@ -62,8 +61,8 @@ class ItemEvent extends NotificationEvent {
   void InternalLoadFromXml(EwsServiceXmlReader reader) {
     super.InternalLoadFromXml(reader);
 
-    this.itemId = new complex.ItemId();
-    this.itemId.LoadFromXml(reader, reader.LocalName);
+    this._itemId = new complex.ItemId();
+    this._itemId.LoadFromXml(reader, reader.LocalName);
 
     reader.Read();
 
@@ -75,8 +74,8 @@ class ItemEvent extends NotificationEvent {
       case EventType.Copied:
         reader.Read();
 
-        this.oldItemId = new complex.ItemId();
-        this.oldItemId.LoadFromXml(reader, reader.LocalName);
+        this._oldItemId = new complex.ItemId();
+        this._oldItemId.LoadFromXml(reader, reader.LocalName);
 
         reader.Read();
 
@@ -92,12 +91,12 @@ class ItemEvent extends NotificationEvent {
   /// <summary>
   /// Gets the Id of the item this event applies to.
   /// </summary>
-  complex.ItemId get ItemId => this.itemId;
+  complex.ItemId get ItemId => this._itemId;
 
   /// <summary>
   /// Gets the Id of the item that was moved or copied. OldItemId is only meaningful
   /// when EventType is equal to either EventType.Moved or EventType.Copied. For
   /// all other event types, OldItemId is null.
   /// </summary>
-  complex.ItemId get OldItemId => this.oldItemId;
+  complex.ItemId get OldItemId => this._oldItemId;
 }

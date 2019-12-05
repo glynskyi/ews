@@ -58,7 +58,7 @@ enum EffectiveRights {
   Read,
 
   /// <summary>
-  /// The user can view /* private */ items.
+  /// The user can view private items.
   /// </summary>
   ViewPrivateItems
 }

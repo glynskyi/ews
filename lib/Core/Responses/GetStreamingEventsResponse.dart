@@ -52,11 +52,9 @@ enum ConnectionStatus {
 /// Represents the response to a subscription event retrieval operation.
 /// </summary>
 class GetStreamingEventsResponse extends ServiceResponse {
-  /* private */
-  GetStreamingEventsResults results = new GetStreamingEventsResults();
+  GetStreamingEventsResults _results = new GetStreamingEventsResults();
 
-  /* private */
-  HangingServiceRequestBase request;
+  HangingServiceRequestBase _request;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetStreamingEventsResponse"/> class.
@@ -64,7 +62,7 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// <param name="request">Request to disconnect when we get a close message.</param>
   GetStreamingEventsResponse(HangingServiceRequestBase request) : super() {
     this.ErrorSubscriptionIds = new List<String>();
-    this.request = request;
+    this._request = request;
   }
 
   /// <summary>
@@ -78,13 +76,13 @@ class GetStreamingEventsResponse extends ServiceResponse {
     reader.Read();
 
     if (reader.LocalName == XmlElementNames.Notifications) {
-      this.results.LoadFromXml(reader);
+      this._results.LoadFromXml(reader);
     } else if (reader.LocalName == XmlElementNames.ConnectionStatus) {
-      String connectionStatus =
-          reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.ConnectionStatus);
+      String connectionStatus = reader.ReadElementValueWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.ConnectionStatus);
 
       if (EnumToString.parse(ConnectionStatus.Closed) == connectionStatus) {
-        this.request.DisconnectWithException(HangingRequestDisconnectReason.Clean, null);
+        this._request.DisconnectWithException(HangingRequestDisconnectReason.Clean, null);
       }
     }
   }
@@ -102,16 +100,18 @@ class GetStreamingEventsResponse extends ServiceResponse {
   bool LoadExtraErrorDetailsFromXml(EwsServiceXmlReader reader, String xmlElementName) {
     bool baseReturnVal = super.LoadExtraErrorDetailsFromXml(reader, xmlElementName);
 
-    if (reader.IsStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds)) {
+    if (reader.IsStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds)) {
       do {
         reader.Read();
 
-        if (reader.NodeType == XmlNodeType.Element && reader.LocalName == XmlElementNames.SubscriptionId) {
-          this
-              .ErrorSubscriptionIds
-              .add(reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SubscriptionId));
+        if (reader.NodeType == XmlNodeType.Element &&
+            reader.LocalName == XmlElementNames.SubscriptionId) {
+          this.ErrorSubscriptionIds.add(reader.ReadElementValueWithNamespace(
+              XmlNamespace.Messages, XmlElementNames.SubscriptionId));
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds));
 
       return true;
     } else {
@@ -122,7 +122,7 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// <summary>
   /// Gets event results from subscription.
   /// </summary>
-  GetStreamingEventsResults get Results => this.results;
+  GetStreamingEventsResults get Results => this._results;
 
   /// <summary>
   /// Gets the error subscription ids.

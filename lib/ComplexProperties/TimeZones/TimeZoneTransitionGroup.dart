@@ -23,14 +23,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'package:ews/ComplexProperties/ComplexProperty.dart';
+import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZoneDefinition.dart';
-import 'package:ews/ComplexProperties/TimeZones/TimeZonePeriod.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZoneTransition.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
@@ -45,36 +39,36 @@ import 'package:ews/misc/TimeSpan.dart';
 /// <summary>
 /// Represents custom time zone creation parameters.
 /// </summary>
-class CustomTimeZoneCreateParams
-{
-    /* private */ TimeSpan baseOffsetToUtc;
-  /* private */ String standardDisplayName;
-  /* private */ String daylightDisplayName;
+class CustomTimeZoneCreateParams {
+  TimeSpan _baseOffsetToUtc;
+  String _standardDisplayName;
+  String _daylightDisplayName;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CustomTimeZoneCreateParams"/> class.
   /// </summary>
-  CustomTimeZoneCreateParams()
-  {
-  }
+  CustomTimeZoneCreateParams() {}
 
   /// <summary>
   /// Gets or sets the base offset to UTC.
   /// </summary>
-  TimeSpan get BaseOffsetToUtc => this.baseOffsetToUtc;
-  set BaseOffsetToUtc(TimeSpan value) => this.baseOffsetToUtc = value;
+  TimeSpan get BaseOffsetToUtc => this._baseOffsetToUtc;
+
+  set BaseOffsetToUtc(TimeSpan value) => this._baseOffsetToUtc = value;
 
   /// <summary>
   /// Gets or sets the display name of the standard period.
   /// </summary>
-  String get StandardDisplayName => this.standardDisplayName;
-  set StandardDisplayName(String value) => this.standardDisplayName = value;
+  String get StandardDisplayName => this._standardDisplayName;
+
+  set StandardDisplayName(String value) => this._standardDisplayName = value;
 
   /// <summary>
   /// Gets or sets the display name of the daylight period.
   /// </summary>
-  String get DaylightDisplayName => this.standardDisplayName;
-  set DaylightDisplayName(String value) => this.standardDisplayName = value;
+  String get DaylightDisplayName => this._standardDisplayName;
+
+  set DaylightDisplayName(String value) => this._standardDisplayName = value;
 
   /// <summary>
   /// Gets a value indicating whether the custom time zone should have a daylight period.
@@ -82,94 +76,93 @@ class CustomTimeZoneCreateParams
   /// <value>
   ///     <c>true</c> if the custom time zone should have a daylight period; otherwise, <c>false</c>.
   /// </value>
-  bool get HasDaylightPeriod => !StringUtils.IsNullOrEmpty(this.daylightDisplayName);
+  bool get HasDaylightPeriod => !StringUtils.IsNullOrEmpty(this._daylightDisplayName);
 }
 
 /// <summary>
-    /// Represents a group of time zone period transitions.
-    /// </summary>
-    class TimeZoneTransitionGroup extends ComplexProperty
-    {
-        /* private */ TimeZoneDefinition timeZoneDefinition;
-        /* private */ String id;
-        /* private */ List<TimeZoneTransition> transitions = new List<TimeZoneTransition>();
-        /* private */ TimeZoneTransition transitionToStandard;
-        /* private */ TimeZoneTransition transitionToDaylight;
+/// Represents a group of time zone period transitions.
+/// </summary>
+class TimeZoneTransitionGroup extends ComplexProperty {
+  /* private */ TimeZoneDefinition timeZoneDefinition;
 
-        /// <summary>
-        /// Loads from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        void LoadFromXmlElementName(EwsServiceXmlReader reader)
-        {
-            this.LoadFromXml(reader, XmlElementNames.TransitionsGroup);
-        }
+  /* private */
+  String id;
 
-        /// <summary>
-        /// Writes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        void WriteToXmlElementName(EwsServiceXmlWriter writer)
-        {
-            this.WriteToXml(writer, XmlElementNames.TransitionsGroup);
-        }
+  /* private */
+  List<TimeZoneTransition> transitions = new List<TimeZoneTransition>();
 
-        /// <summary>
-        /// Reads the attributes from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-@override
-        void ReadAttributesFromXml(EwsServiceXmlReader reader)
-        {
-            this.id = reader.ReadAttributeValue(XmlAttributeNames.Id);
-        }
+  /* private */
+  TimeZoneTransition transitionToStandard;
 
-        /// <summary>
-        /// Writes the attributes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteAttributesToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteAttributeValue(XmlAttributeNames.Id, this.id);
-        }
+  /* private */
+  TimeZoneTransition transitionToDaylight;
 
-        /// <summary>
-        /// Tries to read element from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>True if element was read.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            reader.EnsureCurrentNodeIsStartElement();
+  /// <summary>
+  /// Loads from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
+    this.LoadFromXml(reader, XmlElementNames.TransitionsGroup);
+  }
 
-            TimeZoneTransition transition = TimeZoneTransition.Create(this.timeZoneDefinition, reader.LocalName);
+  /// <summary>
+  /// Writes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  void WriteToXmlElementName(EwsServiceXmlWriter writer) {
+    this.WriteToXml(writer, XmlElementNames.TransitionsGroup);
+  }
 
-            transition.LoadFromXmlElementName(reader);
+  /// <summary>
+  /// Reads the attributes from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  @override
+  void ReadAttributesFromXml(EwsServiceXmlReader reader) {
+    this.id = reader.ReadAttributeValue(XmlAttributeNames.Id);
+  }
 
-            EwsUtilities.Assert(
-                transition.TargetPeriod != null,
-                "TimeZoneTransitionGroup.TryReadElementFromXml",
-                "The transition's target period is null.");
+  /// <summary>
+  /// Writes the attributes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteAttributesToXml(EwsServiceXmlWriter writer) {
+    writer.WriteAttributeValue(XmlAttributeNames.Id, this.id);
+  }
 
-            this.transitions.add(transition);
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    reader.EnsureCurrentNodeIsStartElement();
 
-            return true;
-        }
+    TimeZoneTransition transition =
+        TimeZoneTransition.Create(this.timeZoneDefinition, reader.LocalName);
 
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            for (TimeZoneTransition transition in this.transitions)
-            {
-                transition.WriteToXmlElementName(writer);
-            }
-        }
+    transition.LoadFromXmlElementName(reader);
+
+    EwsUtilities.Assert(transition.TargetPeriod != null,
+        "TimeZoneTransitionGroup.TryReadElementFromXml", "The transition's target period is null.");
+
+    this.transitions.add(transition);
+
+    return true;
+  }
+
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    for (TimeZoneTransition transition in this.transitions) {
+      transition.WriteToXmlElementName(writer);
+    }
+  }
 
 //        /// <summary>
 //        /// Initializes this transition group based on the specified asjustment rule.
@@ -230,147 +223,122 @@ class CustomTimeZoneCreateParams
 //            }
 //        }
 
-        /// <summary>
-        /// Validates this transition group.
-        /// </summary>
-        void Validate()
-        {
-            // There must be exactly one or two transitions in the group.
-            if (this.transitions.length < 1 || this.transitions.length > 2)
-            {
-                throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
-            }
+  /// <summary>
+  /// Validates this transition group.
+  /// </summary>
+  void Validate() {
+    // There must be exactly one or two transitions in the group.
+    if (this.transitions.length < 1 || this.transitions.length > 2) {
+      throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+    }
 
-            // If there is only one transition, it must be of type TimeZoneTransition
-            if (this.transitions.length == 1 && !(this.transitions[0].runtimeType == TimeZoneTransition))
-            {
-                throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
-            }
+    // If there is only one transition, it must be of type TimeZoneTransition
+    if (this.transitions.length == 1 && !(this.transitions[0].runtimeType == TimeZoneTransition)) {
+      throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+    }
 
-            // If there are two transitions, none of them should be of type TimeZoneTransition
-            if (this.transitions.length == 2)
-            {
-                for (TimeZoneTransition transition in this.transitions)
-                {
-                    if (transition.runtimeType == TimeZoneTransition)
-                    {
-                        throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
-                    }
-                }
-            }
-
-            // All the transitions in the group must be to a period.
-            for (TimeZoneTransition transition in this.transitions)
-            {
-                if (transition.TargetPeriod == null)
-                {
-                    throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
-                }
-            }
+    // If there are two transitions, none of them should be of type TimeZoneTransition
+    if (this.transitions.length == 2) {
+      for (TimeZoneTransition transition in this.transitions) {
+        if (transition.runtimeType == TimeZoneTransition) {
+          throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
         }
+      }
+    }
 
+    // All the transitions in the group must be to a period.
+    for (TimeZoneTransition transition in this.transitions) {
+      if (transition.TargetPeriod == null) {
+        throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+      }
+    }
+  }
 
+  /// <summary>
+  /// Gets a value indicating whether this group contains a transition to the Daylight period.
+  /// </summary>
+  /// <value><c>true</c> if this group contains a transition to daylight; otherwise, <c>false</c>.</value>
+  bool get SupportsDaylight => this.transitions.length == 2;
 
-        /// <summary>
-        /// Gets a value indicating whether this group contains a transition to the Daylight period.
-        /// </summary>
-        /// <value><c>true</c> if this group contains a transition to daylight; otherwise, <c>false</c>.</value>
-        bool get SupportsDaylight =>this.transitions.length == 2;
-
-        /// <summary>
-        /// Initializes the /* private */ members holding references to the transitions to the Daylight
-        /// and Standard periods.
-        /// </summary>
-        /* private */ void InitializeTransitions()
-        {
-            if (this.transitionToStandard == null)
-            {
-                for (TimeZoneTransition transition in this.transitions)
-                {
-                    if (transition.TargetPeriod.IsStandardPeriod || (this.transitions.length == 1))
-                    {
-                        this.transitionToStandard = transition;
-                    }
-                    else
-                    {
-                        this.transitionToDaylight = transition;
-                    }
-                }
-            }
-
-            // If we didn't find a Standard period, this is an invalid time zone group.
-            if (this.transitionToStandard == null)
-            {
-                throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
-            }
+  /// <summary>
+  /// Initializes the /* private */ members holding references to the transitions to the Daylight
+  /// and Standard periods.
+  /// </summary>
+  /* private */
+  void InitializeTransitions() {
+    if (this.transitionToStandard == null) {
+      for (TimeZoneTransition transition in this.transitions) {
+        if (transition.TargetPeriod.IsStandardPeriod || (this.transitions.length == 1)) {
+          this.transitionToStandard = transition;
+        } else {
+          this.transitionToDaylight = transition;
         }
+      }
+    }
 
-        /// <summary>
-        /// Gets the transition to the Daylight period.
-        /// </summary>
-        /* private */ TimeZoneTransition get TransitionToDaylight
-        {
+    // If we didn't find a Standard period, this is an invalid time zone group.
+    if (this.transitionToStandard == null) {
+      throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+    }
+  }
 
-                this.InitializeTransitions();
+  /// <summary>
+  /// Gets the transition to the Daylight period.
+  /// </summary>
+  /* private */
+  TimeZoneTransition get TransitionToDaylight {
+    this.InitializeTransitions();
 
-                return this.transitionToDaylight;
+    return this.transitionToDaylight;
+  }
 
-        }
+  /// <summary>
+  /// Gets the transition to the Standard period.
+  /// </summary>
+  /* private */
+  TimeZoneTransition get TransitionToStandard {
+    this.InitializeTransitions();
 
-        /// <summary>
-        /// Gets the transition to the Standard period.
-        /// </summary>
-        /* private */ TimeZoneTransition get TransitionToStandard
-        {
+    return this.transitionToStandard;
+  }
 
-                this.InitializeTransitions();
+  /// <summary>
+  /// Gets the offset to UTC based on this group's transitions.
+  /// </summary>
+  CustomTimeZoneCreateParams GetCustomTimeZoneCreationParams() {
+    CustomTimeZoneCreateParams result = new CustomTimeZoneCreateParams();
 
-                return this.transitionToStandard;
-        }
+    if (this.TransitionToDaylight != null) {
+      result.DaylightDisplayName = this.TransitionToDaylight.TargetPeriod.Name;
+    }
 
-        /// <summary>
-        /// Gets the offset to UTC based on this group's transitions.
-        /// </summary>
-        CustomTimeZoneCreateParams GetCustomTimeZoneCreationParams()
-        {
-            CustomTimeZoneCreateParams result = new CustomTimeZoneCreateParams();
+    result.StandardDisplayName = this.TransitionToStandard.TargetPeriod.Name;
 
-            if (this.TransitionToDaylight != null)
-            {
-                result.DaylightDisplayName = this.TransitionToDaylight.TargetPeriod.Name;
-            }
-
-            result.StandardDisplayName = this.TransitionToStandard.TargetPeriod.Name;
-
-            // Assume that the standard period's offset is the base offset to UTC.
-            // EWS returns a positive offset for time zones that are behind UTC, and
-            // a negative one for time zones ahead of UTC. TimeZoneInfo does it the other
-            // way around.
-            throw NotImplementedException("-this.TransitionToStandard.TargetPeriod.Bias");
+    // Assume that the standard period's offset is the base offset to UTC.
+    // EWS returns a positive offset for time zones that are behind UTC, and
+    // a negative one for time zones ahead of UTC. TimeZoneInfo does it the other
+    // way around.
+    throw NotImplementedException("-this.TransitionToStandard.TargetPeriod.Bias");
 //            result.BaseOffsetToUtc = -this.TransitionToStandard.TargetPeriod.Bias;
 
-            return result;
-        }
+//            return result;
+  }
 
-        /// <summary>
-        /// Gets the delta offset for the daylight.
-        /// </summary>
-        /// <returns></returns>
-        TimeSpan GetDaylightDelta()
-        {
-            if (this.SupportsDaylight)
-            {
-                // EWS returns a positive offset for time zones that are behind UTC, and
-                // a negative one for time zones ahead of UTC. TimeZoneInfo does it the other
-                // way around.
-              throw NotImplementedException("- this.TransitionToDaylight.TargetPeriod.Bias");
+  /// <summary>
+  /// Gets the delta offset for the daylight.
+  /// </summary>
+  /// <returns></returns>
+  TimeSpan GetDaylightDelta() {
+    if (this.SupportsDaylight) {
+      // EWS returns a positive offset for time zones that are behind UTC, and
+      // a negative one for time zones ahead of UTC. TimeZoneInfo does it the other
+      // way around.
+      throw NotImplementedException("- this.TransitionToDaylight.TargetPeriod.Bias");
 //                return this.TransitionToStandard.TargetPeriod.Bias - this.TransitionToDaylight.TargetPeriod.Bias;
-            }
-            else
-            {
-                return TimeSpan.ZERO;
-            }
-        }
+    } else {
+      return TimeSpan.ZERO;
+    }
+  }
 
 //        /// <summary>
 //        /// Creates a time zone adjustment rule.
@@ -395,36 +363,33 @@ class CustomTimeZoneCreateParams
 //                this.TransitionToStandard.CreateTransitionTime());
 //        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeZoneTransitionGroup"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition.</param>
-        TimeZoneTransitionGroup(TimeZoneDefinition timeZoneDefinition)
-            : super()
-        {
-            this.timeZoneDefinition = timeZoneDefinition;
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TimeZoneTransitionGroup"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition.</param>
+  TimeZoneTransitionGroup(TimeZoneDefinition timeZoneDefinition) : super() {
+    this.timeZoneDefinition = timeZoneDefinition;
+  }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeZoneTransitionGroup"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition.</param>
-        /// <param name="id">The Id of the new transition group.</param>
-        TimeZoneTransitionGroup.withId(TimeZoneDefinition timeZoneDefinition, String id)
-            : super()
-        {
-          this.timeZoneDefinition = timeZoneDefinition;
-            this.id = id;
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TimeZoneTransitionGroup"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition.</param>
+  /// <param name="id">The Id of the new transition group.</param>
+  TimeZoneTransitionGroup.withId(TimeZoneDefinition timeZoneDefinition, String id) : super() {
+    this.timeZoneDefinition = timeZoneDefinition;
+    this.id = id;
+  }
 
-        /// <summary>
-        /// Gets or sets the id of this group.
-        /// </summary>
-        String get Id => this.id ;
-        set Id(String value) => this.id = value;
+  /// <summary>
+  /// Gets or sets the id of this group.
+  /// </summary>
+  String get Id => this.id;
 
-        /// <summary>
-        /// Gets the transitions in this group.
-        /// </summary>
-        List<TimeZoneTransition> get Transitions => this.transitions;
-    }
+  set Id(String value) => this.id = value;
+
+  /// <summary>
+  /// Gets the transitions in this group.
+  /// </summary>
+  List<TimeZoneTransition> get Transitions => this.transitions;
+}

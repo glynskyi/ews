@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:ews/Enumerations/ItemTraversal.dart';
 import 'package:ews/ews.dart';
 import 'package:ews/misc/Std/EnumToString.dart';
 import 'package:test/test.dart';

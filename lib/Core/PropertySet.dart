@@ -55,19 +55,18 @@ class PropertySet
   /// Returns a predefined property set that only includes the Id property.
   /// </summary>
   static PropertySet IdOnly =
-      PropertySet.CreateReadonlyPropertySet(enumerations.BasePropertySet.IdOnly);
+      PropertySet._CreateReadonlyPropertySet(enumerations.BasePropertySet.IdOnly);
 
   /// <summary>
   /// Returns a predefined property set that includes the first class properties of an item or folder.
   /// </summary>
   static PropertySet FirstClassProperties =
-      PropertySet.CreateReadonlyPropertySet(enumerations.BasePropertySet.FirstClassProperties);
+      PropertySet._CreateReadonlyPropertySet(enumerations.BasePropertySet.FirstClassProperties);
 
   /// <summary>
   /// Maps BasePropertySet values to EWS's BaseShape values.
   /// </summary>
-  /* private */
-  static LazyMember<Map<enumerations.BasePropertySet, String>> defaultPropertySetMap =
+  static LazyMember<Map<enumerations.BasePropertySet, String>> _defaultPropertySetMap =
       new LazyMember<Map<enumerations.BasePropertySet, String>>(() {
     Map<enumerations.BasePropertySet, String> result =
         new Map<enumerations.BasePropertySet, String>();
@@ -184,7 +183,7 @@ class PropertySet
   /// </summary>
   /// <param name="property">The property to add.</param>
   void Add(PropertyDefinitionBase property) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
 //            EwsUtilities.ValidateParam(property, "property");
 
     if (!this._additionalProperties.contains(property)) {
@@ -197,7 +196,7 @@ class PropertySet
   /// </summary>
   /// <param name="properties">The properties to add.</param>
   void AddRange(Iterable<PropertyDefinitionBase> properties) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
 //            EwsUtilities.ValidateParamCollection(properties, "properties");
 
     for (PropertyDefinitionBase property in properties) {
@@ -209,7 +208,7 @@ class PropertySet
   /// Remove all explicitly added properties from the property set.
   /// </summary>
   void Clear() {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._additionalProperties.clear();
   }
 
@@ -218,8 +217,7 @@ class PropertySet
   /// </summary>
   /// <param name="basePropertySet">The base property set.</param>
   /// <returns>PropertySet</returns>
-  /* private */
-  static PropertySet CreateReadonlyPropertySet(enumerations.BasePropertySet basePropertySet) {
+  static PropertySet _CreateReadonlyPropertySet(enumerations.BasePropertySet basePropertySet) {
     PropertySet propertySet = new PropertySet.fromPropertySet(basePropertySet);
     propertySet._isReadOnly = true;
     return propertySet;
@@ -230,8 +228,7 @@ class PropertySet
   /// </summary>
   /// <param name="serviceObjectType">Type of the service object.</param>
   /// <returns>Shape name.</returns>
-  /* private */
-  static String GetShapeName(ServiceObjectType serviceObjectType) {
+  static String _GetShapeName(ServiceObjectType serviceObjectType) {
     switch (serviceObjectType) {
       case ServiceObjectType.Item:
         return XmlElementNames.ItemShape;
@@ -251,8 +248,7 @@ class PropertySet
   /// <summary>
   /// Throws if readonly property set.
   /// </summary>
-  /* private */
-  void ThrowIfReadonly() {
+  void _ThrowIfReadonly() {
     if (this._isReadOnly) {
       throw new NotSupportedException("Strings.PropertySetCannotBeModified");
     }
@@ -275,7 +271,7 @@ class PropertySet
   /// <param name="property">The property to remove.</param>
   /// <returns>true if the property was successfully removed, false otherwise.</returns>
   bool Remove(PropertyDefinitionBase property) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     return this._additionalProperties.remove(property);
   }
 
@@ -285,7 +281,7 @@ class PropertySet
   enumerations.BasePropertySet get BasePropertySet => this._basePropertySet;
 
   set BasePropertySet(enumerations.BasePropertySet value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._basePropertySet = value;
   }
 
@@ -295,7 +291,7 @@ class PropertySet
   BodyType get RequestedBodyType => this._requestedBodyType;
 
   set RequestedBodyType(BodyType value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._requestedBodyType = value;
   }
 
@@ -305,7 +301,7 @@ class PropertySet
   BodyType get RequestedUniqueBodyType => this._requestedUniqueBodyType;
 
   set RequestedUniqueBodyType(BodyType value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._requestedUniqueBodyType = value;
   }
 
@@ -315,7 +311,7 @@ class PropertySet
   BodyType get RequestedNormalizedBodyType => this._requestedNormalizedBodyType;
 
   set RequestedNormalizedBodyType(BodyType value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._requestedNormalizedBodyType = value;
   }
 
@@ -330,7 +326,7 @@ class PropertySet
   bool get FilterHtmlContent => this._filterHtml;
 
   set FilterHtmlContent(bool value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._filterHtml = value;
   }
 
@@ -340,7 +336,7 @@ class PropertySet
   bool get ConvertHtmlCodePageToUTF8 => this._convertHtmlCodePageToUTF8;
 
   set ConvertHtmlCodePageToUTF8(bool value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._convertHtmlCodePageToUTF8 = value;
   }
 
@@ -350,7 +346,7 @@ class PropertySet
   String get InlineImageUrlTemplate => this._inlineImageUrlTemplate;
 
   set InlineImageUrlTemplate(String value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._inlineImageUrlTemplate = value;
   }
 
@@ -360,7 +356,7 @@ class PropertySet
   bool get BlockExternalImages => this._blockExternalImages;
 
   set BlockExternalImages(bool value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._blockExternalImages = value;
   }
 
@@ -370,7 +366,7 @@ class PropertySet
   bool get AddBlankTargetToLinks => this._addTargetToLinks;
 
   set AddBlankTargetToLinks(bool value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._addTargetToLinks = value;
   }
 
@@ -383,7 +379,7 @@ class PropertySet
   int get MaximumBodySize => this._maximumBodySize;
 
   set MaximumBodySize(int value) {
-    this.ThrowIfReadonly();
+    this._ThrowIfReadonly();
     this._maximumBodySize = value;
   }
 
@@ -404,7 +400,7 @@ class PropertySet
   /// Maps BasePropertySet values to EWS's BaseShape values.
   /// </summary>
   static LazyMember<Map<enumerations.BasePropertySet, String>> get DefaultPropertySetMap =>
-      PropertySet.defaultPropertySetMap;
+      PropertySet._defaultPropertySetMap;
 
   /// <summary>
   /// Writes additonal properties to XML.
@@ -523,12 +519,12 @@ class PropertySet
   /// <param name="writer">The writer to write to.</param>
   /// <param name="serviceObjectType">The type of service object the property set is emitted for.</param>
   void WriteToXml(EwsServiceXmlWriter writer, ServiceObjectType serviceObjectType) {
-    String shapeElementName = GetShapeName(serviceObjectType);
+    String shapeElementName = _GetShapeName(serviceObjectType);
 
     writer.WriteStartElement(XmlNamespace.Messages, shapeElementName);
 
     writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.BaseShape,
-        defaultPropertySetMap.Member[this.BasePropertySet]);
+        _defaultPropertySetMap.Member[this.BasePropertySet]);
 
     if (serviceObjectType == ServiceObjectType.Item) {
       if (this.RequestedBodyType != null) {

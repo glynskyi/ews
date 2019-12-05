@@ -39,8 +39,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents an UpdateFolder request.
 /// </summary>
 class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
-  /* private */
-  List<Folder> folders = new List<Folder>();
+  List<Folder> _folders = new List<Folder>();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UpdateFolderRequest"/> class.
@@ -112,7 +111,7 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <returns>Number of expected response messages.</returns>
   @override
   int GetExpectedResponseMessageCount() {
-    return this.folders.length;
+    return this._folders.length;
   }
 
   /// <summary>
@@ -123,7 +122,7 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.FolderChanges);
 
-    for (Folder folder in this.folders) {
+    for (Folder folder in this._folders) {
       folder.WriteToXmlForUpdate(writer);
     }
 
@@ -143,5 +142,5 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// Gets the list of folders.
   /// </summary>
   /// <value>The folders.</value>
-  List<Folder> get Folders => this.folders;
+  List<Folder> get Folders => this._folders;
 }

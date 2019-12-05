@@ -31,16 +31,13 @@ import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
 /// Represents the results of a folder search operation.
 /// </summary>
 class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
-  /* private */ int totalCount;
+  int _totalCount;
 
-  /* private */
-  int nextPageOffset;
+  int _nextPageOffset;
 
-  /* private */
-  bool moreAvailable = false;
+  bool _moreAvailable = false;
 
-  /* private */
-  List<Folder> folders = new List<Folder>();
+  List<Folder> _folders = new List<Folder>();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindFoldersResults"/> class.
@@ -50,31 +47,31 @@ class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
   /// <summary>
   /// Gets the total number of folders matching the search criteria available in the searched folder.
   /// </summary>
-  int get TotalCount => this.totalCount;
+  int get TotalCount => this._totalCount;
 
-  set TotalCount(int value) => this.totalCount = value;
+  set TotalCount(int value) => this._totalCount = value;
 
   /// <summary>
   /// Gets the offset that should be used with FolderView to retrieve the next page of folders in a FindFolders operation.
   /// </summary>
-  int get NextPageOffset => this.nextPageOffset;
+  int get NextPageOffset => this._nextPageOffset;
 
-  set NextPageOffset(int value) => this.nextPageOffset = value;
+  set NextPageOffset(int value) => this._nextPageOffset = value;
 
   /// <summary>
   /// Gets a value indicating whether more folders matching the search criteria.
   /// are available in the searched folder.
   /// </summary>
-  bool get MoreAvailable => this.moreAvailable;
+  bool get MoreAvailable => this._moreAvailable;
 
-  set MoreAvailable(bool value) => this.moreAvailable = value;
+  set MoreAvailable(bool value) => this._moreAvailable = value;
 
   /// <summary>
   /// Gets a collection containing the folders that were found by the search operation.
   /// </summary>
-  List<Folder> get Folders => this.folders;
+  List<Folder> get Folders => this._folders;
 
-  set Folders(List<Folder> value) => this.folders = value;
+  set Folders(List<Folder> value) => this._folders = value;
 
   /// <summary>
   /// Returns an enumerator that iterates through the collection.
@@ -83,5 +80,5 @@ class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
   /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
   /// </returns>
   @override
-  Iterator<Folder> get iterator => this.folders.iterator;
+  Iterator<Folder> get iterator => this._folders.iterator;
 }

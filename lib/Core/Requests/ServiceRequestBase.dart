@@ -42,92 +42,89 @@ import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Exceptions/ServerBusyException.dart';
 import 'package:ews/Exceptions/ServiceRequestException.dart';
-import 'package:ews/Exceptions/ServiceXmlDeserializationException.dart';
 import 'package:ews/Exceptions/ServiceResponseException.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
+import 'package:ews/Exceptions/ServiceXmlDeserializationException.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebExceptionStatus.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
-import 'package:ews/misc/HttpStatusCode.dart';
-import 'package:ews/misc/Std/MemoryStream.dart';
 import 'package:ews/Xml/XmlException.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
+import 'package:ews/misc/HttpStatusCode.dart';
 import 'package:ews/misc/SoapFaultDetails.dart';
-import 'package:ews/misc/StringUtils.dart';
 import 'package:ews/misc/Std/EnumToString.dart';
+import 'package:ews/misc/Std/MemoryStream.dart';
+import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
-    /// Represents an service request.
-    /// </summary>
-    abstract class ServiceRequestBase
-    {
-        /// <summary>
-        /// The two contants below are used to set the AnchorMailbox and ExplicitLogonUser values
-        /// in the request header.
-        /// </summary>
-        /// <remarks>
-        /// Note: Setting this values will route the request directly to the backend hosting the
-        /// AnchorMailbox. These headers should be used primarily for UnifiedGroup scenario where
-        /// a request needs to be routed directly to the group mailbox versus the user mailbox.
-        /// </remarks>
-        static const String _AnchorMailboxHeaderName = "X-AnchorMailbox";
-        static const String _ExplicitLogonUserHeaderName = "X-OWA-ExplicitLogonUser";
+/// Represents an service request.
+/// </summary>
+abstract class ServiceRequestBase {
+  /// <summary>
+  /// The two contants below are used to set the AnchorMailbox and ExplicitLogonUser values
+  /// in the request header.
+  /// </summary>
+  /// <remarks>
+  /// Note: Setting this values will route the request directly to the backend hosting the
+  /// AnchorMailbox. These headers should be used primarily for UnifiedGroup scenario where
+  /// a request needs to be routed directly to the group mailbox versus the user mailbox.
+  /// </remarks>
+  static const String _AnchorMailboxHeaderName = "X-AnchorMailbox";
+  static const String _ExplicitLogonUserHeaderName = "X-OWA-ExplicitLogonUser";
 
-        static const List<String> _RequestIdResponseHeaders = [ "RequestId", "request-id" ];
-        static const String _XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
-        static const String _XMLSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
-        static const String _ClientStatisticsRequestHeader = "X-ClientStatistics";
-        
-        /// <summary>
-        /// Gets or sets the anchor mailbox associated with the request
-        /// </summary>
-        /// <remarks>
-        /// Setting this value will add special headers to the request which in turn
-        /// will route the request directly to the mailbox server against which the request
-        /// is to be executed.
-        /// </remarks>
-        String AnchorMailbox;
+//  static const List<String> _RequestIdResponseHeaders = ["RequestId", "request-id"];
+//  static const String _XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
+//  static const String _XMLSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+//  static const String _ClientStatisticsRequestHeader = "X-ClientStatistics";
 
-        /// <summary>
-        /// Maintains the collection of client side statistics for requests already completed
-        /// </summary>
-        /* private */ static List<String> clientStatisticsCache = new List<String>();
+  /// <summary>
+  /// Gets or sets the anchor mailbox associated with the request
+  /// </summary>
+  /// <remarks>
+  /// Setting this value will add special headers to the request which in turn
+  /// will route the request directly to the mailbox server against which the request
+  /// is to be executed.
+  /// </remarks>
+  String AnchorMailbox;
 
-        ExchangeService _service;
-    
-        /// <summary>
-        /// Gets the response stream (may be wrapped with GZip/Deflate stream to decompress content)
-        /// </summary>
-        /// <param name="response">HttpWebResponse.</param>
-        /// <returns>ResponseStream</returns>
-        static Stream GetResponseStream(IEwsHttpWebResponse response)
-        {
-            String contentEncoding = response.ContentEncoding;
-            Stream responseStream = response.GetResponseStream();
+  /// <summary>
+  /// Maintains the collection of client side statistics for requests already completed
+  /// </summary>
+  static List<String> _clientStatisticsCache = new List<String>();
 
-            return WrapStream(responseStream, response.ContentEncoding);
-        }
+  ExchangeService _service;
 
-        /// <summary>
-        /// Gets the response stream (may be wrapped with GZip/Deflate stream to decompress content)
-        /// </summary>
-        /// <param name="response">HttpWebResponse.</param>
-        /// <param name="readTimeout">read timeout in milliseconds</param>
-        /// <returns>ResponseStream</returns>
-        static Stream<List<int>> GetResponseStreamWithTimeout(IEwsHttpWebResponse response, int readTimeout)
-        {
-            Stream responseStream = response.GetResponseStream();
+  /// <summary>
+  /// Gets the response stream (may be wrapped with GZip/Deflate stream to decompress content)
+  /// </summary>
+  /// <param name="response">HttpWebResponse.</param>
+  /// <returns>ResponseStream</returns>
+  static Stream GetResponseStream(IEwsHttpWebResponse response) {
+    String contentEncoding = response.ContentEncoding;
+    Stream responseStream = response.GetResponseStream();
+
+    return _WrapStream(responseStream, response.ContentEncoding);
+  }
+
+  /// <summary>
+  /// Gets the response stream (may be wrapped with GZip/Deflate stream to decompress content)
+  /// </summary>
+  /// <param name="response">HttpWebResponse.</param>
+  /// <param name="readTimeout">read timeout in milliseconds</param>
+  /// <returns>ResponseStream</returns>
+  static Stream<List<int>> GetResponseStreamWithTimeout(
+      IEwsHttpWebResponse response, int readTimeout) {
+    Stream responseStream = response.GetResponseStream();
 
 //            responseStream.ReadTimeout = readTimeout;
-            return WrapStream(responseStream, response.ContentEncoding);
-        }
+    return _WrapStream(responseStream, response.ContentEncoding);
+  }
 
-        /* private */ static Stream<List<int>> WrapStream(Stream<List<int>> responseStream, String contentEncoding)
-        {
-            // todo("implement gzip and deflate streams")
-            return responseStream;
+  static Stream<List<int>> _WrapStream(Stream<List<int>> responseStream, String contentEncoding) {
+    // todo("implement gzip and deflate streams")
+    return responseStream;
 //            if (contentEncoding.toLowerCase().contains("gzip"))
 //            {
 //                return new GZipStream(responseStream, CompressionMode.Decompress);
@@ -140,195 +137,183 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //            {
 //                return responseStream;
 //            }
-        }
-        
-        /// <summary>
-        /// Gets the name of the XML element.
-        /// </summary>
-        /// <returns>XML element name,</returns>
-        String GetXmlElementName();
+  }
 
-        /// <summary>
-        /// Gets the name of the response XML element.
-        /// </summary>
-        /// <returns>XML element name,</returns>
-        String GetResponseXmlElementName();
+  /// <summary>
+  /// Gets the name of the XML element.
+  /// </summary>
+  /// <returns>XML element name,</returns>
+  String GetXmlElementName();
 
-        /// <summary>
-        /// Gets the minimum server version required to process this request.
-        /// </summary>
-        /// <returns>Exchange server version.</returns>
-        ExchangeVersion GetMinimumRequiredServerVersion();
+  /// <summary>
+  /// Gets the name of the response XML element.
+  /// </summary>
+  /// <returns>XML element name,</returns>
+  String GetResponseXmlElementName();
 
-        /// <summary>
-        /// Writes XML elements.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        void WriteElementsToXml(EwsServiceXmlWriter writer);
+  /// <summary>
+  /// Gets the minimum server version required to process this request.
+  /// </summary>
+  /// <returns>Exchange server version.</returns>
+  ExchangeVersion GetMinimumRequiredServerVersion();
 
-        /// <summary>
-        /// Parses the response.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>Response object.</returns>
-        Object ParseResponse(EwsServiceXmlReader reader)
-        {
-            throw new NotImplementedException("you must override either this or the 2-parameter version");
-        }
+  /// <summary>
+  /// Writes XML elements.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  void WriteElementsToXml(EwsServiceXmlWriter writer);
 
-        /// <summary>
-        /// Parses the response.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="responseHeaders">Response headers</param>
-        /// <returns>Response object.</returns>
-        /// <remarks>If this is overriden instead of the 1-parameter version, you can read response headers</remarks>
-    Object ParseResponseWithHeaders(EwsServiceXmlReader reader, WebHeaderCollection responseHeaders)
-        {
-            return this.ParseResponse(reader);
-        }
+  /// <summary>
+  /// Parses the response.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>Response object.</returns>
+  Object ParseResponse(EwsServiceXmlReader reader) {
+    throw new NotImplementedException("you must override either this or the 2-parameter version");
+  }
 
-        /// <summary>
-        /// Gets a value indicating whether the TimeZoneContext SOAP header should be eimitted.
-        /// </summary>
-        /// <value><c>true</c> if the time zone should be emitted; otherwise, <c>false</c>.</value>
-        bool get EmitTimeZoneHeader => false;
-        
-        /// <summary>
-        /// Validate request.
-        /// </summary>
-        void Validate()
-        {
-            this.Service.Validate();
-        }
+  /// <summary>
+  /// Parses the response.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <param name="responseHeaders">Response headers</param>
+  /// <returns>Response object.</returns>
+  /// <remarks>If this is overriden instead of the 1-parameter version, you can read response headers</remarks>
+  Object ParseResponseWithHeaders(EwsServiceXmlReader reader, WebHeaderCollection responseHeaders) {
+    return this.ParseResponse(reader);
+  }
 
-        /// <summary>
-        /// Writes XML body.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        void WriteBodyToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteStartElement(XmlNamespace.Messages, this.GetXmlElementName());
+  /// <summary>
+  /// Gets a value indicating whether the TimeZoneContext SOAP header should be eimitted.
+  /// </summary>
+  /// <value><c>true</c> if the time zone should be emitted; otherwise, <c>false</c>.</value>
+  bool get EmitTimeZoneHeader => false;
 
-            this.WriteAttributesToXml(writer);
-            this.WriteElementsToXml(writer);
+  /// <summary>
+  /// Validate request.
+  /// </summary>
+  void Validate() {
+    this.Service.Validate();
+  }
 
-            writer.WriteEndElement(); // m:this.GetXmlElementName()
-        }
+  /// <summary>
+  /// Writes XML body.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  void WriteBodyToXml(EwsServiceXmlWriter writer) {
+    writer.WriteStartElement(XmlNamespace.Messages, this.GetXmlElementName());
 
-        /// <summary>
-        /// Writes XML attributes.
-        /// </summary>
-        /// <remarks>
-        /// Subclass will override if it has XML attributes.
-        /// </remarks>
-        /// <param name="writer">The writer.</param>
-        void WriteAttributesToXml(EwsServiceXmlWriter writer)
-        {
-        }
+    this.WriteAttributesToXml(writer);
+    this.WriteElementsToXml(writer);
 
-        /// <summary>
-        /// Allows the subclasses to add their own header information
-        /// </summary>
-        /// <param name="webHeaderCollection">The HTTP request headers</param>
-        void AddHeaders(WebHeaderCollection webHeaderCollection)
-        {
-            if (!StringUtils.IsNullOrEmpty(this.AnchorMailbox))
-            {
-                webHeaderCollection.Set(_AnchorMailboxHeaderName, this.AnchorMailbox);
-                webHeaderCollection.Set(_ExplicitLogonUserHeaderName, this.AnchorMailbox);
-            }
-        }
+    writer.WriteEndElement(); // m:this.GetXmlElementName()
+  }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceRequestBase"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        ServiceRequestBase(ExchangeService service)
-        {
-            if (service == null)
-            {
-                throw new ArgumentNullException("service");
-            }
+  /// <summary>
+  /// Writes XML attributes.
+  /// </summary>
+  /// <remarks>
+  /// Subclass will override if it has XML attributes.
+  /// </remarks>
+  /// <param name="writer">The writer.</param>
+  void WriteAttributesToXml(EwsServiceXmlWriter writer) {}
 
-            this._service = service;
-            this.ThrowIfNotSupportedByRequestedServerVersion();
-        }
+  /// <summary>
+  /// Allows the subclasses to add their own header information
+  /// </summary>
+  /// <param name="webHeaderCollection">The HTTP request headers</param>
+  void AddHeaders(WebHeaderCollection webHeaderCollection) {
+    if (!StringUtils.IsNullOrEmpty(this.AnchorMailbox)) {
+      webHeaderCollection.Set(_AnchorMailboxHeaderName, this.AnchorMailbox);
+      webHeaderCollection.Set(_ExplicitLogonUserHeaderName, this.AnchorMailbox);
+    }
+  }
 
-        /// <summary>
-        /// Gets the service.
-        /// </summary>
-        /// <value>The service.</value>
-        ExchangeService get Service => this._service;
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ServiceRequestBase"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  ServiceRequestBase(ExchangeService service) {
+    if (service == null) {
+      throw new ArgumentNullException("service");
+    }
 
-        /// <summary>
-        /// Throw exception if request is not supported in requested server version.
-        /// </summary>
-        /// <exception cref="ServiceVersionException">Raised if request requires a later version of Exchange.</exception>
-        void ThrowIfNotSupportedByRequestedServerVersion()
-        {
-            if (this.Service.RequestedServerVersion.index < this.GetMinimumRequiredServerVersion().index)
-            {
-                throw new ServiceVersionException(
-                    """string.Format(
+    this._service = service;
+    this.ThrowIfNotSupportedByRequestedServerVersion();
+  }
+
+  /// <summary>
+  /// Gets the service.
+  /// </summary>
+  /// <value>The service.</value>
+  ExchangeService get Service => this._service;
+
+  /// <summary>
+  /// Throw exception if request is not supported in requested server version.
+  /// </summary>
+  /// <exception cref="ServiceVersionException">Raised if request requires a later version of Exchange.</exception>
+  void ThrowIfNotSupportedByRequestedServerVersion() {
+    if (this.Service.RequestedServerVersion.index < this.GetMinimumRequiredServerVersion().index) {
+      throw new ServiceVersionException("""string.Format(
                         Strings.RequestIncompatibleWithRequestVersion,
                         this.GetXmlElementName(),
                         this.GetMinimumRequiredServerVersion())""");
-            }
-        }
-        
-        /// <summary>
-        /// Writes XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        void WriteToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-            writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.EwsXmlSchemaInstanceNamespacePrefix, EwsUtilities.EwsXmlSchemaInstanceNamespace);
-            writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.EwsMessagesNamespacePrefix, EwsUtilities.EwsMessagesNamespace);
-            writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.EwsTypesNamespacePrefix, EwsUtilities.EwsTypesNamespace);
-            if (writer.RequireWSSecurityUtilityNamespace)
-            {
-                writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.WSSecurityUtilityNamespacePrefix, EwsUtilities.WSSecurityUtilityNamespace);
-            }
+    }
+  }
 
-            writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
+  /// <summary>
+  /// Writes XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  void WriteToXml(EwsServiceXmlWriter writer) {
+    writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
+    writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.EwsXmlSchemaInstanceNamespacePrefix,
+        EwsUtilities.EwsXmlSchemaInstanceNamespace);
+    writer.WriteAttributeValueWithPrefix(
+        "xmlns", EwsUtilities.EwsMessagesNamespacePrefix, EwsUtilities.EwsMessagesNamespace);
+    writer.WriteAttributeValueWithPrefix(
+        "xmlns", EwsUtilities.EwsTypesNamespacePrefix, EwsUtilities.EwsTypesNamespace);
+    if (writer.RequireWSSecurityUtilityNamespace) {
+      writer.WriteAttributeValueWithPrefix("xmlns", EwsUtilities.WSSecurityUtilityNamespacePrefix,
+          EwsUtilities.WSSecurityUtilityNamespace);
+    }
 
-            if (this.Service.Credentials != null)
-            {
-                this.Service.Credentials.EmitExtraSoapHeaderNamespaceAliases(writer.InternalWriter);
-            }
+    writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
 
-            // Emit the RequestServerVersion header
-            if (!this.Service.SuppressXmlVersionHeader)
-            {
-                writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.RequestServerVersion);
-                writer.WriteAttributeValue(XmlAttributeNames.Version, this.GetRequestedServiceVersionString());
-                writer.WriteEndElement(); // RequestServerVersion
-            }
+    if (this.Service.Credentials != null) {
+      this.Service.Credentials.EmitExtraSoapHeaderNamespaceAliases(writer.InternalWriter);
+    }
 
-            // Against Exchange 2007 SP1, we always emit the simplified time zone header. It adds very little to
-            // the request, so bandwidth consumption is not an issue. Against Exchange 2010 and above, we emit
-            // the full time zone header but only when the request actually needs it.
-            //
-            // The exception to this is if we are in Exchange2007 Compat Mode, in which case we should never emit
-            // the header.  (Note: Exchange2007 Compat Mode is enabled for testability purposes only.)
-            //
-            if ((this.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1 || this.EmitTimeZoneHeader) &&
-                (!this.Service.Exchange2007CompatibilityMode))
-            {
+    // Emit the RequestServerVersion header
+    if (!this.Service.SuppressXmlVersionHeader) {
+      writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.RequestServerVersion);
+      writer.WriteAttributeValue(
+          XmlAttributeNames.Version, this._GetRequestedServiceVersionString());
+      writer.WriteEndElement(); // RequestServerVersion
+    }
+
+    // Against Exchange 2007 SP1, we always emit the simplified time zone header. It adds very little to
+    // the request, so bandwidth consumption is not an issue. Against Exchange 2010 and above, we emit
+    // the full time zone header but only when the request actually needs it.
+    //
+    // The exception to this is if we are in Exchange2007 Compat Mode, in which case we should never emit
+    // the header.  (Note: Exchange2007 Compat Mode is enabled for testability purposes only.)
+    //
+    if ((this.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1 ||
+            this.EmitTimeZoneHeader) &&
+        (!this.Service.Exchange2007CompatibilityMode)) {
 //                writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.TimeZoneContext);
 
-                // todo("implement time zone definitions")
+      // todo("implement time zone definitions")
 //                this.Service.TimeZoneDefinition.WriteToXml(writer);
 
 //                writer.WriteEndElement(); // TimeZoneContext
 
-                writer.IsTimeZoneHeaderEmitted = true;
-            }
+      writer.IsTimeZoneHeaderEmitted = true;
+    }
 
-            // Emit the MailboxCulture header
-            // todo("restore this features")
+    // Emit the MailboxCulture header
+    // todo("restore this features")
 //            if (this.Service.PreferredCulture != null)
 //            {
 //                writer.WriteElementValueWithNamespace(
@@ -337,8 +322,8 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //                    this.Service.PreferredCulture.Name);
 //            }
 
-            // Emit the DateTimePrecision header
-            // todo("restore this features")
+    // Emit the DateTimePrecision header
+    // todo("restore this features")
 //            if (this.Service.DateTimePrecision != DateTimePrecision.Default)
 //            {
 //                writer.WriteElementValueWithNamespace(
@@ -347,8 +332,8 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //                    this.Service.DateTimePrecision.ToString());
 //            }
 
-            // Emit the ExchangeImpersonation header
-            // todo("restore this features")
+    // Emit the ExchangeImpersonation header
+    // todo("restore this features")
 //            if (this.Service.ImpersonatedUserId != null)
 //            {
 //                this.Service.ImpersonatedUserId.WriteToXml(writer);
@@ -362,261 +347,244 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //                this.Service.ManagementRoles.WriteToXml(writer);
 //            }
 
-            if (this.Service.Credentials != null)
-            {
-                this.Service.Credentials.SerializeExtraSoapHeaders(writer.InternalWriter, this.GetXmlElementName());
-            }
+    if (this.Service.Credentials != null) {
+      this
+          .Service
+          .Credentials
+          .SerializeExtraSoapHeaders(writer.InternalWriter, this.GetXmlElementName());
+    }
 
-            this.Service.DoOnSerializeCustomSoapHeaders(writer.InternalWriter);
+    this.Service.DoOnSerializeCustomSoapHeaders(writer.InternalWriter);
 
-            writer.WriteEndElement(); // soap:Header
+    writer.WriteEndElement(); // soap:Header
 
-            writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
+    writer.WriteStartElement(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
 
-            this.WriteBodyToXml(writer);
+    this.WriteBodyToXml(writer);
 
-            writer.WriteEndElement(); // soap:Body
-            writer.WriteEndElement(); // soap:Envelope
-        }
+    writer.WriteEndElement(); // soap:Body
+    writer.WriteEndElement(); // soap:Envelope
+  }
 
-        /// <summary>
-        /// Gets String representation of requested server version.
-        /// </summary>
-        /// <remarks>
-        /// In order to support E12 RTM servers, ExchangeService has another flag indicating that
-        /// we should use "Exchange2007" as the server version String rather than Exchange2007_SP1.
-        /// </remarks>
-        /// <returns>String representation of requested server version.</returns>
-        /* private */ String GetRequestedServiceVersionString()
-        {
-            if (this.Service.Exchange2007CompatibilityMode && this.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1)
-            {
-                return "Exchange2007";
-            }
-            else
-            {
-                return EnumToString.parse(this.Service.RequestedServerVersion);
-            }
-        }
+  /// <summary>
+  /// Gets String representation of requested server version.
+  /// </summary>
+  /// <remarks>
+  /// In order to support E12 RTM servers, ExchangeService has another flag indicating that
+  /// we should use "Exchange2007" as the server version String rather than Exchange2007_SP1.
+  /// </remarks>
+  /// <returns>String representation of requested server version.</returns>
+  String _GetRequestedServiceVersionString() {
+    if (this.Service.Exchange2007CompatibilityMode &&
+        this.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1) {
+      return "Exchange2007";
+    } else {
+      return EnumToString.parse(this.Service.RequestedServerVersion);
+    }
+  }
 
-        /// <summary>
-        /// Emits the request.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        Future<void> _EmitRequest(IEwsHttpWebRequest request) async
-        {
-            StreamConsumer<List<int>> requestStream = await this._GetWebRequestStream(request);
-            EwsServiceXmlWriter writer = new EwsServiceXmlWriter(this.Service, requestStream);
-            this.WriteToXml(writer);
-            await writer.Flush();
-            await writer.Dispose();
-        }
+  /// <summary>
+  /// Emits the request.
+  /// </summary>
+  /// <param name="request">The request.</param>
+  Future<void> _EmitRequest(IEwsHttpWebRequest request) async {
+    StreamConsumer<List<int>> requestStream = await this._GetWebRequestStream(request);
+    EwsServiceXmlWriter writer = new EwsServiceXmlWriter(this.Service, requestStream);
+    this.WriteToXml(writer);
+    await writer.Flush();
+    await writer.Dispose();
+  }
 
-        /// <summary>
-        /// Traces the and emits the request.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <param name="needSignature"></param>
-        /// <param name="needTrace"></param>
-        Future<void> _TraceAndEmitRequest(IEwsHttpWebRequest request, bool needSignature, bool needTrace) async
-        {
-            MemoryStream memoryStream = new MemoryStream();
+  /// <summary>
+  /// Traces the and emits the request.
+  /// </summary>
+  /// <param name="request">The request.</param>
+  /// <param name="needSignature"></param>
+  /// <param name="needTrace"></param>
+  Future<void> _TraceAndEmitRequest(
+      IEwsHttpWebRequest request, bool needSignature, bool needTrace) async {
+    MemoryStream memoryStream = new MemoryStream();
 
-            EwsServiceXmlWriter writer = new EwsServiceXmlWriter(this.Service, memoryStream);
+    EwsServiceXmlWriter writer = new EwsServiceXmlWriter(this.Service, memoryStream);
 
-            writer.RequireWSSecurityUtilityNamespace = needSignature;
-            this.WriteToXml(writer);
+    writer.RequireWSSecurityUtilityNamespace = needSignature;
+    this.WriteToXml(writer);
 
-            await writer.Flush();
-            await writer.Dispose();
+    await writer.Flush();
+    await writer.Dispose();
 
-            if (needSignature)
-            {
-                this._service.Credentials.Sign(memoryStream);
-            }
+    if (needSignature) {
+      this._service.Credentials.Sign(memoryStream);
+    }
 
-            if (needTrace)
-            {
-                this.TraceXmlRequest(memoryStream);
-            }
+    if (needTrace) {
+      this.TraceXmlRequest(memoryStream);
+    }
 
-            StreamConsumer<List<int>> serviceRequestStream = await this._GetWebRequestStream(request);
+    StreamConsumer<List<int>> serviceRequestStream = await this._GetWebRequestStream(request);
 
-            await EwsUtilities.CopyStream(memoryStream, serviceRequestStream);
-            await serviceRequestStream.close();
+    await EwsUtilities.CopyStream(memoryStream, serviceRequestStream);
+    await serviceRequestStream.close();
 
-            await memoryStream.close();
-        }
+    await memoryStream.close();
+  }
 
-        /// <summary>
-        /// Get the request stream
-        /// </summary>
-        /// <param name="request">The request</param>
-        /// <returns>The Request stream</returns>
-        Future<StreamConsumer<List<int>>> _GetWebRequestStream(IEwsHttpWebRequest request)
-        {
-            // In the async case, although we can use async callback to make the entire worflow completely async,
-            // there is little perf gain with this approach because of EWS's message nature.
-            // The overall latency of BeginGetRequestStream() is same as GetRequestStream() in this case.
-            // The overhead to implement a two-step async operation includes wait handle synchronization, exception handling and wrapping.
-            // Therefore, we only leverage BeginGetResponse() and EndGetResponse() to provide the async functionality.
-            // Reference: http://www.wintellect.com/CS/blogs/jeffreyr/archive/2009/02/08/httpwebrequest-its-request-stream-and-sending-data-in-chunks.aspx
+  /// <summary>
+  /// Get the request stream
+  /// </summary>
+  /// <param name="request">The request</param>
+  /// <returns>The Request stream</returns>
+  Future<StreamConsumer<List<int>>> _GetWebRequestStream(IEwsHttpWebRequest request) {
+    // In the async case, although we can use async callback to make the entire worflow completely async,
+    // there is little perf gain with this approach because of EWS's message nature.
+    // The overall latency of BeginGetRequestStream() is same as GetRequestStream() in this case.
+    // The overhead to implement a two-step async operation includes wait handle synchronization, exception handling and wrapping.
+    // Therefore, we only leverage BeginGetResponse() and EndGetResponse() to provide the async functionality.
+    // Reference: http://www.wintellect.com/CS/blogs/jeffreyr/archive/2009/02/08/httpwebrequest-its-request-stream-and-sending-data-in-chunks.aspx
 //            return request.EndGetRequestStream(request.BeginGetRequestStream(null, null));
-            return request.GetRequestStream();
-        }
+    return request.GetRequestStream();
+  }
 
-        /// <summary>
-        /// Reads the response.
-        /// </summary>
-        /// <param name="ewsXmlReader">The XML reader.</param>
-        /// <param name="responseHeaders">HTTP response headers</param>
-        /// <returns>Service response.</returns>
-        Object ReadResponseWithHeaders(EwsServiceXmlReader ewsXmlReader, WebHeaderCollection responseHeaders)
-        {
-            Object serviceResponse;
+  /// <summary>
+  /// Reads the response.
+  /// </summary>
+  /// <param name="ewsXmlReader">The XML reader.</param>
+  /// <param name="responseHeaders">HTTP response headers</param>
+  /// <returns>Service response.</returns>
+  Object ReadResponseWithHeaders(
+      EwsServiceXmlReader ewsXmlReader, WebHeaderCollection responseHeaders) {
+    Object serviceResponse;
 
-            this.ReadPreamble(ewsXmlReader);
-            ewsXmlReader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-            this.ReadSoapHeader(ewsXmlReader);
-            ewsXmlReader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
+    this.ReadPreamble(ewsXmlReader);
+    ewsXmlReader.ReadStartElementWithNamespace(
+        XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
+    this._ReadSoapHeader(ewsXmlReader);
+    ewsXmlReader.ReadStartElementWithNamespace(
+        XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
 
-            ewsXmlReader.ReadStartElementWithNamespace(XmlNamespace.Messages, this.GetResponseXmlElementName());
+    ewsXmlReader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, this.GetResponseXmlElementName());
 
-            if (responseHeaders != null)
-            {
-                serviceResponse = this.ParseResponseWithHeaders(ewsXmlReader, responseHeaders);
-            }
-            else
-            {
-                serviceResponse = this.ParseResponse(ewsXmlReader);
-            }
+    if (responseHeaders != null) {
+      serviceResponse = this.ParseResponseWithHeaders(ewsXmlReader, responseHeaders);
+    } else {
+      serviceResponse = this.ParseResponse(ewsXmlReader);
+    }
 
-            ewsXmlReader.ReadEndElementIfNecessary(XmlNamespace.Messages, this.GetResponseXmlElementName());
+    ewsXmlReader.ReadEndElementIfNecessary(XmlNamespace.Messages, this.GetResponseXmlElementName());
 
-            ewsXmlReader.ReadEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
-            ewsXmlReader.ReadEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-            return serviceResponse;
-        }
+    ewsXmlReader.ReadEndElementWithNamespace(
+        XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
+    ewsXmlReader.ReadEndElementWithNamespace(
+        XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
+    return serviceResponse;
+  }
 
-        /// <summary>
-        /// Reads any preamble data not part of the core response.
-        /// </summary>
-        /// <param name="ewsXmlReader">The EwsServiceXmlReader.</param>
-        void ReadPreamble(EwsServiceXmlReader ewsXmlReader)
-        {
-            this.ReadXmlDeclaration(ewsXmlReader);
-        }
+  /// <summary>
+  /// Reads any preamble data not part of the core response.
+  /// </summary>
+  /// <param name="ewsXmlReader">The EwsServiceXmlReader.</param>
+  void ReadPreamble(EwsServiceXmlReader ewsXmlReader) {
+    this._ReadXmlDeclaration(ewsXmlReader);
+  }
 
-        /// <summary>
-        /// Read SOAP header and extract server version
-        /// </summary>
-        /// <param name="reader">EwsServiceXmlReader</param>
-        /* private */ void ReadSoapHeader(EwsServiceXmlReader reader)
-        {
-            reader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
-            do
-            {
-                reader.Read();
+  /// <summary>
+  /// Read SOAP header and extract server version
+  /// </summary>
+  /// <param name="reader">EwsServiceXmlReader</param>
+  void _ReadSoapHeader(EwsServiceXmlReader reader) {
+    reader.ReadStartElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
+    do {
+      reader.Read();
 
-                // Is this the ServerVersionInfo?
-                if (reader.IsStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.ServerVersionInfo))
-                {
-                    this.Service.ServerInfo = ExchangeServerInfo.Parse(reader);
-                }
+      // Is this the ServerVersionInfo?
+      if (reader.IsStartElementWithNamespace(
+          XmlNamespace.Types, XmlElementNames.ServerVersionInfo)) {
+        this.Service.ServerInfo = ExchangeServerInfo.Parse(reader);
+      }
 
-                // Ignore anything else inside the SOAP header
-            }
-            while (!reader.IsEndElementWithNamespace(XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName));
-        }
+      // Ignore anything else inside the SOAP header
+    } while (!reader.IsEndElementWithNamespace(
+        XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName));
+  }
 
-        /// <summary>
-        /// Reads the SOAP fault.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>SOAP fault details.</returns>
-        SoapFaultDetails ReadSoapFault(EwsServiceXmlReader reader)
-        {
-            SoapFaultDetails soapFaultDetails = null;
+  /// <summary>
+  /// Reads the SOAP fault.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>SOAP fault details.</returns>
+  SoapFaultDetails ReadSoapFault(EwsServiceXmlReader reader) {
+    SoapFaultDetails soapFaultDetails = null;
 
-            try
-            {
-                this.ReadXmlDeclaration(reader);
+    try {
+      this._ReadXmlDeclaration(reader);
 
-                reader.Read();
-                if (!reader.IsStartElement() || (reader.LocalName != XmlElementNames.SOAPEnvelopeElementName))
-                {
-                    return soapFaultDetails;
-                }
+      reader.Read();
+      if (!reader.IsStartElement() ||
+          (reader.LocalName != XmlElementNames.SOAPEnvelopeElementName)) {
+        return soapFaultDetails;
+      }
 
+      // namespace URI from the envelope element and use it for the rest of the parsing.
+      // If it's not 1.1 or 1.2, we can't continue.
+      XmlNamespace soapNamespace = EwsUtilities.GetNamespaceFromUri(reader.NamespaceUri);
+      if (soapNamespace == XmlNamespace.NotSpecified) {
+        return soapFaultDetails;
+      }
 
-                // namespace URI from the envelope element and use it for the rest of the parsing.
-                // If it's not 1.1 or 1.2, we can't continue.
-                XmlNamespace soapNamespace = EwsUtilities.GetNamespaceFromUri(reader.NamespaceUri);
-                if (soapNamespace == XmlNamespace.NotSpecified)
-                {
-                    return soapFaultDetails;
-                }
+      reader.Read();
 
-                reader.Read();
+      // EWS doesn't always return a SOAP header. If this response contains a header element,
+      // read the server version information contained in the header.
+      if (reader.IsStartElementWithNamespace(
+          soapNamespace, XmlElementNames.SOAPHeaderElementName)) {
+        do {
+          reader.Read();
 
-                // EWS doesn't always return a SOAP header. If this response contains a header element,
-                // read the server version information contained in the header.
-                if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPHeaderElementName))
-                {
-                    do
-                    {
-                        reader.Read();
+          if (reader.IsStartElementWithNamespace(
+              XmlNamespace.Types, XmlElementNames.ServerVersionInfo)) {
+            this.Service.ServerInfo = ExchangeServerInfo.Parse(reader);
+          }
+        } while (!reader.IsEndElementWithNamespace(
+            soapNamespace, XmlElementNames.SOAPHeaderElementName));
 
-                        if (reader.IsStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.ServerVersionInfo))
-                        {
-                            this.Service.ServerInfo = ExchangeServerInfo.Parse(reader);
-                        }
-                    }
-                    while (!reader.IsEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPHeaderElementName));
+        // Queue up the next read
+        reader.Read();
+      }
 
-                    // Queue up the next read
-                    reader.Read();
-                }
+      // Parse the fault element contained within the SOAP body.
+      if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPBodyElementName)) {
+        do {
+          reader.Read();
 
-                // Parse the fault element contained within the SOAP body.
-                if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPBodyElementName))
-                {
-                    do
-                    {
-                        reader.Read();
+          // Parse Fault element
+          if (reader.IsStartElementWithNamespace(
+              soapNamespace, XmlElementNames.SOAPFaultElementName)) {
+            soapFaultDetails = SoapFaultDetails.Parse(reader, soapNamespace);
+          }
+        } while (
+            !reader.IsEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPBodyElementName));
+      }
 
-                        // Parse Fault element
-                        if (reader.IsStartElementWithNamespace(soapNamespace, XmlElementNames.SOAPFaultElementName))
-                        {
-                            soapFaultDetails = SoapFaultDetails.Parse(reader, soapNamespace);
-                        }
-                    }
-                    while (!reader.IsEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPBodyElementName));
-                }
+      reader.ReadEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPEnvelopeElementName);
+    } on XmlException catch (e) {
+      // If response doesn't contain a valid SOAP fault, just ignore exception and
+      // return null for SOAP fault details.
+    }
 
-                reader.ReadEndElementWithNamespace(soapNamespace, XmlElementNames.SOAPEnvelopeElementName);
-            }
-            on XmlException catch (e)
-            {
-                // If response doesn't contain a valid SOAP fault, just ignore exception and
-                // return null for SOAP fault details.
-            }
+    return soapFaultDetails;
+  }
 
-            return soapFaultDetails;
-        }
+  /// <summary>
+  /// Validates request parameters, and emits the request to the server.
+  /// </summary>
+  /// <param name="request">The request.</param>
+  /// <returns>The response returned by the server.</returns>
+  Future<IEwsHttpWebResponse> ValidateAndEmitRequest() async {
+    this.Validate();
 
-        /// <summary>
-        /// Validates request parameters, and emits the request to the server.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>The response returned by the server.</returns>
-        Future<IEwsHttpWebResponse> ValidateAndEmitRequest() async
-        {
-            this.Validate();
-
-
-            // todo("implement validation")
-            IEwsHttpWebRequest request = await this.BuildEwsHttpWebRequest();
+    // todo("implement validation")
+    IEwsHttpWebRequest request = await this.BuildEwsHttpWebRequest();
 //
 //            if (this.service.SendClientLatencies)
 //            {
@@ -649,11 +617,11 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //            }
 //
 //            DateTime startTime = DateTime.UtcNow;
-            IEwsHttpWebResponse response = null;
+    IEwsHttpWebResponse response = null;
 //
 //            try
 //            {
-                response = await this.GetEwsHttpWebResponse(request);
+    response = await this.GetEwsHttpWebResponse(request);
 //            }
 //            finally
 //            {
@@ -692,100 +660,87 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //                }
 //            }
 
-            return response;
-        }
+    return response;
+  }
 
-        /// <summary>
-        /// Builds the IEwsHttpWebRequest object for current service request with exception handling.
-        /// </summary>
-        /// <returns>An IEwsHttpWebRequest instance</returns>
-        Future<IEwsHttpWebRequest> BuildEwsHttpWebRequest() async
-        {
-            IEwsHttpWebRequest request = null;
-            try
-            {
-                request = this.Service.PrepareHttpWebRequest(this.GetXmlElementName());
+  /// <summary>
+  /// Builds the IEwsHttpWebRequest object for current service request with exception handling.
+  /// </summary>
+  /// <returns>An IEwsHttpWebRequest instance</returns>
+  Future<IEwsHttpWebRequest> BuildEwsHttpWebRequest() async {
+    IEwsHttpWebRequest request = null;
+    try {
+      request = this.Service.PrepareHttpWebRequest(this.GetXmlElementName());
 
-                this.Service.TraceHttpRequestHeaders(TraceFlags.EwsRequestHttpHeaders, request);
+      this.Service.TraceHttpRequestHeaders(TraceFlags.EwsRequestHttpHeaders, request);
 
-                bool needSignature = this.Service.Credentials != null && this.Service.Credentials.NeedSignature;
-                bool needTrace = this.Service.IsTraceEnabledFor(TraceFlags.EwsRequest);
+      bool needSignature =
+          this.Service.Credentials != null && this.Service.Credentials.NeedSignature;
+      bool needTrace = this.Service.IsTraceEnabledFor(TraceFlags.EwsRequest);
 
-                // The request might need to add additional headers
-                this.AddHeaders(request.Headers);
+      // The request might need to add additional headers
+      this.AddHeaders(request.Headers);
 
-                // If tracing is enabled, we generate the request in-memory so that we
-                // can pass it along to the ITraceListener. Then we copy the stream to
-                // the request stream.
-                if (needSignature || needTrace)
-                {
-                    await this._TraceAndEmitRequest(request, needSignature, needTrace);
-                }
-                else
-                {
-                    await this._EmitRequest(request);
-                }
+      // If tracing is enabled, we generate the request in-memory so that we
+      // can pass it along to the ITraceListener. Then we copy the stream to
+      // the request stream.
+      if (needSignature || needTrace) {
+        await this._TraceAndEmitRequest(request, needSignature, needTrace);
+      } else {
+        await this._EmitRequest(request);
+      }
 
-                return request;
-            }
-            on WebException catch ( ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                {
-                    await this.ProcessWebException(ex);
-                }
+      return request;
+    } on WebException catch (ex) {
+      if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null) {
+        await this._ProcessWebException(ex);
+      }
 
-                // Wrap exception if the above code block didn't throw
-                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
-            }
-            on IOException catch ( e)
-            {
-                if (request != null)
-                {
-                    request.Abort();
-                }
-                // Wrap exception.
-                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, e.Message)", e);
-            }
-        }
+      // Wrap exception if the above code block didn't throw
+      throw new ServiceRequestException(
+          "string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
+    } on IOException catch (e) {
+      if (request != null) {
+        request.Abort();
+      }
+      // Wrap exception.
+      throw new ServiceRequestException(
+          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+    }
+  }
 
-        /// <summary>
-        ///  Gets the IEwsHttpWebRequest object from the specified IEwsHttpWebRequest object with exception handling
-        /// </summary>
-        /// <param name="request">The specified IEwsHttpWebRequest</param>
-        /// <returns>An IEwsHttpWebResponse instance</returns>
-        Future<IEwsHttpWebResponse> GetEwsHttpWebResponse(IEwsHttpWebRequest request) async
-        {
-            try
-            {
-                IEwsHttpWebResponse response = await request.GetResponse();
-                return response;
-            }
-            on WebException catch ( ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                {
+  /// <summary>
+  ///  Gets the IEwsHttpWebRequest object from the specified IEwsHttpWebRequest object with exception handling
+  /// </summary>
+  /// <param name="request">The specified IEwsHttpWebRequest</param>
+  /// <returns>An IEwsHttpWebResponse instance</returns>
+  Future<IEwsHttpWebResponse> GetEwsHttpWebResponse(IEwsHttpWebRequest request) async {
+    try {
+      IEwsHttpWebResponse response = await request.GetResponse();
+      return response;
+    } on WebException catch (ex) {
+      if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null) {
 //                    // todo("implement ProcessWebException");
 //                    print("implement ProcessWebException");
 //                    this.ProcessWebException(ex);
-                }
+      }
 
-                // Wrap exception if the above code block didn't throw
-                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
-            }
-            on IOException catch ( e)
-            {
-                // Wrap exception.
-                throw new ServiceRequestException("string.Format(Strings.ServiceRequestFailed, e.Message)", e);
-            }
-        }
+      // Wrap exception if the above code block didn't throw
+      throw new ServiceRequestException(
+          "string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
+    } on IOException catch (e) {
+      // Wrap exception.
+      throw new ServiceRequestException(
+          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+    }
+  }
 
-        /// <summary>
-        /// Ends getting the specified async IEwsHttpWebRequest object from the specified IEwsHttpWebRequest object with exception handling.
-        /// </summary>
-        /// <param name="request">The specified IEwsHttpWebRequest</param>
-        /// <param name="asyncResult">An IAsyncResult that references the asynchronous request.</param>
-        /// <returns>An IEwsHttpWebResponse instance</returns>
+  /// <summary>
+  /// Ends getting the specified async IEwsHttpWebRequest object from the specified IEwsHttpWebRequest object with exception handling.
+  /// </summary>
+  /// <param name="request">The specified IEwsHttpWebRequest</param>
+  /// <param name="asyncResult">An IAsyncResult that references the asynchronous request.</param>
+  /// <returns>An IEwsHttpWebResponse instance</returns>
 //        IEwsHttpWebResponse EndGetEwsHttpWebResponse(IEwsHttpWebRequest request, IAsyncResult asyncResult)
 //        {
 //            try
@@ -811,143 +766,124 @@ import 'package:ews/misc/Std/EnumToString.dart';
 //            }
 //        }
 
-        /// <summary>
-        /// Processes the web exception.
-        /// </summary>
-        /// <param name="webException">The web exception.</param>
-        /* private */ Future<void> ProcessWebException(WebException webException) async
-        {
-            if (webException.Response != null)
-            {
-                IEwsHttpWebResponse httpWebResponse = this.Service.HttpWebRequestFactory.CreateExceptionResponse(webException);
-                SoapFaultDetails soapFaultDetails = null;
+  /// <summary>
+  /// Processes the web exception.
+  /// </summary>
+  /// <param name="webException">The web exception.</param>
+  Future<void> _ProcessWebException(WebException webException) async {
+    if (webException.Response != null) {
+      IEwsHttpWebResponse httpWebResponse =
+          this.Service.HttpWebRequestFactory.CreateExceptionResponse(webException);
+      SoapFaultDetails soapFaultDetails = null;
 
-                if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, httpWebResponse);
+      if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError) {
+        this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, httpWebResponse);
 
-                    // If tracing is enabled, we read the entire response into a MemoryStream so that we
-                    // can pass it along to the ITraceListener. Then we parse the response from the
-                    // MemoryStream.
-                    if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse))
-                    {
-                        MemoryStream memoryStream = new MemoryStream();
-                            Stream serviceResponseStream = ServiceRequestBase.GetResponseStream(httpWebResponse);
+        // If tracing is enabled, we read the entire response into a MemoryStream so that we
+        // can pass it along to the ITraceListener. Then we parse the response from the
+        // MemoryStream.
+        if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse)) {
+          MemoryStream memoryStream = new MemoryStream();
+          Stream serviceResponseStream = ServiceRequestBase.GetResponseStream(httpWebResponse);
 
-                                // Copy response to in-memory stream and reset position to start.
-                                await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
-                                memoryStream.Position = 0;
+          // Copy response to in-memory stream and reset position to start.
+          await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
+          memoryStream.Position = 0;
 
 //                            await serviceResponseStream.close();
 
-                            this.TraceResponseXml(httpWebResponse, memoryStream);
+          this.TraceResponseXml(httpWebResponse, memoryStream);
 
-                            EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(memoryStream, this.Service);
-                            soapFaultDetails = this.ReadSoapFault(reader);
-                        await memoryStream.close();
-                    }
-                    else
-                    {
-                        Stream stream = ServiceRequestBase.GetResponseStream(httpWebResponse);
+          EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(memoryStream, this.Service);
+          soapFaultDetails = this.ReadSoapFault(reader);
+          await memoryStream.close();
+        } else {
+          Stream stream = ServiceRequestBase.GetResponseStream(httpWebResponse);
 
-                            EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(stream, this.Service);
-                            soapFaultDetails = this.ReadSoapFault(reader);
+          EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(stream, this.Service);
+          soapFaultDetails = this.ReadSoapFault(reader);
 //                        await stream.close();
-                    }
+        }
 
-                    if (soapFaultDetails != null)
-                    {
-                        switch (soapFaultDetails.ResponseCode)
-                        {
-                            case ServiceError.ErrorInvalidServerVersion:
-                                throw new ServiceVersionException("Strings.ServerVersionNotSupported");
+        if (soapFaultDetails != null) {
+          switch (soapFaultDetails.ResponseCode) {
+            case ServiceError.ErrorInvalidServerVersion:
+              throw new ServiceVersionException("Strings.ServerVersionNotSupported");
 
-                            case ServiceError.ErrorSchemaValidation:
-                                // If we're talking to an E12 server (8.00.xxxx.xxx), a schema validation error is the same as a version mismatch error.
-                                // (Which only will happen if we send a request that's not valid for E12).
-                                if ((this.Service.ServerInfo != null) &&
-                                    (this.Service.ServerInfo.MajorVersion == 8) && (this.Service.ServerInfo.MinorVersion == 0))
-                                {
-                                    throw new ServiceVersionException("Strings.ServerVersionNotSupported");
-                                }
+            case ServiceError.ErrorSchemaValidation:
+              // If we're talking to an E12 server (8.00.xxxx.xxx), a schema validation error is the same as a version mismatch error.
+              // (Which only will happen if we send a request that's not valid for E12).
+              if ((this.Service.ServerInfo != null) &&
+                  (this.Service.ServerInfo.MajorVersion == 8) &&
+                  (this.Service.ServerInfo.MinorVersion == 0)) {
+                throw new ServiceVersionException("Strings.ServerVersionNotSupported");
+              }
 
-                                break;
+              break;
 
-                            case ServiceError.ErrorIncorrectSchemaVersion:
-                                // This shouldn't happen. It indicates that a request wasn't valid for the version that was specified.
+            case ServiceError.ErrorIncorrectSchemaVersion:
+              // This shouldn't happen. It indicates that a request wasn't valid for the version that was specified.
 //                                EwsUtilities.Assert(
 //                                    false,
 //                                    "ServiceRequestBase.ProcessWebException",
 //                                    "Exchange server supports requested version but request was invalid for that version");
-                                break;
+              break;
 
-                            case ServiceError.ErrorServerBusy:
-                                throw new ServerBusyException(new ServiceResponse.withSoapFault(soapFaultDetails));
+            case ServiceError.ErrorServerBusy:
+              throw new ServerBusyException(new ServiceResponse.withSoapFault(soapFaultDetails));
 
-                            default:
-                                // Other error codes will be reported as remote error
-                                break;
-                        }
+            default:
+              // Other error codes will be reported as remote error
+              break;
+          }
 
-                        // General fall-through case: throw a ServiceResponseException
-                        throw new ServiceResponseException(new ServiceResponse.withSoapFault(soapFaultDetails));
-                    }
-                }
-                else
-                {
-                    this.Service.ProcessHttpErrorResponse(httpWebResponse, webException);
-                }
-            }
+          // General fall-through case: throw a ServiceResponseException
+          throw new ServiceResponseException(new ServiceResponse.withSoapFault(soapFaultDetails));
         }
-
-        /// <summary>
-        /// Traces an XML request.  This should only be used for synchronous requests, or synchronous situations
-        /// (such as a WebException on an asynchrounous request).
-        /// </summary>
-        /// <param name="memoryStream">The request content in a MemoryStream.</param>
-        void TraceXmlRequest(MemoryStream memoryStream)
-        {
-            this.Service.TraceXml(TraceFlags.EwsRequest, memoryStream);
-        }
-
-        /// <summary>
-        /// Traces the response.  This should only be used for synchronous requests, or synchronous situations
-        /// (such as a WebException on an asynchrounous request).
-        /// </summary>
-        /// <param name="response">The response.</param>
-        /// <param name="memoryStream">The response content in a MemoryStream.</param>
-        void TraceResponseXml(IEwsHttpWebResponse response, MemoryStream memoryStream)
-        {
-            // todo("check OrdinalIgnoreCase argument");
-            if (!StringUtils.IsNullOrEmpty(response.ContentType) &&
-                (response.ContentType.startsWith("text/"/*, StringComparison.OrdinalIgnoreCase*/) ||
-                 response.ContentType.startsWith("application/soap"/*, StringComparison.OrdinalIgnoreCase)*/)))
-            {
-                this.Service.TraceXml(TraceFlags.EwsResponse, memoryStream);
-            }
-            else
-            {
-                this.Service.TraceMessage(TraceFlags.EwsResponse, "Non-textual response");
-            }
-        }
-
-        /// <summary>
-        /// Try to read the XML declaration. If it's not there, the server didn't return XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /* private */ void ReadXmlDeclaration(EwsServiceXmlReader reader)
-        {
-            try
-            {
-                reader.Read(nodeType: XmlNodeType.XmlDeclaration);
-            }
-            on XmlException catch (ex)
-            {
-                throw new ServiceRequestException("Strings.ServiceResponseDoesNotContainXml, ex");
-            }
-            on ServiceXmlDeserializationException catch( ex)
-            {
-                throw new ServiceRequestException("Strings.ServiceResponseDoesNotContainXml", ex);
-            }
-        }
+      } else {
+        this.Service.ProcessHttpErrorResponse(httpWebResponse, webException);
+      }
     }
+  }
+
+  /// <summary>
+  /// Traces an XML request.  This should only be used for synchronous requests, or synchronous situations
+  /// (such as a WebException on an asynchrounous request).
+  /// </summary>
+  /// <param name="memoryStream">The request content in a MemoryStream.</param>
+  void TraceXmlRequest(MemoryStream memoryStream) {
+    this.Service.TraceXml(TraceFlags.EwsRequest, memoryStream);
+  }
+
+  /// <summary>
+  /// Traces the response.  This should only be used for synchronous requests, or synchronous situations
+  /// (such as a WebException on an asynchrounous request).
+  /// </summary>
+  /// <param name="response">The response.</param>
+  /// <param name="memoryStream">The response content in a MemoryStream.</param>
+  void TraceResponseXml(IEwsHttpWebResponse response, MemoryStream memoryStream) {
+    // todo("check OrdinalIgnoreCase argument");
+    if (!StringUtils.IsNullOrEmpty(response.ContentType) &&
+        (response.ContentType.startsWith("text/" /*, StringComparison.OrdinalIgnoreCase*/) ||
+            response.ContentType.startsWith(
+                "application/soap" /*, StringComparison.OrdinalIgnoreCase)*/))) {
+      this.Service.TraceXml(TraceFlags.EwsResponse, memoryStream);
+    } else {
+      this.Service.TraceMessage(TraceFlags.EwsResponse, "Non-textual response");
+    }
+  }
+
+  /// <summary>
+  /// Try to read the XML declaration. If it's not there, the server didn't return XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  void _ReadXmlDeclaration(EwsServiceXmlReader reader) {
+    try {
+      reader.Read(nodeType: XmlNodeType.XmlDeclaration);
+    } on XmlException catch (ex) {
+      throw new ServiceRequestException("Strings.ServiceResponseDoesNotContainXml", ex);
+    } on ServiceXmlDeserializationException catch (ex) {
+      throw new ServiceRequestException("Strings.ServiceResponseDoesNotContainXml", ex);
+    }
+  }
+}

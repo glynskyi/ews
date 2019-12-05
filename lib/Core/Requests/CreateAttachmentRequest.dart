@@ -38,20 +38,17 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents a CreateAttachment request.
 /// </summary>
-class CreateAttachmentRequest
-    extends MultiResponseServiceRequest<CreateAttachmentResponse> {
-  /* private */ String parentItemId;
+class CreateAttachmentRequest extends MultiResponseServiceRequest<CreateAttachmentResponse> {
+  String _parentItemId;
 
-  /* private */
-  List<Attachment> attachments = new List<Attachment>();
+  List<Attachment> _attachments = new List<Attachment>();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateAttachmentRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  CreateAttachmentRequest(
-      ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  CreateAttachmentRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -70,8 +67,7 @@ class CreateAttachmentRequest
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  CreateAttachmentResponse CreateServiceResponse(
-      ExchangeService service, int responseIndex) {
+  CreateAttachmentResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
     return new CreateAttachmentResponse(this.Attachments[responseIndex]);
   }
 
@@ -117,13 +113,11 @@ class CreateAttachmentRequest
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(
-        XmlNamespace.Messages, XmlElementNames.ParentItemId);
+    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.ParentItemId);
     writer.WriteAttributeValue(XmlAttributeNames.Id, this.ParentItemId);
     writer.WriteEndElement();
 
-    writer.WriteStartElement(
-        XmlNamespace.Messages, XmlElementNames.Attachments);
+    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.Attachments);
     for (Attachment attachment in this.Attachments) {
       attachment.WriteToXml(writer, attachment.GetXmlElementName());
     }
@@ -163,15 +157,15 @@ class CreateAttachmentRequest
   /// Gets the attachments.
   /// </summary>
   /// <value>The attachments.</value>
-  List<Attachment> get Attachments => this.attachments;
+  List<Attachment> get Attachments => this._attachments;
 
   /// <summary>
   /// Gets or sets the parent item id.
   /// </summary>
   /// <value>The parent item id.</value>
-  String get ParentItemId => this.parentItemId;
+  String get ParentItemId => this._parentItemId;
 
   set ParentItemId(String value) {
-    this.parentItemId = value;
+    this._parentItemId = value;
   }
 }

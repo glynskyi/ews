@@ -35,7 +35,7 @@ import 'package:ews/Search/PagedView.dart';
 /// Represents the view settings in a folder search operation.
 /// </summary>
 class FolderView extends PagedView {
-  /* private */ FolderTraversal traversal;
+  FolderTraversal _traversal;
 
   /// <summary>
   /// Gets the name of the view XML element.
@@ -75,7 +75,8 @@ class FolderView extends PagedView {
   /// </summary>
   /// <param name="pageSize">The maximum number of elements the search operation should return.</param>
   /// <param name="offset">The offset of the view from the base point.</param>
-  FolderView.withPageSizeAndOffset(int pageSize, int offset) : super.withPageSizeAndOffset(pageSize, offset);
+  FolderView.withPageSizeAndOffset(int pageSize, int offset)
+      : super.withPageSizeAndOffset(pageSize, offset);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FolderView"/> class.
@@ -83,13 +84,14 @@ class FolderView extends PagedView {
   /// <param name="pageSize">The maximum number of elements the search operation should return.</param>
   /// <param name="offset">The offset of the view from the base point.</param>
   /// <param name="offsetBasePoint">The base point of the offset.</param>
-  FolderView.withPageSizeAndOffsetAndBasePoint(int pageSize, int offset, OffsetBasePoint offsetBasePoint)
+  FolderView.withPageSizeAndOffsetAndBasePoint(
+      int pageSize, int offset, OffsetBasePoint offsetBasePoint)
       : super.withPageSizeAndOffsetAndBasePoint(pageSize, offset, offsetBasePoint) {}
 
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to FolderTraversal.Shallow.
   /// </summary>
-  FolderTraversal get Traversal => this.traversal;
+  FolderTraversal get Traversal => this._traversal;
 
-  set Traversal(FolderTraversal value) => this.traversal = value;
+  set Traversal(FolderTraversal value) => this._traversal = value;
 }

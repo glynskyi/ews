@@ -42,8 +42,7 @@ class GetEventsResults {
   /// <remarks>
   /// If you add a new notification event type, you'll need to add a new entry to the dictionary here.
   /// </remarks>
-  /* private */
-  static LazyMember<Map<String, EventType>> xmlElementNameToEventTypeMap =
+  static LazyMember<Map<String, EventType>> _xmlElementNameToEventTypeMap =
       new LazyMember<Map<String, EventType>>(() => {
             XmlElementNames.CopiedEvent: EventType.Copied,
             XmlElementNames.CreatedEvent: EventType.Created,
@@ -60,37 +59,32 @@ class GetEventsResults {
   /// </summary>
   /// <value>The XML element name to event type mapping.</value>
   static Map<String, EventType> get XmlElementNameToEventTypeMap =>
-      GetEventsResults.xmlElementNameToEventTypeMap.Member;
+      GetEventsResults._xmlElementNameToEventTypeMap.Member;
 
   /// <summary>
   /// Watermark in event.
   /// </summary>
-  /* private */
-  String newWatermark;
+  String _newWatermark;
 
   /// <summary>
   /// Subscription id.
   /// </summary>
-  /* private */
-  String subscriptionId;
+  String _subscriptionId;
 
   /// <summary>
   /// Previous watermark.
   /// </summary>
-  /* private */
-  String previousWatermark;
+  String _previousWatermark;
 
   /// <summary>
   /// True if more events available for this subscription.
   /// </summary>
-  /* private */
-  bool moreEventsAvailable;
+  bool _moreEventsAvailable;
 
   /// <summary>
   /// Collection of notification events.
   /// </summary>
-  /* private */
-  List<NotificationEvent> events = new List<NotificationEvent>();
+  List<NotificationEvent> _events = new List<NotificationEvent>();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetEventsResults"/> class.
@@ -104,10 +98,11 @@ class GetEventsResults {
   void LoadFromXml(EwsServiceXmlReader reader) {
     reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification);
 
-    this.subscriptionId = reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.SubscriptionId);
-    this.previousWatermark =
+    this._subscriptionId =
+        reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.SubscriptionId);
+    this._previousWatermark =
         reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.PreviousWatermark);
-    this.moreEventsAvailable =
+    this._moreEventsAvailable =
         reader.ReadElementValueWithNamespace<bool>(XmlNamespace.Types, XmlElementNames.MoreEvents);
 
     do {
@@ -116,21 +111,23 @@ class GetEventsResults {
       if (reader.IsStartElement()) {
         String eventElementName = reader.LocalName;
 
-        if (xmlElementNameToEventTypeMap.Member.containsKey(eventElementName)) {
-          EventType eventType = xmlElementNameToEventTypeMap.Member[eventElementName];
-          this.newWatermark = reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Watermark);
+        if (_xmlElementNameToEventTypeMap.Member.containsKey(eventElementName)) {
+          EventType eventType = _xmlElementNameToEventTypeMap.Member[eventElementName];
+          this._newWatermark =
+              reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Watermark);
 
           if (eventType == EventType.Status) {
             // We don't need to return status events
             reader.ReadEndElementIfNecessary(XmlNamespace.Types, eventElementName);
           } else {
-            this.LoadNotificationEventFromXml(reader, eventElementName, eventType);
+            this._LoadNotificationEventFromXml(reader, eventElementName, eventType);
           }
         } else {
           reader.SkipCurrentElement();
         }
       }
-    } while (!reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification));
+    } while (
+        !reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification));
   }
 
   /// <summary>
@@ -139,9 +136,10 @@ class GetEventsResults {
   /// <param name="reader">The reader.</param>
   /// <param name="eventElementName">Name of the event XML element.</param>
   /// <param name="eventType">Type of the event.</param>
-  /* private */
-  void LoadNotificationEventFromXml(EwsServiceXmlReader reader, String eventElementName, EventType eventType) {
-    DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(XmlNamespace.Types, XmlElementNames.TimeStamp);
+  void _LoadNotificationEventFromXml(
+      EwsServiceXmlReader reader, String eventElementName, EventType eventType) {
+    DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(
+        XmlNamespace.Types, XmlElementNames.TimeStamp);
 
     NotificationEvent notificationEvent;
 
@@ -154,44 +152,44 @@ class GetEventsResults {
     }
 
     notificationEvent.LoadFromXml(reader, eventElementName);
-    this.events.add(notificationEvent);
+    this._events.add(notificationEvent);
   }
 
   /// <summary>
   /// Gets the Id of the subscription the collection is associated with.
   /// </summary>
-  String get SubscriptionId => this.subscriptionId;
+  String get SubscriptionId => this._subscriptionId;
 
   /// <summary>
   /// Gets the subscription's previous watermark.
   /// </summary>
-  String get PreviousWatermark => this.previousWatermark;
+  String get PreviousWatermark => this._previousWatermark;
 
   /// <summary>
   /// Gets the subscription's new watermark.
   /// </summary>
-  String get NewWatermark => this.newWatermark;
+  String get NewWatermark => this._newWatermark;
 
   /// <summary>
   /// Gets a value indicating whether more events are available on the Exchange server.
   /// </summary>
-  bool get MoreEventsAvailable => this.moreEventsAvailable;
+  bool get MoreEventsAvailable => this._moreEventsAvailable;
 
   /// <summary>
   /// Gets the collection of folder events.
   /// </summary>
   /// <value>The folder events.</value>
-  Iterable<FolderEvent> get FolderEvents => this.events.where((event) => event is FolderEvent);
+  Iterable<FolderEvent> get FolderEvents => this._events.where((event) => event is FolderEvent);
 
   /// <summary>
   /// Gets the collection of item events.
   /// </summary>
   /// <value>The item events.</value>
-  Iterable<ItemEvent> get ItemEvents => this.events.where((event) => event is ItemEvent);
+  Iterable<ItemEvent> get ItemEvents => this._events.where((event) => event is ItemEvent);
 
   /// <summary>
   /// Gets the collection of all events.
   /// </summary>
   /// <value>The events.</value>
-  List<NotificationEvent> get AllEvents => this.events;
+  List<NotificationEvent> get AllEvents => this._events;
 }

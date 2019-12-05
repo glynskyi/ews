@@ -40,19 +40,18 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a SyncFolderHierarchy request.
 /// </summary>
 class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderHierarchyResponse> {
-  /* private */ core.PropertySet propertySet;
+  core.PropertySet _propertySet;
 
-  /* private */
-  FolderId syncFolderId;
+  FolderId _syncFolderId;
 
-  /* private */
-  String syncState;
+  String _syncState;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SyncFolderHierarchyRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  SyncFolderHierarchyRequest(ExchangeService service) : super(service, ServiceErrorHandling.ThrowOnError) {}
+  SyncFolderHierarchyRequest(ExchangeService service)
+      : super(service, ServiceErrorHandling.ThrowOnError) {}
 
   /// <summary>
   /// Creates the service response.
@@ -129,7 +128,8 @@ class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderH
       writer.WriteEndElement();
     }
 
-    writer.WriteElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SyncState, this.SyncState);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.SyncState, this.SyncState);
   }
 
   /// <summary>
@@ -145,29 +145,29 @@ class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderH
   /// Gets or sets the property set.
   /// </summary>
   /// <value>The property set.</value>
-  core.PropertySet get PropertySet => this.propertySet;
+  core.PropertySet get PropertySet => this._propertySet;
 
   set PropertySet(core.PropertySet value) {
-    this.propertySet = value;
+    this._propertySet = value;
   }
 
   /// <summary>
   /// Gets or sets the sync folder id.
   /// </summary>
   /// <value>The sync folder id.</value>
-  FolderId get SyncFolderId => this.syncFolderId;
+  FolderId get SyncFolderId => this._syncFolderId;
 
   set SyncFolderId(FolderId value) {
-    this.syncFolderId = value;
+    this._syncFolderId = value;
   }
 
   /// <summary>
   /// Gets or sets the state of the sync.
   /// </summary>
   /// <value>The state of the sync.</value>
-  String get SyncState => this.syncState;
+  String get SyncState => this._syncState;
 
   set SyncState(String value) {
-    this.syncState = value;
+    this._syncState = value;
   }
 }

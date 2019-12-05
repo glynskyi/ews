@@ -23,69 +23,61 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-    import 'dart:async';
+import 'dart:async';
 import 'dart:core';
-import 'dart:io';
 
-import 'package:ews/Core/EwsServiceMultiResponseXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/Requests/ServiceRequestBase.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
-import 'package:ews/Exceptions/ServiceLocalException.dart';
-import 'package:ews/Http/WebException.dart';
 import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
-import 'package:ews/misc/Std/MemoryStream.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:uuid_enhanced/uuid.dart';
 
 /// <summary>
-    /// Enumeration of reasons that a hanging request may disconnect.
-    /// </summary>
-    enum HangingRequestDisconnectReason
-    {
-        /// <summary>The server cleanly closed the connection.</summary>
-        Clean,
+/// Enumeration of reasons that a hanging request may disconnect.
+/// </summary>
+enum HangingRequestDisconnectReason {
+  /// <summary>The server cleanly closed the connection.</summary>
+  Clean,
 
-        /// <summary>The client closed the connection.</summary>
-        UserInitiated,
+  /// <summary>The client closed the connection.</summary>
+  UserInitiated,
 
-        /// <summary>The connection timed out do to a lack of a heartbeat received.</summary>
-        Timeout,
+  /// <summary>The connection timed out do to a lack of a heartbeat received.</summary>
+  Timeout,
 
-        /// <summary>An exception occurred on the connection</summary>
-        Exception
-    }
+  /// <summary>An exception occurred on the connection</summary>
+  Exception
+}
 
-    /// <summary>
-    /// Represents a collection of arguments for the HangingServiceRequestBase.HangingRequestDisconnectHandler
-    /// delegate method.
-    /// </summary>
-    class HangingRequestDisconnectEventArgs // : EventArgs
-        {
-      /// <summary>
-      /// Initializes a new instance of the <see cref="HangingRequestDisconnectEventArgs"/> class.
-      /// </summary>
-      /// <param name="reason">The reason.</param>
-      /// <param name="exception">The exception.</param>
-      HangingRequestDisconnectEventArgs.withException(HangingRequestDisconnectReason reason,
-          Error exception) {
-        this.Reason = reason;
-        this.Exception = exception;
-      }
+/// <summary>
+/// Represents a collection of arguments for the HangingServiceRequestBase.HangingRequestDisconnectHandler
+/// delegate method.
+/// </summary>
+class HangingRequestDisconnectEventArgs // : EventArgs
+{
+  /// <summary>
+  /// Initializes a new instance of the <see cref="HangingRequestDisconnectEventArgs"/> class.
+  /// </summary>
+  /// <param name="reason">The reason.</param>
+  /// <param name="exception">The exception.</param>
+  HangingRequestDisconnectEventArgs.withException(
+      HangingRequestDisconnectReason reason, Error exception) {
+    this.Reason = reason;
+    this.Exception = exception;
+  }
 
-      /// <summary>
-      /// Gets the reason that the user was disconnected.
-      /// </summary>
-      HangingRequestDisconnectReason Reason;
+  /// <summary>
+  /// Gets the reason that the user was disconnected.
+  /// </summary>
+  HangingRequestDisconnectReason Reason;
 
-      /// <summary>
-      /// Gets the exception that caused the disconnection. Can be null.
-      /// </summary>
-      Error Exception;
-    }
+  /// <summary>
+  /// Gets the exception that caused the disconnection. Can be null.
+  /// </summary>
+  Error Exception;
+}
 
 /// <summary>
 /// Callback delegate to handle asynchronous responses.
@@ -100,73 +92,67 @@ typedef void HandleResponseObject(Object response);
 /// <param name="args">Event data.</param>
 typedef void HangingRequestDisconnectHandler(Object sender, HangingRequestDisconnectEventArgs args);
 
-    /// <summary>
-    /// Represents an abstract, hanging service request.
-    /// </summary>
-    abstract class HangingServiceRequestBase extends ServiceRequestBase
-    {
+/// <summary>
+/// Represents an abstract, hanging service request.
+/// </summary>
+abstract class HangingServiceRequestBase extends ServiceRequestBase {
+  static const _BufferSize = 4096;
 
+  /// <summary>
+  /// Test switch to log all bytes that come across the wire.
+  /// Helpful when parsing fails before certain bytes hit the trace logs.
+  /// </summary>
+  static bool LogAllWireBytes = false;
 
-        /* private */ static const BufferSize = 4096;
+  /// <summary>
+  /// Callback delegate to handle response objects
+  /// </summary>
+  HandleResponseObject _responseHandler;
 
-        /// <summary>
-        /// Test switch to log all bytes that come across the wire.
-        /// Helpful when parsing fails before certain bytes hit the trace logs.
-        /// </summary>
-        static bool LogAllWireBytes = false;
+  /// <summary>
+  /// Response from the server.
+  /// </summary>
+  IEwsHttpWebResponse _response;
 
-        /// <summary>
-        /// Callback delegate to handle response objects
-        /// </summary>
-        /* private */ HandleResponseObject responseHandler;
+  /// <summary>
+  /// Request to the server.
+  /// </summary>
+  IEwsHttpWebRequest _request;
 
-        /// <summary>
-        /// Response from the server.
-        /// </summary>
-        /* private */ IEwsHttpWebResponse response;
+  /// <summary>
+  /// Expected minimum frequency in responses, in milliseconds.
+  /// </summary>
+  int heartbeatFrequencyMilliseconds;
 
-        /// <summary>
-        /// Request to the server.
-        /// </summary>
-        /* private */ IEwsHttpWebRequest request;
+  /// <summary>
+  /// lock object
+  /// </summary>
+  final _lockObject = new Lock();
 
-        /// <summary>
-        /// Expected minimum frequency in responses, in milliseconds.
-        /// </summary>
-        int heartbeatFrequencyMilliseconds;
-
-        /// <summary>
-        /// lock object
-        /// </summary>
-        /* private */ final lockObject = new Lock();
-
-
-
-        /// <summary>
-        /// Occurs when the hanging request is disconnected.
-        /// </summary>
-        // todo : restore events
+  /// <summary>
+  /// Occurs when the hanging request is disconnected.
+  /// </summary>
+  // todo : restore events
 //        event HangingRequestDisconnectHandler OnDisconnect;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HangingServiceRequestBase"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="handler">Callback delegate to handle response objects</param>
-        /// <param name="heartbeatFrequency">Frequency at which we expect heartbeats, in milliseconds.</param>
-        HangingServiceRequestBase(ExchangeService service, HandleResponseObject handler, int heartbeatFrequency) :
-            super(service)
-        {
-            this.responseHandler = handler;
-            this.heartbeatFrequencyMilliseconds = heartbeatFrequency;
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="HangingServiceRequestBase"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  /// <param name="handler">Callback delegate to handle response objects</param>
+  /// <param name="heartbeatFrequency">Frequency at which we expect heartbeats, in milliseconds.</param>
+  HangingServiceRequestBase(
+      ExchangeService service, HandleResponseObject handler, int heartbeatFrequency)
+      : super(service) {
+    this._responseHandler = handler;
+    this.heartbeatFrequencyMilliseconds = heartbeatFrequency;
+  }
 
-        /// <summary>
-        /// Exectures the request.
-        /// </summary>
-        Future<void> InternalExecute()
-        {
-            throw NotImplementedException("InternalExecute");
+  /// <summary>
+  /// Exectures the request.
+  /// </summary>
+  Future<void> InternalExecute() {
+    throw NotImplementedException("InternalExecute");
 //            return lockObject.synchronized(() async {
 //                this.response = await this.ValidateAndEmitRequest(this.request);
 //
@@ -178,15 +164,14 @@ typedef void HangingRequestDisconnectHandler(Object sender, HangingRequestDiscon
 //
 //                this.InternalOnConnect();
 //            }
-        }
+  }
 
-        /// <summary>
-        /// Parses the responses.
-        /// </summary>
-        /// <param name="state">The state.</param>
-        /* private */ void ParseResponses(Object state)
-        {
-            throw NotImplementedException("ParseResponses");
+  /// <summary>
+  /// Parses the responses.
+  /// </summary>
+  /// <param name="state">The state.</param>
+  void _ParseResponses(Object state) {
+    throw NotImplementedException("ParseResponses");
 //            try
 //            {
 //                Uuid traceId = Uuid.empty();
@@ -295,48 +280,44 @@ typedef void HangingRequestDisconnectHandler(Object sender, HangingRequestDiscon
 //            {
 //                this.DisconnectWithException(HangingRequestDisconnectReason.Exception, exception);
 //            }
-        }
+  }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is connected.
-        /// </summary>
-        /// <value><c>true</c> if this instance is connected; otherwise, <c>false</c>.</value>
-        bool IsConnected;
+  /// <summary>
+  /// Gets a value indicating whether this instance is connected.
+  /// </summary>
+  /// <value><c>true</c> if this instance is connected; otherwise, <c>false</c>.</value>
+  bool IsConnected;
 
-        /// <summary>
-        /// Disconnects the request.
-        /// </summary>
-        void Disconnect()
-        {
-            throw NotImplementedException("Disconnect");
+  /// <summary>
+  /// Disconnects the request.
+  /// </summary>
+  void Disconnect() {
+    throw NotImplementedException("Disconnect");
 //            lock (this.lockObject)
 //            {
 //                this.request.Abort();
 //                this.response.Close();
 //                this.Disconnect(HangingRequestDisconnectReason.UserInitiated, null);
 //            }
-        }
+  }
 
-        /// <summary>
-        /// Disconnects the request with the specified reason and exception.
-        /// </summary>
-        /// <param name="reason">The reason.</param>
-        /// <param name="exception">The exception.</param>
-        void DisconnectWithException(HangingRequestDisconnectReason reason, Exception exception)
-        {
-            if (this.IsConnected)
-            {
-                this.response.Close();
-                this.InternalOnDisconnect(reason, exception);
-            }
-        }
+  /// <summary>
+  /// Disconnects the request with the specified reason and exception.
+  /// </summary>
+  /// <param name="reason">The reason.</param>
+  /// <param name="exception">The exception.</param>
+  void DisconnectWithException(HangingRequestDisconnectReason reason, Exception exception) {
+    if (this.IsConnected) {
+      this._response.Close();
+      this._InternalOnDisconnect(reason, exception);
+    }
+  }
 
-        /// <summary>
-        /// Perform any bookkeeping needed when we connect
-        /// </summary>
-        /* private */ void InternalOnConnect()
-        {
-            throw NotImplementedException("InternalOnConnect");
+  /// <summary>
+  /// Perform any bookkeeping needed when we connect
+  /// </summary>
+  void _InternalOnConnect() {
+    throw NotImplementedException("InternalOnConnect");
 //            if (!this.IsConnected)
 //            {
 //                this.IsConnected = true;
@@ -349,16 +330,15 @@ typedef void HangingRequestDisconnectHandler(Object sender, HangingRequestDiscon
 //                ThreadPool.QueueUserWorkItem(
 //                    new WaitCallback(this.ParseResponses));
 //            }
-        }
+  }
 
-        /// <summary>
-        /// Perform any bookkeeping needed when we disconnect (cleanly or forcefully)
-        /// </summary>
-        /// <param name="reason"></param>
-        /// <param name="exception"></param>
-        /* private */ void InternalOnDisconnect(HangingRequestDisconnectReason reason, Exception exception)
-        {
-            throw NotImplementedException("InternalOnDisconnect");
+  /// <summary>
+  /// Perform any bookkeeping needed when we disconnect (cleanly or forcefully)
+  /// </summary>
+  /// <param name="reason"></param>
+  /// <param name="exception"></param>
+  void _InternalOnDisconnect(HangingRequestDisconnectReason reason, Exception exception) {
+    throw NotImplementedException("InternalOnDisconnect");
 //            if (this.IsConnected)
 //            {
 //                this.IsConnected = false;
@@ -367,15 +347,14 @@ typedef void HangingRequestDisconnectHandler(Object sender, HangingRequestDiscon
 //                    this,
 //                    new HangingRequestDisconnectEventArgs.withException(reason, exception));
 //            }
-        }
+  }
 
-        /// <summary>
-        /// Reads any preamble data not part of the core response.
-        /// </summary>
-        /// <param name="ewsXmlReader">The EwsServiceXmlReader.</param>
-        @override
-        void ReadPreamble(EwsServiceXmlReader ewsXmlReader)
-        {
-            // Do nothing.
-        }
-    }
+  /// <summary>
+  /// Reads any preamble data not part of the core response.
+  /// </summary>
+  /// <param name="ewsXmlReader">The EwsServiceXmlReader.</param>
+  @override
+  void ReadPreamble(EwsServiceXmlReader ewsXmlReader) {
+    // Do nothing.
+  }
+}

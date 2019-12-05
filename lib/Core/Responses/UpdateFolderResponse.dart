@@ -57,7 +57,7 @@ class UpdateFolderResponse extends ServiceResponse {
 
     reader.ReadServiceObjectsCollectionFromXml<Folder>(
         XmlElementNames.Folders,
-        this.GetObjectInstance,
+        this._GetObjectInstance,
         false,
         /* clearPropertyBag */
         null,
@@ -81,8 +81,7 @@ class UpdateFolderResponse extends ServiceResponse {
   /// <param name="session">The session.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Folder.</returns>
-  /* private */
-  Folder GetObjectInstance(ExchangeService session, String xmlElementName) {
+  Folder _GetObjectInstance(ExchangeService session, String xmlElementName) {
     return this.folder;
   }
 }

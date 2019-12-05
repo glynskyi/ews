@@ -23,38 +23,32 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'package:ews/ComplexProperties/TimeZones/AbsoluteMonthTransition.dart';
+import 'package:ews/ComplexProperties/TimeZones/AbsoluteMonthTransition.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZoneDefinition.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZonePeriod.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
-import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/DayOfTheWeek.dart' as enumerations;
 import 'package:ews/Enumerations/XmlNamespace.dart';
 
 /// <summary>
-    /// Represents a time zone period transition that occurs on a relative day of a specific month.
-    /// </summary>
-    class RelativeDayOfMonthTransition extends AbsoluteMonthTransition
-    {
-        /* private */ enumerations.DayOfTheWeek dayOfTheWeek;
-        /* private */ int weekIndex;
+/// Represents a time zone period transition that occurs on a relative day of a specific month.
+/// </summary>
+class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
+  /* private */ enumerations.DayOfTheWeek dayOfTheWeek;
 
-        /// <summary>
-        /// Gets the XML element name associated with the transition.
-        /// </summary>
-        /// <returns>The XML element name associated with the transition.</returns>
-@override
-        String GetXmlElementName()
-        {
-            return XmlElementNames.RecurringDayTransition;
-        }
+  /* private */
+  int weekIndex;
+
+  /// <summary>
+  /// Gets the XML element name associated with the transition.
+  /// </summary>
+  /// <returns>The XML element name associated with the transition.</returns>
+  @override
+  String GetXmlElementName() {
+    return XmlElementNames.RecurringDayTransition;
+  }
 
 //        /// <summary>
 //        /// Creates a timw zone transition time.
@@ -86,80 +80,66 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 //            this.weekIndex = transitionTime.Week == 5 ? -1 : transitionTime.Week;
 //        }
 
-        /// <summary>
-        /// Tries to read element from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>True if element was read.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            if (super.TryReadElementFromXml(reader))
-            {
-                return true;
-            }
-            else
-            {
-                switch (reader.LocalName)
-                {
-                    case XmlElementNames.DayOfWeek:
-                        this.dayOfTheWeek = reader.ReadElementValue<enumerations.DayOfTheWeek>();
-                        return true;
-                    case XmlElementNames.Occurrence:
-                        this.weekIndex = reader.ReadElementValue<int>();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            super.WriteElementsToXml(writer);
-
-            writer.WriteElementValueWithNamespace(
-                XmlNamespace.Types,
-                XmlElementNames.DayOfWeek,
-                this.dayOfTheWeek);
-
-            writer.WriteElementValueWithNamespace(
-                XmlNamespace.Types,
-                XmlElementNames.Occurrence,
-                this.weekIndex);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-        RelativeDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition)
-            : super(timeZoneDefinition)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-        /// <param name="targetPeriod">The period the transition will target.</param>
-        RelativeDayOfMonthTransition.withTimeZonePeriod(TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod)
-            : super.withTimeZonePeriod(timeZoneDefinition, targetPeriod)
-        {
-        }
-
-        /// <summary>
-        /// Gets the day of the week when the transition occurs.
-        /// </summary>
-    enumerations.DayOfTheWeek get DayOfTheWeek => this.dayOfTheWeek;
-
-        /// <summary>
-        /// Gets the index of the week in the month when the transition occurs.
-        /// </summary>
-        int get WeekIndex => this.weekIndex;
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    if (super.TryReadElementFromXml(reader)) {
+      return true;
+    } else {
+      switch (reader.LocalName) {
+        case XmlElementNames.DayOfWeek:
+          this.dayOfTheWeek = reader.ReadElementValue<enumerations.DayOfTheWeek>();
+          return true;
+        case XmlElementNames.Occurrence:
+          this.weekIndex = reader.ReadElementValue<int>();
+          return true;
+        default:
+          return false;
+      }
     }
+  }
+
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    super.WriteElementsToXml(writer);
+
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.DayOfWeek, this.dayOfTheWeek);
+
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Occurrence, this.weekIndex);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
+  RelativeDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition) : super(timeZoneDefinition) {}
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
+  /// <param name="targetPeriod">The period the transition will target.</param>
+  RelativeDayOfMonthTransition.withTimeZonePeriod(
+      TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod)
+      : super.withTimeZonePeriod(timeZoneDefinition, targetPeriod) {}
+
+  /// <summary>
+  /// Gets the day of the week when the transition occurs.
+  /// </summary>
+  enumerations.DayOfTheWeek get DayOfTheWeek => this.dayOfTheWeek;
+
+  /// <summary>
+  /// Gets the index of the week in the month when the transition occurs.
+  /// </summary>
+  int get WeekIndex => this.weekIndex;
+}

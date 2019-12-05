@@ -24,24 +24,21 @@
  */
 
 import 'package:ews/Core/EwsServiceXmlReader.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 
 /// <summary>
 /// Represents Exchange server information.
 /// </summary>
 class ExchangeServerInfo {
-  /* private */ int majorVersion;
+  int _majorVersion;
 
-  /* private */
-  int minorVersion;
+  int _minorVersion;
 
-  /* private */
-  int majorBuildNumber;
+  int _majorBuildNumber;
 
-  /* private */
-  int minorBuildNumber;
+  int _minorBuildNumber;
 
-  /* private */
-  String versionString;
+  String _versionString;
 
   /// <summary>
   /// Default constructor
@@ -54,10 +51,8 @@ class ExchangeServerInfo {
   /// <param name="reader">EwsServiceXmlReader</param>
   /// <returns>ExchangeServerInfo</returns>
   static ExchangeServerInfo Parse(EwsServiceXmlReader reader) {
-//            EwsUtilities.Assert(
-//                                reader.HasAttributes,
-//                                "ExchangeServerVersion.Parse",
-//                                "Current element doesn't have attributes");
+    EwsUtilities.Assert(reader.HasAttributes, "ExchangeServerVersion.Parse",
+        "Current element doesn't have attributes");
 
     ExchangeServerInfo info = new ExchangeServerInfo();
     info.MajorVersion = reader.ReadAttributeValue<int>("MajorVersion");
@@ -71,37 +66,37 @@ class ExchangeServerInfo {
   /// <summary>
   /// Gets the Major Exchange server version number
   /// </summary>
-  int get MajorVersion => this.majorVersion;
+  int get MajorVersion => this._majorVersion;
 
   set MajorVersion(int value) {
-    this.majorVersion = value;
+    this._majorVersion = value;
   }
 
   /// <summary>
   /// Gets the Minor Exchange server version number
   /// </summary>
-  int get MinorVersion => this.minorVersion;
+  int get MinorVersion => this._minorVersion;
 
   set MinorVersion(int value) {
-    this.minorVersion = value;
+    this._minorVersion = value;
   }
 
   /// <summary>
   /// Gets the Major Exchange server build number
   /// </summary>
-  int get MajorBuildNumber => this.majorBuildNumber;
+  int get MajorBuildNumber => this._majorBuildNumber;
 
   set MajorBuildNumber(int value) {
-    this.majorBuildNumber = value;
+    this._majorBuildNumber = value;
   }
 
   /// <summary>
   /// Gets the Minor Exchange server build number
   /// </summary>
-  int get MinorBuildNumber => this.minorBuildNumber;
+  int get MinorBuildNumber => this._minorBuildNumber;
 
   set MinorBuildNumber(int value) {
-    this.minorBuildNumber = value;
+    this._minorBuildNumber = value;
   }
 
   /// <summary>
@@ -111,10 +106,10 @@ class ExchangeServerInfo {
   /// The version is a String rather than an enum since its possible for the client to
   /// be connected to a later server for which there would be no appropriate enum value.
   /// </remarks>
-  String get VersionString => this.versionString;
+  String get VersionString => this._versionString;
 
   set VersionString(String value) {
-    this.versionString = value;
+    this._versionString = value;
   }
 
   /// <summary>
@@ -122,6 +117,5 @@ class ExchangeServerInfo {
   /// </summary>
   /// <returns>Canonical ExchangeService version string</returns>
   @override
-  String toString() =>
-      "$MajorVersion.$MinorVersion.$MajorBuildNumber.$MinorBuildNumber";
+  String toString() => "$MajorVersion.$MinorVersion.$MajorBuildNumber.$MinorBuildNumber";
 }

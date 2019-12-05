@@ -30,11 +30,9 @@ import 'package:ews/Core/Requests/DeleteRequest.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
 import 'package:ews/Core/XmlElementNames.dart';
-import 'package:ews/Enumerations/AffectedTaskOccurrence.dart'
-    as enumerations;
+import 'package:ews/Enumerations/AffectedTaskOccurrence.dart' as enumerations;
 import 'package:ews/Enumerations/ExchangeVersion.dart';
-import 'package:ews/Enumerations/SendCancellationsMode.dart'
-    as enumerations;
+import 'package:ews/Enumerations/SendCancellationsMode.dart' as enumerations;
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
@@ -44,22 +42,18 @@ import 'package:ews/misc/ItemIdWrapperList.dart';
 /// Represents a DeleteItem request.
 /// </summary>
 class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
-  /* private */
-  ItemIdWrapperList itemIds = new ItemIdWrapperList();
+  ItemIdWrapperList _itemIds = new ItemIdWrapperList();
 
-  /* private */
-  enumerations.AffectedTaskOccurrence affectedTaskOccurrences;
+  enumerations.AffectedTaskOccurrence _affectedTaskOccurrences;
 
-  /* private */
-  enumerations.SendCancellationsMode sendCancellationsMode;
+  enumerations.SendCancellationsMode _sendCancellationsMode;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteItemRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  DeleteItemRequest(
-      ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  DeleteItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode);
 
   /// <summary>
@@ -71,8 +65,7 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
     EwsUtilities.ValidateParam(this.ItemIds, "ItemIds");
 
     if (this.SuppressReadReceipts &&
-        this.Service.RequestedServerVersion.index <
-            ExchangeVersion.Exchange2013.index) {
+        this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
       throw new ServiceVersionException("""string.Format(
                         Strings.ParameterIncompatibleWithRequestVersion,
                         "SuppressReadReceipts",
@@ -86,7 +79,7 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// <returns>Number of expected response messages.</returns>
   @override
   int GetExpectedResponseMessageCount() {
-    return this.itemIds.Count;
+    return this._itemIds.Count;
   }
 
   /// <summary>
@@ -96,8 +89,7 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  ServiceResponse CreateServiceResponse(
-      ExchangeService service, int responseIndex) {
+  ServiceResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
     return new ServiceResponse();
   }
 
@@ -137,13 +129,13 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
     super.WriteAttributesToXml(writer);
 
     if (this.AffectedTaskOccurrences != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.AffectedTaskOccurrences,
-          this.AffectedTaskOccurrences);
+      writer.WriteAttributeValue(
+          XmlAttributeNames.AffectedTaskOccurrences, this.AffectedTaskOccurrences);
     }
 
     if (this.SendCancellationsMode != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.SendMeetingCancellations,
-          this.SendCancellationsMode);
+      writer.WriteAttributeValue(
+          XmlAttributeNames.SendMeetingCancellations, this.SendCancellationsMode);
     }
 
     if (this.SuppressReadReceipts) {
@@ -157,9 +149,7 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this
-        .itemIds
-        .WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.ItemIds);
+    this._itemIds.WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.ItemIds);
   }
 
   /// <summary>
@@ -175,28 +165,26 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// Gets the item ids.
   /// </summary>
   /// <value>The item ids.</value>
-  ItemIdWrapperList get ItemIds => this.itemIds;
+  ItemIdWrapperList get ItemIds => this._itemIds;
 
   /// <summary>
   /// Gets or sets the affected task occurrences.
   /// </summary>
   /// <value>The affected task occurrences.</value>
-  enumerations.AffectedTaskOccurrence get AffectedTaskOccurrences =>
-      this.affectedTaskOccurrences;
+  enumerations.AffectedTaskOccurrence get AffectedTaskOccurrences => this._affectedTaskOccurrences;
 
   set AffectedTaskOccurrences(enumerations.AffectedTaskOccurrence value) {
-    this.affectedTaskOccurrences = value;
+    this._affectedTaskOccurrences = value;
   }
 
   /// <summary>
   /// Gets or sets the send cancellations.
   /// </summary>
   /// <value>The send cancellations.</value>
-  enumerations.SendCancellationsMode get SendCancellationsMode =>
-      this.sendCancellationsMode;
+  enumerations.SendCancellationsMode get SendCancellationsMode => this._sendCancellationsMode;
 
   set SendCancellationsMode(enumerations.SendCancellationsMode value) {
-    this.sendCancellationsMode = value;
+    this._sendCancellationsMode = value;
   }
 
   /// <summary>

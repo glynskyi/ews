@@ -40,10 +40,9 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a SendItem request.
 /// </summary>
 class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
-  /* private */ Iterable<Item> items;
+  Iterable<Item> _items;
 
-  /* private */
-  FolderId savedCopyDestinationFolderId;
+  FolderId _savedCopyDestinationFolderId;
 
   /// <summary>
   /// Asserts the valid.
@@ -54,7 +53,9 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
     EwsUtilities.ValidateParam(this.Items, "Items");
 
     if (this.SavedCopyDestinationFolderId != null) {
-      this.SavedCopyDestinationFolderId.ValidateExchangeVersion(this.Service.RequestedServerVersion);
+      this
+          .SavedCopyDestinationFolderId
+          .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
   }
 
@@ -113,7 +114,8 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     super.WriteAttributesToXml(writer);
 
-    writer.WriteAttributeValue(XmlAttributeNames.SaveItemToFolder, this.SavedCopyDestinationFolderId != null);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.SaveItemToFolder, this.SavedCopyDestinationFolderId != null);
   }
 
   /// <summary>
@@ -158,15 +160,15 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// Gets or sets the items.
   /// </summary>
   /// <value>The items.</value>
-  Iterable<Item> get Items => this.items;
+  Iterable<Item> get Items => this._items;
 
-  set Items(Iterable<Item> value) => this.items = value;
+  set Items(Iterable<Item> value) => this._items = value;
 
   /// <summary>
   /// Gets or sets the saved copy destination folder id.
   /// </summary>
   /// <value>The saved copy destination folder id.</value>
-  FolderId get SavedCopyDestinationFolderId => this.savedCopyDestinationFolderId;
+  FolderId get SavedCopyDestinationFolderId => this._savedCopyDestinationFolderId;
 
-  set SavedCopyDestinationFolderId(FolderId value) => this.savedCopyDestinationFolderId = value;
+  set SavedCopyDestinationFolderId(FolderId value) => this._savedCopyDestinationFolderId = value;
 }

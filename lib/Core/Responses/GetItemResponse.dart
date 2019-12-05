@@ -28,18 +28,16 @@ import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
-import 'package:ews/Core/ServiceObjects/Items/Item.dart'
-    as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Items/Item.dart' as serviceObjects;
 import 'package:ews/Core/XmlElementNames.dart';
 
 /// <summary>
 /// Represents a response to an individual item retrieval operation.
 /// </summary>
 class GetItemResponse extends ServiceResponse {
-  /* private */ serviceObjects.Item item;
+  serviceObjects.Item _item;
 
-  /* private */
-  PropertySet propertySet;
+  PropertySet _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetItemResponse"/> class.
@@ -47,11 +45,11 @@ class GetItemResponse extends ServiceResponse {
   /// <param name="item">The item.</param>
   /// <param name="propertySet">The property set.</param>
   GetItemResponse(serviceObjects.Item item, PropertySet propertySet) : super() {
-    this.item = item;
-    this.propertySet = propertySet;
+    this._item = item;
+    this._propertySet = propertySet;
 
-    EwsUtilities.Assert(this.propertySet != null, "GetItemResponse.ctor",
-        "PropertySet should not be null");
+    EwsUtilities.Assert(
+        this._propertySet != null, "GetItemResponse.ctor", "PropertySet should not be null");
   }
 
   /// <summary>
@@ -65,14 +63,14 @@ class GetItemResponse extends ServiceResponse {
     List<serviceObjects.Item> items =
         reader.ReadServiceObjectsCollectionFromXml<serviceObjects.Item>(
             XmlElementNames.Items,
-            this.GetObjectInstance,
+            this._GetObjectInstance,
             true,
             /* clearPropertyBag */
-            this.propertySet,
+            this._propertySet,
             /* requestedPropertySet */
             false); /* summaryPropertiesOnly */
 
-    this.item = items[0];
+    this._item = items[0];
   }
 
   /// <summary>
@@ -81,19 +79,17 @@ class GetItemResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
-  /* private */
-  serviceObjects.Item GetObjectInstance(
-      ExchangeService service, String xmlElementName) {
+  serviceObjects.Item _GetObjectInstance(ExchangeService service, String xmlElementName) {
     if (this.Item != null) {
       return this.Item;
     } else {
-      return EwsUtilities.CreateEwsObjectFromXmlElementName<
-          serviceObjects.Item>(service, xmlElementName);
+      return EwsUtilities.CreateEwsObjectFromXmlElementName<serviceObjects.Item>(
+          service, xmlElementName);
     }
   }
 
   /// <summary>
   /// Gets the item that was retrieved.
   /// </summary>
-  serviceObjects.Item get Item => this.item;
+  serviceObjects.Item get Item => this._item;
 }

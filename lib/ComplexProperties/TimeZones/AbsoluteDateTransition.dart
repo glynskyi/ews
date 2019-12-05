@@ -23,14 +23,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-
-    import 'dart:core';
-    import 'dart:core' as core;
+import 'dart:core';
+import 'dart:core' as core;
 
 import 'package:ews/ComplexProperties/TimeZones/TimeZoneDefinition.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZoneTransition.dart';
@@ -39,14 +33,12 @@ import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:ews/Exceptions/ServiceLocalException.dart';
 
 /// <summary>
-    /// Represents a time zone period transition that occurs on a fixed (absolute) date.
-    /// </summary>
-    class AbsoluteDateTransition extends TimeZoneTransition
-    {
-        /* private */ core.DateTime dateTime;
+/// Represents a time zone period transition that occurs on a fixed (absolute) date.
+/// </summary>
+class AbsoluteDateTransition extends TimeZoneTransition {
+  core.DateTime _dateTime;
 
 //        /// <summary>
 //        /// Initializes this transition based on the specified transition time.
@@ -58,77 +50,66 @@ import 'package:ews/Exceptions/ServiceLocalException.dart';
 //            throw new ServiceLocalException("Strings.UnsupportedTimeZonePeriodTransitionTarget");
 //        }
 
-        /// <summary>
-        /// Gets the XML element name associated with the transition.
-        /// </summary>
-        /// <returns>The XML element name associated with the transition.</returns>
-@override
-        String GetXmlElementName()
-        {
-            return XmlElementNames.AbsoluteDateTransition;
-        }
+  /// <summary>
+  /// Gets the XML element name associated with the transition.
+  /// </summary>
+  /// <returns>The XML element name associated with the transition.</returns>
+  @override
+  String GetXmlElementName() {
+    return XmlElementNames.AbsoluteDateTransition;
+  }
 
-        /// <summary>
-        /// Tries to read element from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>True if element was read.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            bool result = super.TryReadElementFromXml(reader);
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    bool result = super.TryReadElementFromXml(reader);
 
-            if (!result)
-            {
-                if (reader.LocalName == XmlElementNames.DateTime)
-                {
-                    this.dateTime = core.DateTime.parse(reader.ReadElementValue());
+    if (!result) {
+      if (reader.LocalName == XmlElementNames.DateTime) {
+        this._dateTime = core.DateTime.parse(reader.ReadElementValue());
 
-                    result = true;
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            super.WriteElementsToXml(writer);
-
-            writer.WriteElementValueWithNamespace(
-                XmlNamespace.Types,
-                XmlElementNames.DateTime,
-                this.dateTime);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
-        AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition)
-            : super(timeZoneDefinition)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
-        /// <param name="targetGroup">The transition group the transition will target.</param>
-        AbsoluteDateTransition.withTimeZoneTransitionGroup(TimeZoneDefinition timeZoneDefinition, TimeZoneTransitionGroup targetGroup)
-            : super.withTimeZoneTransitionGroup(timeZoneDefinition, targetGroup)
-        {
-        }
-
-        /// <summary>
-        /// Gets or sets the absolute date and time when the transition occurs.
-        /// </summary>
-        core.DateTime get DateTime => this.dateTime;
-        set DateTime(core.DateTime value) => this.dateTime = value;
-
+        result = true;
+      }
     }
+
+    return result;
+  }
+
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    super.WriteElementsToXml(writer);
+
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.DateTime, this._dateTime);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
+  AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition) : super(timeZoneDefinition) {}
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
+  /// <param name="targetGroup">The transition group the transition will target.</param>
+  AbsoluteDateTransition.withTimeZoneTransitionGroup(
+      TimeZoneDefinition timeZoneDefinition, TimeZoneTransitionGroup targetGroup)
+      : super.withTimeZoneTransitionGroup(timeZoneDefinition, targetGroup) {}
+
+  /// <summary>
+  /// Gets or sets the absolute date and time when the transition occurs.
+  /// </summary>
+  core.DateTime get DateTime => this._dateTime;
+
+  set DateTime(core.DateTime value) => this._dateTime = value;
+}

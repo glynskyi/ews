@@ -33,7 +33,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// Represents the base response class for item creation operations.
 /// </summary>
 abstract class CreateItemResponseBase extends ServiceResponse {
-  /* private */ List<Item> items;
+  List<Item> _items;
 
   /// <summary>
   /// Gets Item instance.
@@ -56,7 +56,7 @@ abstract class CreateItemResponseBase extends ServiceResponse {
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    this.items = reader.ReadServiceObjectsCollectionFromXml<Item>(
+    this._items = reader.ReadServiceObjectsCollectionFromXml<Item>(
         XmlElementNames.Items,
         this.GetObjectInstance,
         false,
@@ -69,5 +69,5 @@ abstract class CreateItemResponseBase extends ServiceResponse {
   /// <summary>
   /// Gets the items.
   /// </summary>
-  List<Item> get Items => this.items;
+  List<Item> get Items => this._items;
 }

@@ -32,7 +32,7 @@ import 'package:ews/Sync/Change.dart';
 /// Represents a change on an item as returned by a synchronization operation.
 /// </summary>
 class ItemChange extends Change {
-  /* private */ bool isRead;
+  bool _isRead;
 
   /// <summary>
   /// Initializes a new instance of ItemChange.
@@ -60,10 +60,10 @@ class ItemChange extends Change {
   /// Gets the IsRead property for the item that the change applies to. IsRead is
   /// only valid when ChangeType is equal to ChangeType.ReadFlagChange.
   /// </summary>
-  bool get IsRead => this.isRead;
+  bool get IsRead => this._isRead;
 
   set IsRead(bool value) {
-    this.isRead = value;
+    this._isRead = value;
   }
 
   /// <summary>

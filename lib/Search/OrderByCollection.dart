@@ -31,8 +31,8 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/SortDirection.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
-import 'package:ews/misc/OutParam.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
+import 'package:ews/misc/OutParam.dart';
 
 /// <summary>
 /// Represents an ordered collection of property definitions qualified with a sort direction.
@@ -40,13 +40,13 @@ import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 class OrderByCollection
     with IterableMixin<MapEntry<PropertyDefinitionBase, SortDirection>>
     implements Iterable<MapEntry<PropertyDefinitionBase, SortDirection>> {
-  /* private */ List<MapEntry<PropertyDefinitionBase, SortDirection>> propDefSortOrderPairList;
+  List<MapEntry<PropertyDefinitionBase, SortDirection>> _propDefSortOrderPairList;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OrderByCollection"/> class.
   /// </summary>
   OrderByCollection() {
-    this.propDefSortOrderPairList = new List<MapEntry<PropertyDefinitionBase, SortDirection>>();
+    this._propDefSortOrderPairList = new List<MapEntry<PropertyDefinitionBase, SortDirection>>();
   }
 
   /// <summary>
@@ -60,16 +60,15 @@ class OrderByCollection
           "string.Format(Strings.PropertyAlreadyExistsInOrderByCollection, propertyDefinition.GetPrintableName())");
     }
 
-    this
-        .propDefSortOrderPairList
-        .add(new MapEntry<PropertyDefinitionBase, SortDirection>(propertyDefinition, sortDirection));
+    this._propDefSortOrderPairList.add(
+        new MapEntry<PropertyDefinitionBase, SortDirection>(propertyDefinition, sortDirection));
   }
 
   /// <summary>
   /// Removes all elements from the collection.
   /// </summary>
   void Clear() {
-    this.propDefSortOrderPairList.clear();
+    this._propDefSortOrderPairList.clear();
   }
 
   /// <summary>
@@ -78,13 +77,13 @@ class OrderByCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if the collection contains the specified property definition; otherwise, false.</returns>
   bool Contains(PropertyDefinitionBase propertyDefinition) {
-    return this.propDefSortOrderPairList.any((pair) => pair.key == propertyDefinition);
+    return this._propDefSortOrderPairList.any((pair) => pair.key == propertyDefinition);
   }
 
   /// <summary>
   /// Gets the number of elements contained in the collection.
   /// </summary>
-  int get Count => this.propDefSortOrderPairList.length;
+  int get Count => this._propDefSortOrderPairList.length;
 
   /// <summary>
   /// Removes the specified property definition from the collection.
@@ -92,8 +91,9 @@ class OrderByCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if the property definition is successfully removed; otherwise, false</returns>
   bool Remove(PropertyDefinitionBase propertyDefinition) {
-    final forRemove = this.propDefSortOrderPairList.where((pair) => pair.key == propertyDefinition);
-    forRemove.forEach(this.propDefSortOrderPairList.remove);
+    final forRemove =
+        this._propDefSortOrderPairList.where((pair) => pair.key == propertyDefinition);
+    forRemove.forEach(this._propDefSortOrderPairList.remove);
     int count = forRemove.length;
     return count > 0;
   }
@@ -106,7 +106,7 @@ class OrderByCollection
   /// Index is less than 0 or index is equal to or greater than Count.
   /// </exception>
   void RemoveAt(int index) {
-    this.propDefSortOrderPairList.removeAt(index);
+    this._propDefSortOrderPairList.removeAt(index);
   }
 
   /// <summary>
@@ -115,15 +115,17 @@ class OrderByCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <param name="sortDirection">The sort direction.</param>
   /// <returns>True if collection contains property definition, otherwise false.</returns>
-  bool TryGetValue(PropertyDefinitionBase propertyDefinition, OutParam<SortDirection> sortDirectionOutParam) {
-    for (MapEntry<PropertyDefinitionBase, SortDirection> pair in this.propDefSortOrderPairList) {
+  bool TryGetValue(
+      PropertyDefinitionBase propertyDefinition, OutParam<SortDirection> sortDirectionOutParam) {
+    for (MapEntry<PropertyDefinitionBase, SortDirection> pair in this._propDefSortOrderPairList) {
       if (pair.value == propertyDefinition) {
         sortDirectionOutParam.param = pair.value;
         return true;
       }
     }
 
-    sortDirectionOutParam.param = SortDirection.Ascending; // out parameter has to be set to some value.
+    sortDirectionOutParam.param =
+        SortDirection.Ascending; // out parameter has to be set to some value.
     return false;
   }
 
@@ -153,7 +155,8 @@ class OrderByCollection
   /// Gets the element at the specified index from the collection.
   /// </summary>
   /// <param name="index">Index.</param>
-  MapEntry<PropertyDefinitionBase, SortDirection> operator [](int index) => this.propDefSortOrderPairList[index];
+  MapEntry<PropertyDefinitionBase, SortDirection> operator [](int index) =>
+      this._propDefSortOrderPairList[index];
 
   /// <summary>
   /// Returns an enumerator that iterates through the collection.
@@ -162,5 +165,6 @@ class OrderByCollection
   /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
   /// </returns>
   @override
-  Iterator<MapEntry<PropertyDefinitionBase, SortDirection>> get iterator => this.propDefSortOrderPairList.iterator;
+  Iterator<MapEntry<PropertyDefinitionBase, SortDirection>> get iterator =>
+      this._propDefSortOrderPairList.iterator;
 }

@@ -91,106 +91,102 @@ import 'package:ews/misc/TimeSpan.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/standalone.dart';
 
-typedef R Converter<T,R>(T);
+typedef R Converter<T, R>(T);
 
 /// <summary>
-    /// EWS utilities
-    /// </summary>
-    class EwsUtilities
-    {
-        /// <summary>
-        /// Map from XML element names to ServiceObject type and constructors.
-        /// </summary>
-      static LazyMember<ServiceObjectInfo> serviceObjectInfo = new LazyMember<ServiceObjectInfo>(
-            ()
-            {
-                return new ServiceObjectInfo();
-            });
-//
-        /// <summary>
-        /// Version of API binary.
-        /// </summary>
-        static const BuildVersion = "dart/0.0.1";
+/// EWS utilities
+/// </summary>
+class EwsUtilities {
+  /// <summary>
+  /// Map from XML element names to ServiceObject type and constructors.
+  /// </summary>
+  static LazyMember<ServiceObjectInfo> serviceObjectInfo = new LazyMember<ServiceObjectInfo>(() {
+    return new ServiceObjectInfo();
+  });
 
+  /// <summary>
+  /// Version of API binary.
+  /// </summary>
+  static const BuildVersion = "dart/1.0.0";
 
-       static final RegExp PATTERN_TIME_SPAN = RegExp("-P");
-       static final RegExp PATTERN_YEAR = RegExp("(\\d+)Y");
-       static final RegExp PATTERN_MONTH = RegExp("(\\d+)M");
-       static final RegExp PATTERN_DAY = RegExp("(\\d+)D");
-       static final RegExp PATTERN_HOUR = RegExp("(\\d+)H");
-       static final RegExp PATTERN_MINUTES = RegExp("(\\d+)M");
-       static final RegExp PATTERN_SECONDS = RegExp("(\\d+)S");
-       static final RegExp PATTERN_MILLISECONDS = RegExp("(\\d+)S");
+  static final RegExp PATTERN_TIME_SPAN = RegExp("-P");
+  static final RegExp PATTERN_YEAR = RegExp("(\\d+)Y");
+  static final RegExp PATTERN_MONTH = RegExp("(\\d+)M");
+  static final RegExp PATTERN_DAY = RegExp("(\\d+)D");
+  static final RegExp PATTERN_HOUR = RegExp("(\\d+)H");
+  static final RegExp PATTERN_MINUTES = RegExp("(\\d+)M");
+  static final RegExp PATTERN_SECONDS = RegExp("(\\d+)S");
+  static final RegExp PATTERN_MILLISECONDS = RegExp("(\\d+)S");
 
-       static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>> _requiredServerVersion = new LazyMember(() => {
-         ViewFilter: {
-           ViewFilter.All: ExchangeVersion.Exchange2013,
-           ViewFilter.Flagged: ExchangeVersion.Exchange2013,
-           ViewFilter.HasAttachment: ExchangeVersion.Exchange2013,
-           ViewFilter.ToOrCcMe: ExchangeVersion.Exchange2013,
-           ViewFilter.Unread: ExchangeVersion.Exchange2013,
-           ViewFilter.TaskActive: ExchangeVersion.Exchange2013,
-           ViewFilter.TaskOverdue: ExchangeVersion.Exchange2013,
-           ViewFilter.TaskCompleted: ExchangeVersion.Exchange2013,
-           ViewFilter.Suggestions: ExchangeVersion.Exchange2013,
-           ViewFilter.SuggestionsRespond: ExchangeVersion.Exchange2013,
-           ViewFilter.SuggestionsDelete: ExchangeVersion.Exchange2013,
-         },
-         MailboxSearchLocation: {
-           MailboxSearchLocation.PrimaryOnly:ExchangeVersion.Exchange2013,
-           MailboxSearchLocation.ArchiveOnly:ExchangeVersion.Exchange2013,
-           MailboxSearchLocation.All:ExchangeVersion.Exchange2013,
-         },
-         EventType: {
-           EventType.FreeBusyChanged: ExchangeVersion.Exchange2010_SP1
-         },
-         MeetingRequestsDeliveryScope: {
-           MeetingRequestsDeliveryScope.NoForward: ExchangeVersion.Exchange2010_SP1
-         },
-         FileAsMapping: {
-           FileAsMapping.DisplayName: ExchangeVersion.Exchange2010,
-           FileAsMapping.GivenName: ExchangeVersion.Exchange2010,
-           FileAsMapping.SurnameGivenNameMiddleSuffix: ExchangeVersion.Exchange2010,
-           FileAsMapping.Surname: ExchangeVersion.Exchange2010,
-           FileAsMapping.Empty: ExchangeVersion.Exchange2010,
-         },
-         WellKnownFolderName: {
-           WellKnownFolderName.PublicFoldersRoot: ExchangeVersion.Exchange2007_SP1,
-           WellKnownFolderName.RecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.RecoverableItemsDeletions: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.RecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.RecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.RecoverableItemsDiscoveryHolds: ExchangeVersion.Exchange2013_SP1,
-           WellKnownFolderName.ArchiveRoot: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveInbox: ExchangeVersion.Exchange2013_SP1,
-           WellKnownFolderName.ArchiveMsgFolderRoot: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveDeletedItems: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveRecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveRecoverableItemsDeletions: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveRecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveRecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
-           WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds: ExchangeVersion.Exchange2013_SP1,
-           WellKnownFolderName.SyncIssues: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.Conflicts: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.LocalFailures: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.ServerFailures: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.RecipientCache: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.QuickContacts: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.ConversationHistory: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.AdminAuditLogs: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.ToDoSearch: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.MyContacts: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.Directory: ExchangeVersion.Exchange2013_SP1,
-           WellKnownFolderName.IMContactList: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.PeopleConnect: ExchangeVersion.Exchange2013,
-           WellKnownFolderName.Favorites: ExchangeVersion.Exchange2013,
-         },
-         ConversationQueryTraversal: {
-           ConversationQueryTraversal.Shallow: ExchangeVersion.Exchange2013,
-           ConversationQueryTraversal.Deep: ExchangeVersion.Exchange2013,
-         }
-       });
-
+  static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>> _requiredServerVersion =
+      new LazyMember(() => {
+            ViewFilter: {
+              ViewFilter.All: ExchangeVersion.Exchange2013,
+              ViewFilter.Flagged: ExchangeVersion.Exchange2013,
+              ViewFilter.HasAttachment: ExchangeVersion.Exchange2013,
+              ViewFilter.ToOrCcMe: ExchangeVersion.Exchange2013,
+              ViewFilter.Unread: ExchangeVersion.Exchange2013,
+              ViewFilter.TaskActive: ExchangeVersion.Exchange2013,
+              ViewFilter.TaskOverdue: ExchangeVersion.Exchange2013,
+              ViewFilter.TaskCompleted: ExchangeVersion.Exchange2013,
+              ViewFilter.Suggestions: ExchangeVersion.Exchange2013,
+              ViewFilter.SuggestionsRespond: ExchangeVersion.Exchange2013,
+              ViewFilter.SuggestionsDelete: ExchangeVersion.Exchange2013,
+            },
+            MailboxSearchLocation: {
+              MailboxSearchLocation.PrimaryOnly: ExchangeVersion.Exchange2013,
+              MailboxSearchLocation.ArchiveOnly: ExchangeVersion.Exchange2013,
+              MailboxSearchLocation.All: ExchangeVersion.Exchange2013,
+            },
+            EventType: {EventType.FreeBusyChanged: ExchangeVersion.Exchange2010_SP1},
+            MeetingRequestsDeliveryScope: {
+              MeetingRequestsDeliveryScope.NoForward: ExchangeVersion.Exchange2010_SP1
+            },
+            FileAsMapping: {
+              FileAsMapping.DisplayName: ExchangeVersion.Exchange2010,
+              FileAsMapping.GivenName: ExchangeVersion.Exchange2010,
+              FileAsMapping.SurnameGivenNameMiddleSuffix: ExchangeVersion.Exchange2010,
+              FileAsMapping.Surname: ExchangeVersion.Exchange2010,
+              FileAsMapping.Empty: ExchangeVersion.Exchange2010,
+            },
+            WellKnownFolderName: {
+              WellKnownFolderName.PublicFoldersRoot: ExchangeVersion.Exchange2007_SP1,
+              WellKnownFolderName.RecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsDeletions: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsDiscoveryHolds: ExchangeVersion.Exchange2013_SP1,
+              WellKnownFolderName.ArchiveRoot: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveInbox: ExchangeVersion.Exchange2013_SP1,
+              WellKnownFolderName.ArchiveMsgFolderRoot: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveDeletedItems: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsDeletions:
+                  ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds:
+                  ExchangeVersion.Exchange2013_SP1,
+              WellKnownFolderName.SyncIssues: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.Conflicts: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.LocalFailures: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.ServerFailures: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.RecipientCache: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.QuickContacts: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.ConversationHistory: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.AdminAuditLogs: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.ToDoSearch: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.MyContacts: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.Directory: ExchangeVersion.Exchange2013_SP1,
+              WellKnownFolderName.IMContactList: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.PeopleConnect: ExchangeVersion.Exchange2013,
+              WellKnownFolderName.Favorites: ExchangeVersion.Exchange2013,
+            },
+            ConversationQueryTraversal: {
+              ConversationQueryTraversal.Shallow: ExchangeVersion.Exchange2013,
+              ConversationQueryTraversal.Deep: ExchangeVersion.Exchange2013,
+            }
+          });
 
 //        private static LazyMember<string> buildVersion = new LazyMember<string>(
 //            delegate()
@@ -267,30 +263,39 @@ typedef R Converter<T,R>(T);
 //        internal const string XSFalse = "false";
 //        internal const string XSTrue = "true";
 //
-      static const String EwsTypesNamespacePrefix = "t";
-    static const String EwsMessagesNamespacePrefix = "m";
-      static const String EwsErrorsNamespacePrefix = "e";
-      static const String EwsSoapNamespacePrefix = "soap";
-      static const String EwsXmlSchemaInstanceNamespacePrefix = "xsi";
-      static const String PassportSoapFaultNamespacePrefix = "psf";
-      static const String WSTrustFebruary2005NamespacePrefix = "wst";
-      static const String WSAddressingNamespacePrefix = "wsa";
-      static const String AutodiscoverSoapNamespacePrefix = "a";
-      static const String WSSecurityUtilityNamespacePrefix = "wsu";
-      static const String WSSecuritySecExtNamespacePrefix = "wsse";
+  static const String EwsTypesNamespacePrefix = "t";
+  static const String EwsMessagesNamespacePrefix = "m";
+  static const String EwsErrorsNamespacePrefix = "e";
+  static const String EwsSoapNamespacePrefix = "soap";
+  static const String EwsXmlSchemaInstanceNamespacePrefix = "xsi";
+  static const String PassportSoapFaultNamespacePrefix = "psf";
+  static const String WSTrustFebruary2005NamespacePrefix = "wst";
+  static const String WSAddressingNamespacePrefix = "wsa";
+  static const String AutodiscoverSoapNamespacePrefix = "a";
+  static const String WSSecurityUtilityNamespacePrefix = "wsu";
+  static const String WSSecuritySecExtNamespacePrefix = "wsse";
 
-      static const String EwsTypesNamespace = "http://schemas.microsoft.com/exchange/services/2006/types";
-      static const String EwsMessagesNamespace = "http://schemas.microsoft.com/exchange/services/2006/messages";
-      static const String EwsErrorsNamespace = "http://schemas.microsoft.com/exchange/services/2006/errors";
-      static const String EwsSoapNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
-      static const String EwsSoap12Namespace = "http://www.w3.org/2003/05/soap-envelope";
-      static const String EwsXmlSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
-      static const String PassportSoapFaultNamespace = "http://schemas.microsoft.com/Passport/SoapServices/SOAPFault";
-      static const String WSTrustFebruary2005Namespace = "http://schemas.xmlsoap.org/ws/2005/02/trust";
-      static const String WSAddressingNamespace = "http://www.w3.org/2005/08/addressing"; // "http://schemas.xmlsoap.org/ws/2004/08/addressing";
-      static const String AutodiscoverSoapNamespace = "http://schemas.microsoft.com/exchange/2010/Autodiscover";
-      static const String WSSecurityUtilityNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
-      static const String WSSecuritySecExtNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+  static const String EwsTypesNamespace =
+      "http://schemas.microsoft.com/exchange/services/2006/types";
+  static const String EwsMessagesNamespace =
+      "http://schemas.microsoft.com/exchange/services/2006/messages";
+  static const String EwsErrorsNamespace =
+      "http://schemas.microsoft.com/exchange/services/2006/errors";
+  static const String EwsSoapNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
+  static const String EwsSoap12Namespace = "http://www.w3.org/2003/05/soap-envelope";
+  static const String EwsXmlSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+  static const String PassportSoapFaultNamespace =
+      "http://schemas.microsoft.com/Passport/SoapServices/SOAPFault";
+  static const String WSTrustFebruary2005Namespace = "http://schemas.xmlsoap.org/ws/2005/02/trust";
+  static const String WSAddressingNamespace =
+      "http://www.w3.org/2005/08/addressing"; // "http://schemas.xmlsoap.org/ws/2004/08/addressing";
+  static const String AutodiscoverSoapNamespace =
+      "http://schemas.microsoft.com/exchange/2010/Autodiscover";
+  static const String WSSecurityUtilityNamespace =
+      "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+  static const String WSSecuritySecExtNamespace =
+      "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+
 //
 //        /// <summary>
 //        /// Regular expression for legal domain names.
@@ -314,72 +319,68 @@ typedef R Converter<T,R>(T);
 //                string.Format("[{0}] {1}", caller, message));
 //        }
 
-        /// <summary>
-        /// Gets the namespace prefix from an XmlNamespace enum value.
-        /// </summary>
-        /// <param name="xmlNamespace">The XML namespace.</param>
-        /// <returns>Namespace prefix string.</returns>
-        static String GetNamespacePrefix(XmlNamespace xmlNamespace)
-        {
-            switch (xmlNamespace)
-            {
-                case XmlNamespace.Types:
-                    return EwsTypesNamespacePrefix;
-                case XmlNamespace.Messages:
-                    return EwsMessagesNamespacePrefix;
-                case XmlNamespace.Errors:
-                    return EwsErrorsNamespacePrefix;
-                case XmlNamespace.Soap:
-                case XmlNamespace.Soap12:
-                    return EwsSoapNamespacePrefix;
-                case XmlNamespace.XmlSchemaInstance:
-                    return EwsXmlSchemaInstanceNamespacePrefix;
-                case XmlNamespace.PassportSoapFault:
-                    return PassportSoapFaultNamespacePrefix;
-                case XmlNamespace.WSTrustFebruary2005:
-                    return WSTrustFebruary2005NamespacePrefix;
-                case XmlNamespace.WSAddressing:
-                    return WSAddressingNamespacePrefix;
-                case XmlNamespace.Autodiscover:
-                    return AutodiscoverSoapNamespacePrefix;
-                default:
-                    return "";
-            }
-        }
+  /// <summary>
+  /// Gets the namespace prefix from an XmlNamespace enum value.
+  /// </summary>
+  /// <param name="xmlNamespace">The XML namespace.</param>
+  /// <returns>Namespace prefix string.</returns>
+  static String GetNamespacePrefix(XmlNamespace xmlNamespace) {
+    switch (xmlNamespace) {
+      case XmlNamespace.Types:
+        return EwsTypesNamespacePrefix;
+      case XmlNamespace.Messages:
+        return EwsMessagesNamespacePrefix;
+      case XmlNamespace.Errors:
+        return EwsErrorsNamespacePrefix;
+      case XmlNamespace.Soap:
+      case XmlNamespace.Soap12:
+        return EwsSoapNamespacePrefix;
+      case XmlNamespace.XmlSchemaInstance:
+        return EwsXmlSchemaInstanceNamespacePrefix;
+      case XmlNamespace.PassportSoapFault:
+        return PassportSoapFaultNamespacePrefix;
+      case XmlNamespace.WSTrustFebruary2005:
+        return WSTrustFebruary2005NamespacePrefix;
+      case XmlNamespace.WSAddressing:
+        return WSAddressingNamespacePrefix;
+      case XmlNamespace.Autodiscover:
+        return AutodiscoverSoapNamespacePrefix;
+      default:
+        return "";
+    }
+  }
 
-        /// <summary>
-        /// Gets the namespace URI from an XmlNamespace enum value.
-        /// </summary>
-        /// <param name="xmlNamespace">The XML namespace.</param>
-        /// <returns>Uri as string</returns>
-        static String GetNamespaceUri(XmlNamespace xmlNamespace)
-        {
-            switch (xmlNamespace)
-            {
-                case XmlNamespace.Types:
-                    return EwsTypesNamespace;
-                case XmlNamespace.Messages:
-                    return EwsMessagesNamespace;
-                case XmlNamespace.Errors:
-                    return EwsErrorsNamespace;
-                case XmlNamespace.Soap:
-                    return EwsSoapNamespace;
-                case XmlNamespace.Soap12:
-                    return EwsSoap12Namespace;
-                case XmlNamespace.XmlSchemaInstance:
-                    return EwsXmlSchemaInstanceNamespace;
-                case XmlNamespace.PassportSoapFault:
-                    return PassportSoapFaultNamespace;
-                case XmlNamespace.WSTrustFebruary2005:
-                    return WSTrustFebruary2005Namespace;
-                case XmlNamespace.WSAddressing:
-                    return WSAddressingNamespace;
-                case XmlNamespace.Autodiscover:
-                    return AutodiscoverSoapNamespace;
-                default:
-                    return "";
-            }
-        }
+  /// <summary>
+  /// Gets the namespace URI from an XmlNamespace enum value.
+  /// </summary>
+  /// <param name="xmlNamespace">The XML namespace.</param>
+  /// <returns>Uri as string</returns>
+  static String GetNamespaceUri(XmlNamespace xmlNamespace) {
+    switch (xmlNamespace) {
+      case XmlNamespace.Types:
+        return EwsTypesNamespace;
+      case XmlNamespace.Messages:
+        return EwsMessagesNamespace;
+      case XmlNamespace.Errors:
+        return EwsErrorsNamespace;
+      case XmlNamespace.Soap:
+        return EwsSoapNamespace;
+      case XmlNamespace.Soap12:
+        return EwsSoap12Namespace;
+      case XmlNamespace.XmlSchemaInstance:
+        return EwsXmlSchemaInstanceNamespace;
+      case XmlNamespace.PassportSoapFault:
+        return PassportSoapFaultNamespace;
+      case XmlNamespace.WSTrustFebruary2005:
+        return WSTrustFebruary2005Namespace;
+      case XmlNamespace.WSAddressing:
+        return WSAddressingNamespace;
+      case XmlNamespace.Autodiscover:
+        return AutodiscoverSoapNamespace;
+      default:
+        return "";
+    }
+  }
 
 //        /// <summary>
 //        /// Gets the XmlNamespace enum value from a namespace Uri.
@@ -548,18 +549,17 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Format log message.
-        /// </summary>
-        /// <param name="entryKind">Kind of the entry.</param>
-        /// <param name="logEntry">The log entry.</param>
-        /// <returns>XML log entry as a string.</returns>
-        static String FormatLogMessage(String entryKind, String logEntry)
-        {
-          //todo("correct FormatLogMessage");
-          print("correct FormatLogMessage");
+  /// <summary>
+  /// Format log message.
+  /// </summary>
+  /// <param name="entryKind">Kind of the entry.</param>
+  /// <param name="logEntry">The log entry.</param>
+  /// <returns>XML log entry as a string.</returns>
+  static String FormatLogMessage(String entryKind, String logEntry) {
+    //todo("correct FormatLogMessage");
+    print("correct FormatLogMessage");
 
-          return "$entryKind => $logEntry";
+    return "$entryKind => $logEntry";
 //            StringBuffer sb = new StringBuffer();
 //            using (StringWriter writer = new StringWriter(sb))
 //            {
@@ -578,7 +578,8 @@ typedef R Converter<T,R>(T);
 //                }
 //            }
 //            return sb.ToString();
-        }
+  }
+
 //
 //        /// <summary>
 //        /// Format the HTTP headers.
@@ -597,19 +598,19 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Format request HTTP headers.
-        /// </summary>
-        /// <param name="request">The HTTP request.</param>
-        static String FormatHttpRequestHeaders(IEwsHttpWebRequest request)
-        {
-           StringBuffer sb = new StringBuffer();
-            sb.write("${request.Method} ${request.RequestUri.path} HTTP/1.1\n");
-            EwsUtilities.FormatHttpHeadersWithBuffer(sb, request.Headers);
-            sb.write("\n");
+  /// <summary>
+  /// Format request HTTP headers.
+  /// </summary>
+  /// <param name="request">The HTTP request.</param>
+  static String FormatHttpRequestHeaders(IEwsHttpWebRequest request) {
+    StringBuffer sb = new StringBuffer();
+    sb.write("${request.Method} ${request.RequestUri.path} HTTP/1.1\n");
+    EwsUtilities.FormatHttpHeadersWithBuffer(sb, request.Headers);
+    sb.write("\n");
 
-            return sb.toString();
-        }
+    return sb.toString();
+  }
+
 //
 //        /// <summary>
 //        /// Format response HTTP headers.
@@ -649,33 +650,29 @@ typedef R Converter<T,R>(T);
 //            return sb.ToString();
 //        }
 //
-        /// <summary>
-        /// Formats HTTP headers.
-        /// </summary>
-        /// <param name="headers">The headers.</param>
-        /// <returns>Headers as a string</returns>
-        static String FormatHttpHeaders(WebHeaderCollection headers)
-        {
-            StringBuffer sb = new StringBuffer();
-            for (String key in headers.AllKeys)
-            {
-                sb.write(
-                        "$key: ${headers[key]}\n");
-            }
-            return sb.toString();
-        }
+  /// <summary>
+  /// Formats HTTP headers.
+  /// </summary>
+  /// <param name="headers">The headers.</param>
+  /// <returns>Headers as a string</returns>
+  static String FormatHttpHeaders(WebHeaderCollection headers) {
+    StringBuffer sb = new StringBuffer();
+    for (String key in headers.AllKeys) {
+      sb.write("$key: ${headers[key]}\n");
+    }
+    return sb.toString();
+  }
 
-        /// <summary>
-        /// Format XML content in a MemoryStream for message.
-        /// </summary>
-        /// <param name="entryKind">Kind of the entry.</param>
-        /// <param name="memoryStream">The memory stream.</param>
-        /// <returns>XML log entry as a string.</returns>
-        static String FormatLogMessageWithXmlContent(String entryKind, MemoryStream memoryStream)
-        {
-          // todo("improve FormatLogMessageWithXmlContent")
-          print(".. improve FormatLogMessageWithXmlContent");
-          return utf8.decode(memoryStream.AllElements);
+  /// <summary>
+  /// Format XML content in a MemoryStream for message.
+  /// </summary>
+  /// <param name="entryKind">Kind of the entry.</param>
+  /// <param name="memoryStream">The memory stream.</param>
+  /// <returns>XML log entry as a string.</returns>
+  static String FormatLogMessageWithXmlContent(String entryKind, MemoryStream memoryStream) {
+    // todo("improve FormatLogMessageWithXmlContent")
+    print(".. improve FormatLogMessageWithXmlContent");
+    return utf8.decode(memoryStream.AllElements);
 //            StringBuffer sb = new StringBuffer();
 //            XmlReaderSettings settings = new XmlReaderSettings();
 //            settings.ConformanceLevel = ConformanceLevel.Fragment;
@@ -725,20 +722,20 @@ typedef R Converter<T,R>(T);
 //            memoryStream.Position = lastPosition;
 //
 //            return sb.ToString();
-        }
+  }
+
 //
 //        #endregion
 //
 //        #region Stream routines
 //
-        /// <summary>
-        /// Copies source stream to target.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="target">The target.</param>
-        static Future<void> CopyStream(Stream<List<int>> source, StreamConsumer<List<int>> target) async
-        {
-          await source.pipe(target);
+  /// <summary>
+  /// Copies source stream to target.
+  /// </summary>
+  /// <param name="source">The source.</param>
+  /// <param name="target">The target.</param>
+  static Future<void> CopyStream(Stream<List<int>> source, StreamConsumer<List<int>> target) async {
+    await source.pipe(target);
 //            // See if this is a MemoryStream -- we can use WriteTo.
 //            MemoryStream memContentStream = source as MemoryStream;
 //            if (memContentStream != null)
@@ -757,7 +754,8 @@ typedef R Converter<T,R>(T);
 //                    bytesRead = source.Read(buffer, 0, bufferSize);
 //                }
 //            }
-        }
+  }
+
 //
 //        #endregion
 //
@@ -834,111 +832,115 @@ typedef R Converter<T,R>(T);
 //        }
 //
 
-      static Map<Type, Converter<String, Object>> possibleEnumsConverter = {
-          ServiceResult: (stringValue) => EnumToString.fromString(ServiceResult.values, stringValue),
-          ServiceError: (stringValue) => EnumToString.fromString(ServiceError.values, stringValue),
-          MapiPropertyType: (stringValue) => EnumToString.fromString(MapiPropertyType.values, stringValue),
-          Sensitivity: (stringValue) => EnumToString.fromString(Sensitivity.values, stringValue),
-          Importance: (stringValue) => EnumToString.fromString(Importance.values, stringValue),
-          ItemFlagStatus: (stringValue) => EnumToString.fromString(ItemFlagStatus.values, stringValue),
-          MeetingResponseType: (stringValue) => EnumToString.fromString(MeetingResponseType.values, stringValue),
-          AppointmentType: (stringValue) => EnumToString.fromString(AppointmentType.values, stringValue),
-          MailboxType: (stringValue) => EnumToString.fromString(MailboxType.values, stringValue),
-          TaskStatus: (stringValue) => EnumToString.fromString(TaskStatus.values, stringValue),
-          BodyType: (stringValue) => EnumToString.fromString(BodyType.values, stringValue),
-          StandardUser: (stringValue) => EnumToString.fromString(StandardUser.values, stringValue),
-          PermissionScope: (stringValue) => EnumToString.fromString(PermissionScope.values, stringValue),
-          FolderPermissionReadAccess: (stringValue) => EnumToString.fromString(FolderPermissionReadAccess.values, stringValue),
-          FolderPermissionLevel: (stringValue) => EnumToString.fromString(FolderPermissionLevel.values, stringValue),
-          EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
-          PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
-          PhysicalAddressKey: (stringValue) => EnumToString.fromString(PhysicalAddressKey.values, stringValue),
-          ImAddressKey: (stringValue) => EnumToString.fromString(ImAddressKey.values, stringValue),
-          AutodiscoverErrorCode: (stringValue) => EnumToString.fromString(AutodiscoverErrorCode.values, stringValue),
-          UserSettingName: (stringValue) => EnumToString.fromString(UserSettingName.values, stringValue),
-      };
+  static Map<Type, Converter<String, Object>> possibleEnumsConverter = {
+    ServiceResult: (stringValue) => EnumToString.fromString(ServiceResult.values, stringValue),
+    ServiceError: (stringValue) => EnumToString.fromString(ServiceError.values, stringValue),
+    MapiPropertyType: (stringValue) =>
+        EnumToString.fromString(MapiPropertyType.values, stringValue),
+    Sensitivity: (stringValue) => EnumToString.fromString(Sensitivity.values, stringValue),
+    Importance: (stringValue) => EnumToString.fromString(Importance.values, stringValue),
+    ItemFlagStatus: (stringValue) => EnumToString.fromString(ItemFlagStatus.values, stringValue),
+    MeetingResponseType: (stringValue) =>
+        EnumToString.fromString(MeetingResponseType.values, stringValue),
+    AppointmentType: (stringValue) => EnumToString.fromString(AppointmentType.values, stringValue),
+    MailboxType: (stringValue) => EnumToString.fromString(MailboxType.values, stringValue),
+    TaskStatus: (stringValue) => EnumToString.fromString(TaskStatus.values, stringValue),
+    BodyType: (stringValue) => EnumToString.fromString(BodyType.values, stringValue),
+    StandardUser: (stringValue) => EnumToString.fromString(StandardUser.values, stringValue),
+    PermissionScope: (stringValue) => EnumToString.fromString(PermissionScope.values, stringValue),
+    FolderPermissionReadAccess: (stringValue) =>
+        EnumToString.fromString(FolderPermissionReadAccess.values, stringValue),
+    FolderPermissionLevel: (stringValue) =>
+        EnumToString.fromString(FolderPermissionLevel.values, stringValue),
+    EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
+    PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
+    PhysicalAddressKey: (stringValue) =>
+        EnumToString.fromString(PhysicalAddressKey.values, stringValue),
+    ImAddressKey: (stringValue) => EnumToString.fromString(ImAddressKey.values, stringValue),
+    AutodiscoverErrorCode: (stringValue) =>
+        EnumToString.fromString(AutodiscoverErrorCode.values, stringValue),
+    UserSettingName: (stringValue) => EnumToString.fromString(UserSettingName.values, stringValue),
+  };
 
-        static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
-          EventType: {
-            EventType.Status: "StatusEvent",
-            EventType.NewMail: "NewMailEvent",
-            EventType.Deleted: "DeletedEvent",
-            EventType.Modified: "ModifiedEvent",
-            EventType.Moved: "MovedEvent",
-            EventType.Copied: "CopiedEvent",
-            EventType.Created: "CreatedEvent",
-            EventType.FreeBusyChanged: "FreeBusyChangedEvent",
-          },
-          FileAsMapping: {
-            FileAsMapping.None: "None",
-            FileAsMapping.SurnameCommaGivenName: "LastCommaFirst",
-            FileAsMapping.GivenNameSpaceSurname: "FirstSpaceLast",
-            FileAsMapping.Company: "Company",
-            FileAsMapping.SurnameCommaGivenNameCompany: "LastCommaFirstCompany",
-            FileAsMapping.CompanySurnameGivenName: "CompanyLastFirst",
-            FileAsMapping.SurnameGivenName: "LastFirst",
-            FileAsMapping.SurnameGivenNameCompany: "LastFirstCompany",
-            FileAsMapping.CompanySurnameCommaGivenName: "CompanyLastCommaFirst",
-            FileAsMapping.SurnameGivenNameSuffix: "LastFirstSuffix",
-            FileAsMapping.SurnameSpaceGivenNameCompany: "LastSpaceFirstCompany",
-            FileAsMapping.CompanySurnameSpaceGivenName: "CompanyLastSpaceFirst",
-            FileAsMapping.SurnameSpaceGivenName: "LastSpaceFirst",
-            FileAsMapping.DisplayName: "DisplayName",
-            FileAsMapping.GivenName: "FirstName",
-            FileAsMapping.SurnameGivenNameMiddleSuffix: "LastFirstMiddleSuffix",
-            FileAsMapping.Surname: "LastName",
-            FileAsMapping.Empty: "Empty",
-          }
-        };
+  static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
+    EventType: {
+      EventType.Status: "StatusEvent",
+      EventType.NewMail: "NewMailEvent",
+      EventType.Deleted: "DeletedEvent",
+      EventType.Modified: "ModifiedEvent",
+      EventType.Moved: "MovedEvent",
+      EventType.Copied: "CopiedEvent",
+      EventType.Created: "CreatedEvent",
+      EventType.FreeBusyChanged: "FreeBusyChangedEvent",
+    },
+    FileAsMapping: {
+      FileAsMapping.None: "None",
+      FileAsMapping.SurnameCommaGivenName: "LastCommaFirst",
+      FileAsMapping.GivenNameSpaceSurname: "FirstSpaceLast",
+      FileAsMapping.Company: "Company",
+      FileAsMapping.SurnameCommaGivenNameCompany: "LastCommaFirstCompany",
+      FileAsMapping.CompanySurnameGivenName: "CompanyLastFirst",
+      FileAsMapping.SurnameGivenName: "LastFirst",
+      FileAsMapping.SurnameGivenNameCompany: "LastFirstCompany",
+      FileAsMapping.CompanySurnameCommaGivenName: "CompanyLastCommaFirst",
+      FileAsMapping.SurnameGivenNameSuffix: "LastFirstSuffix",
+      FileAsMapping.SurnameSpaceGivenNameCompany: "LastSpaceFirstCompany",
+      FileAsMapping.CompanySurnameSpaceGivenName: "CompanyLastSpaceFirst",
+      FileAsMapping.SurnameSpaceGivenName: "LastSpaceFirst",
+      FileAsMapping.DisplayName: "DisplayName",
+      FileAsMapping.GivenName: "FirstName",
+      FileAsMapping.SurnameGivenNameMiddleSuffix: "LastFirstMiddleSuffix",
+      FileAsMapping.Surname: "LastName",
+      FileAsMapping.Empty: "Empty",
+    }
+  };
 
-      static final serializedEnumDictionaries = [
-        FolderTraversal,
-        OffsetBasePoint,
-        DefaultExtendedPropertySet,
-        MapiPropertyType,
-        SyncFolderItemsScope,
-        ItemTraversal,
-        MessageDisposition,
-        BodyType,
-        TaskStatus,
-        DeleteMode,
-        AffectedTaskOccurrence,
-        ConflictResolutionMode,
-        FolderPermissionLevel,
-        SendInvitationsMode,
-        SendCancellationsMode,
-        ContainmentMode,
-        ComparisonMode,
-        EmailAddressKey,
-        PhoneNumberKey,
-        PhysicalAddressKey,
-        ImAddressKey,
-        UserSettingName,
-        ExchangeVersion
-      ];
+  static final serializedEnumDictionaries = [
+    FolderTraversal,
+    OffsetBasePoint,
+    DefaultExtendedPropertySet,
+    MapiPropertyType,
+    SyncFolderItemsScope,
+    ItemTraversal,
+    MessageDisposition,
+    BodyType,
+    TaskStatus,
+    DeleteMode,
+    AffectedTaskOccurrence,
+    ConflictResolutionMode,
+    FolderPermissionLevel,
+    SendInvitationsMode,
+    SendCancellationsMode,
+    ContainmentMode,
+    ComparisonMode,
+    EmailAddressKey,
+    PhoneNumberKey,
+    PhysicalAddressKey,
+    ImAddressKey,
+    UserSettingName,
+    ExchangeVersion
+  ];
 
-
-        /// <summary>
-        /// Parses specified value based on type.
-        /// </summary>
-        /// <typeparam name="T">Type of value.</typeparam>
-        /// <param name="value">The value.</param>
-        /// <returns>Value of type T.</returns>
-        static T Parse<T>(String value)
-        {
-          if (possibleEnumsConverter.containsKey(T)) {
-            return possibleEnumsConverter[T](value) as T;
-          } else if (T == int) {
-            return int.parse(value) as T;
-          } else if (T == double) {
-            return double.parse(value) as T;
-          } else if (T == String) {
-            return value as T;
-          } else if (T == bool) {
-            return (value.toLowerCase() == "true") as T;
-          } else {
-            throw NotImplementedException("Parse<$T>($value)");
-          }
+  /// <summary>
+  /// Parses specified value based on type.
+  /// </summary>
+  /// <typeparam name="T">Type of value.</typeparam>
+  /// <param name="value">The value.</param>
+  /// <returns>Value of type T.</returns>
+  static T Parse<T>(String value) {
+    if (possibleEnumsConverter.containsKey(T)) {
+      return possibleEnumsConverter[T](value) as T;
+    } else if (T == int) {
+      return int.parse(value) as T;
+    } else if (T == double) {
+      return double.parse(value) as T;
+    } else if (T == String) {
+      return value as T;
+    } else if (T == bool) {
+      return (value.toLowerCase() == "true") as T;
+    } else {
+      throw NotImplementedException("Parse<$T>($value)");
+    }
 //          //todo("implement Parse<T>")
 //          print("implement Parse<T where ${T.runtimeType}>");
 //            if (typeof(T).IsEnum)
@@ -962,7 +964,7 @@ typedef R Converter<T,R>(T);
 //            {
 //                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
 //            }
-        }
+  }
 
 //        /// <summary>
 //        /// Tries to parses the specified value to the specified type.
@@ -1378,38 +1380,29 @@ typedef R Converter<T,R>(T);
 //
 //        #region Method parameters validation routines
 //
-        /// <summary>
-        /// Validates parameter (and allows null value).
-        /// </summary>
-        /// <param name="param">The param.</param>
-        /// <param name="paramName">Name of the param.</param>
-        static void ValidateParamAllowNull(Object param, String paramName)
-        {
-
-            if (param is ISelfValidate)
-            {
-              try
-                {
-                  param.Validate();
-                }
-                on ServiceValidationException catch( e)
-                {
-                    throw new ArgumentError("""
+  /// <summary>
+  /// Validates parameter (and allows null value).
+  /// </summary>
+  /// <param name="param">The param.</param>
+  /// <param name="paramName">Name of the param.</param>
+  static void ValidateParamAllowNull(Object param, String paramName) {
+    if (param is ISelfValidate) {
+      try {
+        param.Validate();
+      } on ServiceValidationException catch (e) {
+        throw new ArgumentError("""
                         Strings.ValidationFailed,
                         paramName,
-                        e""");
-                }
-            }
+                        $e""");
+      }
+    }
 
-
-            if (param is ServiceObject)
-            {
-              if (param.IsNew)
-                {
-                    throw new ArgumentError("Strings.ObjectDoesNotHaveId, paramName");
-                }
-            }
-        }
+    if (param is ServiceObject) {
+      if (param.IsNew) {
+        throw new ArgumentError("Strings.ObjectDoesNotHaveId, paramName");
+      }
+    }
+  }
 
 //        /// <summary>
 //        /// Validates parameter (null value not allowed).
@@ -1438,39 +1431,34 @@ typedef R Converter<T,R>(T);
 //            ValidateParamAllowNull(param, paramName);
 //        }
 
-        /// <summary>
-        /// Validates parameter collection.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="paramName">Name of the param.</param>
-        static void ValidateParamCollection(Iterable collection, String paramName)
-        {
-            ValidateParam(collection, paramName);
+  /// <summary>
+  /// Validates parameter collection.
+  /// </summary>
+  /// <param name="collection">The collection.</param>
+  /// <param name="paramName">Name of the param.</param>
+  static void ValidateParamCollection(Iterable collection, String paramName) {
+    ValidateParam(collection, paramName);
 
-            int count = 0;
+    int count = 0;
 
-            for (Object obj in collection)
-            {
-                try
-                {
-                    ValidateParam(obj, "collection[$count]");
-                }
-                on ArgumentError catch (e)
-                {
-                    throw new ArgumentError("""
+    for (Object obj in collection) {
+      try {
+        ValidateParam(obj, "collection[$count]");
+      } on ArgumentError catch (e) {
+        throw new ArgumentError("""
                         string.Format("The element at position {0} is invalid", count),
                         paramName,
-                        e""");
-                }
+                        $e""");
+      }
 
-                count++;
-            }
+      count++;
+    }
 
-            if (count == 0)
-            {
-                throw new ArgumentError("Strings.CollectionIsEmpty, paramName");
-            }
-        }
+    if (count == 0) {
+      throw new ArgumentError("Strings.CollectionIsEmpty, paramName");
+    }
+  }
+
 //
 //        /// <summary>
 //        /// Validates string parameter to be non-empty string (null value allowed).
@@ -1526,25 +1514,23 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Validates service object version against the request version.
-        /// </summary>
-        /// <param name="serviceObject">The service object.</param>
-        /// <param name="requestVersion">The request version.</param>
-        /// <exception cref="ServiceVersionException">Raised if this service object type requires a later version of Exchange.</exception>
-        static void ValidateServiceObjectVersion(ServiceObject serviceObject, ExchangeVersion requestVersion)
-        {
-            ExchangeVersion minimumRequiredServerVersion = serviceObject.GetMinimumRequiredServerVersion();
+  /// <summary>
+  /// Validates service object version against the request version.
+  /// </summary>
+  /// <param name="serviceObject">The service object.</param>
+  /// <param name="requestVersion">The request version.</param>
+  /// <exception cref="ServiceVersionException">Raised if this service object type requires a later version of Exchange.</exception>
+  static void ValidateServiceObjectVersion(
+      ServiceObject serviceObject, ExchangeVersion requestVersion) {
+    ExchangeVersion minimumRequiredServerVersion = serviceObject.GetMinimumRequiredServerVersion();
 
-            if (requestVersion.index < minimumRequiredServerVersion.index)
-            {
-                throw new ServiceVersionException(
-                    """string.Format(
+    if (requestVersion.index < minimumRequiredServerVersion.index) {
+      throw new ServiceVersionException("""string.Format(
                     Strings.ObjectTypeIncompatibleWithRequestVersion,
                     serviceObject.GetType().Name,
                     minimumRequiredServerVersion)""");
-            }
-        }
+    }
+  }
 
 //
 //        /// <summary>
@@ -1629,28 +1615,24 @@ typedef R Converter<T,R>(T);
 //            return dict;
 //        }
 
-        /// <summary>
-        /// Gets the schema name for enum member.
-        /// </summary>
-        /// <param name="enumType">Type of the enum.</param>
-        /// <param name="enumName">The enum name.</param>
-        /// <returns>The name for the enum used in the protocol, or null if it is the same as the enum's toString().</returns>
-        static String GetEnumSchemaName(Type enumType, Object enumValue)
-        {
-          final ewsEnumAttribute = {
-            MailboxType : {
-              MailboxType.PublicGroup: EwsEnumAttribute("PublicDL")
-            },
-            MailboxType : {
-              MailboxType.ContactGroup: EwsEnumAttribute("PrivateDL")
-            }
-          };
+  /// <summary>
+  /// Gets the schema name for enum member.
+  /// </summary>
+  /// <param name="enumType">Type of the enum.</param>
+  /// <param name="enumName">The enum name.</param>
+  /// <returns>The name for the enum used in the protocol, or null if it is the same as the enum's toString().</returns>
+  static String GetEnumSchemaName(Type enumType, Object enumValue) {
+    final ewsEnumAttribute = {
+      MailboxType: {MailboxType.PublicGroup: EwsEnumAttribute("PublicDL")},
+      MailboxType: {MailboxType.ContactGroup: EwsEnumAttribute("PrivateDL")}
+    };
 
-          if (ewsEnumAttribute.containsKey(enumType) && ewsEnumAttribute[enumType].containsKey(enumValue)) {
-            return ewsEnumAttribute[enumType][enumValue].schemaName;
-          } else {
-            return null;
-          }
+    if (ewsEnumAttribute.containsKey(enumType) &&
+        ewsEnumAttribute[enumType].containsKey(enumValue)) {
+      return ewsEnumAttribute[enumType][enumValue].schemaName;
+    } else {
+      return null;
+    }
 
 //            MemberInfo[] memberInfo = enumType.GetMember(enumName);
 //            EwsUtilities.Assert(
@@ -1667,7 +1649,8 @@ typedef R Converter<T,R>(T);
 //            {
 //                return null;
 //            }
-        }
+  }
+
 //
 //        /// <summary>
 //        /// Builds the schema to enum mapping dictionary.
@@ -1890,18 +1873,19 @@ typedef R Converter<T,R>(T);
 //                { typeof(WellKnownFolderName), BuildSchemaToEnumDict(typeof(WellKnownFolderName)) },
 //            });
 
-        /// <summary>
-        /// Dictionary of enum type to enum-value-to-schema-name maps.
-        /// </summary>
-        /* private */ static LazyMember<Map<Type, Map<Object, String>>> enumToSchemaDictionaries = new LazyMember<Map<Type, Map<Object, String>>>(
-            () =>
-            {
-                 EventType:  BuildEnumToSchemaDict(EventType, EventType.values),
-                 MailboxType: BuildEnumToSchemaDict(MailboxType, MailboxType.values),
-                 FileAsMapping: BuildEnumToSchemaDict(FileAsMapping, FileAsMapping.values),
-                 RuleProperty: BuildEnumToSchemaDict(RuleProperty, RuleProperty.values),
-                 WellKnownFolderName: BuildEnumToSchemaDict(WellKnownFolderName, WellKnownFolderName.values),
-            });
+  /// <summary>
+  /// Dictionary of enum type to enum-value-to-schema-name maps.
+  /// </summary>
+  /* private */
+  static LazyMember<Map<Type, Map<Object, String>>> enumToSchemaDictionaries =
+      new LazyMember<Map<Type, Map<Object, String>>>(() => {
+            EventType: BuildEnumToSchemaDict(EventType, EventType.values),
+            MailboxType: BuildEnumToSchemaDict(MailboxType, MailboxType.values),
+            FileAsMapping: BuildEnumToSchemaDict(FileAsMapping, FileAsMapping.values),
+            RuleProperty: BuildEnumToSchemaDict(RuleProperty, RuleProperty.values),
+            WellKnownFolderName:
+                BuildEnumToSchemaDict(WellKnownFolderName, WellKnownFolderName.values),
+          });
 
 //        /// <summary>
 //        /// Dictionary to map from special CLR type names to their "short" names.
@@ -1918,8 +1902,9 @@ typedef R Converter<T,R>(T);
 //
 //        #region Constants
 //
-        static const String XSFalse = "false";
-        static const String XSTrue = "true";
+  static const String XSFalse = "false";
+  static const String XSTrue = "true";
+
 //
 //        const String EwsTypesNamespacePrefix = "t";
 //        const String EwsMessagesNamespacePrefix = "m";
@@ -1946,27 +1931,22 @@ typedef R Converter<T,R>(T);
 //        const String WSSecurityUtilityNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
 //        const String WSSecuritySecExtNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
 
-        /// <summary>
-        /// Regular expression for legal domain names.
-        /// </summary>
-        static const String DomainRegex = "^[-a-zA-Z0-9_.]+\$";
+  /// <summary>
+  /// Regular expression for legal domain names.
+  /// </summary>
+  static const String DomainRegex = "^[-a-zA-Z0-9_.]+\$";
+
 //        #endregion
 
-        /// <summary>
-        /// Asserts that the specified condition if true.
-        /// </summary>
-        /// <param name="condition">Assertion.</param>
-        /// <param name="caller">The caller.</param>
-        /// <param name="message">The message to use if assertion fails.</param>
-        static void Assert(
-            bool condition,
-            String caller,
-            String message)
-        {
-            assert(
-                condition,
-                "[$caller] $message");
-        }
+  /// <summary>
+  /// Asserts that the specified condition if true.
+  /// </summary>
+  /// <param name="condition">Assertion.</param>
+  /// <param name="caller">The caller.</param>
+  /// <param name="message">The message to use if assertion fails.</param>
+  static void Assert(bool condition, String caller, String message) {
+    assert(condition, "[$caller] $message");
+  }
 
 //        /// <summary>
 //        /// Gets the namespace prefix from an XmlNamespace enum value.
@@ -2035,169 +2015,151 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Gets the XmlNamespace enum value from a namespace Uri.
-        /// </summary>
-        /// <param name="namespaceUri">XML namespace Uri.</param>
-        /// <returns>XmlNamespace enum value.</returns>
-        static XmlNamespace GetNamespaceFromUri(String namespaceUri)
-        {
-            switch (namespaceUri)
-            {
-                case EwsErrorsNamespace:
-                    return XmlNamespace.Errors;
-                case EwsTypesNamespace:
-                    return XmlNamespace.Types;
-                case EwsMessagesNamespace:
-                    return XmlNamespace.Messages;
-                case EwsSoapNamespace:
-                    return XmlNamespace.Soap;
-                case EwsSoap12Namespace:
-                    return XmlNamespace.Soap12;
-                case EwsXmlSchemaInstanceNamespace:
-                    return XmlNamespace.XmlSchemaInstance;
-                case PassportSoapFaultNamespace:
-                    return XmlNamespace.PassportSoapFault;
-                case WSTrustFebruary2005Namespace:
-                    return XmlNamespace.WSTrustFebruary2005;
-                case WSAddressingNamespace:
-                    return XmlNamespace.WSAddressing;
-                default:
-                    return XmlNamespace.NotSpecified;
-            }
-        }
+  /// <summary>
+  /// Gets the XmlNamespace enum value from a namespace Uri.
+  /// </summary>
+  /// <param name="namespaceUri">XML namespace Uri.</param>
+  /// <returns>XmlNamespace enum value.</returns>
+  static XmlNamespace GetNamespaceFromUri(String namespaceUri) {
+    switch (namespaceUri) {
+      case EwsErrorsNamespace:
+        return XmlNamespace.Errors;
+      case EwsTypesNamespace:
+        return XmlNamespace.Types;
+      case EwsMessagesNamespace:
+        return XmlNamespace.Messages;
+      case EwsSoapNamespace:
+        return XmlNamespace.Soap;
+      case EwsSoap12Namespace:
+        return XmlNamespace.Soap12;
+      case EwsXmlSchemaInstanceNamespace:
+        return XmlNamespace.XmlSchemaInstance;
+      case PassportSoapFaultNamespace:
+        return XmlNamespace.PassportSoapFault;
+      case WSTrustFebruary2005Namespace:
+        return XmlNamespace.WSTrustFebruary2005;
+      case WSAddressingNamespace:
+        return XmlNamespace.WSAddressing;
+      default:
+        return XmlNamespace.NotSpecified;
+    }
+  }
 
-        /// <summary>
-        /// Creates EWS object based on XML element name.
-        /// </summary>
-        /// <typeparam name="TServiceObject">The type of the service object.</typeparam>
-        /// <param name="service">The service.</param>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <returns>Service object.</returns>
-        static TServiceObject CreateEwsObjectFromXmlElementName<TServiceObject extends ServiceObject>(ExchangeService service, String xmlElementName)
-        {
-          // todo("implement CreateEwsObjectFromXmlElementName");
+  /// <summary>
+  /// Creates EWS object based on XML element name.
+  /// </summary>
+  /// <typeparam name="TServiceObject">The type of the service object.</typeparam>
+  /// <param name="service">The service.</param>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <returns>Service object.</returns>
+  static TServiceObject CreateEwsObjectFromXmlElementName<TServiceObject extends ServiceObject>(
+      ExchangeService service, String xmlElementName) {
+    // todo("implement CreateEwsObjectFromXmlElementName");
 //          print("CreateEwsObjectFromXmlElementName($xmlElementName);");
 
-            if (EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap.containsKey(xmlElementName))
-            {
-              Type itemClass = EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
+    if (EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
+        .containsKey(xmlElementName)) {
+      Type itemClass = EwsUtilities
+          .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
 
-                if (EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam.containsKey(itemClass))
-                {
-                  CreateServiceObjectWithServiceParam creationDelegate = EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam[itemClass];
-                    return creationDelegate(service);
-                }
-                else
-                {
-                    throw new ArgumentError("Strings.NoAppropriateConstructorForItemClass");
-                }
-            }
-            else
-            {
-              throw StateError("Can't instantiate $TServiceObject");
+      if (EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam
+          .containsKey(itemClass)) {
+        CreateServiceObjectWithServiceParam creationDelegate = EwsUtilities
+            .serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam[itemClass];
+        return creationDelegate(service);
+      } else {
+        throw new ArgumentError("Strings.NoAppropriateConstructorForItemClass");
+      }
+    } else {
+      throw StateError("Can't instantiate $TServiceObject");
 //                return default(TServiceObject);
-            }
-        }
+    }
+  }
 
-        /// <summary>
-        /// Creates Item from Item class.
-        /// </summary>
-        /// <param name="itemAttachment">The item attachment.</param>
-        /// <param name="itemClass">The item class.</param>
-        /// <param name="isNew">If true, item attachment is new.</param>
-        /// <returns>New Item.</returns>
-        static Item CreateItemFromItemClass(
-            ItemAttachment itemAttachment,
-            Type itemClass,
-            bool isNew)
-        {
+  /// <summary>
+  /// Creates Item from Item class.
+  /// </summary>
+  /// <param name="itemAttachment">The item attachment.</param>
+  /// <param name="itemClass">The item class.</param>
+  /// <param name="isNew">If true, item attachment is new.</param>
+  /// <returns>New Item.</returns>
+  static Item CreateItemFromItemClass(ItemAttachment itemAttachment, Type itemClass, bool isNew) {
+    if (EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam
+        .containsKey(itemClass)) {
+      CreateServiceObjectWithAttachmentParam creationDelegate = EwsUtilities
+          .serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam[itemClass];
+      return creationDelegate(itemAttachment, isNew);
+    } else {
+      throw new ArgumentError("Strings.NoAppropriateConstructorForItemClass");
+    }
+  }
 
-            if (EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam.containsKey(itemClass))
-            {
-              CreateServiceObjectWithAttachmentParam creationDelegate = EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam[itemClass];
-              return creationDelegate(itemAttachment, isNew);
-            }
-            else
-            {
-                throw new ArgumentError("Strings.NoAppropriateConstructorForItemClass");
-            }
-        }
+  /// <summary>
+  /// Creates Item based on XML element name.
+  /// </summary>
+  /// <param name="itemAttachment">The item attachment.</param>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <returns>New Item.</returns>
+  static Item CreateItemFromXmlElementName(ItemAttachment itemAttachment, String xmlElementName) {
+    if (EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
+        .containsKey(xmlElementName)) {
+      Type itemClass = EwsUtilities
+          .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
+      return CreateItemFromItemClass(itemAttachment, itemClass, false);
+    } else {
+      return null;
+    }
+  }
 
-        /// <summary>
-        /// Creates Item based on XML element name.
-        /// </summary>
-        /// <param name="itemAttachment">The item attachment.</param>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <returns>New Item.</returns>
-        static Item CreateItemFromXmlElementName(ItemAttachment itemAttachment, String xmlElementName)
-        {
-            if (EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap.containsKey(xmlElementName))
-            {
-                Type itemClass = EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
-                return CreateItemFromItemClass(itemAttachment, itemClass, false);
-            }
-            else
-            {
-                return null;
-            }
-        }
+  /// <summary>
+  /// Gets the expected item type based on the local name.
+  /// </summary>
+  /// <param name="xmlElementName"></param>
+  /// <returns></returns>
+  static Type GetItemTypeFromXmlElementName(String xmlElementName) {
+    return EwsUtilities
+        .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
+  }
 
-        /// <summary>
-        /// Gets the expected item type based on the local name.
-        /// </summary>
-        /// <param name="xmlElementName"></param>
-        /// <returns></returns>
-        static Type GetItemTypeFromXmlElementName(String xmlElementName)
-        {
-            return EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
-        }
+  /// <summary>
+  /// Finds the first item of type TItem (not a descendant type) in the specified collection.
+  /// </summary>
+  /// <typeparam name="TItem">The type of the item to find.</typeparam>
+  /// <param name="items">The collection.</param>
+  /// <returns>A TItem instance or null if no instance of TItem could be found.</returns>
+  static TItem FindFirstItemOfType<TItem extends Item>(Iterable<Item> items) {
+    for (Item item in items) {
+      // We're looking for an exact class match here.
+      if (item.runtimeType == TItem) {
+        return item;
+      }
+    }
 
-        /// <summary>
-        /// Finds the first item of type TItem (not a descendant type) in the specified collection.
-        /// </summary>
-        /// <typeparam name="TItem">The type of the item to find.</typeparam>
-        /// <param name="items">The collection.</param>
-        /// <returns>A TItem instance or null if no instance of TItem could be found.</returns>
-        static TItem FindFirstItemOfType<TItem extends Item>(Iterable<Item> items)
-        {
-            for (Item item in items)
-            {
-                // We're looking for an exact class match here.
-                if (item.runtimeType == TItem)
-                {
-                    return item;
-                }
-            }
-
-            return null;
-        }
+    return null;
+  }
 
 //        #region Tracing routines
 
-        /// <summary>
-        /// Write trace start element.
-        /// </summary>
-        /// <param name="writer">The writer to write the start element to.</param>
-        /// <param name="traceTag">The trace tag.</param>
-        /// <param name="includeVersion">If true, include build version attribute.</param>
+  /// <summary>
+  /// Write trace start element.
+  /// </summary>
+  /// <param name="writer">The writer to write the start element to.</param>
+  /// <param name="traceTag">The trace tag.</param>
+  /// <param name="includeVersion">If true, include build version attribute.</param>
 //        [System.Diagnostics.CodeAnalysis.SuppressMessage("Exchange.Usage", "EX0009:DoNotUseDateTimeNowOrFromFileTime", Justification = "Client API")]
-        /* private */ static void WriteTraceStartElement(
-            XmlWriter writer,
-            String traceTag,
-            bool includeVersion)
-        {
-            writer.WriteStartElement(localName: "Trace");
-            writer.WriteAttributeString(localName: "Tag", value: traceTag);
-            // todo("add the Thread Id info")
+  /* private */
+  static void WriteTraceStartElement(XmlWriter writer, String traceTag, bool includeVersion) {
+    writer.WriteStartElement(localName: "Trace");
+    writer.WriteAttributeString(localName: "Tag", value: traceTag);
+    // todo("add the Thread Id info")
 //            writer.WriteAttributeString(localName: "Tid", value: Thread.CurrentThread.ManagedThreadId.ToString());
-            writer.WriteAttributeString(localName: "Time", value: DateTime.now().toIso8601String());
+    writer.WriteAttributeString(localName: "Time", value: DateTime.now().toIso8601String());
 
-            if (includeVersion)
-            {
-                writer.WriteAttributeString(localName: "Version", value: EwsUtilities.BuildVersion);
-            }
-        }
+    if (includeVersion) {
+      writer.WriteAttributeString(localName: "Version", value: EwsUtilities.BuildVersion);
+    }
+  }
+
 //
 //        /// <summary>
 //        /// Format log message.
@@ -2232,14 +2194,13 @@ typedef R Converter<T,R>(T);
 //        /// </summary>
 //        /// <param name="sb">StringBuilder.</param>
 //        /// <param name="headers">The HTTP headers.</param>
-        /* private */ static void FormatHttpHeadersWithBuffer(StringBuffer sb, WebHeaderCollection headers)
-        {
-            for (String key in headers.AllKeys)
-            {
-                sb.write(
-                    "$key: ${headers[key]}\n");
-            }
-        }
+  /* private */
+  static void FormatHttpHeadersWithBuffer(StringBuffer sb, WebHeaderCollection headers) {
+    for (String key in headers.AllKeys) {
+      sb.write("$key: ${headers[key]}\n");
+    }
+  }
+
 //
 //        /// <summary>
 //        /// Format request HTTP headers.
@@ -2255,19 +2216,18 @@ typedef R Converter<T,R>(T);
 //            return sb.ToString();
 //        }
 
-        /// <summary>
-        /// Format response HTTP headers.
-        /// </summary>
-        /// <param name="response">The HTTP response.</param>
-        static String FormatHttpResponseHeaders(IEwsHttpWebResponse response)
-        {
-            StringBuffer sb = new StringBuffer();
-            sb.write("HTTP/? ${response.StatusCode} ${response.StatusDescription}\n");
+  /// <summary>
+  /// Format response HTTP headers.
+  /// </summary>
+  /// <param name="response">The HTTP response.</param>
+  static String FormatHttpResponseHeaders(IEwsHttpWebResponse response) {
+    StringBuffer sb = new StringBuffer();
+    sb.write("HTTP/? ${response.StatusCode} ${response.StatusDescription}\n");
 
-            sb.write(EwsUtilities.FormatHttpHeaders(response.Headers));
-            sb.write("\n");
-            return sb.toString();
-        }
+    sb.write(EwsUtilities.FormatHttpHeaders(response.Headers));
+    sb.write("\n");
+    return sb.toString();
+  }
 
 //        /// <summary>
 //        /// Format request HTTP headers.
@@ -2410,15 +2370,15 @@ typedef R Converter<T,R>(T);
 //
 //        #region Conversion routines
 
-        /// <summary>
-        /// Convert bool to XML Schema bool.
-        /// </summary>
-        /// <param name="value">Bool value.</param>
-        /// <returns>String representing bool value in XML Schema.</returns>
-        static String BoolToXSBool(bool value)
-        {
-            return value ? EwsUtilities.XSTrue : EwsUtilities.XSFalse;
-        }
+  /// <summary>
+  /// Convert bool to XML Schema bool.
+  /// </summary>
+  /// <param name="value">Bool value.</param>
+  /// <returns>String representing bool value in XML Schema.</returns>
+  static String BoolToXSBool(bool value) {
+    return value ? EwsUtilities.XSTrue : EwsUtilities.XSFalse;
+  }
+
 //
 //        /// <summary>
 //        /// Parses an enum value list.
@@ -2453,11 +2413,10 @@ typedef R Converter<T,R>(T);
 //
 //        /// <summary>
 
-        /// </summary>
-        /// <param name="value">The enum value to be serialized</param>
-        /// <returns>String representation of enum to be used in the protocol</returns>
-        static bool TrySerializeEnum(Object enumValue, OutParam<String> resultOutParam)
-        {
+  /// </summary>
+  /// <param name="value">The enum value to be serialized</param>
+  /// <returns>String representation of enum to be used in the protocol</returns>
+  static bool TrySerializeEnum(Object enumValue, OutParam<String> resultOutParam) {
 //            Map<Object, String> enumToStringDict;
 //            String strValue;
 //            if (enumToSchemaDictionaries.Member.containsKey(enumValue.runtimeType))
@@ -2468,18 +2427,17 @@ typedef R Converter<T,R>(T);
 //            }
 //            else
 //            {
-              if (ewsEnumDictionaries.containsKey(enumValue.runtimeType)) {
-                resultOutParam.param = ewsEnumDictionaries[enumValue.runtimeType][enumValue];
-                return true;
-              }
-              else if (serializedEnumDictionaries.contains(enumValue.runtimeType)) {
-                resultOutParam.param = EnumToString.parse(enumValue);
-                return true;
-              } else {
-                return false;
-              }
+    if (ewsEnumDictionaries.containsKey(enumValue.runtimeType)) {
+      resultOutParam.param = ewsEnumDictionaries[enumValue.runtimeType][enumValue];
+      return true;
+    } else if (serializedEnumDictionaries.contains(enumValue.runtimeType)) {
+      resultOutParam.param = EnumToString.parse(enumValue);
+      return true;
+    } else {
+      return false;
+    }
 //            }
-        }
+  }
 
 //        /// <summary>
 //        /// Parses specified value based on type.
@@ -2512,46 +2470,40 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Tries to parses the specified value to the specified type.
-        /// </summary>
-        /// <typeparam name="T">The type into which to cast the provided value.</typeparam>
-        /// <param name="value">The value to parse.</param>
-        /// <param name="result">The value cast to the specified type, if TryParse succeeds. Otherwise, the value of result is indeterminate.</param>
-        /// <returns>True if value could be parsed; otherwise, false.</returns>
-        static bool TryParse<T>(String value, OutParam<T> resultOutParam)
-        {
-            try
-            {
-                resultOutParam.param = EwsUtilities.Parse<T>(value);
+  /// <summary>
+  /// Tries to parses the specified value to the specified type.
+  /// </summary>
+  /// <typeparam name="T">The type into which to cast the provided value.</typeparam>
+  /// <param name="value">The value to parse.</param>
+  /// <param name="result">The value cast to the specified type, if TryParse succeeds. Otherwise, the value of result is indeterminate.</param>
+  /// <returns>True if value could be parsed; otherwise, false.</returns>
+  static bool TryParse<T>(String value, OutParam<T> resultOutParam) {
+    try {
+      resultOutParam.param = EwsUtilities.Parse<T>(value);
 
-                return true;
-            }
-            //// Catch all exceptions here, we're not interested in the reason why TryParse failed.
-            catch (Exception)
-            {
-              // todo("check here")
-                resultOutParam.param = null;
+      return true;
+    }
+    //// Catch all exceptions here, we're not interested in the reason why TryParse failed.
+    catch (Exception) {
+      // todo("check here")
+      resultOutParam.param = null;
 
-                return false;
-            }
-        }
+      return false;
+    }
+  }
 
-        /// <summary>
-        /// Converts the specified date and time from one time zone to another.
-        /// </summary>
-        /// <param name="dateTime">The date time to convert.</param>
-        /// <param name="sourceTimeZone">The source time zone.</param>
-        /// <param name="destinationTimeZone">The destination time zone.</param>
-        /// <returns>A DateTime that holds the converted</returns>
-        static DateTime ConvertTime(
-            DateTime dateTime,
-            TimeZone sourceTimeZone,
-            TimeZone destinationTimeZone)
-        {
-          // todo : fix timezones
-          print("!!! using unsafe ConvertTime");
-          return dateTime;
+  /// <summary>
+  /// Converts the specified date and time from one time zone to another.
+  /// </summary>
+  /// <param name="dateTime">The date time to convert.</param>
+  /// <param name="sourceTimeZone">The source time zone.</param>
+  /// <param name="destinationTimeZone">The destination time zone.</param>
+  /// <returns>A DateTime that holds the converted</returns>
+  static DateTime ConvertTime(
+      DateTime dateTime, TimeZone sourceTimeZone, TimeZone destinationTimeZone) {
+    // todo : fix timezones
+    print("!!! using unsafe ConvertTime");
+    return dateTime;
 //            try
 //            {
 //                return TimeZoneInfo.ConvertTime(
@@ -2569,7 +2521,8 @@ typedef R Converter<T,R>(T);
 //                        destinationTimeZone.DisplayName),
 //                    e);
 //            }
-        }
+  }
+
 //
 //        /// <summary>
 //        /// Reads the String as date time, assuming it is unbiased (e.g. 2009/01/01T08:00)
@@ -2610,24 +2563,23 @@ typedef R Converter<T,R>(T);
 //            return (TimeZoneInfo.Local == timeZone) || (TimeZoneInfo.Local.Id == timeZone.Id && TimeZoneInfo.Local.HasSameRules(timeZone));
 //        }
 
-        /// <summary>
-        /// Convert DateTime to XML Schema date.
-        /// </summary>
-        /// <param name="date">The date to be converted.</param>
-        /// <returns>String representation of DateTime.</returns>
-        static String DateTimeToXSDate(DateTime date)
-        {
-          // TODO : check validity of DateTimeToXSDate
-          print(".. using unsafe DateTimeToXSDate");
+  /// <summary>
+  /// Convert DateTime to XML Schema date.
+  /// </summary>
+  /// <param name="date">The date to be converted.</param>
+  /// <returns>String representation of DateTime.</returns>
+  static String DateTimeToXSDate(DateTime date) {
+    // TODO : check validity of DateTimeToXSDate
+    print(".. using unsafe DateTimeToXSDate");
 //          if (date.isUtc) {
-            return DateFormat("yyyy-MM-dd'Z'").format(date);
+    return DateFormat("yyyy-MM-dd'Z'").format(date);
 //          } else {
 //            return DateFormat("yyyy-MM-ddzzz").format(date);
 //          }
 
-            // Depending on the current culture, DateTime formatter will
-            // translate dates from one culture to another (e.g. Gregorian to Lunar).  The server
-            // ensure this.
+    // Depending on the current culture, DateTime formatter will
+    // translate dates from one culture to another (e.g. Gregorian to Lunar).  The server
+    // ensure this.
 //            String format;
 //
 //            switch (date.Kind)
@@ -2644,21 +2596,20 @@ typedef R Converter<T,R>(T);
 //            }
 //
 //            return date.ToString(format, CultureInfo.InvariantCulture);
-        }
+  }
 
-        /// <summary>
-        /// Dates the DateTime into an XML schema date time.
-        /// </summary>
-        /// <param name="dateTime">The date time.</param>
-        /// <returns>String representation of DateTime.</returns>
-        static String DateTimeToXSDateTime(DateTime dateTime)
-        {
-          // TODO : fix DateTimeToXSDateTime
-          print(".. used incorret DateTimeToXSDateTime");
+  /// <summary>
+  /// Dates the DateTime into an XML schema date time.
+  /// </summary>
+  /// <param name="dateTime">The date time.</param>
+  /// <returns>String representation of DateTime.</returns>
+  static String DateTimeToXSDateTime(DateTime dateTime) {
+    // TODO : fix DateTimeToXSDateTime
+    print(".. used incorret DateTimeToXSDateTime");
 
-            String format = "yyyy-MM-ddTHH:mm:ss.000";
-            var formatter = new DateFormat(format);
-            return formatter.format(dateTime);
+    String format = "yyyy-MM-ddTHH:mm:ss.000";
+    var formatter = new DateFormat(format);
+    return formatter.format(dateTime);
 
 //            switch (dateTime.Kind)
 //            {
@@ -2676,7 +2627,8 @@ typedef R Converter<T,R>(T);
 //            // the DateTimeFormatInfo.TimeSeparator property which may not be ':'. Force the proper string
 //
 //            return dateTime.ToString(format, CultureInfo.InvariantCulture);
-        }
+  }
+
 //
 //        /// <summary>
 //        /// Convert EWS DayOfTheWeek enum to System.DayOfWeek.
@@ -2709,116 +2661,100 @@ typedef R Converter<T,R>(T);
 //            return (DayOfTheWeek)dayOfWeek;
 //        }
 
-        /// <summary>
-        /// Takes a System.TimeSpan structure and converts it into an
-        /// xs:duration String as defined by the W3 Consortiums Recommendation
-        /// "XML Schema Part 2: Datatypes Second Edition",
-        /// http://www.w3.org/TR/xmlschema-2/#duration
-        /// </summary>
-        /// <param name="timeSpan">TimeSpan structure to convert</param>
-        /// <returns>xs:duration formatted string</returns>
-        static String TimeSpanToXSDuration(TimeSpan timeSpan)
-        {
-            // Optional '-' offset
-            String offsetStr = (timeSpan.TotalSeconds < 0) ? "-" : "";
+  /// <summary>
+  /// Takes a System.TimeSpan structure and converts it into an
+  /// xs:duration String as defined by the W3 Consortiums Recommendation
+  /// "XML Schema Part 2: Datatypes Second Edition",
+  /// http://www.w3.org/TR/xmlschema-2/#duration
+  /// </summary>
+  /// <param name="timeSpan">TimeSpan structure to convert</param>
+  /// <returns>xs:duration formatted string</returns>
+  static String TimeSpanToXSDuration(TimeSpan timeSpan) {
+    // Optional '-' offset
+    String offsetStr = (timeSpan.TotalSeconds < 0) ? "-" : "";
 
-            // The TimeSpan structure does not have a Year or Month
-            // property, therefore we wouldn't be able to return an xs:duration
-            // String from a TimeSpan that included the nY or nM components.
-            return
-                "${offsetStr}P${timeSpan.Days.abs}DT${timeSpan.Hours.abs}H${timeSpan.Minutes.abs}M${timeSpan.Seconds.abs}.${timeSpan.Milliseconds.abs}S";
-        }
+    // The TimeSpan structure does not have a Year or Month
+    // property, therefore we wouldn't be able to return an xs:duration
+    // String from a TimeSpan that included the nY or nM components.
+    return "${offsetStr}P${timeSpan.Days.abs}DT${timeSpan.Hours.abs}H${timeSpan.Minutes.abs}M${timeSpan.Seconds.abs}.${timeSpan.Milliseconds.abs}S";
+  }
 
+  /// <summary>
+  /// Takes an xs:duration String as defined by the W3 Consortiums
+  /// Recommendation "XML Schema Part 2: Datatypes Second Edition",
+  /// http://www.w3.org/TR/xmlschema-2/#duration, and converts it
+  /// into a System.TimeSpan structure
+  /// </summary>
+  /// <remarks>
+  /// This method uses the following approximations:
+  ///     1 year = 365 days
+  ///     1 month = 30 days
+  /// Additionally, it only allows for four decimal points of
+  /// seconds precision.
+  /// </remarks>
+  /// <param name="xsDuration">xs:duration String to convert</param>
+  /// <returns>System.TimeSpan structure</returns>
+  static TimeSpan XSDurationToTimeSpan(String xsDuration) {
+    String xsDateDuration = xsDuration.contains("T") ? xsDuration.split("T").first : xsDuration;
 
+    String xsTimeDuration = xsDuration.split("T").length > 1 ? xsDuration.split("T")[1] : "";
 
-        /// <summary>
-        /// Takes an xs:duration String as defined by the W3 Consortiums
-        /// Recommendation "XML Schema Part 2: Datatypes Second Edition",
-        /// http://www.w3.org/TR/xmlschema-2/#duration, and converts it
-        /// into a System.TimeSpan structure
-        /// </summary>
-        /// <remarks>
-        /// This method uses the following approximations:
-        ///     1 year = 365 days
-        ///     1 month = 30 days
-        /// Additionally, it only allows for four decimal points of
-        /// seconds precision.
-        /// </remarks>
-        /// <param name="xsDuration">xs:duration String to convert</param>
-        /// <returns>System.TimeSpan structure</returns>
-        static TimeSpan XSDurationToTimeSpan(String xsDuration)
-        {
-          String xsDateDuration = xsDuration.contains("T")
-              ? xsDuration.split("T").first
-              : xsDuration;
+    RegExpMatch m = PATTERN_TIME_SPAN.firstMatch(xsDateDuration);
+    bool negative = false;
 
-          String xsTimeDuration = xsDuration.split("T").length > 1
-              ?  xsDuration.split("T")[1]
-              : "";
+    if (m != null) {
+      negative = true;
+    }
 
-          RegExpMatch m = PATTERN_TIME_SPAN.firstMatch(xsDateDuration);
-          bool negative = false;
+    // Year
+    m = PATTERN_YEAR.firstMatch(xsDateDuration);
 
-          if (m != null) {
-            negative = true;
-          }
+    int year = 0;
+    if (m != null) {
+      year = int.parse(m.group(0).substring(0, m.group(0).indexOf("Y")));
+    }
 
+    // Month
+    m = PATTERN_MONTH.firstMatch(xsDateDuration);
 
-          // Year
-          m = PATTERN_YEAR.firstMatch(xsDateDuration);
+    int month = 0;
+    if (m != null) {
+      month = int.parse(m.group(0).substring(0, m.group(0).indexOf("M")));
+    }
 
-          int year = 0;
-          if (m != null) {
-            year = int.parse(m.group(0).substring(0,
-                m.group(0).indexOf("Y")));
-          }
+    // Day
+    m = PATTERN_DAY.firstMatch(xsDateDuration);
 
-          // Month
-          m = PATTERN_MONTH.firstMatch(xsDateDuration);
+    int day = 0;
+    if (m != null) {
+      day = int.parse(m.group(0).substring(0, m.group(0).indexOf("D")));
+    }
 
-          int month = 0;
-          if (m != null) {
-            month = int.parse(m.group(0).substring(0,
-                m.group(0).indexOf("M")));
-          }
+    // Hour
+    m = PATTERN_HOUR.firstMatch(xsTimeDuration);
 
-          // Day
-          m = PATTERN_DAY.firstMatch(xsDateDuration);
+    int hour = 0;
+    if (m != null) {
+      hour = int.parse(m.group(0).substring(0, m.group(0).indexOf("H")));
+    }
 
-          int day = 0;
-          if (m != null) {
-            day = int.parse(m.group(0).substring(0,
-                m.group(0).indexOf("D")));
-          }
+    // Minute
+    m = PATTERN_MINUTES.firstMatch(xsTimeDuration);
 
-          // Hour
-          m = PATTERN_HOUR.firstMatch(xsTimeDuration);
+    int minute = 0;
+    if (m != null) {
+      minute = int.parse(m.group(0).substring(0, m.group(0).indexOf("M")));
+    }
 
-          int hour = 0;
-          if (m != null) {
-            hour = int.parse(m.group(0).substring(0,
-                m.group(0).indexOf("H")));
-          }
+    // Seconds
+    m = PATTERN_SECONDS.firstMatch(xsTimeDuration);
 
-          // Minute
-          m = PATTERN_MINUTES.firstMatch(xsTimeDuration);
+    int seconds = 0;
+    if (m != null) {
+      seconds = int.parse(m.group(0).substring(0, m.group(0).indexOf(".")));
+    }
 
-          int minute = 0;
-          if (m != null) {
-            minute = int.parse(m.group(0).substring(0,
-                m.group(0).indexOf("M")));
-          }
-
-          // Seconds
-          m = PATTERN_SECONDS.firstMatch(xsTimeDuration);
-
-          int seconds = 0;
-          if (m != null) {
-            seconds = int.parse(m.group(0).substring(0,
-                m.group(0).indexOf(".")));
-          }
-
-          int milliseconds = 0;
+    int milliseconds = 0;
 //          m = PATTERN_MILLISECONDS.firstMatch(xsDuration);
 //
 //          if (m != null) {
@@ -2831,18 +2767,17 @@ typedef R Converter<T,R>(T);
 //            }
 //          }
 
-          // Apply conversions of year and months to days.
-          // Year = 365 days
-          // Month = 30 days
-          day = day + (year * 365) + (month * 30);
-          // TimeSpan retval = new TimeSpan(day, hour, minute, seconds,
-          // milliseconds);
-          int retval = (((((((day * 24) + hour) * 60) + minute) * 60) +
-              seconds) * 1000) + milliseconds;
-          if (negative) {
-            retval = -retval;
-          }
-          return new TimeSpan(retval);
+    // Apply conversions of year and months to days.
+    // Year = 365 days
+    // Month = 30 days
+    day = day + (year * 365) + (month * 30);
+    // TimeSpan retval = new TimeSpan(day, hour, minute, seconds,
+    // milliseconds);
+    int retval = (((((((day * 24) + hour) * 60) + minute) * 60) + seconds) * 1000) + milliseconds;
+    if (negative) {
+      retval = -retval;
+    }
+    return new TimeSpan(retval);
 //          RegExp timeSpanParser = new RegExp(
 //                "(?<pos>-)?" +
 //                "P" +
@@ -2940,7 +2875,7 @@ typedef R Converter<T,R>(T);
 //            }
 //
 //            return retval;
-        }
+  }
 
 //        /// <summary>
 //        /// Converts the specified time span to its XSD representation.
@@ -3013,22 +2948,20 @@ typedef R Converter<T,R>(T);
 //
 //        #region EmailAddress parsing
 
-        /// <summary>
-        /// Gets the domain name from an email address.
-        /// </summary>
-        /// <param name="emailAddress">The email address.</param>
-        /// <returns>Domain name.</returns>
-        static String DomainFromEmailAddress(String emailAddress)
-        {
-            List<String> emailAddressParts = emailAddress.split('@');
+  /// <summary>
+  /// Gets the domain name from an email address.
+  /// </summary>
+  /// <param name="emailAddress">The email address.</param>
+  /// <returns>Domain name.</returns>
+  static String DomainFromEmailAddress(String emailAddress) {
+    List<String> emailAddressParts = emailAddress.split('@');
 
-            if (emailAddressParts.length != 2 || StringUtils.IsNullOrEmpty(emailAddressParts[1]))
-            {
-                throw new FormatException("Strings.InvalidEmailAddress");
-            }
+    if (emailAddressParts.length != 2 || StringUtils.IsNullOrEmpty(emailAddressParts[1])) {
+      throw new FormatException("Strings.InvalidEmailAddress");
+    }
 
-            return emailAddressParts[1];
-        }
+    return emailAddressParts[1];
+  }
 
 //        #endregion
 //
@@ -3069,37 +3002,32 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Validates parameter (null value not allowed).
-        /// </summary>
-        /// <param name="param">The param.</param>
-        /// <param name="paramName">Name of the param.</param>
-        static void ValidateParam(Object param, String paramName)
-        {
-            bool isValid;
+  /// <summary>
+  /// Validates parameter (null value not allowed).
+  /// </summary>
+  /// <param name="param">The param.</param>
+  /// <param name="paramName">Name of the param.</param>
+  static void ValidateParam(Object param, String paramName) {
+    bool isValid;
 
-            if (param is String)
-            {
-                isValid = !StringUtils.IsNullOrEmpty(param);
-            }
-            else
-            {
-                isValid = param != null;
-            }
+    if (param is String) {
+      isValid = !StringUtils.IsNullOrEmpty(param);
+    } else {
+      isValid = param != null;
+    }
 
-            if (!isValid)
-            {
-                throw new ArgumentError.notNull(paramName);
-            }
+    if (!isValid) {
+      throw new ArgumentError.notNull(paramName);
+    }
 
-            ValidateParamAllowNull(param, paramName);
-        }
+    ValidateParamAllowNull(param, paramName);
+  }
 
-        /// <summary>
-        /// Validates parameter collection.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="paramName">Name of the param.</param>
+  /// <summary>
+  /// Validates parameter collection.
+  /// </summary>
+  /// <param name="collection">The collection.</param>
+  /// <param name="paramName">Name of the param.</param>
 //        static void ValidateParamCollection(Iterable collection, String paramName)
 //        {
 //            ValidateParam(collection, paramName);
@@ -3134,58 +3062,53 @@ typedef R Converter<T,R>(T);
 //        /// </summary>
 //        /// <param name="param">The String parameter.</param>
 //        /// <param name="paramName">Name of the parameter.</param>
-        static void ValidateNonBlankStringParamAllowNull(String param, String paramName)
-        {
-            if (param != null)
-            {
-              if (param.trim().isEmpty) {
-                throw new ArgumentError("Strings.ArgumentIsBlankString, paramName");
-              }
+  static void ValidateNonBlankStringParamAllowNull(String param, String paramName) {
+    if (param != null) {
+      if (param.trim().isEmpty) {
+        throw new ArgumentError("Strings.ArgumentIsBlankString, paramName");
+      }
 //                // Non-empty String has at least one character which is *not* a whitespace character
 //                if (param.length == param.contains((c) => Char.IsWhiteSpace(c)))
 //                {
 //                    throw new ArgumentError(Strings.ArgumentIsBlankString, paramName);
 //                }
-            }
-        }
+    }
+  }
 
-        /// <summary>
-        /// Validates String parameter to be non-empty String (null value not allowed).
-        /// </summary>
-        /// <param name="param">The String parameter.</param>
-        /// <param name="paramName">Name of the parameter.</param>
-        static void ValidateNonBlankStringParam(String param, String paramName)
-        {
-            if (param == null)
-            {
-                throw ArgumentError.notNull(paramName);
-            }
+  /// <summary>
+  /// Validates String parameter to be non-empty String (null value not allowed).
+  /// </summary>
+  /// <param name="param">The String parameter.</param>
+  /// <param name="paramName">Name of the parameter.</param>
+  static void ValidateNonBlankStringParam(String param, String paramName) {
+    if (param == null) {
+      throw ArgumentError.notNull(paramName);
+    }
 
-            ValidateNonBlankStringParamAllowNull(param, paramName);
-        }
+    ValidateNonBlankStringParamAllowNull(param, paramName);
+  }
 
-        /// <summary>
-        /// Validates the enum value against the request version.
-        /// </summary>
-        /// <param name="enumValue">The enum value.</param>
-        /// <param name="requestVersion">The request version.</param>
-        /// <exception cref="ServiceVersionException">Raised if this enum value requires a later version of Exchange.</exception>
-        static void ValidateEnumVersionValue(Object enumValue, ExchangeVersion requestVersion)
-        {
-          if (enumValue is FileAsMapping) {
-            final requiredServerVersion = FileAsMappingRequiredServerVersion[enumValue];
-            if (requiredServerVersion != null && requestVersion.index < requiredServerVersion.index) {
-                              throw new ServiceVersionException("""string.Format(
+  /// <summary>
+  /// Validates the enum value against the request version.
+  /// </summary>
+  /// <param name="enumValue">The enum value.</param>
+  /// <param name="requestVersion">The request version.</param>
+  /// <exception cref="ServiceVersionException">Raised if this enum value requires a later version of Exchange.</exception>
+  static void ValidateEnumVersionValue(Object enumValue, ExchangeVersion requestVersion) {
+    if (enumValue is FileAsMapping) {
+      final requiredServerVersion = FileAsMappingRequiredServerVersion[enumValue];
+      if (requiredServerVersion != null && requestVersion.index < requiredServerVersion.index) {
+        throw new ServiceVersionException("""string.Format(
                                   Strings.EnumValueIncompatibleWithRequestVersion,
                                   $enumValue,
                                   enumType.Name,
                                   enumVersion)""");
-            }
-            return;
-          }
+      }
+      return;
+    }
 
-          // todo : implement ValidateEnumVersionValue
-          print("!! unsafe ValidateEnumVersionValue");
+    // todo : implement ValidateEnumVersionValue
+    print("!! unsafe ValidateEnumVersionValue");
 //            Type enumType = enumValue.GetType();
 //            Map<Enum, ExchangeVersion> enumVersionDict = enumVersionDictionaries.Member[enumType];
 //            ExchangeVersion enumVersion = enumVersionDict[enumValue];
@@ -3198,7 +3121,7 @@ typedef R Converter<T,R>(T);
 //                                  enumType.Name,
 //                                  enumVersion));
 //            }
-        }
+  }
 
 //        /// <summary>
 //        /// Validates service object version against the request version.
@@ -3220,86 +3143,69 @@ typedef R Converter<T,R>(T);
 //            }
 //        }
 
-        /// <summary>
-        /// Validates property version against the request version.
-        /// </summary>
-        /// <param name="service">The Exchange service.</param>
-        /// <param name="minimumServerVersion">The minimum server version that supports the property.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        static void ValidatePropertyVersion(
-            ExchangeService service,
-            ExchangeVersion minimumServerVersion,
-            String propertyName)
-        {
-            if (service.RequestedServerVersion.index < minimumServerVersion.index)
-            {
-                throw new ServiceVersionException(
-                    """string.Format(
+  /// <summary>
+  /// Validates property version against the request version.
+  /// </summary>
+  /// <param name="service">The Exchange service.</param>
+  /// <param name="minimumServerVersion">The minimum server version that supports the property.</param>
+  /// <param name="propertyName">Name of the property.</param>
+  static void ValidatePropertyVersion(
+      ExchangeService service, ExchangeVersion minimumServerVersion, String propertyName) {
+    if (service.RequestedServerVersion.index < minimumServerVersion.index) {
+      throw new ServiceVersionException("""string.Format(
                     Strings.PropertyIncompatibleWithRequestVersion,
                     propertyName,
                     minimumServerVersion)""");
-            }
-        }
+    }
+  }
 
-        /// <summary>
-        /// Validates method version against the request version.
-        /// </summary>
-        /// <param name="service">The Exchange service.</param>
-        /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
-        /// <param name="methodName">Name of the method.</param>
-        static void ValidateMethodVersion(
-            ExchangeService service,
-            ExchangeVersion minimumServerVersion,
-            String methodName)
-        {
-            if (service.RequestedServerVersion.index < minimumServerVersion.index)
-            {
-                throw new ServiceVersionException(
-                    """string.Format(
+  /// <summary>
+  /// Validates method version against the request version.
+  /// </summary>
+  /// <param name="service">The Exchange service.</param>
+  /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
+  /// <param name="methodName">Name of the method.</param>
+  static void ValidateMethodVersion(
+      ExchangeService service, ExchangeVersion minimumServerVersion, String methodName) {
+    if (service.RequestedServerVersion.index < minimumServerVersion.index) {
+      throw new ServiceVersionException("""string.Format(
                     Strings.MethodIncompatibleWithRequestVersion,
                     methodName,
                     minimumServerVersion)""");
-            }
-        }
+    }
+  }
 
-        /// <summary>
-        /// Validates class version against the request version.
-        /// </summary>
-        /// <param name="service">The Exchange service.</param>
-        /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
-        /// <param name="className">Name of the class.</param>
-        static void ValidateClassVersion(
-            ExchangeService service,
-            ExchangeVersion minimumServerVersion,
-            String className)
-        {
-            if (service.RequestedServerVersion.index < minimumServerVersion.index)
-            {
-                throw new ServiceVersionException(
-                    """string.Format(
+  /// <summary>
+  /// Validates class version against the request version.
+  /// </summary>
+  /// <param name="service">The Exchange service.</param>
+  /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
+  /// <param name="className">Name of the class.</param>
+  static void ValidateClassVersion(
+      ExchangeService service, ExchangeVersion minimumServerVersion, String className) {
+    if (service.RequestedServerVersion.index < minimumServerVersion.index) {
+      throw new ServiceVersionException("""string.Format(
                     Strings.ClassIncompatibleWithRequestVersion,
                     className,
                     minimumServerVersion)""");
-            }
-        }
+    }
+  }
 
-        /// <summary>
-        /// Validates domain name (null value allowed)
-        /// </summary>
-        /// <param name="domainName">Domain name.</param>
-        /// <param name="paramName">Parameter name.</param>
-        static void ValidateDomainNameAllowNull(String domainName, String paramName)
-        {
-            if (domainName != null)
-            {
-                RegExp regex = new RegExp(DomainRegex);
+  /// <summary>
+  /// Validates domain name (null value allowed)
+  /// </summary>
+  /// <param name="domainName">Domain name.</param>
+  /// <param name="paramName">Parameter name.</param>
+  static void ValidateDomainNameAllowNull(String domainName, String paramName) {
+    if (domainName != null) {
+      RegExp regex = new RegExp(DomainRegex);
 
-                if (!regex.hasMatch(domainName))
-                {
-                    throw new ArgumentError.value(domainName, paramName, "string.Format(Strings.InvalidDomainName, $domainName)");
-                }
-            }
-        }
+      if (!regex.hasMatch(domainName)) {
+        throw new ArgumentError.value(
+            domainName, paramName, "string.Format(Strings.InvalidDomainName, $domainName)");
+      }
+    }
+  }
 
 //        /// <summary>
 //        /// Gets version for enum member.
@@ -3391,17 +3297,17 @@ typedef R Converter<T,R>(T);
 //            return dict;
 //        }
 
-        /// <summary>
-        /// Builds the enum to schema mapping dictionary.
-        /// </summary>
-        /// <param name="enumType">Type of the enum.</param>
-        /// <returns>The mapping from enum to schema name</returns>
-        /* private */ static Map<Object, String> BuildEnumToSchemaDict(Type enumType, List<Object> enumValues)
-        {
-            Map<Object, String> dict = new Map<Object, String>();
-            enumValues.forEach((enumValue) {
-              dict[enumValue] = GetEnumSchemaName(enumType, enumValue);
-            });
+  /// <summary>
+  /// Builds the enum to schema mapping dictionary.
+  /// </summary>
+  /// <param name="enumType">Type of the enum.</param>
+  /// <returns>The mapping from enum to schema name</returns>
+  /* private */
+  static Map<Object, String> BuildEnumToSchemaDict(Type enumType, List<Object> enumValues) {
+    Map<Object, String> dict = new Map<Object, String>();
+    enumValues.forEach((enumValue) {
+      dict[enumValue] = GetEnumSchemaName(enumType, enumValue);
+    });
 //            string[] names = Enum.GetNames(enumType);
 //            for (String name in names)
 //            {
@@ -3413,51 +3319,48 @@ typedef R Converter<T,R>(T);
 //                    dict.Add(value, schemaName);
 //                }
 //            }
-            return dict;
-        }
+    return dict;
+  }
+
 //        #endregion
 //
 //        #region Iterable utility methods
 
-        /// <summary>
-        /// Gets the enumerated object count.
-        /// </summary>
-        /// <param name="objects">The objects.</param>
-        /// <returns>Count of objects in Iterable.</returns>
-        static int GetEnumeratedObjectCount(Iterable objects)
-        {
-            int count = 0;
+  /// <summary>
+  /// Gets the enumerated object count.
+  /// </summary>
+  /// <param name="objects">The objects.</param>
+  /// <returns>Count of objects in Iterable.</returns>
+  static int GetEnumeratedObjectCount(Iterable objects) {
+    int count = 0;
 
-            for (Object obj in objects)
-            {
-                count++;
-            }
+    for (Object obj in objects) {
+      count++;
+    }
 
-            return count;
-        }
+    return count;
+  }
 
-        /// <summary>
-        /// Gets enumerated object at index.
-        /// </summary>
-        /// <param name="objects">The objects.</param>
-        /// <param name="index">The index.</param>
-        /// <returns>Object at index.</returns>
-        static Object GetEnumeratedObjectAt(Iterable objects, int index)
-        {
-            int count = 0;
+  /// <summary>
+  /// Gets enumerated object at index.
+  /// </summary>
+  /// <param name="objects">The objects.</param>
+  /// <param name="index">The index.</param>
+  /// <returns>Object at index.</returns>
+  static Object GetEnumeratedObjectAt(Iterable objects, int index) {
+    int count = 0;
 
-            for (Object obj in objects)
-            {
-                if (count == index)
-                {
-                    return obj;
-                }
+    for (Object obj in objects) {
+      if (count == index) {
+        return obj;
+      }
 
-                count++;
-            }
+      count++;
+    }
 
-            throw new RangeError.range(index, 0, count, "index", "Strings.IterableDoesNotContainThatManyObject");
-        }
+    throw new RangeError.range(
+        index, 0, count, "index", "Strings.IterableDoesNotContainThatManyObject");
+  }
 //
 //        #endregion
 //

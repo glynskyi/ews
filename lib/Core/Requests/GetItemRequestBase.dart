@@ -40,9 +40,9 @@ import 'package:ews/misc/ItemIdWrapperList.dart';
 /// Represents an abstract GetItem request.
 /// </summary>
 /// <typeparam name="TResponse">The type of ServiceResponse.</typeparam>
-abstract class GetItemRequestBase<TResponse extends ServiceResponse> extends GetRequest<Item, TResponse> {
-  /* private */
-  ItemIdWrapperList itemIds = new ItemIdWrapperList();
+abstract class GetItemRequestBase<TResponse extends ServiceResponse>
+    extends GetRequest<Item, TResponse> {
+  ItemIdWrapperList _itemIds = new ItemIdWrapperList();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetItemRequestBase&lt;TResponse&gt;"/> class.
@@ -130,7 +130,7 @@ abstract class GetItemRequestBase<TResponse extends ServiceResponse> extends Get
   /// Gets the item ids.
   /// </summary>
   /// <value>The item ids.</value>
-  ItemIdWrapperList get ItemIds => this.itemIds;
+  ItemIdWrapperList get ItemIds => this._itemIds;
 
   /// <summary>
   /// Gets a value indicating whether the TimeZoneContext SOAP header should be emitted.

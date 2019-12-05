@@ -32,8 +32,8 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Enumerations/LogicalOperator.dart' as enumerations;
 import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
-import 'package:ews/misc/Std/EnumToString.dart';
 import 'package:ews/Search/Filters/SearchFilter.dart';
+import 'package:ews/misc/Std/EnumToString.dart';
 
 //    /// <content>
 //    /// Contains nested type SearchFilter.SearchFilterCollection.
@@ -45,12 +45,12 @@ import 'package:ews/Search/Filters/SearchFilter.dart';
 /// Represents a collection of search filters linked by a logical operator. Applications can
 /// use SearchFilterCollection to define complex search filters such as "Condition1 AND Condition2".
 /// </summary>
-class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilter> implements Iterable<SearchFilter> {
-  /* private */
-  List<SearchFilter> searchFilters = new List<SearchFilter>();
+class SearchFilterCollection extends SearchFilter
+    with IterableMixin<SearchFilter>
+    implements Iterable<SearchFilter> {
+  List<SearchFilter> _searchFilters = new List<SearchFilter>();
 
-  /* private */
-  enumerations.LogicalOperator logicalOperator = enumerations.LogicalOperator.And;
+  enumerations.LogicalOperator _logicalOperator = enumerations.LogicalOperator.And;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SearchFilterCollection"/> class.
@@ -63,7 +63,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
   /// </summary>
   /// <param name="logicalOperator">The logical operator used to initialize the collection.</param>
   SearchFilterCollection.withOperator(enumerations.LogicalOperator logicalOperator) : super() {
-    this.logicalOperator = logicalOperator;
+    this._logicalOperator = logicalOperator;
   }
 
   /// <summary>
@@ -74,7 +74,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
   SearchFilterCollection.withOperatorAndSearchFilters(
       enumerations.LogicalOperator logicalOperator, List<SearchFilter> searchFilters)
       : super() {
-    this.logicalOperator = logicalOperator;
+    this._logicalOperator = logicalOperator;
     this.AddRange(searchFilters);
   }
 
@@ -87,7 +87,8 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
       try {
         this[i].InternalValidate();
       } on ServiceValidationException catch (e) {
-        throw new ServiceValidationException("string.Format(Strings.SearchFilterAtIndexIsInvalid, i), e");
+        throw new ServiceValidationException(
+            "string.Format(Strings.SearchFilterAtIndexIsInvalid, i), $e");
       }
     }
   }
@@ -159,7 +160,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
     }
 
     searchFilter.addOnChangeEvent(this.SearchFilterChanged);
-    this.searchFilters.add(searchFilter);
+    this._searchFilters.add(searchFilter);
     this.Changed();
   }
 
@@ -175,7 +176,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
     for (SearchFilter searchFilter in searchFilters) {
       searchFilter.addOnChangeEvent(this.SearchFilterChanged);
     }
-    this.searchFilters.addAll(searchFilters);
+    this._searchFilters.addAll(searchFilters);
     this.Changed();
   }
 
@@ -187,7 +188,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
       for (SearchFilter searchFilter in this) {
         searchFilter.removeChangeEvent(this.SearchFilterChanged);
       }
-      this.searchFilters.clear();
+      this._searchFilters.clear();
       this.Changed();
     }
   }
@@ -198,7 +199,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
   /// <param name="searchFilter">The search filter to locate in the collection.</param>
   /// <returns>True is the search filter was found in the collection, false otherwise.</returns>
   bool Contains(SearchFilter searchFilter) {
-    return this.searchFilters.contains(searchFilter);
+    return this._searchFilters.contains(searchFilter);
   }
 
   /// <summary>
@@ -212,7 +213,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
 
     if (this.Contains(searchFilter)) {
       searchFilter.removeChangeEvent(this.SearchFilterChanged);
-      this.searchFilters.remove(searchFilter);
+      this._searchFilters.remove(searchFilter);
       this.Changed();
     }
   }
@@ -227,14 +228,14 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
     }
 
     this[index].removeChangeEvent(this.SearchFilterChanged);
-    this.searchFilters.removeAt(index);
+    this._searchFilters.removeAt(index);
     this.Changed();
   }
 
   /// <summary>
   /// Gets the total number of search filters in the collection.
   /// </summary>
-  int get Count => this.searchFilters.length;
+  int get Count => this._searchFilters.length;
 
   /// <summary>
   /// Gets or sets the search filter at the specified index.
@@ -246,7 +247,7 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
       throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
-    return this.searchFilters[index];
+    return this._searchFilters[index];
   }
 
   operator []=(int index, SearchFilter value) {
@@ -254,21 +255,21 @@ class SearchFilterCollection extends SearchFilter with IterableMixin<SearchFilte
       throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
-    this.searchFilters[index] = value;
+    this._searchFilters[index] = value;
   }
 
   /// <summary>
   /// Gets or sets the logical operator that links the serach filters in this collection.
   /// </summary>
-  enumerations.LogicalOperator get LogicalOperator => this.logicalOperator;
+  enumerations.LogicalOperator get LogicalOperator => this._logicalOperator;
 
-  set LogicalOperator(enumerations.LogicalOperator value) => this.logicalOperator = value;
+  set LogicalOperator(enumerations.LogicalOperator value) => this._logicalOperator = value;
 
   /// <summary>
   /// Gets an enumerator that iterates through the elements of the collection.
   /// </summary>
   /// <returns>An IEnumerator for the collection.</returns>
   @override
-  Iterator<SearchFilter> get iterator => this.searchFilters.iterator;
+  Iterator<SearchFilter> get iterator => this._searchFilters.iterator;
 }
 //    }

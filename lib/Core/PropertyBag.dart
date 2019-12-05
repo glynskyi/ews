@@ -130,7 +130,7 @@ class PropertyBag {
       return true;
     } else {
       // Was the property requested?
-      return this.IsRequestedProperty(propertyDefinition);
+      return this._IsRequestedProperty(propertyDefinition);
     }
   }
 
@@ -141,8 +141,7 @@ class PropertyBag {
   /// <returns>
   ///     <c>true</c> if property was requested; otherwise, <c>false</c>.
   /// </returns>
-  /* private */
-  bool IsRequestedProperty(PropertyDefinition propertyDefinition) {
+  bool _IsRequestedProperty(PropertyDefinition propertyDefinition) {
     // If no requested property set, then property wasn't requested.
     if (this._requestedPropertySet == null) {
       return false;
@@ -278,7 +277,7 @@ class PropertyBag {
 
           // Non-nullable properties (int, bool, etc.) must be assigned or loaded; cannot return null value.
           if (!propertyDefinition.IsNullable) {
-            String errorMessage = this.IsRequestedProperty(propertyDefinition)
+            String errorMessage = this._IsRequestedProperty(propertyDefinition)
                 ? "Strings.ValuePropertyNotLoaded"
                 : "Strings.ValuePropertyNotAssigned";
             serviceExceptionOutParam.param =
@@ -327,26 +326,26 @@ class PropertyBag {
         throw new ServiceObjectPropertyException(/*Strings.PropertyIsReadOnly, */
             propertyDefinition);
       }
-       if (!this.Owner.IsNew)
-        {
-            // If owner is an item attachment, properties cannot be updated (EWS doesn't support updating item attachments)
-            if (this.Owner is Item && (this.Owner as Item).IsAttachment)
-            {
-                throw new ServiceObjectPropertyException(/*Strings.ItemAttachmentCannotBeUpdated, */propertyDefinition);
-            }
-
-            // If the property cannot be deleted, throw.
-            if (value == null && !propertyDefinition.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanDelete))
-            {
-                throw new ServiceObjectPropertyException(/*Strings.PropertyCannotBeDeleted,*/ propertyDefinition);
-            }
-
-            // If the property cannot be updated, throw.
-            if (!propertyDefinition.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanUpdate))
-            {
-                throw new ServiceObjectPropertyException(/*"Strings.PropertyCannotBeUpdated",*/ propertyDefinition);
-            }
+      if (!this.Owner.IsNew) {
+        // If owner is an item attachment, properties cannot be updated (EWS doesn't support updating item attachments)
+        if (this.Owner is Item && (this.Owner as Item).IsAttachment) {
+          throw new ServiceObjectPropertyException(/*Strings.ItemAttachmentCannotBeUpdated, */
+              propertyDefinition);
         }
+
+        // If the property cannot be deleted, throw.
+        if (value == null &&
+            !propertyDefinition.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanDelete)) {
+          throw new ServiceObjectPropertyException(/*Strings.PropertyCannotBeDeleted,*/
+              propertyDefinition);
+        }
+
+        // If the property cannot be updated, throw.
+        if (!propertyDefinition.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanUpdate)) {
+          throw new ServiceObjectPropertyException(/*"Strings.PropertyCannotBeUpdated",*/
+              propertyDefinition);
+        }
+      }
     }
 
     // If the value is set to null, delete the property.
@@ -357,7 +356,8 @@ class PropertyBag {
 
       if (this._properties.containsKey(propertyDefinition)) {
         if (this._properties[propertyDefinition] is ComplexProperty) {
-          (this._properties[propertyDefinition] as ComplexProperty).removeChangeEvent(this.PropertyChanged);
+          (this._properties[propertyDefinition] as ComplexProperty)
+              .removeChangeEvent(this.PropertyChanged);
         }
       }
 
@@ -546,7 +546,7 @@ class PropertyBag {
       // The following test should not be necessary since the property bag prevents
       // properties to be set if they don't have the CanSet flag, but it doesn't hurt...
       if (propertyDefinition.HasFlag(
-          PropertyDefinitionFlags.CanSet, writer.service.RequestedServerVersion)) {
+          PropertyDefinitionFlags.CanSet, writer.Service.RequestedServerVersion)) {
         if (this.Contains(propertyDefinition)) {
           propertyDefinition.WritePropertyValueToXml(writer, this, false /* isUpdateOperation */);
         }
@@ -669,7 +669,7 @@ class PropertyBag {
       bool handled = false;
 
       if (propertyValue is ICustomUpdateSerializer) {
-        handled = propertyValue .WriteDeleteUpdateToXml(writer, this.Owner);
+        handled = propertyValue.WriteDeleteUpdateToXml(writer, this.Owner);
       }
 
       if (!handled) {

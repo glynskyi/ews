@@ -39,10 +39,9 @@ import 'package:ews/Search/PagedView.dart';
 /// Represents the view settings in a folder search operation.
 /// </summary>
 class ItemView extends PagedView {
-  /* private */ ItemTraversal traversal;
+  ItemTraversal _traversal;
 
-  /* private */
-  OrderByCollection orderBy = new OrderByCollection();
+  OrderByCollection _orderBy = new OrderByCollection();
 
   /// <summary>
   /// Gets the name of the view XML element.
@@ -69,7 +68,7 @@ class ItemView extends PagedView {
   void InternalValidate(ServiceRequestBase request) {
     super.InternalValidate(request);
 
-    EwsUtilities.ValidateEnumVersionValue(this.traversal, request.Service.RequestedServerVersion);
+    EwsUtilities.ValidateEnumVersionValue(this._traversal, request.Service.RequestedServerVersion);
   }
 
   /// <summary>
@@ -97,7 +96,7 @@ class ItemView extends PagedView {
   /// <param name="writer">The writer</param>
   @override
   void WriteOrderByToXml(EwsServiceXmlWriter writer) {
-    this.orderBy.WriteToXml(writer, XmlElementNames.SortOrder);
+    this._orderBy.WriteToXml(writer, XmlElementNames.SortOrder);
   }
 
   /// <summary>
@@ -111,7 +110,8 @@ class ItemView extends PagedView {
   /// </summary>
   /// <param name="pageSize">The maximum number of elements the search operation should return.</param>
   /// <param name="offset">The offset of the view from the base point.</param>
-  ItemView.withPageSizeAndOffset(int pageSize, int offset) : super.withPageSizeAndOffset(pageSize, offset) {
+  ItemView.withPageSizeAndOffset(int pageSize, int offset)
+      : super.withPageSizeAndOffset(pageSize, offset) {
     this.Offset = offset;
   }
 
@@ -121,18 +121,19 @@ class ItemView extends PagedView {
   /// <param name="pageSize">The maximum number of elements the search operation should return.</param>
   /// <param name="offset">The offset of the view from the base point.</param>
   /// <param name="offsetBasePoint">The base point of the offset.</param>
-  ItemView.withPageSizeAndOffsetAndBasePoint(int pageSize, int offset, OffsetBasePoint offsetBasePoint)
+  ItemView.withPageSizeAndOffsetAndBasePoint(
+      int pageSize, int offset, OffsetBasePoint offsetBasePoint)
       : super.withPageSizeAndOffsetAndBasePoint(pageSize, offset, offsetBasePoint) {}
 
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to ItemTraversal.Shallow.
   /// </summary>
-  ItemTraversal get Traversal => this.traversal;
+  ItemTraversal get Traversal => this._traversal;
 
-  set Traversal(ItemTraversal value) => this.traversal = value;
+  set Traversal(ItemTraversal value) => this._traversal = value;
 
   /// <summary>
   /// Gets the properties against which the returned items should be ordered.
   /// </summary>
-  OrderByCollection get OrderBy => this.orderBy;
+  OrderByCollection get OrderBy => this._orderBy;
 }

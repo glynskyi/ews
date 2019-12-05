@@ -30,52 +30,47 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:intl/intl.dart';
 
 /// <summary>
-    /// Represents Enhanced Location.
-    /// </summary>
-  class EnhancedLocation extends ComplexProperty
-    {
-        /* private */ String displayName;
-        /* private */ String annotation;
-        /* private */ complex.PersonaPostalAddress personaPostalAddress;
+/// Represents Enhanced Location.
+/// </summary>
+class EnhancedLocation extends ComplexProperty {
+  String _displayName;
+  String _annotation;
+  complex.PersonaPostalAddress _personaPostalAddress;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
-        /// </summary>
-        EnhancedLocation()
-            : super()
-        {
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
+  /// </summary>
+  EnhancedLocation() : super() {}
 
-        // todo : restore constructors
+  // todo : restore constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
-        /// </summary>
-        /// <param name="displayName">The location DisplayName.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
+  /// </summary>
+  /// <param name="displayName">The location DisplayName.</param>
 // EnhancedLocation(String displayName)
 //            : this(displayName, String.Empty, new complex.PersonaPostalAddress())
 //        {
 //        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
-        /// </summary>
-        /// <param name="displayName">The location DisplayName.</param>
-        /// <param name="annotation">The annotation on the location.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
+  /// </summary>
+  /// <param name="displayName">The location DisplayName.</param>
+  /// <param name="annotation">The annotation on the location.</param>
 // EnhancedLocation(String displayName, String annotation)
 //            : this(displayName, annotation, new complex.PersonaPostalAddress())
 //        {
 //        }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
-        /// </summary>
-        /// <param name="displayName">The location DisplayName.</param>
-        /// <param name="annotation">The annotation on the location.</param>
-        /// <param name="personaPostalAddress">The persona postal address.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
+  /// </summary>
+  /// <param name="displayName">The location DisplayName.</param>
+  /// <param name="annotation">The annotation on the location.</param>
+  /// <param name="personaPostalAddress">The persona postal address.</param>
 // EnhancedLocation(String displayName, String annotation, complex.PersonaPostalAddress personaPostalAddress)
 //            : this()
 //        {
@@ -85,57 +80,57 @@ import 'package:intl/intl.dart';
 //            this.personaPostalAddress.OnChange += new ComplexPropertyChangedDelegate(PersonaPostalAddress_OnChange);
 //        }
 
-        /// <summary>
-        /// Tries to read element from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>True if element was read.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            switch (reader.LocalName)
-            {
-                case XmlElementNames.LocationDisplayName:
-                    this.displayName = reader.ReadValue<String>();
-                    return true;
-                case XmlElementNames.LocationAnnotation:
-                    this.annotation = reader.ReadValue<String>();
-                    return true;
-                case XmlElementNames.PersonaPostalAddress:
-                    this.personaPostalAddress = new complex.PersonaPostalAddress();
-                    this.personaPostalAddress.LoadFromXmlElementName(reader);
-                    this.personaPostalAddress.addOnChangeEvent(PersonaPostalAddress_OnChange);
-                    return true;
-                default:
-                    return false;
-            }
-        }
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    switch (reader.LocalName) {
+      case XmlElementNames.LocationDisplayName:
+        this._displayName = reader.ReadValue<String>();
+        return true;
+      case XmlElementNames.LocationAnnotation:
+        this._annotation = reader.ReadValue<String>();
+        return true;
+      case XmlElementNames.PersonaPostalAddress:
+        this._personaPostalAddress = new complex.PersonaPostalAddress();
+        this._personaPostalAddress.LoadFromXmlElementName(reader);
+        this._personaPostalAddress.addOnChangeEvent(_PersonaPostalAddress_OnChange);
+        return true;
+      default:
+        return false;
+    }
+  }
 
-        /// <summary>
-        /// Gets or sets the Location DisplayName.
-        /// </summary>
-        String get DisplayName => this.displayName;
-        set DisplayName(String value) {
-          if (this.CanSetFieldValue(this.displayName, value)) {
-            this.displayName = value;
-            this.Changed();
-          }
-        }
+  /// <summary>
+  /// Gets or sets the Location DisplayName.
+  /// </summary>
+  String get DisplayName => this._displayName;
 
-        /// <summary>
-        /// Gets or sets the Location Annotation.
-        /// </summary>
-        String get Annotation => this.annotation;
-        set Annotation(String value) {
-          if (this.CanSetFieldValue(this.annotation, value)) {
-            this.annotation = value;
-            this.Changed();
-          }
-        }
+  set DisplayName(String value) {
+    if (this.CanSetFieldValue(this._displayName, value)) {
+      this._displayName = value;
+      this.Changed();
+    }
+  }
 
-        /// <summary>
-        /// Gets or sets the Persona Postal Address.
-        /// </summary>
+  /// <summary>
+  /// Gets or sets the Location Annotation.
+  /// </summary>
+  String get Annotation => this._annotation;
+
+  set Annotation(String value) {
+    if (this.CanSetFieldValue(this._annotation, value)) {
+      this._annotation = value;
+      this.Changed();
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets the Persona Postal Address.
+  /// </summary>
 //    complex.PersonaPostalAddress PersonaPostalAddress
 //        {
 //            get { return this.personaPostalAddress; }
@@ -155,36 +150,35 @@ import 'package:intl/intl.dart';
 //            }
 //        }
 
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.LocationDisplayName, this.displayName);
-            writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.LocationAnnotation, this.annotation);
-            this.personaPostalAddress.WriteToXmlElementName(writer);
-        }
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.LocationDisplayName, this._displayName);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.LocationAnnotation, this._annotation);
+    this._personaPostalAddress.WriteToXmlElementName(writer);
+  }
 
-        /// <summary>
-        /// Validates this instance.
-        /// </summary>
-@override
-        void InternalValidate()
-        {
-            super.InternalValidate();
-            EwsUtilities.ValidateParam(this.displayName, "DisplayName");
-            EwsUtilities.ValidateParamAllowNull(this.annotation, "Annotation");
-            EwsUtilities.ValidateParamAllowNull(this.personaPostalAddress, "PersonaPostalAddress");
-        }
+  /// <summary>
+  /// Validates this instance.
+  /// </summary>
+  @override
+  void InternalValidate() {
+    super.InternalValidate();
+    EwsUtilities.ValidateParam(this._displayName, "DisplayName");
+    EwsUtilities.ValidateParamAllowNull(this._annotation, "Annotation");
+    EwsUtilities.ValidateParamAllowNull(this._personaPostalAddress, "PersonaPostalAddress");
+  }
 
-        /// <summary>
-        /// PersonaPostalAddress OnChange.
-        /// </summary>
-        /// <param name="complexProperty">ComplexProperty object.</param>
-        /* private */ void PersonaPostalAddress_OnChange(ComplexProperty complexProperty)
-        {
-            this.Changed();
-        }
-    }
+  /// <summary>
+  /// PersonaPostalAddress OnChange.
+  /// </summary>
+  /// <param name="complexProperty">ComplexProperty object.</param>
+  void _PersonaPostalAddress_OnChange(ComplexProperty complexProperty) {
+    this.Changed();
+  }
+}

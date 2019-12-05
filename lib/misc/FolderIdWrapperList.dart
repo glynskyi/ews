@@ -43,15 +43,14 @@ class FolderIdWrapperList
   /// <summary>
   /// List of <see cref="Microsoft.Exchange.WebServices.Data.AbstractFolderIdWrapper"/>.
   /// </summary>
-  /* private */
-  List<AbstractFolderIdWrapper> ids = new List<AbstractFolderIdWrapper>();
+  List<AbstractFolderIdWrapper> _ids = new List<AbstractFolderIdWrapper>();
 
   /// <summary>
   /// Adds the specified folder.
   /// </summary>
   /// <param name="folder">The folder.</param>
   void Add(Folder folder) {
-    this.ids.add(new FolderWrapper(folder));
+    this._ids.add(new FolderWrapper(folder));
   }
 
   /// <summary>
@@ -71,7 +70,7 @@ class FolderIdWrapperList
   /// </summary>
   /// <param name="folderId">The folder id.</param>
   void AddFolderId(FolderId folderId) {
-    this.ids.add(new FolderIdWrapper(folderId));
+    this._ids.add(new FolderIdWrapper(folderId));
   }
 
   /// <summary>
@@ -92,12 +91,11 @@ class FolderIdWrapperList
   /// <param name="writer">The writer.</param>
   /// <param name="ewsNamesapce">The ews namesapce.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void WriteToXml(EwsServiceXmlWriter writer, XmlNamespace ewsNamesapce,
-      String xmlElementName) {
+  void WriteToXml(EwsServiceXmlWriter writer, XmlNamespace ewsNamesapce, String xmlElementName) {
     if (this.Count > 0) {
       writer.WriteStartElement(ewsNamesapce, xmlElementName);
 
-      for (AbstractFolderIdWrapper folderIdWrapper in this.ids) {
+      for (AbstractFolderIdWrapper folderIdWrapper in this._ids) {
         folderIdWrapper.WriteToXml(writer);
       }
 
@@ -109,14 +107,14 @@ class FolderIdWrapperList
   /// Gets the id count.
   /// </summary>
   /// <value>The count.</value>
-  int get Count => this.ids.length;
+  int get Count => this._ids.length;
 
   /// <summary>
   /// Gets the <see cref="Microsoft.Exchange.WebServices.Data.AbstractFolderIdWrapper"/> at the specified index.
   /// </summary>
   /// <param name="index">the index</param>
   AbstractFolderIdWrapper operator [](int index) {
-    return this.ids[index];
+    return this._ids[index];
   }
 
   /// <summary>
@@ -124,11 +122,11 @@ class FolderIdWrapperList
   /// </summary>
   /// <param name="version">The version.</param>
   void Validate(ExchangeVersion version) {
-    for (AbstractFolderIdWrapper folderIdWrapper in this.ids) {
+    for (AbstractFolderIdWrapper folderIdWrapper in this._ids) {
       folderIdWrapper.Validate(version);
     }
   }
-        
+
   @override
-  Iterator<AbstractFolderIdWrapper> get iterator => this.ids.iterator;
+  Iterator<AbstractFolderIdWrapper> get iterator => this._ids.iterator;
 }

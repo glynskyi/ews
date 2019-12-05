@@ -40,8 +40,7 @@ abstract class DeleteRequest<TResponse extends ServiceResponse>
   /// <summary>
   /// Delete mode. Default is SoftDelete.
   /// </summary>
-  /* private */
-  enumerations.DeleteMode deleteMode = enumerations.DeleteMode.SoftDelete;
+  enumerations.DeleteMode _deleteMode = enumerations.DeleteMode.SoftDelete;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteRequest&lt;TResponse&gt;"/> class.
@@ -66,9 +65,9 @@ abstract class DeleteRequest<TResponse extends ServiceResponse>
   /// Gets or sets the delete mode.
   /// </summary>
   /// <value>The delete mode.</value>
-  enumerations.DeleteMode get DeleteMode => this.deleteMode;
+  enumerations.DeleteMode get DeleteMode => this._deleteMode;
 
   set DeleteMode(enumerations.DeleteMode value) {
-    this.deleteMode = value;
+    this._deleteMode = value;
   }
 }

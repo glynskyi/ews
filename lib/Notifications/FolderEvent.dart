@@ -34,17 +34,15 @@ import 'package:ews/Notifications/NotificationEvent.dart';
 /// Represents an event that applies to a folder.
 /// </summary>
 class FolderEvent extends NotificationEvent {
-  /* private */ complex.FolderId folderId;
+  complex.FolderId _folderId;
 
-  /* private */
-  complex.FolderId oldFolderId;
+  complex.FolderId _oldFolderId;
 
   /// <summary>
   /// The new number of unread messages. This is is only meaningful when EventType
   /// is equal to EventType.Modified. For all other event types, it's null.
   /// </summary>
-  /* private */
-  int unreadCount;
+  int _unreadCount;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FolderEvent"/> class.
@@ -61,8 +59,8 @@ class FolderEvent extends NotificationEvent {
   void InternalLoadFromXml(EwsServiceXmlReader reader) {
     super.InternalLoadFromXml(reader);
 
-    this.folderId = new complex.FolderId();
-    this.folderId.LoadFromXml(reader, reader.LocalName);
+    this._folderId = new complex.FolderId();
+    this._folderId.LoadFromXml(reader, reader.LocalName);
 
     reader.Read();
 
@@ -74,8 +72,8 @@ class FolderEvent extends NotificationEvent {
       case EventType.Copied:
         reader.Read();
 
-        this.oldFolderId = new complex.FolderId();
-        this.oldFolderId.LoadFromXml(reader, reader.LocalName);
+        this._oldFolderId = new complex.FolderId();
+        this._oldFolderId.LoadFromXml(reader, reader.LocalName);
 
         reader.Read();
 
@@ -87,7 +85,7 @@ class FolderEvent extends NotificationEvent {
         reader.Read();
         if (reader.IsStartElement()) {
           reader.EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.UnreadCount);
-          this.unreadCount = int.parse(reader.ReadValue());
+          this._unreadCount = int.parse(reader.ReadValue());
         }
         break;
 
@@ -99,19 +97,19 @@ class FolderEvent extends NotificationEvent {
   /// <summary>
   /// Gets the Id of the folder this event applies to.
   /// </summary>
-  complex.FolderId get FolderId => this.folderId;
+  complex.FolderId get FolderId => this._folderId;
 
   /// <summary>
   /// Gets the Id of the folder that was moved or copied. OldFolderId is only meaningful
   /// when EventType is equal to either EventType.Moved or EventType.Copied. For all
   /// other event types, OldFolderId is null.
   /// </summary>
-  complex.FolderId get OldFolderId => this.oldFolderId;
+  complex.FolderId get OldFolderId => this._oldFolderId;
 
   /// <summary>
   /// Gets the new number of unread messages. This is is only meaningful when
   /// EventType is equal to EventType.Modified. For all other event types,
   /// UnreadCount is null.
   /// </summary>
-  int get UnreadCount => this.unreadCount;
+  int get UnreadCount => this._unreadCount;
 }

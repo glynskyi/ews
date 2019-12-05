@@ -38,18 +38,15 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents a DeleteAttachment request.
 /// </summary>
-class DeleteAttachmentRequest
-    extends MultiResponseServiceRequest<DeleteAttachmentResponse> {
-  /* private */
-  List<Attachment> attachments = new List<Attachment>();
+class DeleteAttachmentRequest extends MultiResponseServiceRequest<DeleteAttachmentResponse> {
+  List<Attachment> _attachments = new List<Attachment>();
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteAttachmentRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  DeleteAttachmentRequest(
-      ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  DeleteAttachmentRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode);
 
   /// <summary>
@@ -71,8 +68,7 @@ class DeleteAttachmentRequest
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service object.</returns>
   @override
-  DeleteAttachmentResponse CreateServiceResponse(
-      ExchangeService service, int responseIndex) {
+  DeleteAttachmentResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
     return new DeleteAttachmentResponse(this.Attachments[responseIndex]);
   }
 
@@ -118,12 +114,10 @@ class DeleteAttachmentRequest
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(
-        XmlNamespace.Messages, XmlElementNames.AttachmentIds);
+    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.AttachmentIds);
 
     for (Attachment attachment in this.Attachments) {
-      writer.WriteStartElement(
-          XmlNamespace.Types, XmlElementNames.AttachmentId);
+      writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.AttachmentId);
       writer.WriteAttributeValue(XmlAttributeNames.Id, attachment.Id);
       writer.WriteEndElement();
     }
@@ -144,5 +138,5 @@ class DeleteAttachmentRequest
   /// Gets the attachments.
   /// </summary>
   /// <value>The attachments.</value>
-  List<Attachment> get Attachments => this.attachments;
+  List<Attachment> get Attachments => this._attachments;
 }

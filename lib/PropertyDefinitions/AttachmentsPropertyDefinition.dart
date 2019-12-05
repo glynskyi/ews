@@ -30,45 +30,39 @@ import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
 import 'package:ews/PropertyDefinitions/ComplexPropertyDefinition.dart';
 
 /// <summary>
-    /// Represents base Attachments property type.
-    /// </summary>
-    class AttachmentsPropertyDefinition extends ComplexPropertyDefinition<AttachmentCollection>
-    {
-        /* private */ static List<PropertyDefinitionFlags> Exchange2010SP2PropertyDefinitionFlags = [
-            PropertyDefinitionFlags.AutoInstantiateOnRead,
-            PropertyDefinitionFlags.CanSet,
-            PropertyDefinitionFlags.ReuseInstance,
-            PropertyDefinitionFlags.UpdateCollectionItems];
+/// Represents base Attachments property type.
+/// </summary>
+class AttachmentsPropertyDefinition extends ComplexPropertyDefinition<AttachmentCollection> {
+  static List<PropertyDefinitionFlags> _Exchange2010SP2PropertyDefinitionFlags = [
+    PropertyDefinitionFlags.AutoInstantiateOnRead,
+    PropertyDefinitionFlags.CanSet,
+    PropertyDefinitionFlags.ReuseInstance,
+    PropertyDefinitionFlags.UpdateCollectionItems
+  ];
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentsPropertyDefinition"/> class.
-        /// </summary>
- AttachmentsPropertyDefinition() :
-            super.withUriAndFlags(
-            XmlElementNames.Attachments,
-            "item:Attachments",
-            [PropertyDefinitionFlags.AutoInstantiateOnRead],
-            ExchangeVersion.Exchange2007_SP1,
-            () { return new AttachmentCollection(); })
-        {
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AttachmentsPropertyDefinition"/> class.
+  /// </summary>
+  AttachmentsPropertyDefinition()
+      : super.withUriAndFlags(XmlElementNames.Attachments, "item:Attachments",
+            [PropertyDefinitionFlags.AutoInstantiateOnRead], ExchangeVersion.Exchange2007_SP1, () {
+          return new AttachmentCollection();
+        }) {}
 
-        /// <summary>
-        /// Determines whether the specified flag is set.
-        /// </summary>
-        /// <param name="flag">The flag.</param>
-        /// <param name="version">Requested version.</param>
-        /// <returns>
-        ///     <c>true</c> if the specified flag is set; otherwise, <c>false</c>.
-        /// </returns>
-@override
-        bool HasFlag(PropertyDefinitionFlags flag, ExchangeVersion version)
-        {
-            if (version != null && version.index >= ExchangeVersion.Exchange2010_SP2.index)
-            {
-              return Exchange2010SP2PropertyDefinitionFlags.contains(flag);
-            }
-
-            return super.HasFlag(flag, version);
-        }
+  /// <summary>
+  /// Determines whether the specified flag is set.
+  /// </summary>
+  /// <param name="flag">The flag.</param>
+  /// <param name="version">Requested version.</param>
+  /// <returns>
+  ///     <c>true</c> if the specified flag is set; otherwise, <c>false</c>.
+  /// </returns>
+  @override
+  bool HasFlag(PropertyDefinitionFlags flag, ExchangeVersion version) {
+    if (version != null && version.index >= ExchangeVersion.Exchange2010_SP2.index) {
+      return _Exchange2010SP2PropertyDefinitionFlags.contains(flag);
     }
+
+    return super.HasFlag(flag, version);
+  }
+}

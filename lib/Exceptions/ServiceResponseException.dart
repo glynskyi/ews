@@ -35,26 +35,22 @@ class ServiceResponseException extends ServiceRemoteException {
   /// <summary>
   /// Error details Value keys
   /// </summary>
-  /* private */
-  static const String ExceptionClassKey = "ExceptionClass";
+  static const String _ExceptionClassKey = "ExceptionClass";
 
-  /* private */
-  static const String ExceptionMessageKey = "ExceptionMessage";
+  static const String _ExceptionMessageKey = "ExceptionMessage";
 
-  /* private */
-  static const String StackTraceKey = "StackTrace";
+  static const String _StackTraceKey = "StackTrace";
 
   /// <summary>
   /// ServiceResponse when service operation failed remotely.
   /// </summary>
-  /* private */
-  final ServiceResponse response;
+  final ServiceResponse _response;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServiceResponseException"/> class.
   /// </summary>
   /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
-  ServiceResponseException(this.response);
+  ServiceResponseException(this._response);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceResponseException"/> class with serialized data.
@@ -84,12 +80,12 @@ class ServiceResponseException extends ServiceRemoteException {
   /// <summary>
   /// Gets the ServiceResponse for the exception.
   /// </summary>
-  ServiceResponse get Response => this.response;
+  ServiceResponse get Response => this._response;
 
   /// <summary>
   /// Gets the service error code.
   /// </summary>
-  ServiceError get ErrorCode => this.response.ErrorCode;
+  ServiceError get ErrorCode => this._response.ErrorCode;
 
   /// <summary>
   /// Gets a message that describes the current exception.
@@ -100,13 +96,12 @@ class ServiceResponseException extends ServiceRemoteException {
     // Special case for Server Error. If the server returned
     // stack trace information, include it in the exception message.
     if (this.Response.ErrorCode == ServiceError.ErrorInternalServerError) {
-      if (this.Response.ErrorDetails.containsKey(ExceptionClassKey) &&
-          this.Response.ErrorDetails.containsKey(ExceptionMessageKey) &&
-          this.Response.ErrorDetails.containsKey(StackTraceKey)) {
-        String exceptionClass = this.Response.ErrorDetails[ExceptionClassKey];
-        String exceptionMessage =
-            this.Response.ErrorDetails[ExceptionMessageKey];
-        String stackTrace = this.Response.ErrorDetails[StackTraceKey];
+      if (this.Response.ErrorDetails.containsKey(_ExceptionClassKey) &&
+          this.Response.ErrorDetails.containsKey(_ExceptionMessageKey) &&
+          this.Response.ErrorDetails.containsKey(_StackTraceKey)) {
+        String exceptionClass = this.Response.ErrorDetails[_ExceptionClassKey];
+        String exceptionMessage = this.Response.ErrorDetails[_ExceptionMessageKey];
+        String stackTrace = this.Response.ErrorDetails[_StackTraceKey];
 
 //                        return StringUtils.Format(
 //                            Strings.ServerErrorAndStackTraceDetails,
@@ -114,7 +109,7 @@ class ServiceResponseException extends ServiceRemoteException {
 //                            exceptionClass,
 //                            exceptionMessage,
 //                            stackTrace);
-        return "${this.response.errorMessage} -- Server Error: $exceptionClass: $exceptionMessage $stackTrace";
+        return "${this._response.ErrorMessage} -- Server Error: $exceptionClass: $exceptionMessage $stackTrace";
       }
     }
 

@@ -41,21 +41,21 @@ import 'package:ews/misc/Std/EnumToString.dart';
 /// </summary>
 /// <typeparam name="TServiceObject">ServiceObject type.</typeparam>
 /// <typeparam name="TChange">Change type.</typeparam>
-abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extends Change> extends ServiceResponse {
-  /* private */
-  ChangeCollection<TChange> changes = new ChangeCollection<TChange>();
+abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extends Change>
+    extends ServiceResponse {
+  ChangeCollection<TChange> _changes = new ChangeCollection<TChange>();
 
-  /* private */
-  PropertySet propertySet;
+  PropertySet _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SyncResponse&lt;TServiceObject, TChange&gt;"/> class.
   /// </summary>
   /// <param name="propertySet">Property set.</param>
   SyncResponse(PropertySet propertySet) : super() {
-    this.propertySet = propertySet;
+    this._propertySet = propertySet;
 
-    EwsUtilities.Assert(this.propertySet != null, "SyncResponse.ctor", "PropertySet should not be null");
+    EwsUtilities.Assert(
+        this._propertySet != null, "SyncResponse.ctor", "PropertySet should not be null");
   }
 
   /// <summary>
@@ -88,9 +88,10 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
   /// <param name="reader">The reader.</param>
   @override
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    this.Changes.SyncState = reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SyncState);
-    this.Changes.MoreChangesAvailable =
-        !reader.ReadElementValueWithNamespace<bool>(XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName());
+    this.Changes.SyncState =
+        reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SyncState);
+    this.Changes.MoreChangesAvailable = !reader.ReadElementValueWithNamespace<bool>(
+        XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName());
 
     reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Changes);
     if (!reader.IsEmptyElement) {
@@ -137,27 +138,29 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
                   EwsUtilities.Assert(itemChange != null, "SyncResponse.ReadElementsFromXml",
                       "ReadFlagChange is only valid on ItemChange");
 
-                  itemChange.IsRead =
-                      reader.ReadElementValueWithNamespace<bool>(XmlNamespace.Types, XmlElementNames.IsRead);
+                  itemChange.IsRead = reader.ReadElementValueWithNamespace<bool>(
+                      XmlNamespace.Types, XmlElementNames.IsRead);
                 }
 
                 break;
               default:
                 change.ServiceObject =
-                    EwsUtilities.CreateEwsObjectFromXmlElementName<TServiceObject>(reader.Service, reader.LocalName);
+                    EwsUtilities.CreateEwsObjectFromXmlElementName<TServiceObject>(
+                        reader.Service, reader.LocalName);
 
                 change.ServiceObject.LoadFromXmlWithPropertySet(
                     reader,
                     true,
                     /* clearPropertyBag */
-                    this.propertySet,
+                    this._propertySet,
                     this.SummaryPropertiesOnly);
                 break;
             }
 
-            reader.ReadEndElementIfNecessary(XmlNamespace.Types, EnumToString.parse(change.ChangeType));
+            reader.ReadEndElementIfNecessary(
+                XmlNamespace.Types, EnumToString.parse(change.ChangeType));
 
-            this.changes.Add(change);
+            this._changes.Add(change);
           }
         }
       } while (!reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Changes));
@@ -167,7 +170,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
   /// <summary>
   /// Gets a list of changes that occurred on the synchronized folder.
   /// </summary>
-  ChangeCollection<TChange> get Changes => this.changes;
+  ChangeCollection<TChange> get Changes => this._changes;
 
   /// <summary>
   /// Gets a value indicating whether this request returns full or summary properties.
