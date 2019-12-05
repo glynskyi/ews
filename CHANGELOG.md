@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Stabilized the public APIs
+
 ## 0.0.19
 
 * Added `FileAsMapping` to `Contact`
