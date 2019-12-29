@@ -175,11 +175,11 @@ class FileAttachment extends Attachment {
   /// Loads the content of the file attachment into the specified stream. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="stream">The stream to load the content of the attachment into.</param>
-  void LoadWithStream(Stream stream) {
+  Future<void> LoadWithStream(Stream stream) {
     this._loadToStream = stream;
 
     try {
-      this.Load();
+      return this.Load();
     } finally {
       this._loadToStream = null;
     }

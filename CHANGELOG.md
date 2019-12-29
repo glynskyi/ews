@@ -1,3 +1,11 @@
+## 1.0.4
+
+* Fixed the `FileAttachment.Load` method
+
+## 1.0.3
+
+* Optimized imports with the `dartfmt` tool
+
 ## 1.0.2
 
 * Reformatted code with the `dartfmt` tool
