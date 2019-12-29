@@ -38,7 +38,7 @@ void main() {
     var expectedException = null;
     try {
       await secondFolder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
-    } on ServiceResponseException catch(e) {
+    } on ServiceResponseException catch (e) {
       expectedException = e;
     }
     expect(expectedException, TypeMatcher<ServiceResponseException>());

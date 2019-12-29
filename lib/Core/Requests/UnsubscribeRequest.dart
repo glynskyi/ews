@@ -41,7 +41,8 @@ class UnsubscribeRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// Initializes a new instance of the <see cref="UnsubscribeRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  UnsubscribeRequest(ExchangeService service) : super(service, ServiceErrorHandling.ThrowOnError) {}
+  UnsubscribeRequest(ExchangeService service)
+      : super(service, ServiceErrorHandling.ThrowOnError) {}
 
   /// <summary>
   /// Creates service response.
@@ -50,7 +51,8 @@ class UnsubscribeRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  ServiceResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  ServiceResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new ServiceResponse();
   }
 
@@ -96,7 +98,8 @@ class UnsubscribeRequest extends MultiResponseServiceRequest<ServiceResponse> {
   @override
   void Validate() {
     super.Validate();
-    EwsUtilities.ValidateNonBlankStringParam(this.SubscriptionId, "SubscriptionId");
+    EwsUtilities.ValidateNonBlankStringParam(
+        this.SubscriptionId, "SubscriptionId");
   }
 
   /// <summary>
@@ -105,7 +108,8 @@ class UnsubscribeRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SubscriptionId, this.SubscriptionId);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Messages,
+        XmlElementNames.SubscriptionId, this.SubscriptionId);
   }
 
   /// <summary>

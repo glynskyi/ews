@@ -75,7 +75,8 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// Default UserAgent
   /// </summary>
-  static String _defaultUserAgent = "ExchangeServicesClient/" + EwsUtilities.BuildVersion;
+  static String _defaultUserAgent =
+      "ExchangeServicesClient/" + EwsUtilities.BuildVersion;
 
   /// <summary>
   /// Occurs when the http response headers of a server call is captured.
@@ -104,15 +105,16 @@ abstract class ExchangeServiceBase {
   IWebProxy _webProxy;
   Map<String, String> _httpHeaders = new Map<String, String>();
   Map<String, String> _httpResponseHeaders = new Map<String, String>();
-  IEwsHttpWebRequestFactory _ewsHttpWebRequestFactory = new EwsHttpWebRequestFactory();
+  IEwsHttpWebRequestFactory _ewsHttpWebRequestFactory =
+      new EwsHttpWebRequestFactory();
 
   /// <summary>
   /// Calls the custom SOAP header serialization event handlers, if defined.
   /// </summary>
   /// <param name="writer">The XmlWriter to which to write the custom SOAP headers.</param>
   void DoOnSerializeCustomSoapHeaders(XmlWriter writer) {
-    EwsUtilities.Assert(
-        writer != null, "ExchangeService.DoOnSerializeCustomSoapHeaders", "writer is null");
+    EwsUtilities.Assert(writer != null,
+        "ExchangeService.DoOnSerializeCustomSoapHeaders", "writer is null");
     this.OnSerializeCustomSoapHeaders.forEach((delegate) => delegate(writer));
   }
 
@@ -129,11 +131,13 @@ abstract class ExchangeServiceBase {
     // Verify that the protocol is something that we can handle
     // todo("add service local exception")
     if ((url.scheme != "http") && (url.scheme != "https")) {
-      throw new ServiceLocalException("string.Format(Strings.UnsupportedWebProtocol, url.Scheme)");
+      throw new ServiceLocalException(
+          "string.Format(Strings.UnsupportedWebProtocol, url.Scheme)");
     }
 
-    IEwsHttpWebRequest request =
-        this.HttpWebRequestFactory.CreateRequestWithExchangeServiceAndUrl(this, url);
+    IEwsHttpWebRequest request = this
+        .HttpWebRequestFactory
+        .CreateRequestWithExchangeServiceAndUrl(this, url);
 
     request.PreAuthenticate = this.PreAuthenticate;
     request.Timeout = this.Timeout;
@@ -161,7 +165,10 @@ abstract class ExchangeServiceBase {
     }
 
     if (this.HttpHeaders.length > 0) {
-      this.HttpHeaders.entries.forEach((kv) => request.Headers[kv.key] = kv.value);
+      this
+          .HttpHeaders
+          .entries
+          .forEach((kv) => request.Headers[kv.key] = kv.value);
     }
 
     request.UseDefaultCredentials = this.UseDefaultCredentials;
@@ -239,7 +246,8 @@ abstract class ExchangeServiceBase {
   /// </summary>
   /// <param name="httpWebResponse">The HTTP web response.</param>
   /// <param name="webException">The web exception.</param>
-  void ProcessHttpErrorResponse(IEwsHttpWebResponse httpWebResponse, WebException webException);
+  void ProcessHttpErrorResponse(
+      IEwsHttpWebResponse httpWebResponse, WebException webException);
 
   /// <summary>
   /// Determines whether tracing is enabled for specified trace flag(s).
@@ -272,7 +280,8 @@ abstract class ExchangeServiceBase {
   void TraceXml(enumerations.TraceFlags traceType, MemoryStream stream) {
     if (this.IsTraceEnabledFor(traceType)) {
       String traceTypeStr = traceType.toString();
-      String logMessage = EwsUtilities.FormatLogMessageWithXmlContent(traceTypeStr, stream);
+      String logMessage =
+          EwsUtilities.FormatLogMessageWithXmlContent(traceTypeStr, stream);
       this.TraceListener.Trace(traceTypeStr, logMessage);
     }
   }
@@ -282,11 +291,13 @@ abstract class ExchangeServiceBase {
   /// </summary>
   /// <param name="traceType">Kind of trace entry.</param>
   /// <param name="request">The request.</param>
-  void TraceHttpRequestHeaders(enumerations.TraceFlags traceType, IEwsHttpWebRequest request) {
+  void TraceHttpRequestHeaders(
+      enumerations.TraceFlags traceType, IEwsHttpWebRequest request) {
     if (this.IsTraceEnabledFor(traceType)) {
       String traceTypeStr = traceType.toString();
       String headersAsString = EwsUtilities.FormatHttpRequestHeaders(request);
-      String logMessage = EwsUtilities.FormatLogMessage(traceTypeStr, headersAsString);
+      String logMessage =
+          EwsUtilities.FormatLogMessage(traceTypeStr, headersAsString);
       this.TraceListener.Trace(traceTypeStr, logMessage);
     }
   }
@@ -296,7 +307,8 @@ abstract class ExchangeServiceBase {
   /// </summary>
   /// <param name="traceType">Kind of trace entry.</param>
   /// <param name="response">The response.</param>
-  void ProcessHttpResponseHeaders(enumerations.TraceFlags traceType, IEwsHttpWebResponse response) {
+  void ProcessHttpResponseHeaders(
+      enumerations.TraceFlags traceType, IEwsHttpWebResponse response) {
     this._TraceHttpResponseHeaders(traceType, response);
 
     this._SaveHttpResponseHeaders(response.Headers);
@@ -307,11 +319,13 @@ abstract class ExchangeServiceBase {
   /// </summary>
   /// <param name="traceType">Kind of trace entry.</param>
   /// <param name="response">The response.</param>
-  void _TraceHttpResponseHeaders(enumerations.TraceFlags traceType, IEwsHttpWebResponse response) {
+  void _TraceHttpResponseHeaders(
+      enumerations.TraceFlags traceType, IEwsHttpWebResponse response) {
     if (this.IsTraceEnabledFor(traceType)) {
       String traceTypeStr = traceType.toString();
       String headersAsString = EwsUtilities.FormatHttpResponseHeaders(response);
-      String logMessage = EwsUtilities.FormatLogMessage(traceTypeStr, headersAsString);
+      String logMessage =
+          EwsUtilities.FormatLogMessage(traceTypeStr, headersAsString);
       this.TraceListener.Trace(traceTypeStr, logMessage);
     }
   }
@@ -327,7 +341,8 @@ abstract class ExchangeServiceBase {
       OutParam<String> existingValue = new OutParam();
 
       if (this._httpResponseHeaders.containsKey(key)) {
-        this._httpResponseHeaders[key] = existingValue.param + "," + headers[key];
+        this._httpResponseHeaders[key] =
+            existingValue.param + "," + headers[key];
       } else {
         this._httpResponseHeaders[key] = headers[key];
       }
@@ -423,7 +438,8 @@ abstract class ExchangeServiceBase {
     // todo : repair ConvertDateTimeToUniversalDateTimeString
     final dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'", null);
     final formatted = dateFormat.format(value);
-    print("!! .. unsafe ConvertDateTimeToUniversalDateTimeString($value) => $formatted");
+    print(
+        "!! .. unsafe ConvertDateTimeToUniversalDateTimeString($value) => $formatted");
     return formatted;
 //            DateTime dateTime;
 //
@@ -628,8 +644,8 @@ abstract class ExchangeServiceBase {
   set Credentials(ExchangeCredentials value) {
     this._credentials = value;
     this._useDefaultCredentials = false;
-    this._cookieContainer =
-        new http.CookieContainer(); // Changing credentials resets the Cookie container
+    this._cookieContainer = new http
+        .CookieContainer(); // Changing credentials resets the Cookie container
   }
 
   /// <summary>
@@ -644,8 +660,8 @@ abstract class ExchangeServiceBase {
 
     if (value) {
       this._credentials = null;
-      this._cookieContainer =
-          new http.CookieContainer(); // Changing credentials resets the Cookie container
+      this._cookieContainer = new http
+          .CookieContainer(); // Changing credentials resets the Cookie container
     }
   }
 
@@ -777,7 +793,8 @@ abstract class ExchangeServiceBase {
       Random randomNumberGenerator = Random();
       ExchangeServiceBase._binarySecret = Uint8List(256 ~/ 8);
       for (int i = 0; i < ExchangeServiceBase._binarySecret.length; i++) {
-        ExchangeServiceBase._binarySecret[i] = randomNumberGenerator.nextInt(256);
+        ExchangeServiceBase._binarySecret[i] =
+            randomNumberGenerator.nextInt(256);
       }
     }
     return ExchangeServiceBase._binarySecret;
@@ -786,11 +803,13 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// Gets or sets the HTTP web request factory.
   /// </summary>
-  IEwsHttpWebRequestFactory get HttpWebRequestFactory => this._ewsHttpWebRequestFactory;
+  IEwsHttpWebRequestFactory get HttpWebRequestFactory =>
+      this._ewsHttpWebRequestFactory;
 
   set HttpWebRequestFactory(IEwsHttpWebRequestFactory value) {
     // If new value is null, reset to default factory.
-    this._ewsHttpWebRequestFactory = (value == null) ? new EwsHttpWebRequestFactory() : value;
+    this._ewsHttpWebRequestFactory =
+        (value == null) ? new EwsHttpWebRequestFactory() : value;
   }
 
   /// <summary>

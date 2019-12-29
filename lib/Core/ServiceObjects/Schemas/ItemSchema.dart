@@ -81,15 +81,18 @@ class _ItemSchemaFieldUris {
   static const String Sensitivity = "item:Sensitivity";
   static const String ReminderDueBy = "item:ReminderDueBy";
   static const String ReminderIsSet = "item:ReminderIsSet";
-  static const String ReminderMinutesBeforeStart = "item:ReminderMinutesBeforeStart";
+  static const String ReminderMinutesBeforeStart =
+      "item:ReminderMinutesBeforeStart";
   static const String DisplayTo = "item:DisplayTo";
   static const String DisplayCc = "item:DisplayCc";
   static const String Culture = "item:Culture";
   static const String EffectiveRights = "item:EffectiveRights";
   static const String LastModifiedName = "item:LastModifiedName";
   static const String LastModifiedTime = "item:LastModifiedTime";
-  static const String WebClientReadFormQueryString = "item:WebClientReadFormQueryString";
-  static const String WebClientEditFormQueryString = "item:WebClientEditFormQueryString";
+  static const String WebClientReadFormQueryString =
+      "item:WebClientReadFormQueryString";
+  static const String WebClientEditFormQueryString =
+      "item:WebClientEditFormQueryString";
   static const String ConversationId = "item:ConversationId";
   static const String UniqueBody = "item:UniqueBody";
   static const String StoreEntryId = "item:StoreEntryId";
@@ -116,26 +119,28 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Id property.
   /// </summary>
-  static PropertyDefinition Id = new ComplexPropertyDefinition<ItemId>.withUriAndFlags(
-      XmlElementNames.ItemId,
-      _ItemSchemaFieldUris.ItemId,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Id =
+      new ComplexPropertyDefinition<ItemId>.withUriAndFlags(
+          XmlElementNames.ItemId,
+          _ItemSchemaFieldUris.ItemId,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new ItemId();
   });
 
   /// <summary>
   /// Defines the Body property.
   /// </summary>
-  static PropertyDefinition Body = new ComplexPropertyDefinition<MessageBody>.withUriAndFlags(
-      XmlElementNames.Body,
-      _ItemSchemaFieldUris.Body,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Body =
+      new ComplexPropertyDefinition<MessageBody>.withUriAndFlags(
+          XmlElementNames.Body,
+          _ItemSchemaFieldUris.Body,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new MessageBody();
   });
 
@@ -227,11 +232,12 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the DateTimeReceived property.
   /// </summary>
-  static PropertyDefinition DateTimeReceived = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.DateTimeReceived,
-      _ItemSchemaFieldUris.DateTimeReceived,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition DateTimeReceived =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.DateTimeReceived,
+          _ItemSchemaFieldUris.DateTimeReceived,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Size property.
@@ -245,17 +251,18 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Categories property.
   /// </summary>
-  static PropertyDefinition Categories = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-      XmlElementNames.Categories,
-      _ItemSchemaFieldUris.Categories,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Categories =
+      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+          XmlElementNames.Categories,
+          _ItemSchemaFieldUris.Categories,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
@@ -290,56 +297,62 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the IsSubmitted property.
   /// </summary>
-  static PropertyDefinition IsSubmitted = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsSubmitted,
-      _ItemSchemaFieldUris.IsSubmitted,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsSubmitted =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsSubmitted,
+          _ItemSchemaFieldUris.IsSubmitted,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsAssociated property.
   /// </summary>
-  static PropertyDefinition IsAssociated = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsAssociated,
-      _ItemSchemaFieldUris.IsAssociated,
-      [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2010);
+  static PropertyDefinition IsAssociated =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsAssociated,
+          _ItemSchemaFieldUris.IsAssociated,
+          [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2010);
 
   /// <summary>
   /// Defines the IsDraft property.
   /// </summary>
-  static PropertyDefinition IsDraft = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsDraft,
-      _ItemSchemaFieldUris.IsDraft,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsDraft =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsDraft,
+          _ItemSchemaFieldUris.IsDraft,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsFromMe property.
   /// </summary>
-  static PropertyDefinition IsFromMe = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsFromMe,
-      _ItemSchemaFieldUris.IsFromMe,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsFromMe =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsFromMe,
+          _ItemSchemaFieldUris.IsFromMe,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsResend property.
   /// </summary>
-  static PropertyDefinition IsResend = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsResend,
-      _ItemSchemaFieldUris.IsResend,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsResend =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsResend,
+          _ItemSchemaFieldUris.IsResend,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsUnmodified property.
   /// </summary>
-  static PropertyDefinition IsUnmodified = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsUnmodified,
-      _ItemSchemaFieldUris.IsUnmodified,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsUnmodified =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsUnmodified,
+          _ItemSchemaFieldUris.IsUnmodified,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the InternetMessageHeaders property.
@@ -354,20 +367,22 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the DateTimeSent property.
   /// </summary>
-  static PropertyDefinition DateTimeSent = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.DateTimeSent,
-      _ItemSchemaFieldUris.DateTimeSent,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition DateTimeSent =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.DateTimeSent,
+          _ItemSchemaFieldUris.DateTimeSent,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the DateTimeCreated property.
   /// </summary>
-  static PropertyDefinition DateTimeCreated = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.DateTimeCreated,
-      _ItemSchemaFieldUris.DateTimeCreated,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition DateTimeCreated =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.DateTimeCreated,
+          _ItemSchemaFieldUris.DateTimeCreated,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the AllowedResponseActions property.
@@ -381,43 +396,47 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ReminderDueBy property.
   /// </summary>
-  static PropertyDefinition ReminderDueBy = new ScopedDateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.ReminderDueBy,
-      _ItemSchemaFieldUris.ReminderDueBy,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, (ExchangeVersion version) {
+  static PropertyDefinition ReminderDueBy =
+      new ScopedDateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.ReminderDueBy,
+          _ItemSchemaFieldUris.ReminderDueBy,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, (ExchangeVersion version) {
     return AppointmentSchema.StartTimeZone;
   });
 
   /// <summary>
   /// Defines the IsReminderSet property.
   /// </summary>
-  static PropertyDefinition IsReminderSet = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.ReminderIsSet, // Note: server-side the name is ReminderIsSet
-      _ItemSchemaFieldUris.ReminderIsSet,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsReminderSet =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames
+              .ReminderIsSet, // Note: server-side the name is ReminderIsSet
+          _ItemSchemaFieldUris.ReminderIsSet,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the ReminderMinutesBeforeStart property.
   /// </summary>
-  static PropertyDefinition ReminderMinutesBeforeStart = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.ReminderMinutesBeforeStart,
-      _ItemSchemaFieldUris.ReminderMinutesBeforeStart,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition ReminderMinutesBeforeStart =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.ReminderMinutesBeforeStart,
+          _ItemSchemaFieldUris.ReminderMinutesBeforeStart,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the DisplayCc property.
@@ -440,11 +459,12 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the HasAttachments property.
   /// </summary>
-  static PropertyDefinition HasAttachments = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.HasAttachments,
-      _ItemSchemaFieldUris.HasAttachments,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition HasAttachments =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.HasAttachments,
+          _ItemSchemaFieldUris.HasAttachments,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Culture property.
@@ -463,11 +483,12 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the EffectiveRights property.
   /// </summary>
-  static PropertyDefinition EffectiveRights = new EffectiveRightsPropertyDefinition(
-      XmlElementNames.EffectiveRights,
-      _ItemSchemaFieldUris.EffectiveRights,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition EffectiveRights =
+      new EffectiveRightsPropertyDefinition(
+          XmlElementNames.EffectiveRights,
+          _ItemSchemaFieldUris.EffectiveRights,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the LastModifiedName property.
@@ -481,29 +502,32 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the LastModifiedTime property.
   /// </summary>
-  static PropertyDefinition LastModifiedTime = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.LastModifiedTime,
-      _ItemSchemaFieldUris.LastModifiedTime,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition LastModifiedTime =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.LastModifiedTime,
+          _ItemSchemaFieldUris.LastModifiedTime,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the WebClientReadFormQueryString property.
   /// </summary>
-  static PropertyDefinition WebClientReadFormQueryString = new StringPropertyDefinition(
-      XmlElementNames.WebClientReadFormQueryString,
-      _ItemSchemaFieldUris.WebClientReadFormQueryString,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2010);
+  static PropertyDefinition WebClientReadFormQueryString =
+      new StringPropertyDefinition(
+          XmlElementNames.WebClientReadFormQueryString,
+          _ItemSchemaFieldUris.WebClientReadFormQueryString,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2010);
 
   /// <summary>
   /// Defines the WebClientEditFormQueryString property.
   /// </summary>
-  static PropertyDefinition WebClientEditFormQueryString = new StringPropertyDefinition(
-      XmlElementNames.WebClientEditFormQueryString,
-      _ItemSchemaFieldUris.WebClientEditFormQueryString,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2010);
+  static PropertyDefinition WebClientEditFormQueryString =
+      new StringPropertyDefinition(
+          XmlElementNames.WebClientEditFormQueryString,
+          _ItemSchemaFieldUris.WebClientEditFormQueryString,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2010);
 
   /// <summary>
   /// Defines the ConversationId property.
@@ -574,15 +598,16 @@ class ItemSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the InternetMessageHeaders property.
   /// </summary>
-  static PropertyDefinition Flag = new ComplexPropertyDefinition<complex.Flag>.withUriAndFlags(
-      XmlElementNames.Flag,
-      _ItemSchemaFieldUris.Flag,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2013, () {
+  static PropertyDefinition Flag =
+      new ComplexPropertyDefinition<complex.Flag>.withUriAndFlags(
+          XmlElementNames.Flag,
+          _ItemSchemaFieldUris.Flag,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2013, () {
     return new complex.Flag();
   });
 

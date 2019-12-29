@@ -39,7 +39,8 @@ class FindFolderRequest extends FindRequest<FindFolderResponse> {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  FindFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  FindFolderRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -49,7 +50,8 @@ class FindFolderRequest extends FindRequest<FindFolderResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  FindFolderResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  FindFolderResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new FindFolderResponse(this.View.GetPropertySetOrDefault());
   }
 

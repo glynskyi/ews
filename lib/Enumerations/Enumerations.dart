@@ -28,7 +28,6 @@ export 'DayOfTheWeekIndex.dart';
 export 'DefaultExtendedPropertySet.dart';
 export 'DelegateFolderPermissionLevel.dart';
 export 'DeleteMode.dart';
-//export 'DnsRecordType.cs
 export 'DomainSettingName.dart';
 export 'EffectiveRights.dart';
 export 'ElcFolderType.dart';
@@ -62,8 +61,8 @@ export 'MailboxSearchScopeType.dart';
 export 'MailboxType.dart';
 export 'MapiPropertyType.dart';
 export 'MeetingAttendeeType.dart';
-export 'MeetingRequestsDeliveryScope.dart';
 export 'MeetingRequestType.dart';
+export 'MeetingRequestsDeliveryScope.dart';
 export 'MemberStatus.dart';
 export 'MessageDisposition.dart';
 export 'Month.dart';
@@ -111,13 +110,7 @@ export 'SyncFolderItemsScope.dart';
 export 'TaskDelegationState.dart';
 export 'TaskMode.dart';
 export 'TaskStatus.dart';
-//export 'TeamMailboxLifecycleState.cs
 export 'TraceFlags.dart';
-//export 'UnifiedGroupEnumTypes.cs
-//export 'UserConfigurationDictionaryObjectType.cs
-//export 'UserConfigurationProperties.cs
-//export 'UserPhotoSize.cs
-//export 'UserSettingName.dart
 export 'ViewFilter.dart';
 export 'WellKnownFolderName.dart';
 export 'XmlNamespace.dart';

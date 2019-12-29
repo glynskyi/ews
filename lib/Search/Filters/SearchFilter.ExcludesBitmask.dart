@@ -53,7 +53,8 @@ class ExcludesBitmask extends PropertyBasedFilter {
   /// </summary>
   /// <param name="propertyDefinition">The definition of the property that is being compared. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   /// <param name="bitmask">The bitmask to compare with.</param>
-  ExcludesBitmask.withPropertyAndBitmask(PropertyDefinitionBase propertyDefinition, int bitmask)
+  ExcludesBitmask.withPropertyAndBitmask(
+      PropertyDefinitionBase propertyDefinition, int bitmask)
       : super.withProperty(propertyDefinition) {
     this.bitmask = bitmask;
   }
@@ -79,7 +80,9 @@ class ExcludesBitmask extends PropertyBasedFilter {
     if (!result) {
       if (reader.LocalName == XmlElementNames.Bitmask) {
         // EWS always returns the Bitmask value in hexadecimal
-        this.bitmask = int.parse(reader.ReadAttributeValue(XmlAttributeNames.Value), radix: 16);
+        this.bitmask = int.parse(
+            reader.ReadAttributeValue(XmlAttributeNames.Value),
+            radix: 16);
       }
     }
 

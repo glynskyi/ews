@@ -97,7 +97,9 @@ class EnhancedLocation extends ComplexProperty {
       case XmlElementNames.PersonaPostalAddress:
         this._personaPostalAddress = new complex.PersonaPostalAddress();
         this._personaPostalAddress.LoadFromXmlElementName(reader);
-        this._personaPostalAddress.addOnChangeEvent(_PersonaPostalAddress_OnChange);
+        this
+            ._personaPostalAddress
+            .addOnChangeEvent(_PersonaPostalAddress_OnChange);
         return true;
       default:
         return false;
@@ -156,10 +158,10 @@ class EnhancedLocation extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.LocationDisplayName, this._displayName);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.LocationAnnotation, this._annotation);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.LocationDisplayName, this._displayName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.LocationAnnotation, this._annotation);
     this._personaPostalAddress.WriteToXmlElementName(writer);
   }
 
@@ -171,7 +173,8 @@ class EnhancedLocation extends ComplexProperty {
     super.InternalValidate();
     EwsUtilities.ValidateParam(this._displayName, "DisplayName");
     EwsUtilities.ValidateParamAllowNull(this._annotation, "Annotation");
-    EwsUtilities.ValidateParamAllowNull(this._personaPostalAddress, "PersonaPostalAddress");
+    EwsUtilities.ValidateParamAllowNull(
+        this._personaPostalAddress, "PersonaPostalAddress");
   }
 
   /// <summary>

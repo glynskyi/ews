@@ -72,8 +72,8 @@ abstract class ServiceObjectPropertyDefinition extends PropertyDefinitionBase {
   /// </summary>
   /// <param name="uri">The URI.</param>
   ServiceObjectPropertyDefinition.withUri(String uri) : super() {
-    EwsUtilities.Assert(!StringUtils.IsNullOrEmpty(uri), "ServiceObjectPropertyDefinition.ctor",
-        "uri is null or empty");
+    EwsUtilities.Assert(!StringUtils.IsNullOrEmpty(uri),
+        "ServiceObjectPropertyDefinition.ctor", "uri is null or empty");
     this._uri = uri;
   }
 

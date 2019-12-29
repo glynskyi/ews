@@ -37,7 +37,9 @@ class GetItemRequest extends GetItemRequestBase<GetItemResponse> {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  GetItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode) : super(service, errorHandlingMode);
+  GetItemRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
+      : super(service, errorHandlingMode);
 
   /// <summary>
   /// Creates the service response.
@@ -46,7 +48,8 @@ class GetItemRequest extends GetItemRequestBase<GetItemResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  GetItemResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  GetItemResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new GetItemResponse(this.ItemIds[responseIndex], this.PropertySet);
   }
 }

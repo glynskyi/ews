@@ -39,7 +39,8 @@ typedef void CustomXmlSerializationDelegate(XmlWriter writer);
 /// Delegate method to handle capturing http response headers.
 /// </summary>
 /// <param name="responseHeaders">Http response headers.</param>
-typedef void ResponseHeadersCapturedHandler(WebHeaderCollection responseHeaders);
+typedef void ResponseHeadersCapturedHandler(
+    WebHeaderCollection responseHeaders);
 
 /// <summary>
 /// Defines a delegate used to notify that a service object has been modified.

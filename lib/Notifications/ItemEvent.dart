@@ -51,7 +51,8 @@ class ItemEvent extends NotificationEvent {
   /// </summary>
   /// <param name="eventType">Type of the event.</param>
   /// <param name="timestamp">The event timestamp.</param>
-  ItemEvent(EventType eventType, DateTime timestamp) : super(eventType, timestamp) {}
+  ItemEvent(EventType eventType, DateTime timestamp)
+      : super(eventType, timestamp) {}
 
   /// <summary>
   /// Load from XML.

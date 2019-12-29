@@ -45,8 +45,8 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  ComplexPropertyDefinitionBase.withFlags(
-      String xmlElementName, List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+  ComplexPropertyDefinitionBase.withFlags(String xmlElementName,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
       : super.withFlags(xmlElementName, flags, version);
 
   /// <summary>
@@ -55,7 +55,8 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="uri">The URI.</param>
   /// <param name="version">The version.</param>
-  ComplexPropertyDefinitionBase.withUri(String xmlElementName, String uri, ExchangeVersion version)
+  ComplexPropertyDefinitionBase.withUri(
+      String xmlElementName, String uri, ExchangeVersion version)
       : super.withUri(xmlElementName, uri, version);
 
   /// <summary>
@@ -65,8 +66,8 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="uri">The URI.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  ComplexPropertyDefinitionBase.withUriAndFlags(String xmlElementName, String uri,
-      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+  ComplexPropertyDefinitionBase.withUriAndFlags(String xmlElementName,
+      String uri, List<PropertyDefinitionFlags> flags, ExchangeVersion version)
       : super.withUriAndFlags(xmlElementName, uri, flags, version) {}
 
   /// <summary>
@@ -81,17 +82,21 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
-  void InternalLoadFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  void InternalLoadFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
     OutParam<Object> complexPropertyOutParam = new OutParam<Object>();
 
-    bool justCreated = _GetPropertyInstance(propertyBag, complexPropertyOutParam);
+    bool justCreated =
+        _GetPropertyInstance(propertyBag, complexPropertyOutParam);
 
     if (!justCreated &&
         this.HasFlag(PropertyDefinitionFlags.UpdateCollectionItems,
             propertyBag.Owner.Service.RequestedServerVersion)) {
-      (complexPropertyOutParam.param as ComplexProperty).UpdateFromXml(reader, reader.LocalName);
+      (complexPropertyOutParam.param as ComplexProperty)
+          .UpdateFromXml(reader, reader.LocalName);
     } else {
-      (complexPropertyOutParam.param as ComplexProperty).LoadFromXml(reader, reader.LocalName);
+      (complexPropertyOutParam.param as ComplexProperty)
+          .LoadFromXml(reader, reader.LocalName);
     }
 
     propertyBag[this] = complexPropertyOutParam.param;
@@ -103,11 +108,13 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="complexProperty">The property instance.</param>
   /// <returns>True if the instance is newly created.</returns>
-  bool _GetPropertyInstance(PropertyBag propertyBag, OutParam<Object> complexPropertyOutParam) {
+  bool _GetPropertyInstance(
+      PropertyBag propertyBag, OutParam<Object> complexPropertyOutParam) {
     if (!propertyBag.TryGetValue(this, complexPropertyOutParam) ||
         !this.HasFlag(PropertyDefinitionFlags.ReuseInstance,
             propertyBag.Owner.Service.RequestedServerVersion)) {
-      complexPropertyOutParam.param = this.CreatePropertyInstance(propertyBag.Owner);
+      complexPropertyOutParam.param =
+          this.CreatePropertyInstance(propertyBag.Owner);
       return true;
     }
 
@@ -120,8 +127,10 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    reader.EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace.Types, this.XmlElementName);
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        XmlNamespace.Types, this.XmlElementName);
 
     if (!reader.IsEmptyElement || reader.HasAttributes) {
       this.InternalLoadFromXml(reader, propertyBag);
@@ -137,8 +146,8 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
   @override
-  void WritePropertyValueToXml(
-      EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation) {
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     ComplexProperty complexProperty = propertyBag[this];
 
     if (complexProperty != null) {

@@ -61,7 +61,8 @@ class FileAttachment extends Attachment {
   /// Initializes a new instance of the <see cref="FileAttachment"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  FileAttachment.withExchangeService(ExchangeService service) : super.withExchangeService(service);
+  FileAttachment.withExchangeService(ExchangeService service)
+      : super.withExchangeService(service);
 
   /// <summary>
   /// Gets the name of the XML element.
@@ -106,8 +107,8 @@ class FileAttachment extends Attachment {
           // load the content into a byte array.
           // TODO: Should we mark the attachment to indicate that content is stored elsewhere?
           if (reader.Service.FileAttachmentContentHandler != null) {
-            Stream outputStream =
-                reader.Service.FileAttachmentContentHandler.GetOutputStream(this.Id);
+            Stream outputStream = reader.Service.FileAttachmentContentHandler
+                .GetOutputStream(this.Id);
 
             if (outputStream != null) {
               reader.ReadBase64ElementValueWithStream(outputStream);
@@ -144,9 +145,10 @@ class FileAttachment extends Attachment {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     super.WriteElementsToXml(writer);
 
-    if (writer.Service.RequestedServerVersion.index > ExchangeVersion.Exchange2007_SP1.index) {
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.IsContactPhoto, this._isContactPhoto);
+    if (writer.Service.RequestedServerVersion.index >
+        ExchangeVersion.Exchange2007_SP1.index) {
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.IsContactPhoto, this._isContactPhoto);
     }
 
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Content);
@@ -162,8 +164,8 @@ class FileAttachment extends Attachment {
     } else if (this.Content != null) {
       writer.WriteBase64ElementValue(this.Content);
     } else {
-      EwsUtilities.Assert(
-          false, "FileAttachment.WriteElementsToXml", "The attachment's content is not set.");
+      EwsUtilities.Assert(false, "FileAttachment.WriteElementsToXml",
+          "The attachment's content is not set.");
     }
 
     writer.WriteEndElement();

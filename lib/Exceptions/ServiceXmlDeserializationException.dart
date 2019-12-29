@@ -34,8 +34,7 @@ class ServiceXmlDeserializationException extends ServiceLocalException {
   /// ServiceXmlDeserializationException Constructor.
   /// </summary>
   /// <param name="message">Error message text.</param>
-  ServiceXmlDeserializationException([String message = ""])
-      : super(message);
+  ServiceXmlDeserializationException([String message = ""]) : super(message);
 
   /// <summary>
   /// ServiceXmlDeserializationException Constructor.

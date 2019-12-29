@@ -47,15 +47,18 @@ class IsLessThanOrEqualTo extends RelationalFilter {
   /// <param name="propertyDefinition">The definition of the property that is being compared. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   /// <param name="otherPropertyDefinition">The definition of the property to compare with. Property definitions are available on schema classes (EmailMessageSchema, AppointmentSchema, etc.)</param>
   IsLessThanOrEqualTo.withPropertyAndProperty(
-      PropertyDefinitionBase propertyDefinition, PropertyDefinitionBase otherPropertyDefinition)
-      : super.withPropertyAndProperty(propertyDefinition, otherPropertyDefinition) {}
+      PropertyDefinitionBase propertyDefinition,
+      PropertyDefinitionBase otherPropertyDefinition)
+      : super.withPropertyAndProperty(
+            propertyDefinition, otherPropertyDefinition) {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="IsLessThanOrEqualTo"/> class.
   /// </summary>
   /// <param name="propertyDefinition">The definition of the property that is being compared. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   /// <param name="value">The value to compare the property with.</param>
-  IsLessThanOrEqualTo.withPropertyAndValue(PropertyDefinitionBase propertyDefinition, Object value)
+  IsLessThanOrEqualTo.withPropertyAndValue(
+      PropertyDefinitionBase propertyDefinition, Object value)
       : super.withPropertyAndValue(propertyDefinition, value) {}
 
   /// <summary>

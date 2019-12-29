@@ -1,3 +1,1 @@
-enum WebExceptionStatus {
-  ProtocolError
-}
+enum WebExceptionStatus { ProtocolError }

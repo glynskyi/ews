@@ -24,7 +24,8 @@
  */
 
 import 'package:ews/ComplexProperties/MessageBody.dart';
-import 'package:ews/Core/ServiceObjects/Schemas/EmailMessageSchema.dart' as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Schemas/EmailMessageSchema.dart'
+    as serviceObjects;
 import 'package:ews/Core/ServiceObjects/Schemas/ResponseObjectSchema.dart';
 import 'package:ews/Core/ServiceObjects/Schemas/ServiceObjectSchema.dart';
 import 'package:ews/Core/XmlElementNames.dart';
@@ -37,8 +38,11 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// Represents CancelMeetingMessage schema definition.
 /// </summary>
 class CancelMeetingMessageSchema extends ServiceObjectSchema {
-  static PropertyDefinition Body = new ComplexPropertyDefinition<MessageBody>.withFlags(
-      XmlElementNames.NewBodyContent, [PropertyDefinitionFlags.CanSet], ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Body =
+      new ComplexPropertyDefinition<MessageBody>.withFlags(
+          XmlElementNames.NewBodyContent,
+          [PropertyDefinitionFlags.CanSet],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new MessageBody();
   });
 
@@ -55,8 +59,10 @@ class CancelMeetingMessageSchema extends ServiceObjectSchema {
   void RegisterProperties() {
     super.RegisterProperties();
 
-    this.RegisterProperty(serviceObjects.EmailMessageSchema.IsReadReceiptRequested);
-    this.RegisterProperty(serviceObjects.EmailMessageSchema.IsDeliveryReceiptRequested);
+    this.RegisterProperty(
+        serviceObjects.EmailMessageSchema.IsReadReceiptRequested);
+    this.RegisterProperty(
+        serviceObjects.EmailMessageSchema.IsDeliveryReceiptRequested);
     this.RegisterProperty(ResponseObjectSchema.ReferenceItemId);
     this.RegisterProperty(CancelMeetingMessageSchema.Body);
   }

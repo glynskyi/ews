@@ -36,7 +36,8 @@ import 'package:ews/Search/ViewBase.dart';
 abstract class PagedView extends ViewBase {
   int _pageSize = 0;
 
-  enumerations.OffsetBasePoint _offsetBasePoint = enumerations.OffsetBasePoint.Beginning;
+  enumerations.OffsetBasePoint _offsetBasePoint =
+      enumerations.OffsetBasePoint.Beginning;
 
   int _offset = 0;
 
@@ -49,7 +50,8 @@ abstract class PagedView extends ViewBase {
     super.InternalWriteViewToXml(writer);
 
     writer.WriteAttributeValue(XmlAttributeNames.Offset, this.Offset);
-    writer.WriteAttributeValue(XmlAttributeNames.BasePoint, this.OffsetBasePoint);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.BasePoint, this.OffsetBasePoint);
   }
 
   /// <summary>
@@ -67,7 +69,8 @@ abstract class PagedView extends ViewBase {
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by clause.</param>
   @override
-  void InternalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
+  void InternalWriteSearchSettingsToXml(
+      EwsServiceXmlWriter writer, Grouping groupBy) {
     if (groupBy != null) {
       groupBy.WriteToXml(writer);
     }
@@ -140,7 +143,8 @@ abstract class PagedView extends ViewBase {
   /// </summary>
   enumerations.OffsetBasePoint get OffsetBasePoint => this._offsetBasePoint;
 
-  set OffsetBasePoint(enumerations.OffsetBasePoint value) => this._offsetBasePoint = value;
+  set OffsetBasePoint(enumerations.OffsetBasePoint value) =>
+      this._offsetBasePoint = value;
 
   /// <summary>
   /// Gets or sets the offset.

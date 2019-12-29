@@ -49,7 +49,8 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="uri">The URI.</param>
   /// <param name="version">The version.</param>
-  PropertyDefinition.withUri(String xmlElementName, String uri, ExchangeVersion version)
+  PropertyDefinition.withUri(
+      String xmlElementName, String uri, ExchangeVersion version)
       : super.withUri(uri) {
     this._xmlElementName = xmlElementName;
     this._flags = [PropertyDefinitionFlags.None];
@@ -62,8 +63,8 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  PropertyDefinition.withFlags(
-      String xmlElementName, List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+  PropertyDefinition.withFlags(String xmlElementName,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
       : super() {
     this._xmlElementName = xmlElementName;
     this._flags = flags;
@@ -112,7 +113,8 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// Registers associated properties.
   /// </summary>
   /// <param name="properties">The list in which to add the associated properties.</param>
-  void RegisterAssociatedInternalProperties(List<PropertyDefinition> properties) {}
+  void RegisterAssociatedInternalProperties(
+      List<PropertyDefinition> properties) {}
 
   /// <summary>
   /// Gets a list of associated properties.
@@ -147,7 +149,8 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
-  void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag);
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag);
 
   /// <summary>
   /// Writes the property value to XML.
@@ -155,8 +158,8 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <param name="writer">The writer.</param>
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
-  void WritePropertyValueToXml(
-      EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation);
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation);
 
   /// <summary>
   /// Gets the name of the XML element.

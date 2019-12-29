@@ -243,7 +243,8 @@ class GroupMember extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Status:
-        this.status = EwsUtilities.Parse<MemberStatus>(reader.ReadElementValue());
+        this.status =
+            EwsUtilities.Parse<MemberStatus>(reader.ReadElementValue());
         return true;
 
       case XmlElementNames.Mailbox:
@@ -274,9 +275,8 @@ class GroupMember extends ComplexProperty {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     // No need to write member Status back to server
     // Write only AddressInformation container element
-    this
-        .AddressInformation
-        .WriteToXmlWithNamespace(writer, XmlNamespace.Types, XmlElementNames.Mailbox);
+    this.AddressInformation.WriteToXmlWithNamespace(
+        writer, XmlNamespace.Types, XmlElementNames.Mailbox);
   }
 
   /// <summary>

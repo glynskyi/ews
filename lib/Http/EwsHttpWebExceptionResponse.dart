@@ -46,5 +46,4 @@ class EwsHttpWebExceptionResponse implements IEwsHttpWebResponse {
 
   @override
   String get StatusDescription => _webException.Response.reasonPhrase;
-
 }

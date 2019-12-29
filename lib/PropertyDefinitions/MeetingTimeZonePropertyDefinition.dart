@@ -46,8 +46,8 @@ class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
   /// <param name="uri">The URI.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  MeetingTimeZonePropertyDefinition.withUriAndFlags(String xmlElementName, String uri,
-      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+  MeetingTimeZonePropertyDefinition.withUriAndFlags(String xmlElementName,
+      String uri, List<PropertyDefinitionFlags> flags, ExchangeVersion version)
       : super.withUriAndFlags(xmlElementName, uri, flags, version) {}
 
   /// <summary>
@@ -56,7 +56,8 @@ class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
     MeetingTimeZone meetingTimeZone = new MeetingTimeZone();
     meetingTimeZone.LoadFromXml(reader, this.XmlElementName);
 
@@ -71,8 +72,8 @@ class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
   @override
-  void WritePropertyValueToXml(
-      EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation) {
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     MeetingTimeZone value = propertyBag[this];
 
     if (value != null) {

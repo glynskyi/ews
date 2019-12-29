@@ -46,8 +46,8 @@ class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition {
   /// <param name="uri">The URI.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  StartTimeZonePropertyDefinition(
-      String xmlElementName, String uri, List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+  StartTimeZonePropertyDefinition(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
       : super(xmlElementName, uri, flags, version) {}
 
   /// <summary>
@@ -55,7 +55,8 @@ class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition {
   /// </summary>
   /// <param name="properties">The list in which to add the associated properties.</param>
   @override
-  void RegisterAssociatedInternalProperties(List<PropertyDefinition> properties) {
+  void RegisterAssociatedInternalProperties(
+      List<PropertyDefinition> properties) {
     super.RegisterAssociatedInternalProperties(properties);
 
     properties.add(AppointmentSchema.MeetingTimeZone);
@@ -68,14 +69,17 @@ class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
   @override
-  void WritePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation) {
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     Object value = propertyBag[this];
 
     if (value != null) {
-      if (writer.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1) {
+      if (writer.Service.RequestedServerVersion ==
+          ExchangeVersion.Exchange2007_SP1) {
         ExchangeService service = writer.Service as ExchangeService;
         if (service != null && service.Exchange2007CompatibilityMode == false) {
-          MeetingTimeZone meetingTimeZone = new MeetingTimeZone.fromTimeZone(value as TimeZone);
+          MeetingTimeZone meetingTimeZone =
+              new MeetingTimeZone.fromTimeZone(value as TimeZone);
           meetingTimeZone.WriteToXml(writer, XmlElementNames.MeetingTimeZone);
         }
       } else {
@@ -90,7 +94,8 @@ class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition {
   /// <param name="writer">The writer.</param>
   @override
   void WriteToXml(EwsServiceXmlWriter writer) {
-    if (writer.Service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1) {
+    if (writer.Service.RequestedServerVersion ==
+        ExchangeVersion.Exchange2007_SP1) {
       AppointmentSchema.MeetingTimeZone.WriteToXml(writer);
     } else {
       super.WriteToXml(writer);

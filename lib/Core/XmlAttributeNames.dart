@@ -56,7 +56,8 @@ class XmlAttributeNames {
   static const FieldURI = "FieldURI";
   static const FieldIndex = "FieldIndex";
   static const ConflictResolution = "ConflictResolution";
-  static const SendMeetingInvitationsOrCancellations = "SendMeetingInvitationsOrCancellations";
+  static const SendMeetingInvitationsOrCancellations =
+      "SendMeetingInvitationsOrCancellations";
   static const CharacterSet = "CharacterSet";
   static const HeaderName = "HeaderName";
   static const SendMeetingInvitations = "SendMeetingInvitations";
@@ -112,7 +113,8 @@ class XmlAttributeNames {
   static const ClientExtensionType = "Type";
   static const ClientExtensionScope = "Scope";
   static const ClientExtensionMarketplaceAssetID = "MarketplaceAssetId";
-  static const ClientExtensionMarketplaceContentMarket = "MarketplaceContentMarket";
+  static const ClientExtensionMarketplaceContentMarket =
+      "MarketplaceContentMarket";
   static const ClientExtensionAppStatus = "AppStatus";
   static const ClientExtensionEtoken = "Etoken";
   static const ClientExtensionInstalledDateTime = "InstalledDateTime";

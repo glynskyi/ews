@@ -47,7 +47,8 @@ class UpdateItemResponse extends ServiceResponse {
   /// </summary>
   /// <param name="item">The item.</param>
   UpdateItemResponse(Item item) : super() {
-    EwsUtilities.Assert(item != null, "UpdateItemResponse.ctor", "item is null");
+    EwsUtilities.Assert(
+        item != null, "UpdateItemResponse.ctor", "item is null");
 
     this._item = item;
   }
@@ -71,10 +72,12 @@ class UpdateItemResponse extends ServiceResponse {
 
     // ConflictResults was only added in 2007 SP1 so if this was a 2007 RTM request we shouldn't expect to find the element
     if (!reader.Service.Exchange2007CompatibilityMode) {
-      reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.ConflictResults);
-      this._conflictCount =
-          reader.ReadElementValueWithNamespace<int>(XmlNamespace.Types, XmlElementNames.Count);
-      reader.ReadEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.ConflictResults);
+      reader.ReadStartElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.ConflictResults);
+      this._conflictCount = reader.ReadElementValueWithNamespace<int>(
+          XmlNamespace.Types, XmlElementNames.Count);
+      reader.ReadEndElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.ConflictResults);
     }
 
     // If UpdateItem returned an item that has the same Id as the item that
@@ -113,8 +116,8 @@ class UpdateItemResponse extends ServiceResponse {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
   Item _GetObjectInstance(ExchangeService service, String xmlElementName) {
-    this._returnedItem =
-        EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(service, xmlElementName);
+    this._returnedItem = EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
+        service, xmlElementName);
 
     return this._returnedItem;
   }

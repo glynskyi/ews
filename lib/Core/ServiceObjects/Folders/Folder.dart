@@ -91,7 +91,8 @@ class Folder extends ServiceObject {
   /// <param name="id">The Id of the folder to bind to.</param>
   /// <returns>A Folder instance representing the folder corresponding to the specified Id.</returns>
   static Future<Folder> Bind(ExchangeService service, FolderId id) async {
-    return await Folder.BindWithPropertySet(service, id, PropertySet.FirstClassProperties);
+    return await Folder.BindWithPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -103,8 +104,11 @@ class Folder extends ServiceObject {
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A Folder instance representing the folder with the specified name.</returns>
   static Future<Folder> BindWithWellKnownFolderAndProperySet(
-      ExchangeService service, enumerations.WellKnownFolderName name, PropertySet propertySet) {
-    return Folder.BindWithPropertySet(service, new FolderId.fromWellKnownFolder(name), propertySet);
+      ExchangeService service,
+      enumerations.WellKnownFolderName name,
+      PropertySet propertySet) {
+    return Folder.BindWithPropertySet(
+        service, new FolderId.fromWellKnownFolder(name), propertySet);
   }
 
   /// <summary>
@@ -116,8 +120,8 @@ class Folder extends ServiceObject {
   /// <returns>A Folder instance representing the folder with the specified name.</returns>
   static Future<Folder> BindWithWellKnownFolder(
       ExchangeService service, enumerations.WellKnownFolderName name) {
-    return Folder.BindWithPropertySet(
-        service, FolderId.fromWellKnownFolder(name), PropertySet.FirstClassProperties);
+    return Folder.BindWithPropertySet(service,
+        FolderId.fromWellKnownFolder(name), PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -196,7 +200,9 @@ class Folder extends ServiceObject {
   /// <param name="sendCancellationsMode">Indicates whether meeting cancellation messages should be sent.</param>
   /// <param name="affectedTaskOccurrences">Indicate which occurrence of a recurring task should be deleted.</param>
   @override
-  Future<void> InternalDelete(DeleteMode deleteMode, SendCancellationsMode sendCancellationsMode,
+  Future<void> InternalDelete(
+      DeleteMode deleteMode,
+      SendCancellationsMode sendCancellationsMode,
       AffectedTaskOccurrence affectedTaskOccurrences) {
     this.ThrowIfThisIsNew();
 
@@ -207,10 +213,9 @@ class Folder extends ServiceObject {
   /// Deletes the folder. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="deleteMode">Deletion mode.</param>
-  Future<void> Delete(DeleteMode deleteMode)
-        {
-            return this.InternalDelete(deleteMode, null, null);
-        }
+  Future<void> Delete(DeleteMode deleteMode) {
+    return this.InternalDelete(deleteMode, null, null);
+  }
 
   /// <summary>
   /// Empties the folder. Calling this method results in a call to EWS.
@@ -280,16 +285,13 @@ class Folder extends ServiceObject {
   /// <summary>
   /// Applies the local changes that have been made to this folder. Calling this method results in a call to EWS.
   /// </summary>
- Future<void> Update() async
-        {
-            if (this.IsDirty)
-            {
-                if (this.PropertyBag.GetIsUpdateCallNecessary())
-                {
-                    this.Service.UpdateFolder(this);
-                }
-            }
-        }
+  Future<void> Update() async {
+    if (this.IsDirty) {
+      if (this.PropertyBag.GetIsUpdateCallNecessary()) {
+        this.Service.UpdateFolder(this);
+      }
+    }
+  }
 
   /// <summary>
   /// Copies this folder into a specific folder. Calling this method results in a call to EWS.
@@ -347,8 +349,9 @@ class Folder extends ServiceObject {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by.</param>
   /// <returns>FindItems response collection.</returns>
-  Future<ServiceResponseCollection<FindItemResponse<TItem>>> InternalFindItems<TItem extends Item>(
-      String queryString, ViewBase view, Grouping groupBy) {
+  Future<ServiceResponseCollection<FindItemResponse<TItem>>>
+      InternalFindItems<TItem extends Item>(
+          String queryString, ViewBase view, Grouping groupBy) {
     this.ThrowIfThisIsNew();
 
     return this.Service.FindItemsGeneric<TItem>(
@@ -394,11 +397,12 @@ class Folder extends ServiceObject {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItems(SearchFilter searchFilter, ItemView view) async {
+  Future<FindItemsResults<Item>> FindItems(
+      SearchFilter searchFilter, ItemView view) async {
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
-    ServiceResponseCollection<FindItemResponse<Item>> responses =
-        await this.InternalFindItemsGeneric<Item>(searchFilter, view, null /* groupBy */);
+    ServiceResponseCollection<FindItemResponse<Item>> responses = await this
+        .InternalFindItemsGeneric<Item>(searchFilter, view, null /* groupBy */);
 
     return responses[0].Results;
   }
@@ -528,8 +532,11 @@ class Folder extends ServiceObject {
   /// </summary>
   /// <param name="extendedPropertyDefinition">The extended property definition.</param>
   /// <param name="value">The value.</param>
-  void SetExtendedProperty(ExtendedPropertyDefinition extendedPropertyDefinition, Object value) {
-    this.ExtendedProperties.SetExtendedProperty(extendedPropertyDefinition, value);
+  void SetExtendedProperty(
+      ExtendedPropertyDefinition extendedPropertyDefinition, Object value) {
+    this
+        .ExtendedProperties
+        .SetExtendedProperty(extendedPropertyDefinition, value);
   }
 
   /// <summary>
@@ -537,8 +544,11 @@ class Folder extends ServiceObject {
   /// </summary>
   /// <param name="extendedPropertyDefinition">The extended property definition.</param>
   /// <returns>True if property was removed.</returns>
-  bool RemoveExtendedProperty(ExtendedPropertyDefinition extendedPropertyDefinition) {
-    return this.ExtendedProperties.RemoveExtendedProperty(extendedPropertyDefinition);
+  bool RemoveExtendedProperty(
+      ExtendedPropertyDefinition extendedPropertyDefinition) {
+    return this
+        .ExtendedProperties
+        .RemoveExtendedProperty(extendedPropertyDefinition);
   }
 
   /// <summary>
@@ -570,14 +580,16 @@ class Folder extends ServiceObject {
   /// </summary>
   String get DisplayName => this.PropertyBag[FolderSchema.DisplayName];
 
-  set DisplayName(String value) => this.PropertyBag[FolderSchema.DisplayName] = value;
+  set DisplayName(String value) =>
+      this.PropertyBag[FolderSchema.DisplayName] = value;
 
   /// <summary>
   /// Gets or sets the custom class name of this folder.
   /// </summary>
   String get FolderClass => this.PropertyBag[FolderSchema.FolderClass];
 
-  set FolderClass(String value) => this.PropertyBag[FolderSchema.FolderClass] = value;
+  set FolderClass(String value) =>
+      this.PropertyBag[FolderSchema.FolderClass] = value;
 
   /// <summary>
   /// Gets the total number of items contained in the folder.
@@ -604,7 +616,8 @@ class Folder extends ServiceObject {
   /// <summary>
   /// Gets a list of permissions for the folder.
   /// </summary>
-  FolderPermissionCollection get Permissions => this.PropertyBag[FolderSchema.Permissions];
+  FolderPermissionCollection get Permissions =>
+      this.PropertyBag[FolderSchema.Permissions];
 
   /// <summary>
   /// Gets the number of unread items in the folder.
@@ -632,7 +645,8 @@ class Folder extends ServiceObject {
   /// Gets the well known name of this folder, if any, as a string.
   /// </summary>
   /// <value>The well known name of this folder as a string, or null if this folder isn't a well known folder.</value>
-  String get WellKnownFolderNameAsString => this.PropertyBag[FolderSchema.WellKnownFolderName];
+  String get WellKnownFolderNameAsString =>
+      this.PropertyBag[FolderSchema.WellKnownFolderName];
 
   /// <summary>
   /// Gets the well known name of this folder, if any.

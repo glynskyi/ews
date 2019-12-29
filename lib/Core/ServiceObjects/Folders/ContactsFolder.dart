@@ -66,8 +66,10 @@ class ContactsFolder extends Folder {
   /// <param name="service">The service to use to bind to the contacts folder.</param>
   /// <param name="id">The Id of the contacts folder to bind to.</param>
   /// <returns>A ContactsFolder instance representing the contacts folder corresponding to the specified Id.</returns>
-  static Future<ContactsFolder> BindWithFolderId(ExchangeService service, FolderId id) {
-    return ContactsFolder.BindWithFolderIdAndPropertySet(service, id, PropertySet.FirstClassProperties);
+  static Future<ContactsFolder> BindWithFolderId(
+      ExchangeService service, FolderId id) {
+    return ContactsFolder.BindWithFolderIdAndPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -78,8 +80,11 @@ class ContactsFolder extends Folder {
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A ContactsFolder instance representing the contacts folder with the specified name.</returns>
   static Future<ContactsFolder> BindWithWellKnownFolderAndPropertySet(
-      ExchangeService service, WellKnownFolderName name, PropertySet propertySet) {
-    return ContactsFolder.BindWithFolderIdAndPropertySet(service, new FolderId.fromWellKnownFolder(name), propertySet);
+      ExchangeService service,
+      WellKnownFolderName name,
+      PropertySet propertySet) {
+    return ContactsFolder.BindWithFolderIdAndPropertySet(
+        service, new FolderId.fromWellKnownFolder(name), propertySet);
   }
 
   /// <summary>
@@ -88,9 +93,12 @@ class ContactsFolder extends Folder {
   /// <param name="service">The service to use to bind to the contacts folder.</param>
   /// <param name="name">The name of the contacts folder to bind to.</param>
   /// <returns>A ContactsFolder instance representing the contacts folder with the specified name.</returns>
-  static Future<ContactsFolder> BindWithWellKnownFolder(ExchangeService service, WellKnownFolderName name) {
+  static Future<ContactsFolder> BindWithWellKnownFolder(
+      ExchangeService service, WellKnownFolderName name) {
     return ContactsFolder.BindWithFolderIdAndPropertySet(
-        service, new FolderId.fromWellKnownFolder(name), PropertySet.FirstClassProperties);
+        service,
+        new FolderId.fromWellKnownFolder(name),
+        PropertySet.FirstClassProperties);
   }
 
   /// <summary>

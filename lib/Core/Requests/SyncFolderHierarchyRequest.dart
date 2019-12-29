@@ -39,7 +39,8 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents a SyncFolderHierarchy request.
 /// </summary>
-class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderHierarchyResponse> {
+class SyncFolderHierarchyRequest
+    extends MultiResponseServiceRequest<SyncFolderHierarchyResponse> {
   core.PropertySet _propertySet;
 
   FolderId _syncFolderId;
@@ -60,7 +61,8 @@ class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderH
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  SyncFolderHierarchyResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  SyncFolderHierarchyResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new SyncFolderHierarchyResponse(this.PropertySet);
   }
 
@@ -108,7 +110,9 @@ class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderH
     super.Validate();
     EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
     if (this.SyncFolderId != null) {
-      this.SyncFolderId.ValidateExchangeVersion(this.Service.RequestedServerVersion);
+      this
+          .SyncFolderId
+          .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
 
     this.PropertySet.ValidateForRequest(this, false /*summaryPropertiesOnly*/);
@@ -123,7 +127,8 @@ class SyncFolderHierarchyRequest extends MultiResponseServiceRequest<SyncFolderH
     this.PropertySet.WriteToXml(writer, ServiceObjectType.Folder);
 
     if (this.SyncFolderId != null) {
-      writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.SyncFolderId);
+      writer.WriteStartElement(
+          XmlNamespace.Messages, XmlElementNames.SyncFolderId);
       this.SyncFolderId.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }

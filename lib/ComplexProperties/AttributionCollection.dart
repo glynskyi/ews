@@ -46,8 +46,10 @@ class AttributionCollection extends ComplexPropertyCollection<Attribution> {
   /// Creates a new instance of the <see cref="AttributionCollection"/> class.
   /// </summary>
   /// <param name="collectionItemXmlElementName">Name of the collection item XML element.</param>
-  AttributionCollection.withElementName(String collectionItemXmlElementName) : super() {
-    EwsUtilities.ValidateParam(collectionItemXmlElementName, "collectionItemXmlElementName");
+  AttributionCollection.withElementName(String collectionItemXmlElementName)
+      : super() {
+    EwsUtilities.ValidateParam(
+        collectionItemXmlElementName, "collectionItemXmlElementName");
     this._collectionItemXmlElementName = collectionItemXmlElementName;
   }
 

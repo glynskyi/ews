@@ -1,5 +1,4 @@
 class EnumToString {
-
   static String parse(enumItem) {
     if (enumItem == null) return null;
     return enumItem.toString().split('.')[1];
@@ -9,7 +8,7 @@ class EnumToString {
     if (value == null) return null;
 
     return enumValues.singleWhere(
-            (enumItem) => EnumToString.parse(enumItem) == value,
+        (enumItem) => EnumToString.parse(enumItem) == value,
         orElse: () => null);
   }
 }

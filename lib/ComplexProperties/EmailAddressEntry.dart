@@ -58,7 +58,9 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   /// </summary>
   /// <param name="key">The key.</param>
   /// <param name="emailAddress">The email address.</param>
-  EmailAddressEntry.withKeyAndEmail(EmailAddressKey key, complex.EmailAddress emailAddress) : super.withKey(key) {
+  EmailAddressEntry.withKeyAndEmail(
+      EmailAddressKey key, complex.EmailAddress emailAddress)
+      : super.withKey(key) {
     this.emailAddress = emailAddress;
 
     if (this.emailAddress != null) {
@@ -74,12 +76,16 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
     super.ReadAttributesFromXml(reader);
 
-    this.EmailAddress.Name = reader.ReadAttributeValue<String>(XmlAttributeNames.Name);
-    this.EmailAddress.RoutingType = reader.ReadAttributeValue<String>(XmlAttributeNames.RoutingType);
+    this.EmailAddress.Name =
+        reader.ReadAttributeValue<String>(XmlAttributeNames.Name);
+    this.EmailAddress.RoutingType =
+        reader.ReadAttributeValue<String>(XmlAttributeNames.RoutingType);
 
-    String mailboxTypeString = reader.ReadAttributeValue(XmlAttributeNames.MailboxType);
+    String mailboxTypeString =
+        reader.ReadAttributeValue(XmlAttributeNames.MailboxType);
     if (!StringUtils.IsNullOrEmpty(mailboxTypeString)) {
-      this.EmailAddress.MailboxType = EwsUtilities.Parse<MailboxType>(mailboxTypeString);
+      this.EmailAddress.MailboxType =
+          EwsUtilities.Parse<MailboxType>(mailboxTypeString);
     } else {
       this.EmailAddress.MailboxType = null;
     }
@@ -102,11 +108,15 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     super.WriteAttributesToXml(writer);
 
-    if (writer.Service.RequestedServerVersion.index > ExchangeVersion.Exchange2007_SP1.index) {
-      writer.WriteAttributeValue(XmlAttributeNames.Name, this.EmailAddress.Name);
-      writer.WriteAttributeValue(XmlAttributeNames.RoutingType, this.EmailAddress.RoutingType);
+    if (writer.Service.RequestedServerVersion.index >
+        ExchangeVersion.Exchange2007_SP1.index) {
+      writer.WriteAttributeValue(
+          XmlAttributeNames.Name, this.EmailAddress.Name);
+      writer.WriteAttributeValue(
+          XmlAttributeNames.RoutingType, this.EmailAddress.RoutingType);
       if (this.EmailAddress.MailboxType != MailboxType.Unknown) {
-        writer.WriteAttributeValue(XmlAttributeNames.MailboxType, this.EmailAddress.MailboxType);
+        writer.WriteAttributeValue(
+            XmlAttributeNames.MailboxType, this.EmailAddress.MailboxType);
       }
     }
   }

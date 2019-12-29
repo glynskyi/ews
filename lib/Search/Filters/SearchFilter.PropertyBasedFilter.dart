@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
 //    /// <content>
 //    /// Contains nested type SearchFilter.PropertyBasedFilter.
 //    /// </content>
@@ -45,17 +44,14 @@ abstract class PropertyBasedFilter extends SearchFilter {
   /// <summary>
   /// Initializes a new instance of the <see cref="PropertyBasedFilter"/> class.
   /// </summary>
-  PropertyBasedFilter()
-      : super() {
-  }
+  PropertyBasedFilter() : super() {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="PropertyBasedFilter"/> class.
   /// </summary>
   /// <param name="propertyDefinition">The property definition.</param>
   PropertyBasedFilter.withProperty(PropertyDefinitionBase propertyDefinition)
-      : super()
-  {
+      : super() {
     this.propertyDefinition = propertyDefinition;
   }
 
@@ -78,7 +74,7 @@ abstract class PropertyBasedFilter extends SearchFilter {
   @override
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     OutParam<PropertyDefinitionBase> outParam =
-    new OutParam<PropertyDefinitionBase>();
+        new OutParam<PropertyDefinitionBase>();
     outParam.param = this.propertyDefinition;
 
     return PropertyDefinitionBase.TryLoadFromXml(reader, outParam);

@@ -36,7 +36,8 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// </summary>
 class _MeetingRequestSchemaFieldUris {
   static const String MeetingRequestType = "meetingRequest:MeetingRequestType";
-  static const String IntendedFreeBusyStatus = "meetingRequest:IntendedFreeBusyStatus";
+  static const String IntendedFreeBusyStatus =
+      "meetingRequest:IntendedFreeBusyStatus";
   static const String ChangeHighlights = "meetingRequest:ChangeHighlights";
 }
 
@@ -77,7 +78,8 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Enhanced Location property.
   /// </summary>
-  static PropertyDefinition EnhancedLocation = AppointmentSchema.EnhancedLocation;
+  static PropertyDefinition EnhancedLocation =
+      AppointmentSchema.EnhancedLocation;
 
   /// <summary>
   /// Defines the Start property.
@@ -136,7 +138,8 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the MeetingRequestWasSent property.
   /// </summary>
-  static PropertyDefinition MeetingRequestWasSent = AppointmentSchema.MeetingRequestWasSent;
+  static PropertyDefinition MeetingRequestWasSent =
+      AppointmentSchema.MeetingRequestWasSent;
 
   /// <summary>
   /// Defines the AppointmentType property.
@@ -157,12 +160,14 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the RequiredAttendees property.
   /// </summary>
-  static PropertyDefinition RequiredAttendees = AppointmentSchema.RequiredAttendees;
+  static PropertyDefinition RequiredAttendees =
+      AppointmentSchema.RequiredAttendees;
 
   /// <summary>
   /// Defines the OptionalAttendees property.
   /// </summary>
-  static PropertyDefinition OptionalAttendees = AppointmentSchema.OptionalAttendees;
+  static PropertyDefinition OptionalAttendees =
+      AppointmentSchema.OptionalAttendees;
 
   /// <summary>
   /// Defines the Resources property.
@@ -172,22 +177,26 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the ConflictingMeetingCount property.
   /// </summary>
-  static PropertyDefinition ConflictingMeetingCount = AppointmentSchema.ConflictingMeetingCount;
+  static PropertyDefinition ConflictingMeetingCount =
+      AppointmentSchema.ConflictingMeetingCount;
 
   /// <summary>
   /// Defines the AdjacentMeetingCount property.
   /// </summary>
-  static PropertyDefinition AdjacentMeetingCount = AppointmentSchema.AdjacentMeetingCount;
+  static PropertyDefinition AdjacentMeetingCount =
+      AppointmentSchema.AdjacentMeetingCount;
 
   /// <summary>
   /// Defines the ConflictingMeetings property.
   /// </summary>
-  static PropertyDefinition ConflictingMeetings = AppointmentSchema.ConflictingMeetings;
+  static PropertyDefinition ConflictingMeetings =
+      AppointmentSchema.ConflictingMeetings;
 
   /// <summary>
   /// Defines the AdjacentMeetings property.
   /// </summary>
-  static PropertyDefinition AdjacentMeetings = AppointmentSchema.AdjacentMeetings;
+  static PropertyDefinition AdjacentMeetings =
+      AppointmentSchema.AdjacentMeetings;
 
   /// <summary>
   /// Defines the Duration property.
@@ -203,17 +212,20 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the AppointmentReplyTime property.
   /// </summary>
-  static PropertyDefinition AppointmentReplyTime = AppointmentSchema.AppointmentReplyTime;
+  static PropertyDefinition AppointmentReplyTime =
+      AppointmentSchema.AppointmentReplyTime;
 
   /// <summary>
   /// Defines the AppointmentSequenceNumber property.
   /// </summary>
-  static PropertyDefinition AppointmentSequenceNumber = AppointmentSchema.AppointmentSequenceNumber;
+  static PropertyDefinition AppointmentSequenceNumber =
+      AppointmentSchema.AppointmentSequenceNumber;
 
   /// <summary>
   /// Defines the AppointmentState property.
   /// </summary>
-  static PropertyDefinition AppointmentState = AppointmentSchema.AppointmentState;
+  static PropertyDefinition AppointmentState =
+      AppointmentSchema.AppointmentState;
 
   /// <summary>
   /// Defines the Recurrence property.
@@ -270,7 +282,8 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the AllowNewTimeProposal property.
   /// </summary>
-  static PropertyDefinition AllowNewTimeProposal = AppointmentSchema.AllowNewTimeProposal;
+  static PropertyDefinition AllowNewTimeProposal =
+      AppointmentSchema.AllowNewTimeProposal;
 
   /// <summary>
   /// Defines the IsOnlineMeeting property.
@@ -280,7 +293,8 @@ class MeetingRequestSchema extends MeetingMessageSchema {
   /// <summary>
   /// Defines the MeetingWorkspaceUrl property.
   /// </summary>
-  static PropertyDefinition MeetingWorkspaceUrl = AppointmentSchema.MeetingWorkspaceUrl;
+  static PropertyDefinition MeetingWorkspaceUrl =
+      AppointmentSchema.MeetingWorkspaceUrl;
 
   /// <summary>
   /// Defines the NetShowUrl property.

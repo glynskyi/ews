@@ -38,7 +38,8 @@ class GetFolderRequestForLoad extends GetFolderRequestBase<ServiceResponse> {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  GetFolderRequestForLoad(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  GetFolderRequestForLoad(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -48,7 +49,9 @@ class GetFolderRequestForLoad extends GetFolderRequestBase<ServiceResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  ServiceResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
-    return new GetFolderResponse(this.FolderIds[responseIndex].GetFolder(), this.PropertySet);
+  ServiceResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
+    return new GetFolderResponse(
+        this.FolderIds[responseIndex].GetFolder(), this.PropertySet);
   }
 }

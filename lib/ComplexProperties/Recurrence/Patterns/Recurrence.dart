@@ -27,7 +27,8 @@ import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/ComplexProperties/Recurrence/Ranges/EndDateRecurrenceRange.dart';
 import 'package:ews/ComplexProperties/Recurrence/Ranges/NoEndRecurrenceRange.dart';
 import 'package:ews/ComplexProperties/Recurrence/Ranges/NumberedRecurrenceRange.dart';
-import 'package:ews/ComplexProperties/Recurrence/Ranges/RecurrenceRange.dart' as complex;
+import 'package:ews/ComplexProperties/Recurrence/Ranges/RecurrenceRange.dart'
+    as complex;
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
@@ -89,9 +90,11 @@ class Recurrence extends ComplexProperty {
     if (!this.HasEnd) {
       range = new NoEndRecurrenceRange.withStartDate(this.StartDate);
     } else if (this.NumberOfOccurrences != 0) {
-      range = new NumberedRecurrenceRange.withStartDate(this.StartDate, this.NumberOfOccurrences);
+      range = new NumberedRecurrenceRange.withStartDate(
+          this.StartDate, this.NumberOfOccurrences);
     } else {
-      range = new EndDateRecurrenceRange.withStartAndEndDates(this.StartDate, this.EndDate);
+      range = new EndDateRecurrenceRange.withStartAndEndDates(
+          this.StartDate, this.EndDate);
     }
 
     range.WriteToXml(writer, range.XmlElementName);
@@ -143,7 +146,8 @@ class Recurrence extends ComplexProperty {
     super.InternalValidate();
 
     if (this._startDate == null) {
-      throw new ServiceValidationException("Strings.RecurrencePatternMustHaveStartDate");
+      throw new ServiceValidationException(
+          "Strings.RecurrencePatternMustHaveStartDate");
     }
   }
 
@@ -154,8 +158,8 @@ class Recurrence extends ComplexProperty {
 
   set NumberOfOccurrences(int value) {
     if (value < 1) {
-      throw new ArgumentError.value(
-          value, "NumberOfOccurrences", "Strings.NumberOfOccurrencesMustBeGreaterThanZero");
+      throw new ArgumentError.value(value, "NumberOfOccurrences",
+          "Strings.NumberOfOccurrencesMustBeGreaterThanZero");
     }
     if (this.CanSetFieldValue(this._numberOfOccurrences, value)) {
       this._numberOfOccurrences = value;

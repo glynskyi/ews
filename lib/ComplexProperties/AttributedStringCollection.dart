@@ -31,7 +31,8 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// <summary>
 /// Represents a collection of attributed strings
 /// </summary>
-class AttributedStringCollection extends ComplexPropertyCollection<AttributedString> {
+class AttributedStringCollection
+    extends ComplexPropertyCollection<AttributedString> {
   /// <summary>
   /// Collection parent XML element name
   /// </summary>
@@ -40,14 +41,18 @@ class AttributedStringCollection extends ComplexPropertyCollection<AttributedStr
   /// <summary>
   /// Creates a new instance of the <see cref="AttributedStringCollection"/> class.
   /// </summary>
-  AttributedStringCollection() : this.withElementName(XmlElementNames.StringAttributedValue);
+  AttributedStringCollection()
+      : this.withElementName(XmlElementNames.StringAttributedValue);
 
   /// <summary>
   /// Creates a new instance of the <see cref="AttributedStringCollection"/> class.
   /// </summary>
   /// <param name="collectionItemXmlElementName">Name of the collection item XML element.</param>
-  AttributedStringCollection.withElementName(String collectionItemXmlElementName) : super() {
-    EwsUtilities.ValidateParam(collectionItemXmlElementName, "collectionItemXmlElementName");
+  AttributedStringCollection.withElementName(
+      String collectionItemXmlElementName)
+      : super() {
+    EwsUtilities.ValidateParam(
+        collectionItemXmlElementName, "collectionItemXmlElementName");
     this._collectionItemXmlElementName = collectionItemXmlElementName;
   }
 
@@ -77,7 +82,8 @@ class AttributedStringCollection extends ComplexPropertyCollection<AttributedStr
   /// <param name="stringValue">The SMTP address used to initialize the e-mail address.</param>
   /// <returns>An AttributedString object initialized with the provided SMTP address.</returns>
   AttributedString AddValue(String stringValue) {
-    AttributedString attributedString = new AttributedString.withValue(stringValue);
+    AttributedString attributedString =
+        new AttributedString.withValue(stringValue);
 
     this.Add(attributedString);
 
@@ -90,7 +96,8 @@ class AttributedStringCollection extends ComplexPropertyCollection<AttributedStr
   /// <param name="stringValue">String value of the attributed String being added</param>
   /// <param name="attributions">Attributions of the attributed String being added</param>
   /// <returns>The added attributedString object</returns>
-  AttributedString AddValueWithAttributions(String stringValue, List<String> attributions) {
+  AttributedString AddValueWithAttributions(
+      String stringValue, List<String> attributions) {
     AttributedString attributedString =
         new AttributedString.withValueAndAttibutions(stringValue, attributions);
 

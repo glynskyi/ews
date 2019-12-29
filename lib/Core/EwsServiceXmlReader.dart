@@ -45,7 +45,8 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <param name="stream">The stream.</param>
   /// <param name="service">The service.</param>
-  EwsServiceXmlReader(XmlReader xmlReader, ExchangeServiceBase service) : super(xmlReader) {
+  EwsServiceXmlReader(XmlReader xmlReader, ExchangeServiceBase service)
+      : super(xmlReader) {
     this._service = service;
   }
 
@@ -61,7 +62,9 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// <param name="dateTimeString">The date time String to convert.</param>
   /// <returns>A DateTime representing the converted string.</returns>
   DateTime _ConvertStringToDateTime(String dateTimeString) {
-    return this.Service.ConvertUniversalDateTimeStringToLocalDateTime(dateTimeString);
+    return this
+        .Service
+        .ConvertUniversalDateTimeStringToLocalDateTime(dateTimeString);
   }
 
   /// <summary>
@@ -122,19 +125,21 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// <param name="requestedPropertySet">The requested property set.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> [summary properties only].</param>
   /// <returns>List of service objects.</returns>
-  List<TServiceObject>
-      ReadServiceObjectsCollectionFromXmlWithNamespace<TServiceObject extends ServiceObject>(
-          XmlNamespace collectionXmlNamespace,
-          String collectionXmlElementName,
-          IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
-          bool clearPropertyBag,
-          PropertySet requestedPropertySet,
-          bool summaryPropertiesOnly) {
+  List<TServiceObject> ReadServiceObjectsCollectionFromXmlWithNamespace<
+          TServiceObject extends ServiceObject>(
+      XmlNamespace collectionXmlNamespace,
+      String collectionXmlElementName,
+      IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
+      bool clearPropertyBag,
+      PropertySet requestedPropertySet,
+      bool summaryPropertiesOnly) {
     List<TServiceObject> serviceObjects = new List<TServiceObject>();
     TServiceObject serviceObject = null;
 
-    if (!this.IsStartElementWithNamespace(collectionXmlNamespace, collectionXmlElementName)) {
-      this.ReadStartElementWithNamespace(collectionXmlNamespace, collectionXmlElementName);
+    if (!this.IsStartElementWithNamespace(
+        collectionXmlNamespace, collectionXmlElementName)) {
+      this.ReadStartElementWithNamespace(
+          collectionXmlNamespace, collectionXmlElementName);
     }
 
     if (!this.IsEmptyElement) {
@@ -142,7 +147,8 @@ class EwsServiceXmlReader extends EwsXmlReader {
         this.Read();
 
         if (this.IsStartElement()) {
-          serviceObject = getObjectInstanceDelegate(this.Service, this.LocalName);
+          serviceObject =
+              getObjectInstanceDelegate(this.Service, this.LocalName);
 
           if (serviceObject == null) {
             this.SkipCurrentElement();
@@ -152,13 +158,14 @@ class EwsServiceXmlReader extends EwsXmlReader {
                   "The type of the object in the store (${this.LocalName}) does not match that of the local object (${serviceObject.GetXmlElementName()}).");
             }
 
-            serviceObject.LoadFromXmlWithPropertySet(
-                this, clearPropertyBag, requestedPropertySet, summaryPropertiesOnly);
+            serviceObject.LoadFromXmlWithPropertySet(this, clearPropertyBag,
+                requestedPropertySet, summaryPropertiesOnly);
 
             serviceObjects.add(serviceObject);
           }
         }
-      } while (!this.IsEndElementWithNamespace(collectionXmlNamespace, collectionXmlElementName));
+      } while (!this.IsEndElementWithNamespace(
+          collectionXmlNamespace, collectionXmlElementName));
     }
 
     return serviceObjects;
@@ -174,19 +181,21 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// <param name="requestedPropertySet">The requested property set.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> [summary properties only].</param>
   /// <returns>List of service objects.</returns>
-  List<TServiceObject> ReadServiceObjectsCollectionFromXml<TServiceObject extends ServiceObject>(
-      String collectionXmlElementName,
-      IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
-      bool clearPropertyBag,
-      PropertySet requestedPropertySet,
-      bool summaryPropertiesOnly) {
-    return this.ReadServiceObjectsCollectionFromXmlWithNamespace<TServiceObject>(
-        XmlNamespace.Messages,
-        collectionXmlElementName,
-        getObjectInstanceDelegate,
-        clearPropertyBag,
-        requestedPropertySet,
-        summaryPropertiesOnly);
+  List<TServiceObject>
+      ReadServiceObjectsCollectionFromXml<TServiceObject extends ServiceObject>(
+          String collectionXmlElementName,
+          IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
+          bool clearPropertyBag,
+          PropertySet requestedPropertySet,
+          bool summaryPropertiesOnly) {
+    return this
+        .ReadServiceObjectsCollectionFromXmlWithNamespace<TServiceObject>(
+            XmlNamespace.Messages,
+            collectionXmlElementName,
+            getObjectInstanceDelegate,
+            clearPropertyBag,
+            requestedPropertySet,
+            summaryPropertiesOnly);
   }
 
   /// <summary>

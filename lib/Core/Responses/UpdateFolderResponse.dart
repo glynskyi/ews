@@ -42,7 +42,8 @@ class UpdateFolderResponse extends ServiceResponse {
   /// </summary>
   /// <param name="folder">The folder.</param>
   UpdateFolderResponse(Folder folder) : super() {
-    EwsUtilities.Assert(folder != null, "UpdateFolderResponse.ctor", "folder is null");
+    EwsUtilities.Assert(
+        folder != null, "UpdateFolderResponse.ctor", "folder is null");
 
     this.folder = folder;
   }

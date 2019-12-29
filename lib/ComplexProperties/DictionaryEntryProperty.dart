@@ -88,7 +88,8 @@ abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
   /// <param name="ewsObject">The ews object.</param>
   /// <param name="ownerDictionaryXmlElementName">Name of the owner dictionary XML element.</param>
   /// <returns>True if update XML was written.</returns>
-  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject, String ownerDictionaryXmlElementName) {
+  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
+      String ownerDictionaryXmlElementName) {
     return false;
   }
 
@@ -98,7 +99,8 @@ abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   /// <param name="ewsObject">The ews object.</param>
   /// <returns>True if update XML was written.</returns>
-  bool WriteDeleteUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject) {
+  bool WriteDeleteUpdateToXml(
+      EwsServiceXmlWriter writer, ServiceObject ewsObject) {
     return false;
   }
 }

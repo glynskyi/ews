@@ -38,7 +38,8 @@ import 'package:timezone/standalone.dart';
 /// Defines a callback method used to get a reference to a property definition.
 /// </summary>
 /// <param name="version">The EWS version for which the property is to be retrieved.</param>
-typedef PropertyDefinition GetPropertyDefinitionCallback(ExchangeVersion version);
+typedef PropertyDefinition GetPropertyDefinitionCallback(
+    ExchangeVersion version);
 
 /// <summary>
 /// Represents a property definition for DateTime values scoped to a specific time zone property.
@@ -53,10 +54,13 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
   /// <returns>The PropertyDefinition of the scoping time zone property.</returns>
   /* private */
   PropertyDefinition GetTimeZoneProperty(ExchangeVersion version) {
-    PropertyDefinition timeZoneProperty = this._getPropertyDefinitionCallback(version);
+    PropertyDefinition timeZoneProperty =
+        this._getPropertyDefinitionCallback(version);
 
-    EwsUtilities.Assert(timeZoneProperty != null,
-        "ScopedDateTimePropertyDefinition.GetTimeZoneProperty", "timeZoneProperty is null.");
+    EwsUtilities.Assert(
+        timeZoneProperty != null,
+        "ScopedDateTimePropertyDefinition.GetTimeZoneProperty",
+        "timeZoneProperty is null.");
 
     return timeZoneProperty;
   }
@@ -76,8 +80,10 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
       ExchangeVersion version,
       GetPropertyDefinitionCallback getPropertyDefinitionCallback)
       : super.withUriAndFlags(xmlElementName, uri, flags, version) {
-    EwsUtilities.Assert(getPropertyDefinitionCallback != null,
-        "ScopedDateTimePropertyDefinition.ctor", "getPropertyDefinitionCallback is null.");
+    EwsUtilities.Assert(
+        getPropertyDefinitionCallback != null,
+        "ScopedDateTimePropertyDefinition.ctor",
+        "getPropertyDefinitionCallback is null.");
 
     this._getPropertyDefinitionCallback = getPropertyDefinitionCallback;
   }
@@ -91,12 +97,13 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
   /// <param name="isUpdateOperation">Indicates whether the scoping is to be performed in the context of an update operation.</param>
   /// <returns>The converted DateTime.</returns>
   @override
-  DateTime ScopeToTimeZone(ExchangeServiceBase service, DateTime dateTime, PropertyBag propertyBag,
-      bool isUpdateOperation) {
+  DateTime ScopeToTimeZone(ExchangeServiceBase service, DateTime dateTime,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     if (!propertyBag.Owner.GetIsCustomDateTimeScopingRequired()) {
       // Most item types do not require a custom scoping mechanism. For those item types,
       // use the default scoping mechanism.
-      return super.ScopeToTimeZone(service, dateTime, propertyBag, isUpdateOperation);
+      return super
+          .ScopeToTimeZone(service, dateTime, propertyBag, isUpdateOperation);
     } else {
       // Appointment, however, requires a custom scoping mechanism which is based on an
       // associated time zone property.
@@ -107,7 +114,8 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
       // todo : uncomment
 //                bool timeZonePropertyIsSet = propertyBag.TryGetProperty(timeZoneProperty, out timeZonePropertyValue);
 
-      if (timeZonePropertyValue != null && propertyBag.IsPropertyUpdated(timeZoneProperty)) {
+      if (timeZonePropertyValue != null &&
+          propertyBag.IsPropertyUpdated(timeZoneProperty)) {
         // If we have the associated time zone property handy and if it has been updated locally,
         // then we scope the date time to that time zone.
         try {
@@ -124,7 +132,8 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
 //                        // This is necessary to stamp the date/time with the Local kind.
 //                        return new DateTime(convertedDateTime.Ticks, DateTimeKind.Utc);
         } on TimeZoneConversionException catch (e) {
-          throw new PropertyException("""string.Format(Strings.InvalidDateTime, dateTime),
+          throw new PropertyException(
+              """string.Format(Strings.InvalidDateTime, dateTime),
                             this.Name,
                             $e""");
         }
@@ -132,16 +141,19 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
         if (isUpdateOperation) {
           // In an update operation, what we do depends on what version of EWS
           // we are targeting.
-          if (service.RequestedServerVersion == ExchangeVersion.Exchange2007_SP1) {
+          if (service.RequestedServerVersion ==
+              ExchangeVersion.Exchange2007_SP1) {
             // For Exchange 2007 SP1, we still need to scope to the service's time zone.
-            return super.ScopeToTimeZone(service, dateTime, propertyBag, isUpdateOperation);
+            return super.ScopeToTimeZone(
+                service, dateTime, propertyBag, isUpdateOperation);
           } else {
             // Otherwise, we let the server scope to the appropriate time zone.
             return dateTime;
           }
         } else {
           // In a Create operation, always scope to the service's time zone.
-          return super.ScopeToTimeZone(service, dateTime, propertyBag, isUpdateOperation);
+          return super.ScopeToTimeZone(
+              service, dateTime, propertyBag, isUpdateOperation);
         }
       }
     }

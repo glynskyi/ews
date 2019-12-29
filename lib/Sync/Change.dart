@@ -80,7 +80,8 @@ abstract class Change {
   /// <summary>
   /// Gets or sets the Id of the service object the change applies to.
   /// </summary>
-  ServiceId get Id => this.ServiceObject != null ? this.ServiceObject.GetId() : this.id;
+  ServiceId get Id =>
+      this.ServiceObject != null ? this.ServiceObject.GetId() : this.id;
 
   set Id(ServiceId value) {
     this.id = value;

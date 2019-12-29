@@ -44,7 +44,8 @@ import 'package:ews/Exceptions/NotSupportedException.dart';
 /// Represents the base class for all responses that can be sent.
 /// </summary>
 /// <typeparam name="TMessage">Type of message.</typeparam>
-abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObject {
+abstract class ResponseObject<TMessage extends EmailMessage>
+    extends ServiceObject {
   Item _referenceItem;
 
   /// <summary>
@@ -52,7 +53,8 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   /// </summary>
   /// <param name="referenceItem">The reference item.</param>
   ResponseObject(Item referenceItem) : super(referenceItem.Service) {
-    EwsUtilities.Assert(referenceItem != null, "ResponseObject.ctor", "referenceItem is null");
+    EwsUtilities.Assert(
+        referenceItem != null, "ResponseObject.ctor", "referenceItem is null");
 
     referenceItem.ThrowIfThisIsNew();
 
@@ -84,7 +86,9 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   /// <param name="sendCancellationsMode">Indicates whether meeting cancellation messages should be sent.</param>
   /// <param name="affectedTaskOccurrences">Indicate which occurrence of a recurring task should be deleted.</param>
   @override
-  Future<void> InternalDelete(DeleteMode deleteMode, SendCancellationsMode sendCancellationsMode,
+  Future<void> InternalDelete(
+      DeleteMode deleteMode,
+      SendCancellationsMode sendCancellationsMode,
       AffectedTaskOccurrence affectedTaskOccurrences) {
     throw new NotSupportedException();
   }
@@ -100,7 +104,8 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
     (this.PropertyBag[ResponseObjectSchema.ReferenceItemId] as ItemId)
         .Assign(this._referenceItem.Id);
 
-    return this.Service.InternalCreateResponseObject(this, destinationFolderId, messageDisposition);
+    return this.Service.InternalCreateResponseObject(
+        this, destinationFolderId, messageDisposition);
   }
 
   /// <summary>
@@ -111,8 +116,8 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   Future<TMessage> SaveWithFolderId(FolderId destinationFolderId) async {
     EwsUtilities.ValidateParam(destinationFolderId, "destinationFolderId");
 
-    return (await this.InternalCreate(destinationFolderId, MessageDisposition.SaveOnly))[0]
-        as TMessage;
+    return (await this.InternalCreate(
+        destinationFolderId, MessageDisposition.SaveOnly))[0] as TMessage;
   }
 
   /// <summary>
@@ -120,8 +125,10 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   /// </summary>
   /// <param name="destinationFolderName">The name of the folder in which to save the response.</param>
   /// <returns>A TMessage that represents the response.</returns>
-  Future<TMessage> SaveWithWellKnownFolder(WellKnownFolderName destinationFolderName) async {
-    return (await this.InternalCreate(new FolderId.fromWellKnownFolder(destinationFolderName),
+  Future<TMessage> SaveWithWellKnownFolder(
+      WellKnownFolderName destinationFolderName) async {
+    return (await this.InternalCreate(
+        new FolderId.fromWellKnownFolder(destinationFolderName),
         MessageDisposition.SaveOnly))[0] as TMessage;
   }
 
@@ -130,7 +137,8 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   /// </summary>
   /// <returns>A TMessage that represents the response.</returns>
   Future<TMessage> Save() async {
-    return (await this.InternalCreate(null, MessageDisposition.SaveOnly))[0] as TMessage;
+    return (await this.InternalCreate(null, MessageDisposition.SaveOnly))[0]
+        as TMessage;
   }
 
   /// <summary>
@@ -147,14 +155,16 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   void SendAndSaveCopyWithFolderId(FolderId destinationFolderId) {
     EwsUtilities.ValidateParam(destinationFolderId, "destinationFolderId");
 
-    this.InternalCreate(destinationFolderId, MessageDisposition.SendAndSaveCopy);
+    this.InternalCreate(
+        destinationFolderId, MessageDisposition.SendAndSaveCopy);
   }
 
   /// <summary>
   /// Sends this response and saves a copy in the specified folder. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="destinationFolderName">The name of the folder in which to save the copy of the message.</param>
-  void SendAndSaveCopyWithWellKnownFolder(WellKnownFolderName destinationFolderName) {
+  void SendAndSaveCopyWithWellKnownFolder(
+      WellKnownFolderName destinationFolderName) {
     this.InternalCreate(new FolderId.fromWellKnownFolder(destinationFolderName),
         MessageDisposition.SendAndSaveCopy);
   }
@@ -169,7 +179,8 @@ abstract class ResponseObject<TMessage extends EmailMessage> extends ServiceObje
   /// <summary>
   /// Gets or sets a value indicating whether read receipts will be requested from recipients of this response.
   /// </summary>
-  bool get IsReadReceiptRequested => this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested];
+  bool get IsReadReceiptRequested =>
+      this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested];
 
   set IsReadReceiptRequested(bool value) =>
       this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested] = value;

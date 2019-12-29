@@ -57,10 +57,12 @@ class EffectiveRightsPropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
     Set<EffectiveRights> value = Set();
 
-    reader.EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace.Types, this.XmlElementName);
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        XmlNamespace.Types, this.XmlElementName);
 
     if (!reader.IsEmptyElement) {
       do {
@@ -105,7 +107,8 @@ class EffectiveRightsPropertyDefinition extends PropertyDefinition {
               break;
           }
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Types, this.XmlElementName));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Types, this.XmlElementName));
     }
 
     propertyBag[this] = value;
@@ -118,8 +121,8 @@ class EffectiveRightsPropertyDefinition extends PropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
   @override
-  void WritePropertyValueToXml(
-      EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation) {
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     // EffectiveRights is a read-only property, no need to implement this.
   }
 

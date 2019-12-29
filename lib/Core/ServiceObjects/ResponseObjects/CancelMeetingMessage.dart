@@ -37,10 +37,12 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 /// Represents a meeting cancellation message.
 /// </summary>
 //    [ServiceObjectDefinition(XmlElementNames.CancelCalendarItem, ReturnedByServer = false)]
-class CancelMeetingMessage extends CalendarResponseMessageBase<MeetingCancellation> {
+class CancelMeetingMessage
+    extends CalendarResponseMessageBase<MeetingCancellation> {
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {
-    return ServiceObjectDefinitionAttribute(XmlElementNames.CancelCalendarItem, false);
+    return ServiceObjectDefinitionAttribute(
+        XmlElementNames.CancelCalendarItem, false);
   }
 
   /// <summary>
@@ -72,5 +74,6 @@ class CancelMeetingMessage extends CalendarResponseMessageBase<MeetingCancellati
   /// </summary>
   MessageBody get Body => this.PropertyBag[CancelMeetingMessageSchema.Body];
 
-  set Body(MessageBody value) => this.PropertyBag[CancelMeetingMessageSchema.Body] = value;
+  set Body(MessageBody value) =>
+      this.PropertyBag[CancelMeetingMessageSchema.Body] = value;
 }

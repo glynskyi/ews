@@ -50,7 +50,8 @@ class AttendeeInfo extends ISelfValidate {
   /// <param name="attendeeType">The yype of the attendee.</param>
   /// <param name="excludeConflicts">Indicates whether times when this attendee is not available should be returned.</param>
   AttendeeInfo.withSmtpAddress(this._smtpAddress,
-      [this._attendeeType = MeetingAttendeeType.Required, this._excludeConflicts = false]);
+      [this._attendeeType = MeetingAttendeeType.Required,
+      this._excludeConflicts = false]);
 
   /// <summary>
   /// Defines an implicit conversion between a String representing an SMTP address and AttendeeInfo.
@@ -77,8 +78,8 @@ class AttendeeInfo extends ISelfValidate {
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.AttendeeType, this._attendeeType);
 
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.ExcludeConflicts, this._excludeConflicts);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.ExcludeConflicts, this._excludeConflicts);
 
     writer.WriteEndElement(); // MailboxData
   }

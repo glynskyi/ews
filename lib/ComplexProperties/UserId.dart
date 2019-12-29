@@ -169,15 +169,16 @@ class UserId extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.SID, this.SID);
-
     writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.PrimarySmtpAddress, this.PrimarySmtpAddress);
+        XmlNamespace.Types, XmlElementNames.SID, this.SID);
+
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.PrimarySmtpAddress, this.PrimarySmtpAddress);
 
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.DisplayName, this.DisplayName);
 
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.DistinguishedUser, this.StandardUser);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.DistinguishedUser, this.StandardUser);
   }
 }

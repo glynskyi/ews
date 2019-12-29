@@ -65,7 +65,9 @@ class AttributedString extends ComplexProperty {
   /// </summary>
   /// <param name="value">String value</param>
   /// <param name="attributions">A list of attributions</param>
-  AttributedString.withValueAndAttibutions(String value, List<String> attributions) : super() {
+  AttributedString.withValueAndAttibutions(
+      String value, List<String> attributions)
+      : super() {
     EwsUtilities.ValidateParam(value, "value");
     this.Value = value;
 
@@ -127,7 +129,8 @@ class AttributedString extends ComplexProperty {
             this._attributionList.add(s);
           }
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Types, localName));
+      } while (
+          !reader.IsEndElementWithNamespace(XmlNamespace.Types, localName));
       this.Attributions = this._attributionList.toList();
     }
 

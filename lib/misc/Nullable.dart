@@ -1,3 +1,1 @@
-class Nullable<T> {
-
-}
+class Nullable<T> {}

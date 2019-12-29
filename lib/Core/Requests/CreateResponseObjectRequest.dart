@@ -33,13 +33,15 @@ import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 /// <summary>
 /// Represents a CreateItem request for a response object.
 /// </summary>
-class CreateResponseObjectRequest extends CreateItemRequestBase<ServiceObject, CreateResponseObjectResponse> {
+class CreateResponseObjectRequest
+    extends CreateItemRequestBase<ServiceObject, CreateResponseObjectResponse> {
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateResponseObjectRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  CreateResponseObjectRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  CreateResponseObjectRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -49,7 +51,8 @@ class CreateResponseObjectRequest extends CreateItemRequestBase<ServiceObject, C
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service object.</returns>
   @override
-  CreateResponseObjectResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  CreateResponseObjectResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new CreateResponseObjectResponse();
   }
 

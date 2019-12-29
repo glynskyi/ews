@@ -23,33 +23,28 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-    import 'package:ews/Exceptions/ServiceRemoteException.dart';
+import 'package:ews/Exceptions/ServiceRemoteException.dart';
 
 /// <summary>
-    /// Represents an error that occurs when a service operation request fails (e.g. connection error).
-    /// </summary>
+/// Represents an error that occurs when a service operation request fails (e.g. connection error).
+/// </summary>
 //    [Serializable]
- class ServiceRequestException extends ServiceRemoteException
-    {
-        /// <summary>
-        /// ServiceRequestException Constructor.
-        /// </summary>
-      /// <param name="message">Error message text.</param>
-      /// <param name="innerException">Inner exception.</param>
- ServiceRequestException([String message = "", Exception innerException])
-            : super(message, innerException);
+class ServiceRequestException extends ServiceRemoteException {
+  /// <summary>
+  /// ServiceRequestException Constructor.
+  /// </summary>
+  /// <param name="message">Error message text.</param>
+  /// <param name="innerException">Inner exception.</param>
+  ServiceRequestException([String message = "", Exception innerException])
+      : super(message, innerException);
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceRequestException"/> class with serialized data.
-		/// </summary>
-		/// <param name="info">The object that holds the serialized object data.</param>
-		/// <param name="context">The contextual information about the source or destination.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceRequestException"/> class with serialized data.
+  /// </summary>
+  /// <param name="info">The object that holds the serialized object data.</param>
+  /// <param name="context">The contextual information about the source or destination.</param>
 //		protected ServiceRequestException(SerializationInfo info, StreamingContext context)
 //			: super(info, context)
 //	    {
 //		}
-	}
+}

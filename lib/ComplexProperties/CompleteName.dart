@@ -152,14 +152,16 @@ class CompleteName extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Title, this.Title);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Title, this.Title);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.FirstName, this.GivenName);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.MiddleName, this.MiddleName);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.LastName, this.Surname);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Suffix, this.Suffix);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Suffix, this.Suffix);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.Initials, this.Initials);
     writer.WriteElementValueWithNamespace(

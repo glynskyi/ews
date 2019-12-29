@@ -41,8 +41,8 @@ import 'package:ews/misc/Std/EnumToString.dart';
 /// </summary>
 /// <typeparam name="TServiceObject">ServiceObject type.</typeparam>
 /// <typeparam name="TChange">Change type.</typeparam>
-abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extends Change>
-    extends ServiceResponse {
+abstract class SyncResponse<TServiceObject extends ServiceObject,
+    TChange extends Change> extends ServiceResponse {
   ChangeCollection<TChange> _changes = new ChangeCollection<TChange>();
 
   PropertySet _propertySet;
@@ -54,8 +54,8 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
   SyncResponse(PropertySet propertySet) : super() {
     this._propertySet = propertySet;
 
-    EwsUtilities.Assert(
-        this._propertySet != null, "SyncResponse.ctor", "PropertySet should not be null");
+    EwsUtilities.Assert(this._propertySet != null, "SyncResponse.ctor",
+        "PropertySet should not be null");
   }
 
   /// <summary>
@@ -88,12 +88,14 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
   /// <param name="reader">The reader.</param>
   @override
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    this.Changes.SyncState =
-        reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SyncState);
-    this.Changes.MoreChangesAvailable = !reader.ReadElementValueWithNamespace<bool>(
-        XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName());
+    this.Changes.SyncState = reader.ReadElementValueWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.SyncState);
+    this.Changes.MoreChangesAvailable =
+        !reader.ReadElementValueWithNamespace<bool>(
+            XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName());
 
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Changes);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.Changes);
     if (!reader.IsEmptyElement) {
       do {
         reader.Read();
@@ -135,18 +137,21 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
 
                   ItemChange itemChange = change as ItemChange;
 
-                  EwsUtilities.Assert(itemChange != null, "SyncResponse.ReadElementsFromXml",
+                  EwsUtilities.Assert(
+                      itemChange != null,
+                      "SyncResponse.ReadElementsFromXml",
                       "ReadFlagChange is only valid on ItemChange");
 
-                  itemChange.IsRead = reader.ReadElementValueWithNamespace<bool>(
-                      XmlNamespace.Types, XmlElementNames.IsRead);
+                  itemChange.IsRead =
+                      reader.ReadElementValueWithNamespace<bool>(
+                          XmlNamespace.Types, XmlElementNames.IsRead);
                 }
 
                 break;
               default:
                 change.ServiceObject =
-                    EwsUtilities.CreateEwsObjectFromXmlElementName<TServiceObject>(
-                        reader.Service, reader.LocalName);
+                    EwsUtilities.CreateEwsObjectFromXmlElementName<
+                        TServiceObject>(reader.Service, reader.LocalName);
 
                 change.ServiceObject.LoadFromXmlWithPropertySet(
                     reader,
@@ -163,7 +168,8 @@ abstract class SyncResponse<TServiceObject extends ServiceObject, TChange extend
             this._changes.Add(change);
           }
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Changes));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.Changes));
     }
   }
 

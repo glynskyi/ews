@@ -23,50 +23,36 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-    import 'package:ews/Core/EwsUtilities.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
 import 'package:ews/PropertyDefinitions/GenericPropertyDefinition.dart';
 import 'package:ews/misc/TimeSpan.dart';
 
 /// <summary>
-    /// Represents TimeSpan property definition.
-    /// </summary>
-    class TimeSpanPropertyDefinition extends GenericPropertyDefinition<TimeSpan>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanPropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <param name="uri">The URI.</param>
-        /// <param name="flags">The flags.</param>
-        /// <param name="version">The version.</param>
-        TimeSpanPropertyDefinition.withUriAndFlags(
-            String xmlElementName,
-            String uri,
-            List<PropertyDefinitionFlags> flags,
-            ExchangeVersion version)
-            : super.withUriAndFlags(
-                xmlElementName,
-                uri,
-                flags,
-                version)
-        {
-        }
+/// Represents TimeSpan property definition.
+/// </summary>
+class TimeSpanPropertyDefinition extends GenericPropertyDefinition<TimeSpan> {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TimeSpanPropertyDefinition"/> class.
+  /// </summary>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <param name="uri">The URI.</param>
+  /// <param name="flags">The flags.</param>
+  /// <param name="version">The version.</param>
+  TimeSpanPropertyDefinition.withUriAndFlags(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+      : super.withUriAndFlags(xmlElementName, uri, flags, version) {}
 
-        /// <summary>
-        /// Parses the specified value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>TimeSpan value.</returns>
-@override
-        Object Parse(String value)
-        {
-            return EwsUtilities.XSDurationToTimeSpan(value);
-        }
+  /// <summary>
+  /// Parses the specified value.
+  /// </summary>
+  /// <param name="value">The value.</param>
+  /// <returns>TimeSpan value.</returns>
+  @override
+  Object Parse(String value) {
+    return EwsUtilities.XSDurationToTimeSpan(value);
+  }
 
 //        /// <summary>
 //        /// Converts instance to a string.
@@ -78,4 +64,4 @@ import 'package:ews/misc/TimeSpan.dart';
 //        {
 //            return EwsUtilities.TimeSpanToXSDuration(value);
 //        }
-    }
+}

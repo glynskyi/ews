@@ -55,7 +55,8 @@ class IndexedPropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <param name="idxPropDef1">First indexed property definition.</param>
   /// <param name="idxPropDef2">Second indexed property definition.</param>
   /// <returns>True if indexed property definitions are equal.</returns>
-  static bool IsEqualTo(IndexedPropertyDefinition idxPropDef1, IndexedPropertyDefinition idxPropDef2) {
+  static bool IsEqualTo(IndexedPropertyDefinition idxPropDef1,
+      IndexedPropertyDefinition idxPropDef2) {
     return identical(idxPropDef1, idxPropDef2) ||
         (idxPropDef1 != null &&
             idxPropDef2 != null &&

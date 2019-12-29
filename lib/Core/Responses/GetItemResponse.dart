@@ -48,8 +48,8 @@ class GetItemResponse extends ServiceResponse {
     this._item = item;
     this._propertySet = propertySet;
 
-    EwsUtilities.Assert(
-        this._propertySet != null, "GetItemResponse.ctor", "PropertySet should not be null");
+    EwsUtilities.Assert(this._propertySet != null, "GetItemResponse.ctor",
+        "PropertySet should not be null");
   }
 
   /// <summary>
@@ -79,12 +79,13 @@ class GetItemResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
-  serviceObjects.Item _GetObjectInstance(ExchangeService service, String xmlElementName) {
+  serviceObjects.Item _GetObjectInstance(
+      ExchangeService service, String xmlElementName) {
     if (this.Item != null) {
       return this.Item;
     } else {
-      return EwsUtilities.CreateEwsObjectFromXmlElementName<serviceObjects.Item>(
-          service, xmlElementName);
+      return EwsUtilities.CreateEwsObjectFromXmlElementName<
+          serviceObjects.Item>(service, xmlElementName);
     }
   }
 

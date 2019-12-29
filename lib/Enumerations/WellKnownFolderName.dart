@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
 // The values in this enumeration must match the values of the
 // DistinguishedFolderIdNameType type in the schema.
 

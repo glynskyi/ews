@@ -77,7 +77,8 @@ class MeetingTimeZone extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.BaseOffset:
-        this._baseOffset = EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
+        this._baseOffset =
+            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
         return true;
       case XmlElementNames.Standard:
         this._standard = new TimeChange();
@@ -117,7 +118,9 @@ class MeetingTimeZone extends ComplexProperty {
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.BaseOffset != null) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.BaseOffset,
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Types,
+          XmlElementNames.BaseOffset,
           EwsUtilities.TimeSpanToXSDuration(this.BaseOffset));
     }
 

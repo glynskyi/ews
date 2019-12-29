@@ -33,7 +33,8 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 /// <summary>
 /// Represents a meeting acceptance message.
 /// </summary>
-class AcceptMeetingInvitationMessage extends CalendarResponseMessage<MeetingResponse> {
+class AcceptMeetingInvitationMessage
+    extends CalendarResponseMessage<MeetingResponse> {
   /* private */ bool tentative;
 
   @override
@@ -46,7 +47,8 @@ class AcceptMeetingInvitationMessage extends CalendarResponseMessage<MeetingResp
   /// </summary>
   /// <param name="referenceItem">The reference item.</param>
   /// <param name="tentative">if set to <c>true</c> accept invitation tentatively.</param>
-  AcceptMeetingInvitationMessage(Item referenceItem, bool tentative) : super(referenceItem) {
+  AcceptMeetingInvitationMessage(Item referenceItem, bool tentative)
+      : super(referenceItem) {
     this.tentative = tentative;
   }
 

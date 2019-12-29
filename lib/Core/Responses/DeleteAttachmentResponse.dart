@@ -43,7 +43,8 @@ class DeleteAttachmentResponse extends ServiceResponse {
   /// </summary>
   /// <param name="attachment">The attachment.</param>
   DeleteAttachmentResponse(complex.Attachment attachment) : super() {
-    EwsUtilities.Assert(attachment != null, "DeleteAttachmentResponse.ctor", "attachment is null");
+    EwsUtilities.Assert(attachment != null, "DeleteAttachmentResponse.ctor",
+        "attachment is null");
 
     this._attachment = attachment;
   }
@@ -56,14 +57,18 @@ class DeleteAttachmentResponse extends ServiceResponse {
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.RootItemId);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.RootItemId);
 
-    String changeKey = reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
-    if (!StringUtils.IsNullOrEmpty(changeKey) && this._attachment.Owner != null) {
+    String changeKey =
+        reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
+    if (!StringUtils.IsNullOrEmpty(changeKey) &&
+        this._attachment.Owner != null) {
       this._attachment.Owner.RootItemId.ChangeKey = changeKey;
     }
 
-    reader.ReadEndElementIfNecessary(XmlNamespace.Messages, XmlElementNames.RootItemId);
+    reader.ReadEndElementIfNecessary(
+        XmlNamespace.Messages, XmlElementNames.RootItemId);
   }
 
   /// <summary>

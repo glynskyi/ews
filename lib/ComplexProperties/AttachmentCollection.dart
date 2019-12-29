@@ -47,7 +47,8 @@ import 'package:ews/Interfaces/IOwnedProperty.dart';
 /// <summary>
 /// Represents an item's attachment collection.
 /// </summary>
-class AttachmentCollection extends ComplexPropertyCollection<Attachment> implements IOwnedProperty {
+class AttachmentCollection extends ComplexPropertyCollection<Attachment>
+    implements IOwnedProperty {
   /// <summary>
   /// The item owner that owns this attachment collection
   /// </summary>
@@ -66,7 +67,9 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
   set Owner(ServiceObject value) {
     Item item = value as Item;
 
-    EwsUtilities.Assert(item != null, "AttachmentCollection.IOwnedProperty.set_Owner",
+    EwsUtilities.Assert(
+        item != null,
+        "AttachmentCollection.IOwnedProperty.set_Owner",
         "value is not a descendant of ItemBase");
 
     this._owner = item;
@@ -105,7 +108,8 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
   /// <param name="name">The display name of the new attachment.</param>
   /// <param name="contentStream">The stream from which to read the content of the attachment.</param>
   /// <returns>A FileAttachment instance.</returns>
-  FileAttachment AddFileAttachmentWithStream(String name, Stream contentStream) {
+  FileAttachment AddFileAttachmentWithStream(
+      String name, Stream contentStream) {
     FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
     fileAttachment.Name = name;
     fileAttachment.ContentStream = contentStream;
@@ -187,7 +191,8 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
   /// <param name="index">Index of the attachment to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     this.InternalRemoveAt(index);
@@ -269,9 +274,11 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
     // If there are any, create them by calling the CreateAttachment web method.
     if (attachments.length > 0) {
       if (this._owner.IsAttachment) {
-        await this._InternalCreateAttachments(this._owner.ParentAttachment.Id, attachments);
+        await this._InternalCreateAttachments(
+            this._owner.ParentAttachment.Id, attachments);
       } else {
-        await this._InternalCreateAttachments(this._owner.Id.UniqueId, attachments);
+        await this
+            ._InternalCreateAttachments(this._owner.Id.UniqueId, attachments);
       }
     }
 
@@ -339,7 +346,9 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
     // Validate all added attachments
     bool contactPhotoFound = false;
 
-    for (int attachmentIndex = 0; attachmentIndex < this.AddedItems.length; attachmentIndex++) {
+    for (int attachmentIndex = 0;
+        attachmentIndex < this.AddedItems.length;
+        attachmentIndex++) {
       Attachment attachment = this.AddedItems[attachmentIndex];
       if (attachment.IsNew) {
         // At the server side, only the last attachment with IsContactPhoto is kept, all other IsContactPhoto
@@ -358,7 +367,8 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
 
           if (fileAttachment != null && fileAttachment.IsContactPhoto) {
             if (contactPhotoFound) {
-              throw new ServiceValidationException("Strings.MultipleContactPhotosInAttachment");
+              throw new ServiceValidationException(
+                  "Strings.MultipleContactPhotosInAttachment");
             }
 
             contactPhotoFound = true;
@@ -374,7 +384,8 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
   /// Calls the DeleteAttachment web method to delete a list of attachments.
   /// </summary>
   /// <param name="attachments">The attachments to delete.</param>
-  Future<void> _InternalDeleteAttachments(Iterable<Attachment> attachments) async {
+  Future<void> _InternalDeleteAttachments(
+      Iterable<Attachment> attachments) async {
     ServiceResponseCollection<DeleteAttachmentResponse> responses =
         await this._owner.Service.DeleteAttachments(attachments);
 
@@ -413,7 +424,8 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment> impleme
 
     // TODO : Should we throw for warnings as well?
     if (responses.OverallResult == ServiceResult.Error) {
-      throw new CreateAttachmentException(responses, "Strings.AttachmentCreationFailed");
+      throw new CreateAttachmentException(
+          responses, "Strings.AttachmentCreationFailed");
     }
   }
 

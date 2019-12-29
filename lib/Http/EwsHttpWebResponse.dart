@@ -17,10 +17,16 @@ class EwsHttpWebResponse implements IEwsHttpWebResponse {
   }
 
   @override
-  String get ContentEncoding => this.httpClientResponse.headers[HttpHeaders.contentEncodingHeader]?.first ?? "";
+  String get ContentEncoding =>
+      this
+          .httpClientResponse
+          .headers[HttpHeaders.contentEncodingHeader]
+          ?.first ??
+      "";
 
   @override
-  String get ContentType => this.httpClientResponse.headers.contentType?.value ?? "";
+  String get ContentType =>
+      this.httpClientResponse.headers.contentType?.value ?? "";
 
   @override
   Dispose() {
@@ -50,5 +56,4 @@ class EwsHttpWebResponse implements IEwsHttpWebResponse {
 
   @override
   String get StatusDescription => httpClientResponse.reasonPhrase;
-
 }

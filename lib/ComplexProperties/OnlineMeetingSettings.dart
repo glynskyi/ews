@@ -65,8 +65,10 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// <param name="lobbyBypass">The address used to initialize the OnlineMeetingSettings.</param>
   /// <param name="accessLevel">The routing type used to initialize the OnlineMeetingSettings.</param>
   /// <param name="presenters">Mailbox type of the participant.</param>
-  OnlineMeetingSettings.withParams(enumerations.LobbyBypass lobbyBypass,
-      OnlineMeetingAccessLevel accessLevel, enumerations.Presenters presenters) {
+  OnlineMeetingSettings.withParams(
+      enumerations.LobbyBypass lobbyBypass,
+      OnlineMeetingAccessLevel accessLevel,
+      enumerations.Presenters presenters) {
     this.lobbyBypass = lobbyBypass;
     this.accessLevel = accessLevel;
     this.presenters = presenters;
@@ -76,7 +78,8 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// Initializes a new instance of the <see cref="OnlineMeetingSettings"/> class from another OnlineMeetingSettings instance.
   /// </summary>
   /// <param name="onlineMeetingSettings">OnlineMeetingSettings instance to copy.</param>
-  OnlineMeetingSettings.withOnlineMeetingSettings(OnlineMeetingSettings onlineMeetingSettings)
+  OnlineMeetingSettings.withOnlineMeetingSettings(
+      OnlineMeetingSettings onlineMeetingSettings)
       : super() {
     EwsUtilities.ValidateParam(onlineMeetingSettings, "OnlineMeetingSettings");
 

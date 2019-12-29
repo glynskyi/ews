@@ -23,49 +23,45 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-    import 'package:ews/Core/Responses/CreateAttachmentResponse.dart';
+import 'package:ews/Core/Responses/CreateAttachmentResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
 import 'package:ews/Exceptions/BatchServiceResponseException.dart';
 
 /// <summary>
-    /// Represents an error that occurs when a call to the CreateAttachment web method fails.
-    /// </summary>
+/// Represents an error that occurs when a call to the CreateAttachment web method fails.
+/// </summary>
 //    [Serializable]
-  class CreateAttachmentException extends BatchServiceResponseException<CreateAttachmentResponse>
-    {
-        /// <summary>
-        /// Initializes a new instance of CreateAttachmentException.
-        /// </summary>
-        /// <param name="serviceResponses">The list of responses to be associated with this exception.</param>
-        /// <param name="message">The message that describes the error.</param>
+class CreateAttachmentException
+    extends BatchServiceResponseException<CreateAttachmentResponse> {
+  /// <summary>
+  /// Initializes a new instance of CreateAttachmentException.
+  /// </summary>
+  /// <param name="serviceResponses">The list of responses to be associated with this exception.</param>
+  /// <param name="message">The message that describes the error.</param>
 //        CreateAttachmentException(
 //            ServiceResponseCollection<CreateAttachmentResponse> serviceResponses,
 //            String message)
 //            : super(serviceResponses, message);
 
-        /// <summary>
-        /// Initializes a new instance of CreateAttachmentException.
-        /// </summary>
-        /// <param name="serviceResponses">The list of responses to be associated with this exception.</param>
-        /// <param name="message">The message that describes the error.</param>
-        /// <param name="innerException">The exception that is the cause of the current exception.</param>
-        CreateAttachmentException(
-            ServiceResponseCollection<CreateAttachmentResponse> serviceResponses,
-            String message,
-            [Exception innerException])
-            : super(serviceResponses, message, innerException);
+  /// <summary>
+  /// Initializes a new instance of CreateAttachmentException.
+  /// </summary>
+  /// <param name="serviceResponses">The list of responses to be associated with this exception.</param>
+  /// <param name="message">The message that describes the error.</param>
+  /// <param name="innerException">The exception that is the cause of the current exception.</param>
+  CreateAttachmentException(
+      ServiceResponseCollection<CreateAttachmentResponse> serviceResponses,
+      String message,
+      [Exception innerException])
+      : super(serviceResponses, message, innerException);
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.CreateAttachmentException"/> class with serialized data.
-		/// </summary>
-		/// <param name="info">The object that holds the serialized object data.</param>
-		/// <param name="context">The contextual information about the source or destination.</param>
+  /// <summary>
+  /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.CreateAttachmentException"/> class with serialized data.
+  /// </summary>
+  /// <param name="info">The object that holds the serialized object data.</param>
+  /// <param name="context">The contextual information about the source or destination.</param>
 //		/* private */ CreateAttachmentException(SerializationInfo info, StreamingContext context)
 //			: super(info, context)
 //		{
 //		}
-	}
+}

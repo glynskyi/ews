@@ -60,8 +60,8 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
     this._isGrouped = isGrouped;
     this._propertySet = propertySet;
 
-    EwsUtilities.Assert(
-        this._propertySet != null, "FindItemResponse.ctor", "PropertySet should not be null");
+    EwsUtilities.Assert(this._propertySet != null, "FindItemResponse.ctor",
+        "PropertySet should not be null");
   }
 
   /// <summary>
@@ -70,15 +70,18 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// <param name="reader">The reader.</param>
   @override
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.RootFolder);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.RootFolder);
 
-    int totalItemsInView = reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
-    bool moreItemsAvailable =
-        !reader.ReadAttributeValue<bool>(XmlAttributeNames.IncludesLastItemInRange);
+    int totalItemsInView =
+        reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
+    bool moreItemsAvailable = !reader.ReadAttributeValue<bool>(
+        XmlAttributeNames.IncludesLastItemInRange);
 
     // Ignore IndexedPagingOffset attribute if moreItemsAvailable is false.
     int nextPageOffset = moreItemsAvailable
-        ? reader.ReadNullableAttributeValue<int>(XmlAttributeNames.IndexedPagingOffset)
+        ? reader.ReadNullableAttributeValue<int>(
+            XmlAttributeNames.IndexedPagingOffset)
         : null;
 
     if (!this._isGrouped) {
@@ -93,7 +96,8 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
       this._groupedFindResults.NextPageOffset = nextPageOffset;
       this._groupedFindResults.MoreAvailable = moreItemsAvailable;
 
-      reader.ReadStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.Groups);
+      reader.ReadStartElementWithNamespace(
+          XmlNamespace.Types, XmlElementNames.Groups);
 
       if (!reader.IsEmptyElement) {
         do {
@@ -107,19 +111,26 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
             List<TItem> itemList = new List<TItem>();
             _InternalReadItemsFromXml(reader, this._propertySet, itemList);
 
-            reader.ReadEndElementWithNamespace(XmlNamespace.Types, XmlElementNames.GroupedItems);
+            reader.ReadEndElementWithNamespace(
+                XmlNamespace.Types, XmlElementNames.GroupedItems);
 
-            this._groupedFindResults.ItemGroups.add(new ItemGroup<TItem>(groupIndex, itemList));
+            this
+                ._groupedFindResults
+                .ItemGroups
+                .add(new ItemGroup<TItem>(groupIndex, itemList));
           }
-        } while (!reader.IsEndElementWithNamespace(XmlNamespace.Types, XmlElementNames.Groups));
+        } while (!reader.IsEndElementWithNamespace(
+            XmlNamespace.Types, XmlElementNames.Groups));
       }
     }
 
-    reader.ReadEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.RootFolder);
+    reader.ReadEndElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.RootFolder);
 
     reader.Read();
 
-    if (reader.IsStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.HighlightTerms) &&
+    if (reader.IsStartElementWithNamespace(
+            XmlNamespace.Messages, XmlElementNames.HighlightTerms) &&
         !reader.IsEmptyElement) {
       do {
         reader.Read();
@@ -127,11 +138,12 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
         if (reader.NodeType == XmlNodeType.Element) {
           HighlightTerm term = new HighlightTerm();
 
-          term.LoadFromXmlWithNamespace(reader, XmlNamespace.Types, XmlElementNames.HighlightTerm);
+          term.LoadFromXmlWithNamespace(
+              reader, XmlNamespace.Types, XmlElementNames.HighlightTerm);
           this._results.HighlightTerms.add(term);
         }
-      } while (
-          !reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.HighlightTerms));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.HighlightTerms));
     }
   }
 
@@ -142,11 +154,16 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// <param name="propertySet">The property set.</param>
   /// <param name="destinationList">The list in which to add the read items.</param>
   static void _InternalReadItemsFromXml<TItem extends Item>(
-      EwsServiceXmlReader reader, PropertySet propertySet, List<TItem> destinationList) {
-    EwsUtilities.Assert(destinationList != null, "FindItemResponse.InternalReadItemsFromXml",
+      EwsServiceXmlReader reader,
+      PropertySet propertySet,
+      List<TItem> destinationList) {
+    EwsUtilities.Assert(
+        destinationList != null,
+        "FindItemResponse.InternalReadItemsFromXml",
         "destinationList is null.");
 
-    reader.ReadStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.Items);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Items);
     if (!reader.IsEmptyElement) {
       do {
         reader.Read();
@@ -168,7 +185,8 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
             destinationList.add(item);
           }
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Types, XmlElementNames.Items));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Types, XmlElementNames.Items));
     }
   }
 
@@ -179,14 +197,16 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item</returns>
   TItem _CreateItemInstance(ExchangeService service, String xmlElementName) {
-    return EwsUtilities.CreateEwsObjectFromXmlElementName<TItem>(service, xmlElementName);
+    return EwsUtilities.CreateEwsObjectFromXmlElementName<TItem>(
+        service, xmlElementName);
   }
 
   /// <summary>
   /// Gets a grouped list of items matching the specified search criteria that were found in Exchange. ItemGroups is
   /// null if the search operation did not specify grouping options.
   /// </summary>
-  GroupedFindItemsResults<TItem> get GroupedFindResults => this._groupedFindResults;
+  GroupedFindItemsResults<TItem> get GroupedFindResults =>
+      this._groupedFindResults;
 
   /// <summary>
   /// Gets the results of the search operation.

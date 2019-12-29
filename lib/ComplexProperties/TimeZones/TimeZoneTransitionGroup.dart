@@ -76,7 +76,8 @@ class CustomTimeZoneCreateParams {
   /// <value>
   ///     <c>true</c> if the custom time zone should have a daylight period; otherwise, <c>false</c>.
   /// </value>
-  bool get HasDaylightPeriod => !StringUtils.IsNullOrEmpty(this._daylightDisplayName);
+  bool get HasDaylightPeriod =>
+      !StringUtils.IsNullOrEmpty(this._daylightDisplayName);
 }
 
 /// <summary>
@@ -145,8 +146,10 @@ class TimeZoneTransitionGroup extends ComplexProperty {
 
     transition.LoadFromXmlElementName(reader);
 
-    EwsUtilities.Assert(transition.TargetPeriod != null,
-        "TimeZoneTransitionGroup.TryReadElementFromXml", "The transition's target period is null.");
+    EwsUtilities.Assert(
+        transition.TargetPeriod != null,
+        "TimeZoneTransitionGroup.TryReadElementFromXml",
+        "The transition's target period is null.");
 
     this.transitions.add(transition);
 
@@ -229,19 +232,23 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   void Validate() {
     // There must be exactly one or two transitions in the group.
     if (this.transitions.length < 1 || this.transitions.length > 2) {
-      throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+      throw new ServiceLocalException(
+          "Strings.InvalidOrUnsupportedTimeZoneDefinition");
     }
 
     // If there is only one transition, it must be of type TimeZoneTransition
-    if (this.transitions.length == 1 && !(this.transitions[0].runtimeType == TimeZoneTransition)) {
-      throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+    if (this.transitions.length == 1 &&
+        !(this.transitions[0].runtimeType == TimeZoneTransition)) {
+      throw new ServiceLocalException(
+          "Strings.InvalidOrUnsupportedTimeZoneDefinition");
     }
 
     // If there are two transitions, none of them should be of type TimeZoneTransition
     if (this.transitions.length == 2) {
       for (TimeZoneTransition transition in this.transitions) {
         if (transition.runtimeType == TimeZoneTransition) {
-          throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+          throw new ServiceLocalException(
+              "Strings.InvalidOrUnsupportedTimeZoneDefinition");
         }
       }
     }
@@ -249,7 +256,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
     // All the transitions in the group must be to a period.
     for (TimeZoneTransition transition in this.transitions) {
       if (transition.TargetPeriod == null) {
-        throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+        throw new ServiceLocalException(
+            "Strings.InvalidOrUnsupportedTimeZoneDefinition");
       }
     }
   }
@@ -268,7 +276,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   void InitializeTransitions() {
     if (this.transitionToStandard == null) {
       for (TimeZoneTransition transition in this.transitions) {
-        if (transition.TargetPeriod.IsStandardPeriod || (this.transitions.length == 1)) {
+        if (transition.TargetPeriod.IsStandardPeriod ||
+            (this.transitions.length == 1)) {
           this.transitionToStandard = transition;
         } else {
           this.transitionToDaylight = transition;
@@ -278,7 +287,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
 
     // If we didn't find a Standard period, this is an invalid time zone group.
     if (this.transitionToStandard == null) {
-      throw new ServiceLocalException("Strings.InvalidOrUnsupportedTimeZoneDefinition");
+      throw new ServiceLocalException(
+          "Strings.InvalidOrUnsupportedTimeZoneDefinition");
     }
   }
 
@@ -318,7 +328,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
     // EWS returns a positive offset for time zones that are behind UTC, and
     // a negative one for time zones ahead of UTC. TimeZoneInfo does it the other
     // way around.
-    throw NotImplementedException("-this.TransitionToStandard.TargetPeriod.Bias");
+    throw NotImplementedException(
+        "-this.TransitionToStandard.TargetPeriod.Bias");
 //            result.BaseOffsetToUtc = -this.TransitionToStandard.TargetPeriod.Bias;
 
 //            return result;
@@ -333,7 +344,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
       // EWS returns a positive offset for time zones that are behind UTC, and
       // a negative one for time zones ahead of UTC. TimeZoneInfo does it the other
       // way around.
-      throw NotImplementedException("- this.TransitionToDaylight.TargetPeriod.Bias");
+      throw NotImplementedException(
+          "- this.TransitionToDaylight.TargetPeriod.Bias");
 //                return this.TransitionToStandard.TargetPeriod.Bias - this.TransitionToDaylight.TargetPeriod.Bias;
     } else {
       return TimeSpan.ZERO;
@@ -376,7 +388,9 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition.</param>
   /// <param name="id">The Id of the new transition group.</param>
-  TimeZoneTransitionGroup.withId(TimeZoneDefinition timeZoneDefinition, String id) : super() {
+  TimeZoneTransitionGroup.withId(
+      TimeZoneDefinition timeZoneDefinition, String id)
+      : super() {
     this.timeZoneDefinition = timeZoneDefinition;
     this.id = id;
   }

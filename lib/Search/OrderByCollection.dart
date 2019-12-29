@@ -40,13 +40,15 @@ import 'package:ews/misc/OutParam.dart';
 class OrderByCollection
     with IterableMixin<MapEntry<PropertyDefinitionBase, SortDirection>>
     implements Iterable<MapEntry<PropertyDefinitionBase, SortDirection>> {
-  List<MapEntry<PropertyDefinitionBase, SortDirection>> _propDefSortOrderPairList;
+  List<MapEntry<PropertyDefinitionBase, SortDirection>>
+      _propDefSortOrderPairList;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OrderByCollection"/> class.
   /// </summary>
   OrderByCollection() {
-    this._propDefSortOrderPairList = new List<MapEntry<PropertyDefinitionBase, SortDirection>>();
+    this._propDefSortOrderPairList =
+        new List<MapEntry<PropertyDefinitionBase, SortDirection>>();
   }
 
   /// <summary>
@@ -54,14 +56,16 @@ class OrderByCollection
   /// </summary>
   /// <param name="propertyDefinition">The property definition.</param>
   /// <param name="sortDirection">The sort direction.</param>
-  void Add(PropertyDefinitionBase propertyDefinition, SortDirection sortDirection) {
+  void Add(
+      PropertyDefinitionBase propertyDefinition, SortDirection sortDirection) {
     if (this.Contains(propertyDefinition)) {
       throw new ServiceLocalException(
           "string.Format(Strings.PropertyAlreadyExistsInOrderByCollection, propertyDefinition.GetPrintableName())");
     }
 
     this._propDefSortOrderPairList.add(
-        new MapEntry<PropertyDefinitionBase, SortDirection>(propertyDefinition, sortDirection));
+        new MapEntry<PropertyDefinitionBase, SortDirection>(
+            propertyDefinition, sortDirection));
   }
 
   /// <summary>
@@ -77,7 +81,9 @@ class OrderByCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if the collection contains the specified property definition; otherwise, false.</returns>
   bool Contains(PropertyDefinitionBase propertyDefinition) {
-    return this._propDefSortOrderPairList.any((pair) => pair.key == propertyDefinition);
+    return this
+        ._propDefSortOrderPairList
+        .any((pair) => pair.key == propertyDefinition);
   }
 
   /// <summary>
@@ -91,8 +97,9 @@ class OrderByCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if the property definition is successfully removed; otherwise, false</returns>
   bool Remove(PropertyDefinitionBase propertyDefinition) {
-    final forRemove =
-        this._propDefSortOrderPairList.where((pair) => pair.key == propertyDefinition);
+    final forRemove = this
+        ._propDefSortOrderPairList
+        .where((pair) => pair.key == propertyDefinition);
     forRemove.forEach(this._propDefSortOrderPairList.remove);
     int count = forRemove.length;
     return count > 0;
@@ -115,9 +122,10 @@ class OrderByCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <param name="sortDirection">The sort direction.</param>
   /// <returns>True if collection contains property definition, otherwise false.</returns>
-  bool TryGetValue(
-      PropertyDefinitionBase propertyDefinition, OutParam<SortDirection> sortDirectionOutParam) {
-    for (MapEntry<PropertyDefinitionBase, SortDirection> pair in this._propDefSortOrderPairList) {
+  bool TryGetValue(PropertyDefinitionBase propertyDefinition,
+      OutParam<SortDirection> sortDirectionOutParam) {
+    for (MapEntry<PropertyDefinitionBase, SortDirection> pair
+        in this._propDefSortOrderPairList) {
       if (pair.value == propertyDefinition) {
         sortDirectionOutParam.param = pair.value;
         return true;
@@ -138,8 +146,10 @@ class OrderByCollection
     if (this.Count > 0) {
       writer.WriteStartElement(XmlNamespace.Messages, xmlElementName);
 
-      for (MapEntry<PropertyDefinitionBase, SortDirection> keyValuePair in this) {
-        writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.FieldOrder);
+      for (MapEntry<PropertyDefinitionBase, SortDirection> keyValuePair
+          in this) {
+        writer.WriteStartElement(
+            XmlNamespace.Types, XmlElementNames.FieldOrder);
 
         writer.WriteAttributeValue(XmlAttributeNames.Order, keyValuePair.value);
         keyValuePair.key.WriteToXml(writer);

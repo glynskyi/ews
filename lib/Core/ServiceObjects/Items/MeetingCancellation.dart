@@ -27,7 +27,8 @@ import 'package:ews/Attributes/ServiceObjectDefinitionAttribute.dart';
 import 'package:ews/ComplexProperties/EnhancedLocation.dart' as complex;
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
-import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart' as complex;
+import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart'
+    as complex;
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/ServiceObjects/Items/MeetingMessage.dart';
@@ -46,7 +47,8 @@ class MeetingCancellation extends MeetingMessage {
   /// Initializes a new instance of the <see cref="MeetingCancellation"/> class.
   /// </summary>
   /// <param name="parentAttachment">The parent attachment.</param>
-  MeetingCancellation.withAttachment(ItemAttachment parentAttachment) : super.withAttachment(parentAttachment) {}
+  MeetingCancellation.withAttachment(ItemAttachment parentAttachment)
+      : super.withAttachment(parentAttachment) {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="MeetingCancellation"/> class.
@@ -62,7 +64,8 @@ class MeetingCancellation extends MeetingMessage {
   /// <param name="id">The Id of the meeting cancellation message to bind to.</param>
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A MeetingCancellation instance representing the meeting cancellation message corresponding to the specified Id.</returns>
-  static Future<MeetingCancellation> Bind(ExchangeService service, ItemId id, PropertySet propertySet) {
+  static Future<MeetingCancellation> Bind(
+      ExchangeService service, ItemId id, PropertySet propertySet) {
     return service.BindToItemGeneric<MeetingCancellation>(id, propertySet);
   }
 
@@ -73,8 +76,10 @@ class MeetingCancellation extends MeetingMessage {
   /// <param name="service">The service to use to bind to the meeting cancellation message.</param>
   /// <param name="id">The Id of the meeting cancellation message to bind to.</param>
   /// <returns>A MeetingCancellation instance representing the meeting cancellation message corresponding to the specified Id.</returns>
-  static Future<MeetingCancellation> BindWithItemId(ExchangeService service, ItemId id) {
-    return MeetingCancellation.Bind(service, id, PropertySet.FirstClassProperties);
+  static Future<MeetingCancellation> BindWithItemId(
+      ExchangeService service, ItemId id) {
+    return MeetingCancellation.Bind(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -125,15 +130,18 @@ class MeetingCancellation extends MeetingMessage {
   /// <summary>
   /// Gets the recurrence pattern for this meeting request.
   /// </summary>
-  complex.Recurrence get Recurrence => this.PropertyBag[AppointmentSchema.Recurrence];
+  complex.Recurrence get Recurrence =>
+      this.PropertyBag[AppointmentSchema.Recurrence];
 
   /// <summary>
   /// Gets the Enhanced location object.
   /// </summary>
-  complex.EnhancedLocation get EnhancedLocation => this.PropertyBag[MeetingCancellationSchema.EnhancedLocation];
+  complex.EnhancedLocation get EnhancedLocation =>
+      this.PropertyBag[MeetingCancellationSchema.EnhancedLocation];
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {
-    return ServiceObjectDefinitionAttribute(XmlElementNames.MeetingCancellation);
+    return ServiceObjectDefinitionAttribute(
+        XmlElementNames.MeetingCancellation);
   }
 }

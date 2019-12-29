@@ -66,7 +66,8 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  ServiceResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  ServiceResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new ServiceResponse();
   }
 
@@ -114,8 +115,8 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     super.WriteAttributesToXml(writer);
 
-    writer.WriteAttributeValue(
-        XmlAttributeNames.SaveItemToFolder, this.SavedCopyDestinationFolderId != null);
+    writer.WriteAttributeValue(XmlAttributeNames.SaveItemToFolder,
+        this.SavedCopyDestinationFolderId != null);
   }
 
   /// <summary>
@@ -133,7 +134,8 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
     writer.WriteEndElement(); // ItemIds
 
     if (this.SavedCopyDestinationFolderId != null) {
-      writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.SavedItemFolderId);
+      writer.WriteStartElement(
+          XmlNamespace.Messages, XmlElementNames.SavedItemFolderId);
       this.SavedCopyDestinationFolderId.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
@@ -153,7 +155,8 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  SendItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  SendItemRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -168,7 +171,9 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// Gets or sets the saved copy destination folder id.
   /// </summary>
   /// <value>The saved copy destination folder id.</value>
-  FolderId get SavedCopyDestinationFolderId => this._savedCopyDestinationFolderId;
+  FolderId get SavedCopyDestinationFolderId =>
+      this._savedCopyDestinationFolderId;
 
-  set SavedCopyDestinationFolderId(FolderId value) => this._savedCopyDestinationFolderId = value;
+  set SavedCopyDestinationFolderId(FolderId value) =>
+      this._savedCopyDestinationFolderId = value;
 }

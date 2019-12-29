@@ -49,7 +49,8 @@ abstract class GetItemRequestBase<TResponse extends ServiceResponse>
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  GetItemRequestBase(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  GetItemRequestBase(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -87,7 +88,9 @@ abstract class GetItemRequestBase<TResponse extends ServiceResponse>
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     super.WriteElementsToXml(writer);
 
-    this.ItemIds.WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.ItemIds);
+    this
+        .ItemIds
+        .WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.ItemIds);
   }
 
   /// <summary>

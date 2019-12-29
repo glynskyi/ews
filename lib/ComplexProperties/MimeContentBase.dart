@@ -32,85 +32,82 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
 
 /// <summary>
-    /// Represents the MIME content of an item.
-    /// </summary>
- abstract class MimeContentBase extends ComplexProperty
-    {
-        /// <summary>
-        /// characterSet returned
-        /// </summary>
-        /* private */ String characterSet;
+/// Represents the MIME content of an item.
+/// </summary>
+abstract class MimeContentBase extends ComplexProperty {
+  /// <summary>
+  /// characterSet returned
+  /// </summary>
+  /* private */ String characterSet;
 
-        /// <summary>
-        /// content received
-        /// </summary>
-          /* private */ Uint8List content;
+  /// <summary>
+  /// content received
+  /// </summary>
+  /* private */
+  Uint8List content;
 
-        /// <summary>
-        /// Reads attributes from XML.
-        /// This should always be UTF-8 for MimeContentUTF8
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-@override
-        void ReadAttributesFromXml(EwsServiceXmlReader reader)
-        {
-            this.characterSet = reader.ReadAttributeValue<String>(XmlAttributeNames.CharacterSet);
-        }
+  /// <summary>
+  /// Reads attributes from XML.
+  /// This should always be UTF-8 for MimeContentUTF8
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  @override
+  void ReadAttributesFromXml(EwsServiceXmlReader reader) {
+    this.characterSet =
+        reader.ReadAttributeValue<String>(XmlAttributeNames.CharacterSet);
+  }
 
-        /// <summary>
-        /// Reads text value from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-@override
-        void ReadTextValueFromXml(EwsServiceXmlReader reader)
-        {
-            this.content = base64.decode(reader.ReadValue());
-        }
+  /// <summary>
+  /// Reads text value from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  @override
+  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
+    this.content = base64.decode(reader.ReadValue());
+  }
 
-        /// <summary>
-        /// Writes attributes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteAttributesToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteAttributeValue(XmlAttributeNames.CharacterSet, this.CharacterSet);
-        }
+  /// <summary>
+  /// Writes attributes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteAttributesToXml(EwsServiceXmlWriter writer) {
+    writer.WriteAttributeValue(
+        XmlAttributeNames.CharacterSet, this.CharacterSet);
+  }
 
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            if (this.Content != null && this.Content.length > 0)
-            {
-                writer.WriteBase64ElementValue(this.Content);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the character set of the content.
-        /// </summary>
-        String get CharacterSet => this.characterSet;
-
-        set CharacterSet(String value) {
-          if (this.CanSetFieldValue(this.characterSet, value)) {
-            this.characterSet = value;
-            this.Changed();
-          }
-        }
-
-        /// <summary>
-        /// Gets or sets the content.
-        /// </summary>
-        Uint8List get Content => this.content;
-
-        set Content(Uint8List value) {
-          if (this.CanSetFieldValue(this.content, value)) {
-            this.content = value;
-            this.Changed();
-          }
-        }
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    if (this.Content != null && this.Content.length > 0) {
+      writer.WriteBase64ElementValue(this.Content);
     }
+  }
+
+  /// <summary>
+  /// Gets or sets the character set of the content.
+  /// </summary>
+  String get CharacterSet => this.characterSet;
+
+  set CharacterSet(String value) {
+    if (this.CanSetFieldValue(this.characterSet, value)) {
+      this.characterSet = value;
+      this.Changed();
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets the content.
+  /// </summary>
+  Uint8List get Content => this.content;
+
+  set Content(Uint8List value) {
+    if (this.CanSetFieldValue(this.content, value)) {
+      this.content = value;
+      this.Changed();
+    }
+  }
+}

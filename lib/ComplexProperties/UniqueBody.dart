@@ -66,9 +66,11 @@ class UniqueBody extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
-    this.bodyType = reader.ReadAttributeValue<enumerations.BodyType>(XmlAttributeNames.BodyType);
+    this.bodyType = reader.ReadAttributeValue<enumerations.BodyType>(
+        XmlAttributeNames.BodyType);
 
-    String attributeValue = reader.ReadAttributeValue(XmlAttributeNames.IsTruncated);
+    String attributeValue =
+        reader.ReadAttributeValue(XmlAttributeNames.IsTruncated);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
       this.isTruncated = attributeValue?.toLowerCase() == 'true';
     }

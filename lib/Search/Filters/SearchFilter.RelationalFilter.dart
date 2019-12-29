@@ -58,7 +58,8 @@ abstract class RelationalFilter extends PropertyBasedFilter {
   /// <param name="propertyDefinition">The definition of the property that is being compared. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   /// <param name="otherPropertyDefinition">The definition of the property to compare with. Property definitions are available as static members from schema classes (for example, EmailMessageSchema, AppointmentSchema, etc.)</param>
   RelationalFilter.withPropertyAndProperty(
-      PropertyDefinitionBase propertyDefinition, PropertyDefinitionBase otherPropertyDefinition)
+      PropertyDefinitionBase propertyDefinition,
+      PropertyDefinitionBase otherPropertyDefinition)
       : super.withProperty(propertyDefinition) {
     this._otherPropertyDefinition = otherPropertyDefinition;
   }
@@ -68,7 +69,8 @@ abstract class RelationalFilter extends PropertyBasedFilter {
   /// </summary>
   /// <param name="propertyDefinition">The definition of the property that is being compared. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   /// <param name="value">The value to compare with.</param>
-  RelationalFilter.withPropertyAndValue(PropertyDefinitionBase propertyDefinition, Object value)
+  RelationalFilter.withPropertyAndValue(
+      PropertyDefinitionBase propertyDefinition, Object value)
       : super.withProperty(propertyDefinition) {
     this._value = value;
   }
@@ -81,7 +83,8 @@ abstract class RelationalFilter extends PropertyBasedFilter {
     super.InternalValidate();
 
     if (this._otherPropertyDefinition == null && this._value == null) {
-      throw new ServiceValidationException("Strings.EqualityComparisonFilterIsInvalid");
+      throw new ServiceValidationException(
+          "Strings.EqualityComparisonFilterIsInvalid");
     } else if (_value != null) {
       // All common value types (String, Int32, DateTime, ...) implement IConvertible.
       // Value types that don't implement IConvertible must implement ISearchStringProvider
@@ -110,12 +113,14 @@ abstract class RelationalFilter extends PropertyBasedFilter {
         reader.Read();
         reader.EnsureCurrentNodeIsStartElement();
 
-        if (reader.IsStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.Constant)) {
+        if (reader.IsStartElementWithNamespace(
+            XmlNamespace.Types, XmlElementNames.Constant)) {
           this._value = reader.ReadAttributeValue(XmlAttributeNames.Value);
 
           result = true;
         } else {
-          OutParam<PropertyDefinitionBase> outParam = new OutParam<PropertyDefinitionBase>();
+          OutParam<PropertyDefinitionBase> outParam =
+              new OutParam<PropertyDefinitionBase>();
           outParam.param = this._otherPropertyDefinition;
 
           result = PropertyDefinitionBase.TryLoadFromXml(reader, outParam);
@@ -134,12 +139,13 @@ abstract class RelationalFilter extends PropertyBasedFilter {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     super.WriteElementsToXml(writer);
 
-    writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.FieldURIOrConstant);
+    writer.WriteStartElement(
+        XmlNamespace.Types, XmlElementNames.FieldURIOrConstant);
 
     if (this.Value != null) {
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Constant);
-      writer.WriteAttributeValue(
-          XmlAttributeNames.Value, this.Value, true /* alwaysWriteEmptyString */);
+      writer.WriteAttributeValue(XmlAttributeNames.Value, this.Value,
+          true /* alwaysWriteEmptyString */);
       writer.WriteEndElement(); // Constant
     } else {
       this.OtherPropertyDefinition.WriteToXml(writer);
@@ -153,7 +159,8 @@ abstract class RelationalFilter extends PropertyBasedFilter {
   /// from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)
   /// The OtherPropertyDefinition and Value properties are mutually exclusive; setting one resets the other to null.
   /// </summary>
-  PropertyDefinitionBase get OtherPropertyDefinition => this._otherPropertyDefinition;
+  PropertyDefinitionBase get OtherPropertyDefinition =>
+      this._otherPropertyDefinition;
 
   set OtherPropertyDefinition(PropertyDefinitionBase value) {
     this._otherPropertyDefinition = OtherPropertyDefinition;

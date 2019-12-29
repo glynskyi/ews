@@ -36,14 +36,21 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 /// Represents ResponseObject schema definition.
 /// </summary>
 class ResponseObjectSchema extends ServiceObjectSchema {
-  static PropertyDefinition ReferenceItemId = new ComplexPropertyDefinition<ItemId>.withFlags(
-      XmlElementNames.ReferenceItemId,
-      [PropertyDefinitionFlags.AutoInstantiateOnRead, PropertyDefinitionFlags.CanSet],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition ReferenceItemId =
+      new ComplexPropertyDefinition<ItemId>.withFlags(
+          XmlElementNames.ReferenceItemId,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new ItemId();
   });
-  static PropertyDefinition BodyPrefix = new ComplexPropertyDefinition<MessageBody>.withFlags(
-      XmlElementNames.NewBodyContent, [PropertyDefinitionFlags.CanSet], ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition BodyPrefix =
+      new ComplexPropertyDefinition<MessageBody>.withFlags(
+          XmlElementNames.NewBodyContent,
+          [PropertyDefinitionFlags.CanSet],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new MessageBody();
   });
 

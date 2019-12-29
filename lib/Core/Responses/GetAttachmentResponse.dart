@@ -30,8 +30,8 @@ import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:ews/misc/StringUtils.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
+import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
 /// Represents the response to an individual attachment retrieval request.
@@ -55,15 +55,20 @@ class GetAttachmentResponse extends ServiceResponse {
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Attachments);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.Attachments);
     if (!reader.IsEmptyElement) {
       reader.Read(nodeType: XmlNodeType.Element);
 
       if (this.attachment == null) {
-        if (StringUtils.EqualsIgnoreCase(reader.LocalName, XmlElementNames.FileAttachment)) {
-          this.attachment = new FileAttachment.withExchangeService(reader.Service);
-        } else if (StringUtils.EqualsIgnoreCase(reader.LocalName, XmlElementNames.ItemAttachment)) {
-          this.attachment = new ItemAttachment.withExchangeService(reader.Service);
+        if (StringUtils.EqualsIgnoreCase(
+            reader.LocalName, XmlElementNames.FileAttachment)) {
+          this.attachment =
+              new FileAttachment.withExchangeService(reader.Service);
+        } else if (StringUtils.EqualsIgnoreCase(
+            reader.LocalName, XmlElementNames.ItemAttachment)) {
+          this.attachment =
+              new ItemAttachment.withExchangeService(reader.Service);
         }
       }
 
@@ -71,7 +76,8 @@ class GetAttachmentResponse extends ServiceResponse {
         this.attachment.LoadFromXml(reader, reader.LocalName);
       }
 
-      reader.ReadEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Attachments);
+      reader.ReadEndElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.Attachments);
     }
   }
 

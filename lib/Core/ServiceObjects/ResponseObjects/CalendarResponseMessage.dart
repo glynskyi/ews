@@ -26,7 +26,8 @@
 import 'package:ews/ComplexProperties/AttachmentCollection.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/MessageBody.dart';
-import 'package:ews/Core/ServiceObjects/Items/EmailMessage.dart' as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Items/EmailMessage.dart'
+    as serviceObjects;
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/ServiceObjects/ResponseObjects/CalendarResponseMessageBase.dart';
 import 'package:ews/Core/ServiceObjects/Schemas/CalendarResponseObjectSchema.dart';
@@ -39,7 +40,8 @@ import 'package:ews/Enumerations/Sensitivity.dart' as enumerations;
 /// Represents the base class for accept, tentatively accept and decline response messages.
 /// </summary>
 /// <typeparam name="TMessage">The type of message that is created when this response message is saved.</typeparam>
-abstract class CalendarResponseMessage<TMessage extends serviceObjects.EmailMessage>
+abstract class CalendarResponseMessage<
+        TMessage extends serviceObjects.EmailMessage>
     extends CalendarResponseMessageBase<TMessage> {
   /// <summary>
   /// Initializes a new instance of the <see cref="CalendarResponseMessage&lt;TMessage&gt;"/> class.
@@ -66,17 +68,20 @@ abstract class CalendarResponseMessage<TMessage extends serviceObjects.EmailMess
   /// <summary>
   /// Gets a list of recipients the response will be sent to.
   /// </summary>
-  EmailAddressCollection get ToRecipients => this.PropertyBag[EmailMessageSchema.ToRecipients];
+  EmailAddressCollection get ToRecipients =>
+      this.PropertyBag[EmailMessageSchema.ToRecipients];
 
   /// <summary>
   /// Gets a list of recipients the response will be sent to as Cc.
   /// </summary>
-  EmailAddressCollection get CcRecipients => this.PropertyBag[EmailMessageSchema.CcRecipients];
+  EmailAddressCollection get CcRecipients =>
+      this.PropertyBag[EmailMessageSchema.CcRecipients];
 
   /// <summary>
   /// Gets a list of recipients this response will be sent to as Bcc.
   /// </summary>
-  EmailAddressCollection get BccRecipients => this.PropertyBag[EmailMessageSchema.BccRecipients];
+  EmailAddressCollection get BccRecipients =>
+      this.PropertyBag[EmailMessageSchema.BccRecipients];
 
   // TODO : Does this need to be exposed?
   String get ItemClass => this.PropertyBag[ItemSchema.ItemClass];
@@ -86,14 +91,17 @@ abstract class CalendarResponseMessage<TMessage extends serviceObjects.EmailMess
   /// <summary>
   /// Gets or sets the sensitivity of this response.
   /// </summary>
-  enumerations.Sensitivity get Sensitivity => this.PropertyBag[ItemSchema.Sensitivity];
+  enumerations.Sensitivity get Sensitivity =>
+      this.PropertyBag[ItemSchema.Sensitivity];
 
-  set Sensitivity(enumerations.Sensitivity value) => this.PropertyBag[ItemSchema.Sensitivity] = value;
+  set Sensitivity(enumerations.Sensitivity value) =>
+      this.PropertyBag[ItemSchema.Sensitivity] = value;
 
   /// <summary>
   /// Gets a list of attachments to this response.
   /// </summary>
-  AttachmentCollection get Attachments => this.PropertyBag[ItemSchema.Attachments];
+  AttachmentCollection get Attachments =>
+      this.PropertyBag[ItemSchema.Attachments];
 
 // TODO : Does this need to be exposed?
 //               InternetMessageHeaderCollection get InternetMessageHeaders => this.PropertyBag[ItemSchema.InternetMessageHeaders];

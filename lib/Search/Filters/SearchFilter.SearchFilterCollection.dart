@@ -50,7 +50,8 @@ class SearchFilterCollection extends SearchFilter
     implements Iterable<SearchFilter> {
   List<SearchFilter> _searchFilters = new List<SearchFilter>();
 
-  enumerations.LogicalOperator _logicalOperator = enumerations.LogicalOperator.And;
+  enumerations.LogicalOperator _logicalOperator =
+      enumerations.LogicalOperator.And;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SearchFilterCollection"/> class.
@@ -62,7 +63,9 @@ class SearchFilterCollection extends SearchFilter
   /// Initializes a new instance of the <see cref="SearchFilterCollection"/> class.
   /// </summary>
   /// <param name="logicalOperator">The logical operator used to initialize the collection.</param>
-  SearchFilterCollection.withOperator(enumerations.LogicalOperator logicalOperator) : super() {
+  SearchFilterCollection.withOperator(
+      enumerations.LogicalOperator logicalOperator)
+      : super() {
     this._logicalOperator = logicalOperator;
   }
 
@@ -72,7 +75,8 @@ class SearchFilterCollection extends SearchFilter
   /// <param name="logicalOperator">The logical operator used to initialize the collection.</param>
   /// <param name="searchFilters">The search filters to add to the collection.</param>
   SearchFilterCollection.withOperatorAndSearchFilters(
-      enumerations.LogicalOperator logicalOperator, List<SearchFilter> searchFilters)
+      enumerations.LogicalOperator logicalOperator,
+      List<SearchFilter> searchFilters)
       : super() {
     this._logicalOperator = logicalOperator;
     this.AddRange(searchFilters);
@@ -224,7 +228,8 @@ class SearchFilterCollection extends SearchFilter
   /// <param name="index">The zero-based index of the search filter to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     this[index].removeChangeEvent(this.SearchFilterChanged);
@@ -244,7 +249,8 @@ class SearchFilterCollection extends SearchFilter
   /// <returns>The search filter at the specified index.</returns>
   SearchFilter operator [](int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     return this._searchFilters[index];
@@ -252,7 +258,8 @@ class SearchFilterCollection extends SearchFilter
 
   operator []=(int index, SearchFilter value) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     this._searchFilters[index] = value;
@@ -263,7 +270,8 @@ class SearchFilterCollection extends SearchFilter
   /// </summary>
   enumerations.LogicalOperator get LogicalOperator => this._logicalOperator;
 
-  set LogicalOperator(enumerations.LogicalOperator value) => this._logicalOperator = value;
+  set LogicalOperator(enumerations.LogicalOperator value) =>
+      this._logicalOperator = value;
 
   /// <summary>
   /// Gets an enumerator that iterates through the elements of the collection.

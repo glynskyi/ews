@@ -364,9 +364,12 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Street, this._street);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.City, this._city);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.State, this._state);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Street, this._street);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.City, this._city);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.State, this._state);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.Country, this._country);
     writer.WriteElementValueWithNamespace(
@@ -383,10 +386,10 @@ class PersonaPostalAddress extends ComplexProperty {
         XmlNamespace.Types, XmlElementNames.Accuracy, this._accuracy);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.Altitude, this._altitude);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.AltitudeAccuracy, this._altitudeAccuracy);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.FormattedAddress, this._formattedAddress);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.AltitudeAccuracy, this._altitudeAccuracy);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.FormattedAddress, this._formattedAddress);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.LocationUri, this._uri);
     writer.WriteElementValueWithNamespace(
@@ -398,7 +401,8 @@ class PersonaPostalAddress extends ComplexProperty {
   /// </summary>
   /// <param name="writer">The writer.</param>
   void WriteToXmlElementName(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.PersonaPostalAddress);
+    writer.WriteStartElement(
+        XmlNamespace.Types, XmlElementNames.PersonaPostalAddress);
 
     this.WriteElementsToXml(writer);
 

@@ -49,25 +49,30 @@ class FindFolderResponse extends ServiceResponse {
   /// <param name="reader">The reader.</param>
   @override
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.RootFolder);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.RootFolder);
 
-    this._results.TotalCount = reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
-    this._results.MoreAvailable =
-        !reader.ReadAttributeValue<bool>(XmlAttributeNames.IncludesLastItemInRange);
+    this._results.TotalCount =
+        reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
+    this._results.MoreAvailable = !reader.ReadAttributeValue<bool>(
+        XmlAttributeNames.IncludesLastItemInRange);
 
     // Ignore IndexedPagingOffset attribute if MoreAvailable is false.
     this._results.NextPageOffset = _results.MoreAvailable
-        ? reader.ReadNullableAttributeValue<int>(XmlAttributeNames.IndexedPagingOffset)
+        ? reader.ReadNullableAttributeValue<int>(
+            XmlAttributeNames.IndexedPagingOffset)
         : null;
 
-    reader.ReadStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.Folders);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Folders);
     if (!reader.IsEmptyElement) {
       do {
         reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element) {
-          Folder folder = EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(
-              reader.Service, reader.LocalName);
+          Folder folder =
+              EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(
+                  reader.Service, reader.LocalName);
 
           if (folder == null) {
             reader.SkipCurrentElement();
@@ -82,10 +87,12 @@ class FindFolderResponse extends ServiceResponse {
             this._results.Folders.add(folder);
           }
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Types, XmlElementNames.Folders));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Types, XmlElementNames.Folders));
     }
 
-    reader.ReadEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.RootFolder);
+    reader.ReadEndElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.RootFolder);
   }
 
   /// <summary>
@@ -96,7 +103,8 @@ class FindFolderResponse extends ServiceResponse {
   /// <returns>Folder</returns>
   /* private */
   Folder CreateFolderInstance(ExchangeService service, String xmlElementName) {
-    return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(service, xmlElementName);
+    return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(
+        service, xmlElementName);
   }
 
   /// <summary>
@@ -106,8 +114,8 @@ class FindFolderResponse extends ServiceResponse {
   FindFolderResponse(PropertySet propertySet) : super() {
     this._propertySet = propertySet;
 
-    EwsUtilities.Assert(
-        this._propertySet != null, "FindFolderResponse.ctor", "PropertySet should not be null");
+    EwsUtilities.Assert(this._propertySet != null, "FindFolderResponse.ctor",
+        "PropertySet should not be null");
   }
 
   /// <summary>

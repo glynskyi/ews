@@ -53,12 +53,13 @@ abstract class PropertyDefinitionBase {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if property was loaded.</returns>
-  static bool TryLoadFromXml(
-      EwsServiceXmlReader reader, OutParam<PropertyDefinitionBase> propertyDefinitionOutParam) {
+  static bool TryLoadFromXml(EwsServiceXmlReader reader,
+      OutParam<PropertyDefinitionBase> propertyDefinitionOutParam) {
     switch (reader.LocalName) {
       case XmlElementNames.FieldURI:
-        propertyDefinitionOutParam.param = ServiceObjectSchema.FindPropertyDefinition(
-            reader.ReadAttributeValue(XmlAttributeNames.FieldURI));
+        propertyDefinitionOutParam.param =
+            ServiceObjectSchema.FindPropertyDefinition(
+                reader.ReadAttributeValue(XmlAttributeNames.FieldURI));
         reader.SkipCurrentElement();
         return true;
       case XmlElementNames.IndexedFieldURI:
@@ -69,7 +70,8 @@ abstract class PropertyDefinitionBase {
         return true;
       case XmlElementNames.ExtendedFieldURI:
         propertyDefinitionOutParam.param = new ExtendedPropertyDefinition();
-        (propertyDefinitionOutParam.param as ExtendedPropertyDefinition).LoadFromXml(reader);
+        (propertyDefinitionOutParam.param as ExtendedPropertyDefinition)
+            .LoadFromXml(reader);
         return true;
       default:
         return false;

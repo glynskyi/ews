@@ -70,7 +70,8 @@ abstract class SubscriptionBase {
   /// <param name="service">The service.</param>
   /// <param name="id">The id.</param>
   /// <param name="watermark">The watermark.</param>
-  SubscriptionBase.withIdAndWatermark(ExchangeService service, String id, String watermark) {
+  SubscriptionBase.withIdAndWatermark(
+      ExchangeService service, String id, String watermark) {
     EwsUtilities.ValidateParam(id, "id");
     EwsUtilities.ValidateParam(service, "service");
 
@@ -84,10 +85,12 @@ abstract class SubscriptionBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   void LoadFromXml(EwsServiceXmlReader reader) {
-    this.id = reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.SubscriptionId);
+    this.id = reader.ReadElementValueWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.SubscriptionId);
 
     if (this.UsesWatermark) {
-      this.watermark = reader.ReadElementValueWithNamespace(XmlNamespace.Messages, XmlElementNames.Watermark);
+      this.watermark = reader.ReadElementValueWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.Watermark);
     }
   }
 

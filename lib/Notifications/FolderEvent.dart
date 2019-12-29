@@ -49,7 +49,8 @@ class FolderEvent extends NotificationEvent {
   /// </summary>
   /// <param name="eventType">Type of the event.</param>
   /// <param name="timestamp">The event timestamp.</param>
-  FolderEvent(EventType eventType, DateTime timestamp) : super(eventType, timestamp) {}
+  FolderEvent(EventType eventType, DateTime timestamp)
+      : super(eventType, timestamp) {}
 
   /// <summary>
   /// Load from XML.
@@ -84,7 +85,8 @@ class FolderEvent extends NotificationEvent {
       case EventType.Modified:
         reader.Read();
         if (reader.IsStartElement()) {
-          reader.EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.UnreadCount);
+          reader.EnsureCurrentNodeIsStartElementWithNamespace(
+              XmlNamespace.Types, XmlElementNames.UnreadCount);
           this._unreadCount = int.parse(reader.ReadValue());
         }
         break;

@@ -27,7 +27,8 @@ import 'package:ews/Attributes/ServiceObjectDefinitionAttribute.dart';
 import 'package:ews/ComplexProperties/EnhancedLocation.dart' as complex;
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
-import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart' as complex;
+import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart'
+    as complex;
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/ServiceObjects/Items/MeetingMessage.dart';
@@ -46,7 +47,8 @@ class MeetingResponse extends MeetingMessage {
   /// Initializes a new instance of the <see cref="MeetingResponse"/> class.
   /// </summary>
   /// <param name="parentAttachment">The parent attachment.</param>
-  MeetingResponse.withAttachment(ItemAttachment parentAttachment) : super.withAttachment(parentAttachment);
+  MeetingResponse.withAttachment(ItemAttachment parentAttachment)
+      : super.withAttachment(parentAttachment);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="MeetingResponse"/> class.
@@ -74,8 +76,10 @@ class MeetingResponse extends MeetingMessage {
   /// <param name="service">The service to use to bind to the meeting response.</param>
   /// <param name="id">The Id of the meeting response to bind to.</param>
   /// <returns>A MeetingResponse instance representing the meeting response corresponding to the specified Id.</returns>
-  static Future<MeetingResponse> BindWithItemId(ExchangeService service, ItemId id) {
-    return MeetingResponse.BindWithItemIdAndPropertySet(service, id, PropertySet.FirstClassProperties);
+  static Future<MeetingResponse> BindWithItemId(
+      ExchangeService service, ItemId id) {
+    return MeetingResponse.BindWithItemIdAndPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -114,7 +118,8 @@ class MeetingResponse extends MeetingMessage {
   /// <summary>
   /// Gets the recurrence pattern for this meeting request.
   /// </summary>
-  complex.Recurrence get Recurrence => this.PropertyBag[AppointmentSchema.Recurrence];
+  complex.Recurrence get Recurrence =>
+      this.PropertyBag[AppointmentSchema.Recurrence];
 
   /// <summary>
   /// Gets the proposed start time of the appointment.
@@ -129,7 +134,8 @@ class MeetingResponse extends MeetingMessage {
   /// <summary>
   /// Gets the Enhanced location object.
   /// </summary>
-  complex.EnhancedLocation get EnhancedLocation => this.PropertyBag[MeetingResponseSchema.EnhancedLocation];
+  complex.EnhancedLocation get EnhancedLocation =>
+      this.PropertyBag[MeetingResponseSchema.EnhancedLocation];
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

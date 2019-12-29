@@ -24,11 +24,15 @@
  */
 
 import 'package:ews/Core/EwsUtilities.dart';
-import 'package:ews/Core/ServiceObjects/Items/Appointment.dart' as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Items/Appointment.dart'
+    as serviceObjects;
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
-import 'package:ews/Core/ServiceObjects/Items/MeetingCancellation.dart' as serviceObjects;
-import 'package:ews/Core/ServiceObjects/Items/MeetingRequest.dart' as serviceObjects;
-import 'package:ews/Core/ServiceObjects/Items/MeetingResponse.dart' as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Items/MeetingCancellation.dart'
+    as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Items/MeetingRequest.dart'
+    as serviceObjects;
+import 'package:ews/Core/ServiceObjects/Items/MeetingResponse.dart'
+    as serviceObjects;
 
 /// <summary>
 /// Represents the results of an action performed on a calendar item or meeting message,
@@ -51,10 +55,15 @@ class CalendarActionResults {
   /// </summary>
   /// <param name="items">Collection of items that were created or modified as a result of a calendar action.</param>
   CalendarActionResults(Iterable<Item> items) {
-    this.appointment = EwsUtilities.FindFirstItemOfType<serviceObjects.Appointment>(items);
-    this.meetingRequest = EwsUtilities.FindFirstItemOfType<serviceObjects.MeetingRequest>(items);
-    this.meetingResponse = EwsUtilities.FindFirstItemOfType<serviceObjects.MeetingResponse>(items);
-    this.meetingCancellation = EwsUtilities.FindFirstItemOfType<serviceObjects.MeetingCancellation>(items);
+    this.appointment =
+        EwsUtilities.FindFirstItemOfType<serviceObjects.Appointment>(items);
+    this.meetingRequest =
+        EwsUtilities.FindFirstItemOfType<serviceObjects.MeetingRequest>(items);
+    this.meetingResponse =
+        EwsUtilities.FindFirstItemOfType<serviceObjects.MeetingResponse>(items);
+    this.meetingCancellation =
+        EwsUtilities.FindFirstItemOfType<serviceObjects.MeetingCancellation>(
+            items);
   }
 
   /// <summary>
@@ -95,5 +104,6 @@ class CalendarActionResults {
   /// Gets the copy of the meeting cancellation message sent by the organizer to the
   /// attendees of a meeting when the meeting is cancelled.
   /// </summary>
-  serviceObjects.MeetingCancellation get MeetingCancellation => this.meetingCancellation;
+  serviceObjects.MeetingCancellation get MeetingCancellation =>
+      this.meetingCancellation;
 }

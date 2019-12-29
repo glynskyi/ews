@@ -115,7 +115,8 @@ abstract class ServiceObjectSchema
     Map<String, PropertyDefinitionBase> propDefDictionary =
         new Map<String, PropertyDefinitionBase>();
     for (Type type in ServiceObjectSchema._allSchemaTypes.Member) {
-      ServiceObjectSchema.AddSchemaPropertiesToDictionary(type, propDefDictionary);
+      ServiceObjectSchema.AddSchemaPropertiesToDictionary(
+          type, propDefDictionary);
     }
     return propDefDictionary;
   });
@@ -237,22 +238,27 @@ abstract class ServiceObjectSchema
     return new ExtendedPropertyCollection();
   });
 
-  Map<String, PropertyDefinition> _properties = new Map<String, PropertyDefinition>();
+  Map<String, PropertyDefinition> _properties =
+      new Map<String, PropertyDefinition>();
 
   List<PropertyDefinition> _visibleProperties = new List<PropertyDefinition>();
 
-  List<PropertyDefinition> _firstClassProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _firstClassProperties =
+      new List<PropertyDefinition>();
 
-  List<PropertyDefinition> _firstClassSummaryProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _firstClassSummaryProperties =
+      new List<PropertyDefinition>();
 
-  List<IndexedPropertyDefinition> _indexedProperties = new List<IndexedPropertyDefinition>();
+  List<IndexedPropertyDefinition> _indexedProperties =
+      new List<IndexedPropertyDefinition>();
 
   /// <summary>
   /// Registers a schema property.
   /// </summary>
   /// <param name="property">The property to register.</param>
   /// <param name="isInternal">Indicates whether the property is or should be visible to developers.</param>
-  void _RegisterPropertyWithInternal(PropertyDefinition property, bool isInternal) {
+  void _RegisterPropertyWithInternal(
+      PropertyDefinition property, bool isInternal) {
     this._properties[property.XmlElementName] = property;
 
     if (!isInternal) {
@@ -261,12 +267,14 @@ abstract class ServiceObjectSchema
 
     // If this property does not have to be requested explicitly, add
     // it to the list of firstClassProperties.
-    if (!property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.MustBeExplicitlyLoaded)) {
+    if (!property.HasFlagWithoutExchangeVersion(
+        PropertyDefinitionFlags.MustBeExplicitlyLoaded)) {
       this._firstClassProperties.add(property);
     }
 
     // If this property can be found, add it to the list of firstClassSummaryProperties
-    if (property.HasFlagWithoutExchangeVersion(PropertyDefinitionFlags.CanFind)) {
+    if (property.HasFlagWithoutExchangeVersion(
+        PropertyDefinitionFlags.CanFind)) {
       this._firstClassSummaryProperties.add(property);
     }
   }
@@ -303,17 +311,20 @@ abstract class ServiceObjectSchema
   /// <summary>
   /// Gets the list of first class properties for this service object type.
   /// </summary>
-  List<PropertyDefinition> get FirstClassProperties => this._firstClassProperties;
+  List<PropertyDefinition> get FirstClassProperties =>
+      this._firstClassProperties;
 
   /// <summary>
   /// Gets the list of first class summary properties for this service object type.
   /// </summary>
-  List<PropertyDefinition> get FirstClassSummaryProperties => this._firstClassSummaryProperties;
+  List<PropertyDefinition> get FirstClassSummaryProperties =>
+      this._firstClassSummaryProperties;
 
   /// <summary>
   /// Gets the list of indexed properties for this service object type.
   /// </summary>
-  List<IndexedPropertyDefinition> get IndexedProperties => this._indexedProperties;
+  List<IndexedPropertyDefinition> get IndexedProperties =>
+      this._indexedProperties;
 
   /// <summary>
   /// Tries to get property definition.
@@ -321,8 +332,8 @@ abstract class ServiceObjectSchema
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if property definition exists.</returns>
-  bool TryGetPropertyDefinition(
-      String xmlElementName, OutParam<PropertyDefinition> propertyDefinitionOutParam) {
+  bool TryGetPropertyDefinition(String xmlElementName,
+      OutParam<PropertyDefinition> propertyDefinitionOutParam) {
     if (this._properties.containsKey(xmlElementName)) {
       propertyDefinitionOutParam.param = this._properties[xmlElementName];
       return true;

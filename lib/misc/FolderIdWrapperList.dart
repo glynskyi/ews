@@ -91,7 +91,8 @@ class FolderIdWrapperList
   /// <param name="writer">The writer.</param>
   /// <param name="ewsNamesapce">The ews namesapce.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void WriteToXml(EwsServiceXmlWriter writer, XmlNamespace ewsNamesapce, String xmlElementName) {
+  void WriteToXml(EwsServiceXmlWriter writer, XmlNamespace ewsNamesapce,
+      String xmlElementName) {
     if (this.Count > 0) {
       writer.WriteStartElement(ewsNamesapce, xmlElementName);
 

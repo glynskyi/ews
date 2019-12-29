@@ -67,12 +67,13 @@ class GetStreamingEventsResults {
   /// </summary>
   /// <param name="reader">The reader.</param>
   void LoadFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.Notification);
 
     do {
       NotificationGroup notifications = new NotificationGroup();
-      notifications.SubscriptionId =
-          reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.SubscriptionId);
+      notifications.SubscriptionId = reader.ReadElementValueWithNamespace(
+          XmlNamespace.Types, XmlElementNames.SubscriptionId);
       notifications.Events = new List<NotificationEvent>();
 
       this.events.add(notifications);
@@ -83,22 +84,28 @@ class GetStreamingEventsResults {
         if (reader.IsStartElement()) {
           String eventElementName = reader.LocalName;
 
-          if (GetEventsResults.XmlElementNameToEventTypeMap.containsKey(eventElementName)) {
-            EventType eventType = GetEventsResults.XmlElementNameToEventTypeMap[eventElementName];
+          if (GetEventsResults.XmlElementNameToEventTypeMap.containsKey(
+              eventElementName)) {
+            EventType eventType =
+                GetEventsResults.XmlElementNameToEventTypeMap[eventElementName];
             if (eventType == EventType.Status) {
               // We don't need to return status events
-              reader.ReadEndElementIfNecessary(XmlNamespace.Types, eventElementName);
+              reader.ReadEndElementIfNecessary(
+                  XmlNamespace.Types, eventElementName);
             } else {
-              this.LoadNotificationEventFromXml(reader, eventElementName, eventType, notifications);
+              this.LoadNotificationEventFromXml(
+                  reader, eventElementName, eventType, notifications);
             }
           } else {
             reader.SkipCurrentElement();
           }
         }
-      } while (!reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification));
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Messages, XmlElementNames.Notification));
 
       reader.Read();
-    } while (!reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notifications));
+    } while (!reader.IsEndElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.Notifications));
   }
 
   /// <summary>
@@ -110,8 +117,12 @@ class GetStreamingEventsResults {
   /// <param name="notifications">Collection of notifications</param>
   /* private */
   void LoadNotificationEventFromXml(
-      EwsServiceXmlReader reader, String eventElementName, EventType eventType, NotificationGroup notifications) {
-    DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(XmlNamespace.Types, XmlElementNames.TimeStamp);
+      EwsServiceXmlReader reader,
+      String eventElementName,
+      EventType eventType,
+      NotificationGroup notifications) {
+    DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(
+        XmlNamespace.Types, XmlElementNames.TimeStamp);
 
     NotificationEvent notificationEvent;
 

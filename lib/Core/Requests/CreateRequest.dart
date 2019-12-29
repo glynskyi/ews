@@ -40,7 +40,8 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <typeparam name="TResponse">The type of the response.</typeparam>
 abstract class CreateRequest<TServiceObject extends ServiceObject,
         TResponse extends ServiceResponse>
-    extends MultiResponseServiceRequest<TResponse> //        where TServiceObject : ServiceObject
+    extends MultiResponseServiceRequest<
+        TResponse> //        where TServiceObject : ServiceObject
 //        where TResponse : ServiceResponse
 {
   FolderId _parentFolderId;
@@ -62,7 +63,9 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   void Validate() {
     super.Validate();
     if (this.ParentFolderId != null) {
-      this.ParentFolderId.ValidateExchangeVersion(this.Service.RequestedServerVersion);
+      this
+          .ParentFolderId
+          .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
   }
 
@@ -94,12 +97,14 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.ParentFolderId != null) {
-      writer.WriteStartElement(XmlNamespace.Messages, this.GetParentFolderXmlElementName());
+      writer.WriteStartElement(
+          XmlNamespace.Messages, this.GetParentFolderXmlElementName());
       this.ParentFolderId.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
 
-    writer.WriteStartElement(XmlNamespace.Messages, this.GetObjectCollectionXmlElementName());
+    writer.WriteStartElement(
+        XmlNamespace.Messages, this.GetObjectCollectionXmlElementName());
     for (ServiceObject obj in this._objects) {
       obj.WriteToXml(writer);
     }

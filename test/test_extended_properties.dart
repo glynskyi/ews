@@ -4,11 +4,17 @@ import 'package:test/test.dart';
 
 import '_shared.dart';
 
-ExtendedPropertyDefinition AssigneeName = ExtendedPropertyDefinition.withDefaultPropertySetAndName(
-    DefaultExtendedPropertySet.Common, "item:meetings:assigneeName", MapiPropertyType.String);
+ExtendedPropertyDefinition AssigneeName =
+    ExtendedPropertyDefinition.withDefaultPropertySetAndName(
+        DefaultExtendedPropertySet.Common,
+        "item:meetings:assigneeName",
+        MapiPropertyType.String);
 
-ExtendedPropertyDefinition AssigneeMail = ExtendedPropertyDefinition.withDefaultPropertySetAndName(
-    DefaultExtendedPropertySet.Common, "item:meetings:assigneeMail", MapiPropertyType.String);
+ExtendedPropertyDefinition AssigneeMail =
+    ExtendedPropertyDefinition.withDefaultPropertySetAndName(
+        DefaultExtendedPropertySet.Common,
+        "item:meetings:assigneeMail",
+        MapiPropertyType.String);
 
 void main() {
   test('creates task with extended properties', () async {

@@ -90,7 +90,8 @@ typedef void HandleResponseObject(Object response);
 /// </summary>
 /// <param name="sender">The object invoking the delegate.</param>
 /// <param name="args">Event data.</param>
-typedef void HangingRequestDisconnectHandler(Object sender, HangingRequestDisconnectEventArgs args);
+typedef void HangingRequestDisconnectHandler(
+    Object sender, HangingRequestDisconnectEventArgs args);
 
 /// <summary>
 /// Represents an abstract, hanging service request.
@@ -141,8 +142,8 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// <param name="service">The service.</param>
   /// <param name="handler">Callback delegate to handle response objects</param>
   /// <param name="heartbeatFrequency">Frequency at which we expect heartbeats, in milliseconds.</param>
-  HangingServiceRequestBase(
-      ExchangeService service, HandleResponseObject handler, int heartbeatFrequency)
+  HangingServiceRequestBase(ExchangeService service,
+      HandleResponseObject handler, int heartbeatFrequency)
       : super(service) {
     this._responseHandler = handler;
     this.heartbeatFrequencyMilliseconds = heartbeatFrequency;
@@ -306,7 +307,8 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// </summary>
   /// <param name="reason">The reason.</param>
   /// <param name="exception">The exception.</param>
-  void DisconnectWithException(HangingRequestDisconnectReason reason, Exception exception) {
+  void DisconnectWithException(
+      HangingRequestDisconnectReason reason, Exception exception) {
     if (this.IsConnected) {
       this._response.Close();
       this._InternalOnDisconnect(reason, exception);
@@ -337,7 +339,8 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// </summary>
   /// <param name="reason"></param>
   /// <param name="exception"></param>
-  void _InternalOnDisconnect(HangingRequestDisconnectReason reason, Exception exception) {
+  void _InternalOnDisconnect(
+      HangingRequestDisconnectReason reason, Exception exception) {
     throw NotImplementedException("InternalOnDisconnect");
 //            if (this.IsConnected)
 //            {

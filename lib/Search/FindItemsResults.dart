@@ -32,7 +32,9 @@ import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 /// Represents the results of an item search operation.
 /// </summary>
 /// <typeparam name="TItem">The type of item returned by the search operation.</typeparam>
-class FindItemsResults<TItem extends Item> with IterableMixin<TItem> implements Iterable<TItem> {
+class FindItemsResults<TItem extends Item>
+    with IterableMixin<TItem>
+    implements Iterable<TItem> {
   /* private */
   int totalCount = 0;
 

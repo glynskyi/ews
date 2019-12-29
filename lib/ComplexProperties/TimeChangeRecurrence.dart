@@ -53,8 +53,10 @@ class TimeChangeRecurrence extends ComplexProperty {
   /// <param name="dayOfTheWeekIndex">The index of the day in the month at which the time change occurs.</param>
   /// <param name="dayOfTheWeek">The day of the week the time change occurs.</param>
   /// <param name="month">The month the time change occurs.</param>
-  TimeChangeRecurrence.withDayOfTheWeek(enumerations.DayOfTheWeekIndex dayOfTheWeekIndex,
-      enumerations.DayOfTheWeek dayOfTheWeek, enumerations.Month month)
+  TimeChangeRecurrence.withDayOfTheWeek(
+      enumerations.DayOfTheWeekIndex dayOfTheWeekIndex,
+      enumerations.DayOfTheWeek dayOfTheWeek,
+      enumerations.Month month)
       : super() {
     this._dayOfTheWeekIndex = dayOfTheWeekIndex;
     this._dayOfTheWeek = dayOfTheWeek;
@@ -64,7 +66,8 @@ class TimeChangeRecurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the index of the day in the month at which the time change occurs.
   /// </summary>
-  enumerations.DayOfTheWeekIndex get DayOfTheWeekIndex => this._dayOfTheWeekIndex;
+  enumerations.DayOfTheWeekIndex get DayOfTheWeekIndex =>
+      this._dayOfTheWeekIndex;
 
   set DayOfTheWeekIndex(enumerations.DayOfTheWeekIndex value) {
     if (this.CanSetFieldValue(this._dayOfTheWeekIndex, value)) {
@@ -109,12 +112,13 @@ class TimeChangeRecurrence extends ComplexProperty {
     }
 
     if (this._dayOfTheWeekIndex != null) {
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.DayOfWeekIndex, this.DayOfTheWeekIndex);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.DayOfWeekIndex, this.DayOfTheWeekIndex);
     }
 
     if (this.Month != null) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Month, this.Month);
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Types, XmlElementNames.Month, this.Month);
     }
   }
 
@@ -127,10 +131,12 @@ class TimeChangeRecurrence extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.DaysOfWeek:
-        this._dayOfTheWeek = reader.ReadElementValue<enumerations.DayOfTheWeek>();
+        this._dayOfTheWeek =
+            reader.ReadElementValue<enumerations.DayOfTheWeek>();
         return true;
       case XmlElementNames.DayOfWeekIndex:
-        this._dayOfTheWeekIndex = reader.ReadElementValue<enumerations.DayOfTheWeekIndex>();
+        this._dayOfTheWeekIndex =
+            reader.ReadElementValue<enumerations.DayOfTheWeekIndex>();
         return true;
       case XmlElementNames.Month:
         this._month = reader.ReadElementValue<enumerations.Month>();

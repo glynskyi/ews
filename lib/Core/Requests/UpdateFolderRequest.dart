@@ -46,7 +46,8 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  UpdateFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  UpdateFolderRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -60,7 +61,8 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
       Folder folder = this.Folders[i];
 
       if ((folder == null) || folder.IsNew) {
-        throw new ArgumentError("string.Format(Strings.FolderToUpdateCannotBeNullOrNew, i)");
+        throw new ArgumentError(
+            "string.Format(Strings.FolderToUpdateCannotBeNullOrNew, i)");
       }
 
       folder.Validate();
@@ -74,7 +76,8 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  ServiceResponse CreateServiceResponse(ExchangeService session, int responseIndex) {
+  ServiceResponse CreateServiceResponse(
+      ExchangeService session, int responseIndex) {
     return new UpdateFolderResponse(this.Folders[responseIndex]);
   }
 
@@ -120,7 +123,8 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.FolderChanges);
+    writer.WriteStartElement(
+        XmlNamespace.Messages, XmlElementNames.FolderChanges);
 
     for (Folder folder in this._folders) {
       folder.WriteToXmlForUpdate(writer);

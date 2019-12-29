@@ -29,7 +29,6 @@ import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:timezone/standalone.dart';
 
 class NumberedRecurrenceRange extends RecurrenceRange {
   /* private */ int numberOfOccurrences;

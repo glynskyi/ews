@@ -43,8 +43,10 @@ class _PersonaSchemaFieldUris {
   static const String PersonaId = "persona:PersonaId";
   static const String PersonaType = "persona:PersonaType";
   static const String CreationTime = "persona:CreationTime";
-  static const String DisplayNameFirstLastHeader = "persona:DisplayNameFirstLastHeader";
-  static const String DisplayNameLastFirstHeader = "persona:DisplayNameLastFirstHeader";
+  static const String DisplayNameFirstLastHeader =
+      "persona:DisplayNameFirstLastHeader";
+  static const String DisplayNameLastFirstHeader =
+      "persona:DisplayNameLastFirstHeader";
   static const String DisplayName = "persona:DisplayName";
   static const String DisplayNameFirstLast = "persona:DisplayNameFirstLast";
   static const String DisplayNameLastFirst = "persona:DisplayNameLastFirst";
@@ -77,17 +79,18 @@ class PersonaSchema extends ItemSchema {
   /// <summary>
   /// Defines the PersonaId property.
   /// </summary>
-  static PropertyDefinition PersonaId = new ComplexPropertyDefinition<ItemId>.withUriAndFlags(
-      XmlElementNames.PersonaId,
-      _PersonaSchemaFieldUris.PersonaId,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2013_SP1, () {
+  static PropertyDefinition PersonaId =
+      new ComplexPropertyDefinition<ItemId>.withUriAndFlags(
+          XmlElementNames.PersonaId,
+          _PersonaSchemaFieldUris.PersonaId,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2013_SP1, () {
     return new ItemId();
   });
 
@@ -108,44 +111,47 @@ class PersonaSchema extends ItemSchema {
   /// <summary>
   /// Defines the CreationTime property.
   /// </summary>
-  static PropertyDefinition CreationTime = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.CreationTime,
-      _PersonaSchemaFieldUris.CreationTime,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2013_SP1);
+  static PropertyDefinition CreationTime =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.CreationTime,
+          _PersonaSchemaFieldUris.CreationTime,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2013_SP1);
 
   /// <summary>
   /// Defines the DisplayNameFirstLastHeader property.
   /// </summary>
-  static PropertyDefinition DisplayNameFirstLastHeader = new StringPropertyDefinition(
-      XmlElementNames.DisplayNameFirstLastHeader,
-      _PersonaSchemaFieldUris.DisplayNameFirstLastHeader,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2013_SP1);
+  static PropertyDefinition DisplayNameFirstLastHeader =
+      new StringPropertyDefinition(
+          XmlElementNames.DisplayNameFirstLastHeader,
+          _PersonaSchemaFieldUris.DisplayNameFirstLastHeader,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2013_SP1);
 
   /// <summary>
   /// Defines the DisplayNameLastFirstHeader property.
   /// </summary>
-  static PropertyDefinition DisplayNameLastFirstHeader = new StringPropertyDefinition(
-      XmlElementNames.DisplayNameLastFirstHeader,
-      _PersonaSchemaFieldUris.DisplayNameLastFirstHeader,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2013_SP1);
+  static PropertyDefinition DisplayNameLastFirstHeader =
+      new StringPropertyDefinition(
+          XmlElementNames.DisplayNameLastFirstHeader,
+          _PersonaSchemaFieldUris.DisplayNameLastFirstHeader,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2013_SP1);
 
   /// <summary>
   /// Defines the DisplayName property.
@@ -382,17 +388,18 @@ class PersonaSchema extends ItemSchema {
   /// <summary>
   /// Defines the RelevanceScore property.
   /// </summary>
-  static PropertyDefinition RelevanceScore = new IntPropertyDefinition.withFlagsAndNullable(
-      XmlElementNames.RelevanceScore,
-      _PersonaSchemaFieldUris.RelevanceScore,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2013_SP1,
-      true);
+  static PropertyDefinition RelevanceScore =
+      new IntPropertyDefinition.withFlagsAndNullable(
+          XmlElementNames.RelevanceScore,
+          _PersonaSchemaFieldUris.RelevanceScore,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2013_SP1,
+          true);
 
   /// <summary>
   /// Defines the Attributions property

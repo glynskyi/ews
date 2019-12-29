@@ -42,7 +42,6 @@ import 'package:ews/misc/FolderIdWrapperList.dart';
 /// <typeparam name="TResponse">The type of ServiceResponse.</typeparam>
 abstract class GetFolderRequestBase<TResponse extends ServiceResponse>
     extends GetRequest<Folder, TResponse> {
-
   FolderIdWrapperList _folderIds = new FolderIdWrapperList();
 
   /// <summary>

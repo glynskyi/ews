@@ -43,7 +43,8 @@ import 'package:ews/Exceptions/ServiceValidationException.dart';
 /// </summary>
 class FolderPermission extends ComplexProperty {
   /* private */
-  static LazyMember<Map<FolderPermissionLevel, FolderPermission>> defaultPermissions =
+  static LazyMember<Map<FolderPermissionLevel, FolderPermission>>
+      defaultPermissions =
       new LazyMember<Map<FolderPermissionLevel, FolderPermission>>(() {
     Map<FolderPermissionLevel, FolderPermission> result =
         new Map<FolderPermissionLevel, FolderPermission>();
@@ -176,9 +177,11 @@ class FolderPermission extends ComplexProperty {
     permission._isFolderContact = false;
     permission._isFolderOwner = false;
     permission._isFolderVisible = false;
-    permission._readItems = FolderPermissionReadAccess.TimeAndSubjectAndLocation;
+    permission._readItems =
+        FolderPermissionReadAccess.TimeAndSubjectAndLocation;
 
-    result[FolderPermissionLevel.FreeBusyTimeAndSubjectAndLocation] = permission;
+    result[FolderPermissionLevel.FreeBusyTimeAndSubjectAndLocation] =
+        permission;
 
     return result;
   });
@@ -318,7 +321,8 @@ class FolderPermission extends ComplexProperty {
   /// </summary>
   /// <param name="property.UserId">The Id of the user  the permission applies to.</param>
   /// <param name="permissionLevel">The level of the permission.</param>
-  FolderPermission.withUserUd(property.UserId userId, FolderPermissionLevel permissionLevel) {
+  FolderPermission.withUserUd(
+      property.UserId userId, FolderPermissionLevel permissionLevel) {
     EwsUtilities.ValidateParam(property.UserId, "property.UserId");
 
     this.UserId = userId;
@@ -367,14 +371,16 @@ class FolderPermission extends ComplexProperty {
 
     // If this permission is to be used for a non-calendar folder make sure that read access and permission level aren't set to Calendar-only values
     if (!isCalendarFolder) {
-      if ((this._readItems == FolderPermissionReadAccess.TimeAndSubjectAndLocation) ||
+      if ((this._readItems ==
+              FolderPermissionReadAccess.TimeAndSubjectAndLocation) ||
           (this._readItems == FolderPermissionReadAccess.TimeOnly)) {
         throw new ServiceLocalException("""string.Format(
                             Strings.ReadAccessInvalidForNonCalendarFolder,
                             this.readItems""");
       }
 
-      if ((this._permissionLevel == FolderPermissionLevel.FreeBusyTimeAndSubjectAndLocation) ||
+      if ((this._permissionLevel ==
+              FolderPermissionLevel.FreeBusyTimeAndSubjectAndLocation) ||
           (this._permissionLevel == FolderPermissionLevel.FreeBusyTimeOnly)) {
         throw new ServiceLocalException("""string.Format(
                             Strings.PermissionLevelInvalidForNonCalendarFolder,
@@ -506,7 +512,8 @@ class FolderPermission extends ComplexProperty {
   set PermissionLevel(FolderPermissionLevel value) {
     if (this._permissionLevel != value) {
       if (value == FolderPermissionLevel.Custom) {
-        throw new ServiceLocalException("Strings.CannotSetPermissionLevelToCustom");
+        throw new ServiceLocalException(
+            "Strings.CannotSetPermissionLevelToCustom");
       }
 
       this._AssignIndividualPermissions(defaultPermissions.Member[value]);
@@ -595,8 +602,8 @@ class FolderPermission extends ComplexProperty {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void LoadFromXmlWithNamespace(
-      EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) {
+  void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName) {
     super.LoadFromXmlWithNamespace(reader, xmlNamespace, xmlElementName);
 
     this.AdjustPermissionLevel();
@@ -607,26 +614,27 @@ class FolderPermission extends ComplexProperty {
   /// </summary>
   /// <param name="writer">The writer.</param>
   /// <param name="isCalendarFolder">If true, this permission is for a calendar folder.</param>
-  void WriteElementsToXmlWithCalendar(EwsServiceXmlWriter writer, bool isCalendarFolder) {
+  void WriteElementsToXmlWithCalendar(
+      EwsServiceXmlWriter writer, bool isCalendarFolder) {
     if (this._userId != null) {
       this._userId.WriteToXml(writer, XmlElementNames.UserId);
     }
 
     if (this.PermissionLevel == FolderPermissionLevel.Custom) {
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.CanCreateItems, this.CanCreateItems);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.CanCreateItems, this.CanCreateItems);
 
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.CanCreateSubFolders, this.CanCreateSubFolders);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.CanCreateSubFolders, this.CanCreateSubFolders);
 
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.IsFolderOwner, this.IsFolderOwner);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.IsFolderOwner, this.IsFolderOwner);
 
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.IsFolderVisible, this.IsFolderVisible);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.IsFolderVisible, this.IsFolderVisible);
 
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.IsFolderContact, this.IsFolderContact);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+          XmlElementNames.IsFolderContact, this.IsFolderContact);
 
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Types, XmlElementNames.EditItems, this.EditItems);
@@ -652,8 +660,8 @@ class FolderPermission extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="isCalendarFolder">If true, this permission is for a calendar folder.</param>
-  void WriteToXmlWithElementNameAndCalendar(
-      EwsServiceXmlWriter writer, String xmlElementName, bool isCalendarFolder) {
+  void WriteToXmlWithElementNameAndCalendar(EwsServiceXmlWriter writer,
+      String xmlElementName, bool isCalendarFolder) {
     writer.WriteStartElement(this.Namespace, xmlElementName);
     this.WriteAttributesToXml(writer);
     this.WriteElementsToXmlWithCalendar(writer, isCalendarFolder);

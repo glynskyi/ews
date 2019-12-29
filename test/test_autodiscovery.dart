@@ -12,9 +12,7 @@ main() {
           ..TraceFlags = TraceFlags.values
           ..TraceEnabled = true;
     final url = await service.GetAutodiscoverUrlWithExchangeVersionAndCallback(
-        "qa1@shafersystems.com",
-        ExchangeVersion.Exchange2010,
-        (url) => true);
+        "qa1@shafersystems.com", ExchangeVersion.Exchange2010, (url) => true);
     expect(url, Uri.parse("https://outlook.office365.com/EWS/Exchange.asmx"));
   });
 }

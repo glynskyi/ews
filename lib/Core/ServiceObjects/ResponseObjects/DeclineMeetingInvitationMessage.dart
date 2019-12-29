@@ -34,7 +34,8 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 /// Represents a meeting declination message.
 /// </summary>
 //    [ServiceObjectDefinition(XmlElementNames.DeclineItem, ReturnedByServer = false)]
-class DeclineMeetingInvitationMessage extends CalendarResponseMessage<MeetingResponse> {
+class DeclineMeetingInvitationMessage
+    extends CalendarResponseMessage<MeetingResponse> {
   /// <summary>
   /// Initializes a new instance of the <see cref="DeclineMeetingInvitationMessage"/> class.
   /// </summary>

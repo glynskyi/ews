@@ -49,7 +49,8 @@ class SeekToConditionItemView extends ViewBase {
   SearchFilter condition;
 
   /* private */
-  enumerations.OffsetBasePoint offsetBasePoint = enumerations.OffsetBasePoint.Beginning;
+  enumerations.OffsetBasePoint offsetBasePoint =
+      enumerations.OffsetBasePoint.Beginning;
 
   /* private */
   OrderByCollection orderBy = new OrderByCollection();
@@ -110,7 +111,8 @@ class SeekToConditionItemView extends ViewBase {
   void InternalWriteViewToXml(EwsServiceXmlWriter writer) {
     super.InternalWriteViewToXml(writer);
 
-    writer.WriteAttributeValue(XmlAttributeNames.BasePoint, this.OffsetBasePoint);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.BasePoint, this.OffsetBasePoint);
 
     if (this.Condition != null) {
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Condition);
@@ -125,7 +127,8 @@ class SeekToConditionItemView extends ViewBase {
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by.</param>
   @override
-  void InternalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
+  void InternalWriteSearchSettingsToXml(
+      EwsServiceXmlWriter writer, Grouping groupBy) {
     if (groupBy != null) {
       groupBy.WriteToXml(writer);
     }
@@ -157,10 +160,13 @@ class SeekToConditionItemView extends ViewBase {
   @override
   void WriteToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
     if (this.serviceObjType == ServiceObjectType.Item) {
-      this.GetPropertySetOrDefault().WriteToXml(writer, this.GetServiceObjectType());
+      this
+          .GetPropertySetOrDefault()
+          .WriteToXml(writer, this.GetServiceObjectType());
     }
 
-    writer.WriteStartElement(XmlNamespace.Messages, this.GetViewXmlElementName());
+    writer.WriteStartElement(
+        XmlNamespace.Messages, this.GetViewXmlElementName());
 
     this.InternalWriteViewToXml(writer);
 
@@ -186,8 +192,8 @@ class SeekToConditionItemView extends ViewBase {
   /// <param name="condition">Condition to be used when seeking.</param>
   /// <param name="pageSize">The maximum number of elements the search operation should return.</param>
   /// <param name="offsetBasePoint">The base point of the offset.</param>
-  SeekToConditionItemView.withBasePoint(
-      SearchFilter condition, int pageSize, enumerations.OffsetBasePoint offsetBasePoint) {
+  SeekToConditionItemView.withBasePoint(SearchFilter condition, int pageSize,
+      enumerations.OffsetBasePoint offsetBasePoint) {
     this.Condition = condition;
     this.PageSize = pageSize;
     this.serviceObjType = ServiceObjectType.Item;
@@ -212,7 +218,8 @@ class SeekToConditionItemView extends ViewBase {
   /// </summary>
   enumerations.OffsetBasePoint get OffsetBasePoint => this.offsetBasePoint;
 
-  set OffsetBasePoint(enumerations.OffsetBasePoint value) => this.offsetBasePoint = value;
+  set OffsetBasePoint(enumerations.OffsetBasePoint value) =>
+      this.offsetBasePoint = value;
 
   /// <summary>
   /// Gets or sets the condition for seek. Available search filter classes include SearchFilter.IsEqualTo,

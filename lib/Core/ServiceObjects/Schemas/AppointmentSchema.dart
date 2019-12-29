@@ -76,14 +76,16 @@ class _AppointmentSchemaFieldUris {
   static const String RequiredAttendees = "calendar:RequiredAttendees";
   static const String OptionalAttendees = "calendar:OptionalAttendees";
   static const String Resources = "calendar:Resources";
-  static const String ConflictingMeetingCount = "calendar:ConflictingMeetingCount";
+  static const String ConflictingMeetingCount =
+      "calendar:ConflictingMeetingCount";
   static const String AdjacentMeetingCount = "calendar:AdjacentMeetingCount";
   static const String ConflictingMeetings = "calendar:ConflictingMeetings";
   static const String AdjacentMeetings = "calendar:AdjacentMeetings";
   static const String Duration = "calendar:Duration";
   static const String TimeZone = "calendar:TimeZone";
   static const String AppointmentReplyTime = "calendar:AppointmentReplyTime";
-  static const String AppointmentSequenceNumber = "calendar:AppointmentSequenceNumber";
+  static const String AppointmentSequenceNumber =
+      "calendar:AppointmentSequenceNumber";
   static const String AppointmentState = "calendar:AppointmentState";
   static const String Recurrence = "calendar:Recurrence";
   static const String FirstOccurrence = "calendar:FirstOccurrence";
@@ -141,30 +143,32 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Start property.
   /// </summary>
-  static PropertyDefinition Start = new ScopedDateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.Start,
-      _AppointmentSchemaFieldUris.Start,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, (ExchangeVersion version) {
+  static PropertyDefinition Start =
+      new ScopedDateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.Start,
+          _AppointmentSchemaFieldUris.Start,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, (ExchangeVersion version) {
     return AppointmentSchema.StartTimeZone;
   });
 
   /// <summary>
   /// Defines the End property.
   /// </summary>
-  static PropertyDefinition End = new ScopedDateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.End,
-      _AppointmentSchemaFieldUris.End,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, (ExchangeVersion version) {
+  static PropertyDefinition End =
+      new ScopedDateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.End,
+          _AppointmentSchemaFieldUris.End,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, (ExchangeVersion version) {
     return version == ExchangeVersion.Exchange2007_SP1
         ? AppointmentSchema.StartTimeZone
         : AppointmentSchema.EndTimeZone;
@@ -181,21 +185,23 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsAllDayEvent property.
   /// </summary>
-  static PropertyDefinition IsAllDayEvent = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsAllDayEvent,
-      _AppointmentSchemaFieldUris.IsAllDayEvent,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsAllDayEvent =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsAllDayEvent,
+          _AppointmentSchemaFieldUris.IsAllDayEvent,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the LegacyFreeBusyStatus property.
   /// </summary>
   static PropertyDefinition LegacyFreeBusyStatus =
-      new GenericPropertyDefinition<enumerations.LegacyFreeBusyStatus>.withUriAndFlags(
+      new GenericPropertyDefinition<
+              enumerations.LegacyFreeBusyStatus>.withUriAndFlags(
           XmlElementNames.LegacyFreeBusyStatus,
           _AppointmentSchemaFieldUris.LegacyFreeBusyStatus,
           [
@@ -236,61 +242,66 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsMeeting property.
   /// </summary>
-  static PropertyDefinition IsMeeting = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsMeeting,
-      _AppointmentSchemaFieldUris.IsMeeting,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsMeeting =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsMeeting,
+          _AppointmentSchemaFieldUris.IsMeeting,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsCancelled property.
   /// </summary>
-  static PropertyDefinition IsCancelled = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsCancelled,
-      _AppointmentSchemaFieldUris.IsCancelled,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsCancelled =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsCancelled,
+          _AppointmentSchemaFieldUris.IsCancelled,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsRecurring property.
   /// </summary>
-  static PropertyDefinition IsRecurring = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsRecurring,
-      _AppointmentSchemaFieldUris.IsRecurring,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsRecurring =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsRecurring,
+          _AppointmentSchemaFieldUris.IsRecurring,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the MeetingRequestWasSent property.
   /// </summary>
-  static PropertyDefinition MeetingRequestWasSent = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.MeetingRequestWasSent,
-      _AppointmentSchemaFieldUris.MeetingRequestWasSent,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition MeetingRequestWasSent =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.MeetingRequestWasSent,
+          _AppointmentSchemaFieldUris.MeetingRequestWasSent,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsResponseRequested property.
   /// </summary>
-  static PropertyDefinition IsResponseRequested = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsResponseRequested,
-      _AppointmentSchemaFieldUris.IsResponseRequested,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsResponseRequested =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsResponseRequested,
+          _AppointmentSchemaFieldUris.IsResponseRequested,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the AppointmentType property.
   /// </summary>
-  static PropertyDefinition AppointmentType =
-      new GenericPropertyDefinition<enumerations.AppointmentType>.withUriAndFlags(
-          XmlElementNames.CalendarItemType,
-          _AppointmentSchemaFieldUris.CalendarItemType,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition AppointmentType = new GenericPropertyDefinition<
+          enumerations.AppointmentType>.withUriAndFlags(
+      XmlElementNames.CalendarItemType,
+      _AppointmentSchemaFieldUris.CalendarItemType,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the MyResponseType property.
@@ -411,11 +422,12 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the Duration property.
   /// </summary>
-  static PropertyDefinition Duration = new TimeSpanPropertyDefinition.withUriAndFlags(
-      XmlElementNames.Duration,
-      _AppointmentSchemaFieldUris.Duration,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition Duration =
+      new TimeSpanPropertyDefinition.withUriAndFlags(
+          XmlElementNames.Duration,
+          _AppointmentSchemaFieldUris.Duration,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the TimeZone property.
@@ -429,28 +441,31 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the AppointmentReplyTime property.
   /// </summary>
-  static PropertyDefinition AppointmentReplyTime = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.AppointmentReplyTime,
-      _AppointmentSchemaFieldUris.AppointmentReplyTime,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition AppointmentReplyTime =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.AppointmentReplyTime,
+          _AppointmentSchemaFieldUris.AppointmentReplyTime,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the AppointmentSequenceNumber property.
   /// </summary>
-  static PropertyDefinition AppointmentSequenceNumber = new IntPropertyDefinition(
-      XmlElementNames.AppointmentSequenceNumber,
-      _AppointmentSchemaFieldUris.AppointmentSequenceNumber,
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition AppointmentSequenceNumber =
+      new IntPropertyDefinition(
+          XmlElementNames.AppointmentSequenceNumber,
+          _AppointmentSchemaFieldUris.AppointmentSequenceNumber,
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the AppointmentState property.
   /// </summary>
-  static PropertyDefinition AppointmentState = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.AppointmentState,
-      _AppointmentSchemaFieldUris.AppointmentState,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition AppointmentState =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.AppointmentState,
+          _AppointmentSchemaFieldUris.AppointmentState,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Recurrence property.
@@ -468,20 +483,22 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the FirstOccurrence property.
   /// </summary>
-  static PropertyDefinition FirstOccurrence = new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
-      XmlElementNames.FirstOccurrence,
-      _AppointmentSchemaFieldUris.FirstOccurrence,
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition FirstOccurrence =
+      new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
+          XmlElementNames.FirstOccurrence,
+          _AppointmentSchemaFieldUris.FirstOccurrence,
+          ExchangeVersion.Exchange2007_SP1, () {
     return new OccurrenceInfo();
   });
 
   /// <summary>
   /// Defines the LastOccurrence property.
   /// </summary>
-  static PropertyDefinition LastOccurrence = new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
-      XmlElementNames.LastOccurrence,
-      _AppointmentSchemaFieldUris.LastOccurrence,
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition LastOccurrence =
+      new ComplexPropertyDefinition<OccurrenceInfo>.withUri(
+          XmlElementNames.LastOccurrence,
+          _AppointmentSchemaFieldUris.LastOccurrence,
+          ExchangeVersion.Exchange2007_SP1, () {
     return new OccurrenceInfo();
   });
 
@@ -510,50 +527,54 @@ class AppointmentSchema extends ItemSchema {
   /// <summary>
   /// Defines the MeetingTimeZone property.
   /// </summary>
-  static PropertyDefinition MeetingTimeZone = new MeetingTimeZonePropertyDefinition.withUriAndFlags(
-      XmlElementNames.MeetingTimeZone,
-      _AppointmentSchemaFieldUris.MeetingTimeZone,
-      [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition MeetingTimeZone =
+      new MeetingTimeZonePropertyDefinition.withUriAndFlags(
+          XmlElementNames.MeetingTimeZone,
+          _AppointmentSchemaFieldUris.MeetingTimeZone,
+          [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanUpdate],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the ConferenceType property.
   /// </summary>
-  static PropertyDefinition ConferenceType = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.ConferenceType,
-      _AppointmentSchemaFieldUris.ConferenceType,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition ConferenceType =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.ConferenceType,
+          _AppointmentSchemaFieldUris.ConferenceType,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the AllowNewTimeProposal property.
   /// </summary>
-  static PropertyDefinition AllowNewTimeProposal = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.AllowNewTimeProposal,
-      _AppointmentSchemaFieldUris.AllowNewTimeProposal,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition AllowNewTimeProposal =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.AllowNewTimeProposal,
+          _AppointmentSchemaFieldUris.AllowNewTimeProposal,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsOnlineMeeting property.
   /// </summary>
-  static PropertyDefinition IsOnlineMeeting = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsOnlineMeeting,
-      _AppointmentSchemaFieldUris.IsOnlineMeeting,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsOnlineMeeting =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsOnlineMeeting,
+          _AppointmentSchemaFieldUris.IsOnlineMeeting,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the MeetingWorkspaceUrl property.
@@ -648,7 +669,8 @@ class AppointmentSchema extends ItemSchema {
   /// OnlineMeetingSettings property.
   /// </summary>
   static PropertyDefinition OnlineMeetingSettings =
-      new ComplexPropertyDefinition<complex.OnlineMeetingSettings>.withUriAndFlags(
+      new ComplexPropertyDefinition<
+              complex.OnlineMeetingSettings>.withUriAndFlags(
           XmlElementNames.OnlineMeetingSettings,
           _AppointmentSchemaFieldUris.OnlineMeetingSettings,
           [PropertyDefinitionFlags.CanFind],

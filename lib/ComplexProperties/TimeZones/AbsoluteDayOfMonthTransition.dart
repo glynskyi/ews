@@ -23,12 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'package:ews/ComplexProperties/TimeZones/AbsoluteMonthTransition.dart';
+import 'package:ews/ComplexProperties/TimeZones/AbsoluteMonthTransition.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZoneDefinition.dart';
 import 'package:ews/ComplexProperties/TimeZones/TimeZonePeriod.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
@@ -38,21 +33,19 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 
 /// <summary>
-    /// Represents a time zone period transition that occurs on a specific day of a specific month.
-    /// </summary>
-    class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition
-    {
-        /* private */ int dayOfMonth;
+/// Represents a time zone period transition that occurs on a specific day of a specific month.
+/// </summary>
+class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
+  /* private */ int dayOfMonth;
 
-        /// <summary>
-        /// Gets the XML element name associated with the transition.
-        /// </summary>
-        /// <returns>The XML element name associated with the transition.</returns>
-@override
-        String GetXmlElementName()
-        {
-            return XmlElementNames.RecurringDateTransition;
-        }
+  /// <summary>
+  /// Gets the XML element name associated with the transition.
+  /// </summary>
+  /// <returns>The XML element name associated with the transition.</returns>
+  @override
+  String GetXmlElementName() {
+    return XmlElementNames.RecurringDateTransition;
+  }
 
 //        /// <summary>
 //        /// Creates a timw zone transition time.
@@ -79,74 +72,61 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 //            this.dayOfMonth = transitionTime.Day;
 //        }
 
-        /// <summary>
-        /// Tries to read element from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <returns>True if element was read.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            if (super.TryReadElementFromXml(reader))
-            {
-                return true;
-            }
-            else
-            {
-                if (reader.LocalName == XmlElementNames.Day)
-                {
-                    this.dayOfMonth = reader.ReadElementValue<int>();
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    if (super.TryReadElementFromXml(reader)) {
+      return true;
+    } else {
+      if (reader.LocalName == XmlElementNames.Day) {
+        this.dayOfMonth = reader.ReadElementValue<int>();
 
-                    EwsUtilities.Assert(
-                        this.dayOfMonth > 0 && this.dayOfMonth <= 31,
-                        "AbsoluteDayOfMonthTransition.TryReadElementFromXml",
-                        "dayOfMonth is not in the valid 1 - 31 range.");
+        EwsUtilities.Assert(
+            this.dayOfMonth > 0 && this.dayOfMonth <= 31,
+            "AbsoluteDayOfMonthTransition.TryReadElementFromXml",
+            "dayOfMonth is not in the valid 1 - 31 range.");
 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Writes elements to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            super.WriteElementsToXml(writer);
-
-            writer.WriteElementValueWithNamespace(
-                XmlNamespace.Types,
-                XmlElementNames.Day,
-                this.dayOfMonth);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbsoluteDayOfMonthTransition"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-        AbsoluteDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition)
-            : super(timeZoneDefinition)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbsoluteDayOfMonthTransition"/> class.
-        /// </summary>
-        /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-        /// <param name="targetPeriod">The period the transition will target.</param>
-        AbsoluteDayOfMonthTransition.withTimeZonePeriod(TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod)
-            : super.withTimeZonePeriod(timeZoneDefinition, targetPeriod)
-        {
-        }
-
-        /// <summary>
-        /// Gets the day of then month when this transition occurs.
-        /// </summary>
-        int get DayOfMonth => this.dayOfMonth;
+        return true;
+      } else {
+        return false;
+      }
     }
+  }
+
+  /// <summary>
+  /// Writes elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    super.WriteElementsToXml(writer);
+
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Day, this.dayOfMonth);
+  }
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AbsoluteDayOfMonthTransition"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
+  AbsoluteDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition)
+      : super(timeZoneDefinition) {}
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="AbsoluteDayOfMonthTransition"/> class.
+  /// </summary>
+  /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
+  /// <param name="targetPeriod">The period the transition will target.</param>
+  AbsoluteDayOfMonthTransition.withTimeZonePeriod(
+      TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod)
+      : super.withTimeZonePeriod(timeZoneDefinition, targetPeriod) {}
+
+  /// <summary>
+  /// Gets the day of then month when this transition occurs.
+  /// </summary>
+  int get DayOfMonth => this.dayOfMonth;
+}

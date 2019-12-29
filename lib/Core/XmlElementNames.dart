@@ -471,7 +471,8 @@ class XmlElementNames {
   static const SuggestionsViewOptions = "SuggestionsViewOptions";
   static const FreeBusyView = "FreeBusyView";
   static const TimeWindow = "TimeWindow";
-  static const MergedFreeBusyIntervalInMinutes = "MergedFreeBusyIntervalInMinutes";
+  static const MergedFreeBusyIntervalInMinutes =
+      "MergedFreeBusyIntervalInMinutes";
   static const RequestedView = "RequestedView";
   static const FreeBusyViewType = "FreeBusyViewType";
   static const CalendarEventArray = "CalendarEventArray";
@@ -485,7 +486,8 @@ class XmlElementNames {
   static const EndTimeInMinutes = "EndTimeInMinutes";
   static const GoodThreshold = "GoodThreshold";
   static const MaximumResultsByDay = "MaximumResultsByDay";
-  static const MaximumNonWorkHourResultsByDay = "MaximumNonWorkHourResultsByDay";
+  static const MaximumNonWorkHourResultsByDay =
+      "MaximumNonWorkHourResultsByDay";
   static const MeetingDurationInMinutes = "MeetingDurationInMinutes";
   static const MinimumSuggestionQuality = "MinimumSuggestionQuality";
   static const DetailedSuggestionsWindow = "DetailedSuggestionsWindow";
@@ -502,8 +504,10 @@ class XmlElementNames {
   static const SuggestionQuality = "SuggestionQuality";
   static const AttendeeConflictDataArray = "AttendeeConflictDataArray";
   static const UnknownAttendeeConflictData = "UnknownAttendeeConflictData";
-  static const TooBigGroupAttendeeConflictData = "TooBigGroupAttendeeConflictData";
-  static const IndividualAttendeeConflictData = "IndividualAttendeeConflictData";
+  static const TooBigGroupAttendeeConflictData =
+      "TooBigGroupAttendeeConflictData";
+  static const IndividualAttendeeConflictData =
+      "IndividualAttendeeConflictData";
   static const GroupAttendeeConflictData = "GroupAttendeeConflictData";
   static const NumberOfMembers = "NumberOfMembers";
   static const NumberOfMembersAvailable = "NumberOfMembersAvailable";
@@ -514,7 +518,8 @@ class XmlElementNames {
   static const AlternatePublicFolderId = "AlternatePublicFolderId";
   static const AlternatePublicFolderItemId = "AlternatePublicFolderItemId";
   static const DelegatePermissions = "DelegatePermissions";
-  static const ReceiveCopiesOfMeetingMessages = "ReceiveCopiesOfMeetingMessages";
+  static const ReceiveCopiesOfMeetingMessages =
+      "ReceiveCopiesOfMeetingMessages";
   static const ViewPrivateItems = "ViewPrivateItems";
   static const CalendarFolderPermissionLevel = "CalendarFolderPermissionLevel";
   static const TasksFolderPermissionLevel = "TasksFolderPermissionLevel";
@@ -676,7 +681,8 @@ class XmlElementNames {
 
   static const GetClientAccessToken = "GetClientAccessToken";
   static const GetClientAccessTokenResponse = "GetClientAccessTokenResponse";
-  static const GetClientAccessTokenResponseMessage = "GetClientAccessTokenResponseMessage";
+  static const GetClientAccessTokenResponseMessage =
+      "GetClientAccessTokenResponseMessage";
   static const TokenRequests = "TokenRequests";
   static const TokenRequest = "TokenRequest";
   static const TokenType = "TokenType";
@@ -894,8 +900,10 @@ class XmlElementNames {
   static const ApplyConversationAction = "ApplyConversationAction";
   static const ConversationActions = "ConversationActions";
   static const ConversationAction = "ConversationAction";
-  static const ApplyConversationActionResponse = "ApplyConversationActionResponse";
-  static const ApplyConversationActionResponseMessage = "ApplyConversationActionResponseMessage";
+  static const ApplyConversationActionResponse =
+      "ApplyConversationActionResponse";
+  static const ApplyConversationActionResponseMessage =
+      "ApplyConversationActionResponseMessage";
   static const EnableAlwaysDelete = "EnableAlwaysDelete";
   static const ProcessRightAway = "ProcessRightAway";
   static const DestinationFolderId = "DestinationFolderId";
@@ -974,7 +982,8 @@ class XmlElementNames {
   static const RedirectTarget = "RedirectTarget";
   static const UserSettings = "UserSettings";
   static const UserSettingErrors = "UserSettingErrors";
-  static const GetUserSettingsResponseMessage = "GetUserSettingsResponseMessage";
+  static const GetUserSettingsResponseMessage =
+      "GetUserSettingsResponseMessage";
   static const ErrorMessage = "ErrorMessage";
   static const UserResponse = "UserResponse";
   static const UserResponses = "UserResponses";
@@ -988,8 +997,10 @@ class XmlElementNames {
   static const DomainStringSetting = "DomainStringSetting";
   static const DomainSettingError = "DomainSettingError";
   static const DomainSettingErrors = "DomainSettingErrors";
-  static const GetDomainSettingsRequestMessage = "GetDomainSettingsRequestMessage";
-  static const GetDomainSettingsResponseMessage = "GetDomainSettingsResponseMessage";
+  static const GetDomainSettingsRequestMessage =
+      "GetDomainSettingsRequestMessage";
+  static const GetDomainSettingsResponseMessage =
+      "GetDomainSettingsResponseMessage";
   static const SettingName = "SettingName";
   static const UserSetting = "UserSetting";
   static const StringSetting = "StringSetting";
@@ -998,13 +1009,16 @@ class XmlElementNames {
   static const WebClientUrl = "WebClientUrl";
   static const AuthenticationMethods = "AuthenticationMethods";
   static const Url = "Url";
-  static const AlternateMailboxCollectionSetting = "AlternateMailboxCollectionSetting";
+  static const AlternateMailboxCollectionSetting =
+      "AlternateMailboxCollectionSetting";
   static const AlternateMailboxes = "AlternateMailboxes";
   static const AlternateMailbox = "AlternateMailbox";
-  static const ProtocolConnectionCollectionSetting = "ProtocolConnectionCollectionSetting";
+  static const ProtocolConnectionCollectionSetting =
+      "ProtocolConnectionCollectionSetting";
   static const ProtocolConnections = "ProtocolConnections";
   static const ProtocolConnection = "ProtocolConnection";
-  static const DocumentSharingLocationCollectionSetting = "DocumentSharingLocationCollectionSetting";
+  static const DocumentSharingLocationCollectionSetting =
+      "DocumentSharingLocationCollectionSetting";
   static const DocumentSharingLocations = "DocumentSharingLocations";
   static const DocumentSharingLocation = "DocumentSharingLocation";
   static const ServiceUrl = "ServiceUrl";
@@ -1099,7 +1113,8 @@ class XmlElementNames {
   static const AssignCategories = "AssignCategories";
   static const CopyToFolder = "CopyToFolder";
   static const FlagMessage = "FlagMessage";
-  static const ForwardAsAttachmentToRecipients = "ForwardAsAttachmentToRecipients";
+  static const ForwardAsAttachmentToRecipients =
+      "ForwardAsAttachmentToRecipients";
   static const ForwardToRecipients = "ForwardToRecipients";
   static const MarkImportance = "MarkImportance";
   static const MarkAsRead = "MarkAsRead";
@@ -1159,12 +1174,14 @@ class XmlElementNames {
   // FindConversation
   static const FindConversation = "FindConversation";
   static const FindConversationResponse = "FindConversationResponse";
-  static const FindConversationResponseMessage = "FindConversationResponseMessage";
+  static const FindConversationResponseMessage =
+      "FindConversationResponseMessage";
 
   // GetConversationItems
   static const GetConversationItems = "GetConversationItems";
   static const GetConversationItemsResponse = "GetConversationItemsResponse";
-  static const GetConversationItemsResponseMessage = "GetConversationItemsResponseMessage";
+  static const GetConversationItemsResponseMessage =
+      "GetConversationItemsResponseMessage";
 
   // FindItem
   static const FindItem = "FindItem";
@@ -1255,7 +1272,8 @@ class XmlElementNames {
   // MarkAllItemsAsRead
   static const MarkAllItemsAsRead = "MarkAllItemsAsRead";
   static const MarkAllItemsAsReadResponse = "MarkAllItemsAsReadResponse";
-  static const MarkAllItemsAsReadResponseMessage = "MarkAllItemsAsReadResponseMessage";
+  static const MarkAllItemsAsReadResponseMessage =
+      "MarkAllItemsAsReadResponseMessage";
 
   // FindPeople
   static const FindPeople = "FindPeople";
@@ -1270,7 +1288,8 @@ class XmlElementNames {
   // GetPeopleInsights
   static const GetPeopleInsights = "GetPeopleInsights";
   static const GetPeopleInsightsResponse = "GetPeopleInsightsResponse";
-  static const GetPeopleInsightsResponseMessage = "GetPeopleInsightsResponseMessage";
+  static const GetPeopleInsightsResponseMessage =
+      "GetPeopleInsightsResponseMessage";
 
   // GetUserPhoto
   static const GetUserPhoto = "GetUserPhoto";
@@ -1290,12 +1309,14 @@ class XmlElementNames {
   // CreateAttachment
   static const CreateAttachment = "CreateAttachment";
   static const CreateAttachmentResponse = "CreateAttachmentResponse";
-  static const CreateAttachmentResponseMessage = "CreateAttachmentResponseMessage";
+  static const CreateAttachmentResponseMessage =
+      "CreateAttachmentResponseMessage";
 
   // DeleteAttachment
   static const DeleteAttachment = "DeleteAttachment";
   static const DeleteAttachmentResponse = "DeleteAttachmentResponse";
-  static const DeleteAttachmentResponseMessage = "DeleteAttachmentResponseMessage";
+  static const DeleteAttachmentResponseMessage =
+      "DeleteAttachmentResponseMessage";
 
   // ResolveNames
   static const ResolveNames = "ResolveNames";
@@ -1326,7 +1347,8 @@ class XmlElementNames {
   // GetStreamingEvents
   static const GetStreamingEvents = "GetStreamingEvents";
   static const GetStreamingEventsResponse = "GetStreamingEventsResponse";
-  static const GetStreamingEventsResponseMessage = "GetStreamingEventsResponseMessage";
+  static const GetStreamingEventsResponseMessage =
+      "GetStreamingEventsResponseMessage";
   static const ConnectionStatus = "ConnectionStatus";
   static const ErrorSubscriptionIds = "ErrorSubscriptionIds";
   static const ConnectionTimeout = "ConnectionTimeout";
@@ -1335,12 +1357,14 @@ class XmlElementNames {
   // SyncFolderItems
   static const SyncFolderItems = "SyncFolderItems";
   static const SyncFolderItemsResponse = "SyncFolderItemsResponse";
-  static const SyncFolderItemsResponseMessage = "SyncFolderItemsResponseMessage";
+  static const SyncFolderItemsResponseMessage =
+      "SyncFolderItemsResponseMessage";
 
   // SyncFolderHierarchy
   static const SyncFolderHierarchy = "SyncFolderHierarchy";
   static const SyncFolderHierarchyResponse = "SyncFolderHierarchyResponse";
-  static const SyncFolderHierarchyResponseMessage = "SyncFolderHierarchyResponseMessage";
+  static const SyncFolderHierarchyResponseMessage =
+      "SyncFolderHierarchyResponseMessage";
 
   // GetUserOofSettings
   static const GetUserOofSettingsRequest = "GetUserOofSettingsRequest";
@@ -1373,7 +1397,8 @@ class XmlElementNames {
   // AddDelegate
   static const AddDelegate = "AddDelegate";
   static const AddDelegateResponse = "AddDelegateResponse";
-  static const DelegateUserResponseMessageType = "DelegateUserResponseMessageType";
+  static const DelegateUserResponseMessageType =
+      "DelegateUserResponseMessageType";
 
   // RemoveDelegte
   static const RemoveDelegate = "RemoveDelegate";
@@ -1389,23 +1414,30 @@ class XmlElementNames {
 
   // CreateUserConfiguration
   static const CreateUserConfiguration = "CreateUserConfiguration";
-  static const CreateUserConfigurationResponse = "CreateUserConfigurationResponse";
-  static const CreateUserConfigurationResponseMessage = "CreateUserConfigurationResponseMessage";
+  static const CreateUserConfigurationResponse =
+      "CreateUserConfigurationResponse";
+  static const CreateUserConfigurationResponseMessage =
+      "CreateUserConfigurationResponseMessage";
 
   // DeleteUserConfiguration
   static const DeleteUserConfiguration = "DeleteUserConfiguration";
-  static const DeleteUserConfigurationResponse = "DeleteUserConfigurationResponse";
-  static const DeleteUserConfigurationResponseMessage = "DeleteUserConfigurationResponseMessage";
+  static const DeleteUserConfigurationResponse =
+      "DeleteUserConfigurationResponse";
+  static const DeleteUserConfigurationResponseMessage =
+      "DeleteUserConfigurationResponseMessage";
 
   // GetUserConfiguration
   static const GetUserConfiguration = "GetUserConfiguration";
   static const GetUserConfigurationResponse = "GetUserConfigurationResponse";
-  static const GetUserConfigurationResponseMessage = "GetUserConfigurationResponseMessage";
+  static const GetUserConfigurationResponseMessage =
+      "GetUserConfigurationResponseMessage";
 
   // UpdateUserConfiguration
   static const UpdateUserConfiguration = "UpdateUserConfiguration";
-  static const UpdateUserConfigurationResponse = "UpdateUserConfigurationResponse";
-  static const UpdateUserConfigurationResponseMessage = "UpdateUserConfigurationResponseMessage";
+  static const UpdateUserConfigurationResponse =
+      "UpdateUserConfigurationResponse";
+  static const UpdateUserConfigurationResponseMessage =
+      "UpdateUserConfigurationResponseMessage";
 
   // PlayOnPhone
   static const PlayOnPhone = "PlayOnPhone";
@@ -1422,7 +1454,8 @@ class XmlElementNames {
   // GetServerTimeZones
   static const GetServerTimeZones = "GetServerTimeZones";
   static const GetServerTimeZonesResponse = "GetServerTimeZonesResponse";
-  static const GetServerTimeZonesResponseMessage = "GetServerTimeZonesResponseMessage";
+  static const GetServerTimeZonesResponseMessage =
+      "GetServerTimeZonesResponseMessage";
 
   // GetInboxRules
   static const GetInboxRules = "GetInboxRules";
@@ -1434,20 +1467,26 @@ class XmlElementNames {
 
   // ExecuteDiagnosticMethod
   static const ExecuteDiagnosticMethod = "ExecuteDiagnosticMethod";
-  static const ExecuteDiagnosticMethodResponse = "ExecuteDiagnosticMethodResponse";
-  static const ExecuteDiagnosticMethodResponseMEssage = "ExecuteDiagnosticMethodResponseMessage";
+  static const ExecuteDiagnosticMethodResponse =
+      "ExecuteDiagnosticMethodResponse";
+  static const ExecuteDiagnosticMethodResponseMEssage =
+      "ExecuteDiagnosticMethodResponseMessage";
 
   //GetPasswordExpirationDate
   static const GetPasswordExpirationDateRequest = "GetPasswordExpirationDate";
-  static const GetPasswordExpirationDateResponse = "GetPasswordExpirationDateResponse";
+  static const GetPasswordExpirationDateResponse =
+      "GetPasswordExpirationDateResponse";
 
   // GetSearchableMailboxes
   static const GetSearchableMailboxes = "GetSearchableMailboxes";
-  static const GetSearchableMailboxesResponse = "GetSearchableMailboxesResponse";
+  static const GetSearchableMailboxesResponse =
+      "GetSearchableMailboxesResponse";
 
   // GetDiscoverySearchConfiguration
-  static const GetDiscoverySearchConfiguration = "GetDiscoverySearchConfiguration";
-  static const GetDiscoverySearchConfigurationResponse = "GetDiscoverySearchConfigurationResponse";
+  static const GetDiscoverySearchConfiguration =
+      "GetDiscoverySearchConfiguration";
+  static const GetDiscoverySearchConfigurationResponse =
+      "GetDiscoverySearchConfigurationResponse";
 
   // GetHoldOnMailboxes
   static const GetHoldOnMailboxes = "GetHoldOnMailboxes";
@@ -1460,15 +1499,18 @@ class XmlElementNames {
   // SearchMailboxes
   static const SearchMailboxes = "SearchMailboxes";
   static const SearchMailboxesResponse = "SearchMailboxesResponse";
-  static const SearchMailboxesResponseMessage = "SearchMailboxesResponseMessage";
+  static const SearchMailboxesResponseMessage =
+      "SearchMailboxesResponseMessage";
 
   // GetNonIndexableItemDetails
   static const GetNonIndexableItemDetails = "GetNonIndexableItemDetails";
-  static const GetNonIndexableItemDetailsResponse = "GetNonIndexableItemDetailsResponse";
+  static const GetNonIndexableItemDetailsResponse =
+      "GetNonIndexableItemDetailsResponse";
 
   // GetNonIndexableItemStatistics
   static const GetNonIndexableItemStatistics = "GetNonIndexableItemStatistics";
-  static const GetNonIndexableItemStatisticsResponse = "GetNonIndexableItemStatisticsResponse";
+  static const GetNonIndexableItemStatisticsResponse =
+      "GetNonIndexableItemStatisticsResponse";
 
   // eDiscovery
   static const SearchQueries = "SearchQueries";
@@ -1586,7 +1628,8 @@ class XmlElementNames {
   static const SetClientExtensionActions = "Actions";
   static const SetClientExtensionAction = "Action";
   static const SetClientExtensionResponse = "SetClientExtensionResponse";
-  static const SetClientExtensionResponseMessage = "SetClientExtensionResponseMessage";
+  static const SetClientExtensionResponseMessage =
+      "SetClientExtensionResponseMessage";
 
   // GetOMEConfiguration/SetOMEConfiguration
   static const GetOMEConfigurationRequest = "GetOMEConfiguration";
@@ -1621,7 +1664,8 @@ class XmlElementNames {
 
   // GetUserRetentionPolicyTags
   static const GetUserRetentionPolicyTags = "GetUserRetentionPolicyTags";
-  static const GetUserRetentionPolicyTagsResponse = "GetUserRetentionPolicyTagsResponse";
+  static const GetUserRetentionPolicyTagsResponse =
+      "GetUserRetentionPolicyTagsResponse";
 
   // MRM
   static const RetentionPolicyTags = "RetentionPolicyTags";
@@ -1647,7 +1691,8 @@ class XmlElementNames {
   static const GroupsLimit = "GroupsLimit";
   static const UserSmtpAddress = "UserSmtpAddress";
 
-  static const GetUserUnifiedGroupsResponseMessage = "GetUserUnifiedGroupsResponseMessage";
+  static const GetUserUnifiedGroupsResponseMessage =
+      "GetUserUnifiedGroupsResponseMessage";
   static const GroupsSets = "GroupsSets";
   static const UnifiedGroupsSet = "UnifiedGroupsSet";
   static const TotalGroups = "TotalGroups";
@@ -1664,12 +1709,15 @@ class XmlElementNames {
   static const GroupIdentityType = "IdentityType";
   static const GroupIdentityValue = "Value";
 
-  static const GetUnifiedGroupUnseenCountResponseMessage = "GetUnifiedGroupUnseenCountResponseMessage";
+  static const GetUnifiedGroupUnseenCountResponseMessage =
+      "GetUnifiedGroupUnseenCountResponseMessage";
   static const UnseenCount = "UnseenCount";
 
   // SetUnifiedGroupLastVisitedTimeRequest
-  static const SetUnifiedGroupLastVisitedTime = "SetUnifiedGroupLastVisitedTime";
-  static const SetUnifiedGroupLastVisitedTimeResponseMessage = "SetUnifiedGroupLastVisitedTimeResponseMessage";
+  static const SetUnifiedGroupLastVisitedTime =
+      "SetUnifiedGroupLastVisitedTime";
+  static const SetUnifiedGroupLastVisitedTimeResponseMessage =
+      "SetUnifiedGroupLastVisitedTimeResponseMessage";
 
   static const Hashtags = "Hashtags";
 
@@ -1689,6 +1737,7 @@ class XmlElementNames {
   static const EwsMessageElementName = "Message";
   static const EwsLineElementName = "Line";
   static const EwsPositionElementName = "Position";
-  static const EwsErrorCodeElementName = "ErrorCode"; // Generated by Availability
+  static const EwsErrorCodeElementName =
+      "ErrorCode"; // Generated by Availability
   static const EwsExceptionTypeElementName = "ExceptionType"; // Generated by UM
 }

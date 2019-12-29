@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Reformatted code with the `dartfmt` tool
+
 ## 1.0.1
 
 * Added an example of the library using

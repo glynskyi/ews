@@ -23,12 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'package:ews/ComplexProperties/ComplexProperty.dart';
+import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlElementNames.dart';
@@ -41,104 +36,93 @@ import 'package:ews/Search/Filters/SearchFilter.dart' as search;
 //    /// </content>
 // abstract partial class SearchFilter
 //    {
-        /// <summary>
-        /// Represents a search filter that negates another. Applications can use NotFilter to define
-        /// conditions such as "NOT(other filter)".
-        /// </summary>
- class Not extends SearchFilter
-        {
-            /* private */ search.SearchFilter searchFilter;
+/// <summary>
+/// Represents a search filter that negates another. Applications can use NotFilter to define
+/// conditions such as "NOT(other filter)".
+/// </summary>
+class Not extends SearchFilter {
+  /* private */ search.SearchFilter searchFilter;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Not"/> class.
-            /// </summary>
- Not()
-                : super()
-            {
-            }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="Not"/> class.
+  /// </summary>
+  Not() : super() {}
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Not"/> class.
-            /// </summary>
-            /// <param name="searchFilter">The search filter to negate. Available search filter classes include SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.</param>
- Not.withSearchFilter(search.SearchFilter searchFilter)
-                : super()
-            {
-                this.searchFilter = searchFilter;
-            }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="Not"/> class.
+  /// </summary>
+  /// <param name="searchFilter">The search filter to negate. Available search filter classes include SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.</param>
+  Not.withSearchFilter(search.SearchFilter searchFilter) : super() {
+    this.searchFilter = searchFilter;
+  }
 
-            /// <summary>
-            /// A search filter has changed.
-            /// </summary>
-            /// <param name="complexProperty">The complex property.</param>
-            /* private */ void SearchFilterChanged(ComplexProperty complexProperty)
-            {
-                this.Changed();
-            }
+  /// <summary>
+  /// A search filter has changed.
+  /// </summary>
+  /// <param name="complexProperty">The complex property.</param>
+  /* private */
+  void SearchFilterChanged(ComplexProperty complexProperty) {
+    this.Changed();
+  }
 
-            /// <summary>
-            /// Validate instance.
-            /// </summary>
-@override
-            void InternalValidate()
-            {
-                if (this.searchFilter == null)
-                {
-                    throw new ServiceValidationException("Strings.SearchFilterMustBeSet");
-                }
-            }
+  /// <summary>
+  /// Validate instance.
+  /// </summary>
+  @override
+  void InternalValidate() {
+    if (this.searchFilter == null) {
+      throw new ServiceValidationException("Strings.SearchFilterMustBeSet");
+    }
+  }
 
-            /// <summary>
-            /// Gets the name of the XML element.
-            /// </summary>
-            /// <returns>XML element name.</returns>
-@override
-            String GetXmlElementName()
-            {
-                return XmlElementNames.Not;
-            }
+  /// <summary>
+  /// Gets the name of the XML element.
+  /// </summary>
+  /// <returns>XML element name.</returns>
+  @override
+  String GetXmlElementName() {
+    return XmlElementNames.Not;
+  }
 
-            /// <summary>
-            /// Tries to read element from XML.
-            /// </summary>
-            /// <param name="reader">The reader.</param>
-            /// <returns>True if element was read.</returns>
-@override
-            bool TryReadElementFromXml(EwsServiceXmlReader reader)
-            {
-                this.searchFilter = search.SearchFilter.LoadFromXmlWithReader(reader);
-                return true;
-            }
+  /// <summary>
+  /// Tries to read element from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <returns>True if element was read.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    this.searchFilter = search.SearchFilter.LoadFromXmlWithReader(reader);
+    return true;
+  }
 
-            /// <summary>
-            /// Writes the elements to XML.
-            /// </summary>
-            /// <param name="writer">The writer.</param>
-@override
-            void WriteElementsToXml(EwsServiceXmlWriter writer)
-            {
-                this.SearchFilter.WriteToXmlWithWriter(writer);
-            }
+  /// <summary>
+  /// Writes the elements to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    this.SearchFilter.WriteToXmlWithWriter(writer);
+  }
 
-            /// <summary>
-            /// Gets or sets the search filter to negate. Available search filter classes include
-            /// SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.
-            /// </summary>
-        search.SearchFilter get SearchFilter => this.searchFilter;
+  /// <summary>
+  /// Gets or sets the search filter to negate. Available search filter classes include
+  /// SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.
+  /// </summary>
+  search.SearchFilter get SearchFilter => this.searchFilter;
 
-            set SearchFilter(search.SearchFilter value) {
-              if (this.searchFilter != null) {
-                this.searchFilter.removeChangeEvent(this.SearchFilterChanged);
-              }
+  set SearchFilter(search.SearchFilter value) {
+    if (this.searchFilter != null) {
+      this.searchFilter.removeChangeEvent(this.SearchFilterChanged);
+    }
 
-              if (this.CanSetFieldValue(this.searchFilter, searchFilter)) {
-                this.searchFilter = searchFilter;
-                this.Changed();
-              }
+    if (this.CanSetFieldValue(this.searchFilter, searchFilter)) {
+      this.searchFilter = searchFilter;
+      this.Changed();
+    }
 
-              if (this.searchFilter != null) {
-                this.searchFilter.addOnChangeEvent(this.SearchFilterChanged);
-              }
-            }
-        }
+    if (this.searchFilter != null) {
+      this.searchFilter.addOnChangeEvent(this.SearchFilterChanged);
+    }
+  }
+}
 //    }

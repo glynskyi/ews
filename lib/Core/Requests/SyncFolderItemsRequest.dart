@@ -42,7 +42,8 @@ import 'package:ews/misc/ItemIdWrapperList.dart';
 /// <summary>
 /// Represents a SyncFolderItems request.
 /// </summary>
-class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItemsResponse> {
+class SyncFolderItemsRequest
+    extends MultiResponseServiceRequest<SyncFolderItemsResponse> {
   core.PropertySet _propertySet;
 
   FolderId _syncFolderId;
@@ -71,7 +72,8 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  SyncFolderItemsResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  SyncFolderItemsResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new SyncFolderItemsResponse(this.PropertySet);
   }
 
@@ -119,11 +121,14 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
     super.Validate();
     EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
     EwsUtilities.ValidateParam(this.SyncFolderId, "SyncFolderId");
-    this.SyncFolderId.ValidateExchangeVersion(this.Service.RequestedServerVersion);
+    this
+        .SyncFolderId
+        .ValidateExchangeVersion(this.Service.RequestedServerVersion);
 
     // SyncFolderItemsScope enum was introduced with Exchange2010.  Only
     // value NormalItems is valid with previous server versions.
-    if (this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2010.index &&
+    if (this.Service.RequestedServerVersion.index <
+            ExchangeVersion.Exchange2010.index &&
         this._syncScope != SyncFolderItemsScope.NormalItems) {
       throw new ServiceVersionException("""string.Format(
                                   Strings.EnumValueIncompatibleWithRequestVersion,
@@ -133,7 +138,8 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
     }
 
     // NumberOfDays was introduced with Exchange 2013.
-    if (this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index &&
+    if (this.Service.RequestedServerVersion.index <
+            ExchangeVersion.Exchange2013.index &&
         this.NumberOfDays != 0) {
       throw new ServiceVersionException("""string.Format(
                                   Strings.ParameterIncompatibleWithRequestVersion,
@@ -153,26 +159,30 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     this.PropertySet.WriteToXml(writer, ServiceObjectType.Item);
 
-    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.SyncFolderId);
+    writer.WriteStartElement(
+        XmlNamespace.Messages, XmlElementNames.SyncFolderId);
     this.SyncFolderId.WriteToXmlElemenetName(writer);
     writer.WriteEndElement();
 
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Messages, XmlElementNames.SyncState, this.SyncState);
 
-    this.IgnoredItemIds.WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.Ignore);
+    this
+        .IgnoredItemIds
+        .WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.Ignore);
 
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Messages, XmlElementNames.MaxChangesReturned, this.MaxChangesReturned);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Messages,
+        XmlElementNames.MaxChangesReturned, this.MaxChangesReturned);
 
-    if (this.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010.index) {
+    if (this.Service.RequestedServerVersion.index >=
+        ExchangeVersion.Exchange2010.index) {
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Messages, XmlElementNames.SyncScope, this._syncScope);
     }
 
     if (this.NumberOfDays != 0) {
-      writer.WriteElementValueWithNamespace(
-          XmlNamespace.Messages, XmlElementNames.NumberOfDays, this._numberOfDays);
+      writer.WriteElementValueWithNamespace(XmlNamespace.Messages,
+          XmlElementNames.NumberOfDays, this._numberOfDays);
     }
   }
 
@@ -242,7 +252,8 @@ class SyncFolderItemsRequest extends MultiResponseServiceRequest<SyncFolderItems
     if (value >= 1 && value <= 512) {
       this._maxChangesReturned = value;
     } else {
-      throw new RangeError.range(value, 1, 512, "Strings.MaxChangesMustBeBetween1And512");
+      throw new RangeError.range(
+          value, 1, 512, "Strings.MaxChangesMustBeBetween1And512");
     }
   }
 

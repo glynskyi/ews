@@ -126,9 +126,10 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="reader">The reader.</param>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void LoadFromXmlWithNamespace(
-      EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) {
-    this._InternalLoadFromXml(reader, xmlNamespace, xmlElementName, this.TryReadElementFromXml);
+  void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName) {
+    this._InternalLoadFromXml(
+        reader, xmlNamespace, xmlElementName, this.TryReadElementFromXml);
   }
 
   /// <summary>
@@ -137,10 +138,10 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="reader">The reader.</param>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void UpdateFromXmlWithNamespace(
-      EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) {
-    this._InternalLoadFromXml(
-        reader, xmlNamespace, xmlElementName, this.TryReadElementFromXmlToPatch);
+  void UpdateFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName) {
+    this._InternalLoadFromXml(reader, xmlNamespace, xmlElementName,
+        this.TryReadElementFromXmlToPatch);
   }
 
   /// <summary>
@@ -150,9 +151,10 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="readAction"></param>
-  void _InternalLoadFromXml(EwsServiceXmlReader reader, XmlNamespace xmlNamespace,
-      String xmlElementName, ReadAction readAction) {
-    reader.EnsureCurrentNodeIsStartElementWithNamespace(xmlNamespace, xmlElementName);
+  void _InternalLoadFromXml(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName, ReadAction readAction) {
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        xmlNamespace, xmlElementName);
 
     this.ReadAttributesFromXml(reader);
 
@@ -203,8 +205,8 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="writer">The writer.</param>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void WriteToXmlWithNamespace(
-      EwsServiceXmlWriter writer, XmlNamespace xmlNamespace, String xmlElementName) {
+  void WriteToXmlWithNamespace(EwsServiceXmlWriter writer,
+      XmlNamespace xmlNamespace, String xmlElementName) {
     writer.WriteStartElement(xmlNamespace, xmlElementName);
     this.WriteAttributesToXml(writer);
     this.WriteElementsToXml(writer);

@@ -85,7 +85,8 @@ class AttendeeCollection extends ComplexPropertyCollection<Attendee> {
   /// <param name="index">The index of the attendee to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     this.InternalRemoveAt(index);

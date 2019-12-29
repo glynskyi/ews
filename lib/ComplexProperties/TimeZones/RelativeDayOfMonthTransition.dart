@@ -92,7 +92,8 @@ class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.DayOfWeek:
-          this.dayOfTheWeek = reader.ReadElementValue<enumerations.DayOfTheWeek>();
+          this.dayOfTheWeek =
+              reader.ReadElementValue<enumerations.DayOfTheWeek>();
           return true;
         case XmlElementNames.Occurrence:
           this.weekIndex = reader.ReadElementValue<int>();
@@ -122,7 +123,8 @@ class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
   /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-  RelativeDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition) : super(timeZoneDefinition) {}
+  RelativeDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition)
+      : super(timeZoneDefinition) {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.

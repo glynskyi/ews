@@ -35,14 +35,16 @@ import 'package:ews/PropertyDefinitions/TypedPropertyDefinition.dart';
 /// Represents generic property definition.
 /// </summary>
 /// <typeparam name="TPropertyValue">Property value type. Constrained to be a value type.</typeparam>
-class GenericPropertyDefinition<TPropertyValue> extends TypedPropertyDefinition {
+class GenericPropertyDefinition<TPropertyValue>
+    extends TypedPropertyDefinition {
   /// <summary>
   /// Initializes a new instance of the <see cref="GenericPropertyDefinition&lt;T&gt;"/> class.
   /// </summary>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="uri">The URI.</param>
   /// <param name="version">The version.</param>
-  GenericPropertyDefinition.withUri(String xmlElementName, String uri, ExchangeVersion version)
+  GenericPropertyDefinition.withUri(
+      String xmlElementName, String uri, ExchangeVersion version)
       : super.withUri(xmlElementName, uri, version);
 
   /// <summary>
@@ -64,9 +66,14 @@ class GenericPropertyDefinition<TPropertyValue> extends TypedPropertyDefinition 
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
   /// <param name="isNullable">if set to true, property value is nullable.</param>
-  GenericPropertyDefinition.withFlagsAndNullable(String xmlElementName, String uri,
-      List<PropertyDefinitionFlags> flags, ExchangeVersion version, bool isNullable)
-      : super.withUriAndFlagsAndNullable(xmlElementName, uri, flags, version, isNullable);
+  GenericPropertyDefinition.withFlagsAndNullable(
+      String xmlElementName,
+      String uri,
+      List<PropertyDefinitionFlags> flags,
+      ExchangeVersion version,
+      bool isNullable)
+      : super.withUriAndFlagsAndNullable(
+            xmlElementName, uri, flags, version, isNullable);
 
   /// <summary>
   /// Parses the specified value.

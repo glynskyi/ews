@@ -50,7 +50,8 @@ class MessageBody extends ComplexProperty {
   /// </summary>
   /// <param name="bodyType">The type of the message body's text.</param>
   /// <param name="text">The text of the message body.</param>
-  MessageBody.withText(String text, [enumerations.BodyType bodyType = enumerations.BodyType.HTML]) {
+  MessageBody.withText(String text,
+      [enumerations.BodyType bodyType = enumerations.BodyType.HTML]) {
     this.bodyType = bodyType;
     this.text = text;
   }
@@ -83,7 +84,8 @@ class MessageBody extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
-    this.bodyType = reader.ReadAttributeValue<enumerations.BodyType>(XmlAttributeNames.BodyType);
+    this.bodyType = reader.ReadAttributeValue<enumerations.BodyType>(
+        XmlAttributeNames.BodyType);
   }
 
   /// <summary>

@@ -19,8 +19,11 @@ void main() {
         "attachment.html", utf8.encode(attachmentContent));
     await message.Save();
 
-    final testMessage = await EmailMessage.Bind(service, message.Id,
-        PropertySet.fromPropertyDefinitions([ItemSchema.Subject, ItemSchema.Attachments]));
+    final testMessage = await EmailMessage.Bind(
+        service,
+        message.Id,
+        PropertySet.fromPropertyDefinitions(
+            [ItemSchema.Subject, ItemSchema.Attachments]));
     expect(testMessage.Subject, messageSubject);
     expect(testMessage.Attachments.Count, 1);
 

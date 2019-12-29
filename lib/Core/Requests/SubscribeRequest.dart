@@ -55,8 +55,13 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
     this.FolderIds.Validate(this.Service.RequestedServerVersion);
 
     // Check that caller isn't trying to subscribe to Status events.
-    if (this.EventTypes.where((eventType) => (eventType == EventType.Status)).length > 0) {
-      throw new ServiceValidationException("Strings.CannotSubscribeToStatusEvents");
+    if (this
+            .EventTypes
+            .where((eventType) => (eventType == EventType.Status))
+            .length >
+        0) {
+      throw new ServiceValidationException(
+          "Strings.CannotSubscribeToStatusEvents");
     }
 
     // If Watermark was specified, make sure it's not a blank string.
@@ -64,9 +69,9 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
       EwsUtilities.ValidateNonBlankStringParam(this.Watermark, "Watermark");
     }
 
-    this
-        .EventTypes
-        .forEach((eventType) => EwsUtilities.ValidateEnumVersionValue(eventType, this.Service.RequestedServerVersion));
+    this.EventTypes.forEach((eventType) =>
+        EwsUtilities.ValidateEnumVersionValue(
+            eventType, this.Service.RequestedServerVersion));
   }
 
   /// <summary>
@@ -123,22 +128,27 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(XmlNamespace.Messages, this.GetSubscriptionXmlElementName());
+    writer.WriteStartElement(
+        XmlNamespace.Messages, this.GetSubscriptionXmlElementName());
 
     if (this.FolderIds.Count == 0) {
       writer.WriteAttributeValue(XmlAttributeNames.SubscribeToAllFolders, true);
     }
 
-    this.FolderIds.WriteToXml(writer, XmlNamespace.Types, XmlElementNames.FolderIds);
+    this
+        .FolderIds
+        .WriteToXml(writer, XmlNamespace.Types, XmlElementNames.FolderIds);
 
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.EventTypes);
     for (EventType eventType in this.EventTypes) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.EventType, eventType);
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Types, XmlElementNames.EventType, eventType);
     }
     writer.WriteEndElement();
 
     if (!StringUtils.IsNullOrEmpty(this.Watermark)) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Watermark, this.Watermark);
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Types, XmlElementNames.Watermark, this.Watermark);
     }
 
     this.InternalWriteElementsToXml(writer);
@@ -150,7 +160,8 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
   /// Initializes a new instance of the <see cref="SubscribeRequest&lt;TSubscription&gt;"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  SubscribeRequest(ExchangeService service) : super(service, ServiceErrorHandling.ThrowOnError) {
+  SubscribeRequest(ExchangeService service)
+      : super(service, ServiceErrorHandling.ThrowOnError) {
     this.FolderIds = new FolderIdWrapperList();
     this.EventTypes = new List<EventType>();
   }

@@ -30,7 +30,8 @@ import 'package:ews/Core/ServiceObjects/Schemas/ServiceObjectSchema.dart';
 
 class CalendarResponseObjectSchema extends ServiceObjectSchema {
   // This must be declared after the property definitions
-  static CalendarResponseObjectSchema Instance = new CalendarResponseObjectSchema();
+  static CalendarResponseObjectSchema Instance =
+      new CalendarResponseObjectSchema();
 
   /// <summary>
   /// Registers properties.

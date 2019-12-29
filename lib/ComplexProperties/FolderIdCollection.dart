@@ -111,7 +111,8 @@ class FolderIdCollection extends ComplexPropertyCollection<FolderId> {
   /// <param name="index">The zero-based index of the folder Id to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     this.InternalRemoveAt(index);

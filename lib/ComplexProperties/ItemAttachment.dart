@@ -38,159 +38,144 @@ import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
-    /// Represents an item attachment.
-    /// </summary>
- class ItemAttachment extends Attachment
-    {
-        /// <summary>
-        /// The item associated with the attachment.
-        /// </summary>
-        /* private */ items.Item item;
+/// Represents an item attachment.
+/// </summary>
+class ItemAttachment extends Attachment {
+  /// <summary>
+  /// The item associated with the attachment.
+  /// </summary>
+  /* private */ items.Item item;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemAttachment"/> class.
-        /// </summary>
-        /// <param name="owner">The owner of the attachment.</param>
-        ItemAttachment.withOwner(items.Item owner)
-            : super.withOwner(owner);
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ItemAttachment"/> class.
+  /// </summary>
+  /// <param name="owner">The owner of the attachment.</param>
+  ItemAttachment.withOwner(items.Item owner) : super.withOwner(owner);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemAttachment"/> class.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        ItemAttachment.withExchangeService(ExchangeService service)
-            : super.withExchangeService(service);
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ItemAttachment"/> class.
+  /// </summary>
+  /// <param name="service">The service.</param>
+  ItemAttachment.withExchangeService(ExchangeService service)
+      : super.withExchangeService(service);
 
-        /// <summary>
-        /// Gets the item associated with the attachment.
-        /// </summary>
-      items.Item get Item  => this.item;
+  /// <summary>
+  /// Gets the item associated with the attachment.
+  /// </summary>
+  items.Item get Item => this.item;
 
-      set (items.Item value) {
-        this.ThrowIfThisIsNotNew();
+  set(items.Item value) {
+    this.ThrowIfThisIsNotNew();
 
-        if (this.item != null)
-        {
-          this.item.onChange.remove(this.ItemChanged);
-        }
-        this.item = value;
-        if (this.item != null)
-        {
-          this.item.onChange.add(this.ItemChanged);
-        }
+    if (this.item != null) {
+      this.item.onChange.remove(this.ItemChanged);
+    }
+    this.item = value;
+    if (this.item != null) {
+      this.item.onChange.add(this.ItemChanged);
+    }
+  }
+
+  /// <summary>
+  /// Implements the OnChange event handler for the item associated with the attachment.
+  /// </summary>
+  /// <param name="serviceObject">The service object that triggered the OnChange event.</param>
+  /* private */
+  void ItemChanged(ServiceObject serviceObject) {
+    if (this.Owner != null) {
+      this.Owner.PropertyBag.Changed();
+    }
+  }
+
+  /// <summary>
+  /// Obtains EWS XML element name for this object.
+  /// </summary>
+  /// <returns>The XML element name.</returns>
+  @override
+  String GetXmlElementName() {
+    return XmlElementNames.ItemAttachment;
+  }
+
+  /// <summary>
+  /// Tries to read the element at the current position of the reader.
+  /// </summary>
+  /// <param name="reader">The reader to read the element from.</param>
+  /// <returns>True if the element was read, false otherwise.</returns>
+  @override
+  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+    bool result = super.TryReadElementFromXml(reader);
+
+    if (!result) {
+      this.item =
+          EwsUtilities.CreateItemFromXmlElementName(this, reader.LocalName);
+
+      if (this.item != null) {
+        this.item.LoadFromXml(reader, true /* clearPropertyBag */);
+      }
+    }
+
+    return result;
+  }
+
+  /// <summary>
+  /// For ItemAttachment, AttachmentId and Item should be patched.
+  /// </summary>
+  /// <param name="reader"></param>
+  /// <returns></returns>
+  @override
+  bool TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) {
+    // update the attachment id.
+    super.TryReadElementFromXml(reader);
+
+    reader.Read();
+    Type itemClass =
+        EwsUtilities.GetItemTypeFromXmlElementName(reader.LocalName);
+
+    if (itemClass != null) {
+      if (this.item == null || this.item.runtimeType != itemClass) {
+        throw new ServiceLocalException("Strings.AttachmentItemTypeMismatch");
       }
 
-        /// <summary>
-        /// Implements the OnChange event handler for the item associated with the attachment.
-        /// </summary>
-        /// <param name="serviceObject">The service object that triggered the OnChange event.</param>
-        /* private */ void ItemChanged(ServiceObject serviceObject)
-        {
-            if (this.Owner != null)
-            {
-                this.Owner.PropertyBag.Changed();
-            }
-        }
+      this.item.LoadFromXml(reader, false /* clearPropertyBag */);
+      return true;
+    }
 
-        /// <summary>
-        /// Obtains EWS XML element name for this object.
-        /// </summary>
-        /// <returns>The XML element name.</returns>
-@override
-        String GetXmlElementName()
-        {
-            return XmlElementNames.ItemAttachment;
-        }
+    return false;
+  }
 
-        /// <summary>
-        /// Tries to read the element at the current position of the reader.
-        /// </summary>
-        /// <param name="reader">The reader to read the element from.</param>
-        /// <returns>True if the element was read, false otherwise.</returns>
-@override
-        bool TryReadElementFromXml(EwsServiceXmlReader reader)
-        {
-            bool result = super.TryReadElementFromXml(reader);
+  /// <summary>
+  /// Writes the properties of this object as XML elements.
+  /// </summary>
+  /// <param name="writer">The writer to write the elements to.</param>
+  @override
+  void WriteElementsToXml(EwsServiceXmlWriter writer) {
+    super.WriteElementsToXml(writer);
 
-            if (!result)
-            {
-                this.item = EwsUtilities.CreateItemFromXmlElementName(this, reader.LocalName);
+    this.Item.WriteToXml(writer);
+  }
 
-                if (this.item != null)
-                {
-                    this.item.LoadFromXml(reader, true /* clearPropertyBag */);
-                }
-            }
+  /// <summary>
+  /// Validates this instance.
+  /// </summary>
+  /// <param name="attachmentIndex">Index of this attachment.</param>
+  @override
+  void ValidateWithIndex(int attachmentIndex) {
+    if (StringUtils.IsNullOrEmpty(this.Name)) {
+      throw new ServiceValidationException(
+          "string.Format(Strings.ItemAttachmentMustBeNamed, attachmentIndex)");
+    }
 
-            return result;
-        }
+    // Recurse through any items attached to item attachment.
+    this.Item.Attachments.Validate();
+  }
 
-        /// <summary>
-        /// For ItemAttachment, AttachmentId and Item should be patched.
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-@override
-        bool TryReadElementFromXmlToPatch(EwsServiceXmlReader reader)
-        {
-            // update the attachment id.
-            super.TryReadElementFromXml(reader);
-
-            reader.Read();
-            Type itemClass = EwsUtilities.GetItemTypeFromXmlElementName(reader.LocalName);
-
-            if (itemClass != null)
-            {
-                if (this.item == null || this.item.runtimeType != itemClass)
-                {
-                    throw new ServiceLocalException("Strings.AttachmentItemTypeMismatch");
-                }
-
-                this.item.LoadFromXml(reader, false /* clearPropertyBag */);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Writes the properties of this object as XML elements.
-        /// </summary>
-        /// <param name="writer">The writer to write the elements to.</param>
-@override
-        void WriteElementsToXml(EwsServiceXmlWriter writer)
-        {
-            super.WriteElementsToXml(writer);
-
-            this.Item.WriteToXml(writer);
-        }
-
-        /// <summary>
-        /// Validates this instance.
-        /// </summary>
-        /// <param name="attachmentIndex">Index of this attachment.</param>
-@override
-        void ValidateWithIndex(int attachmentIndex)
-        {
-            if (StringUtils.IsNullOrEmpty(this.Name))
-            {
-                throw new ServiceValidationException("string.Format(Strings.ItemAttachmentMustBeNamed, attachmentIndex)");
-            }
-
-            // Recurse through any items attached to item attachment.
-            this.Item.Attachments.Validate();
-        }
-
-        /// <summary>
-        /// Loads this attachment.
-        /// </summary>
-        /// <param name="additionalProperties">The optional additional properties to load.</param>
- void LoadWithProperties(List<PropertyDefinitionBase> additionalProperties)
-        {
-            this.InternalLoad(
-                null /* bodyType */,
-                additionalProperties);
-        }
+  /// <summary>
+  /// Loads this attachment.
+  /// </summary>
+  /// <param name="additionalProperties">The optional additional properties to load.</param>
+  void LoadWithProperties(List<PropertyDefinitionBase> additionalProperties) {
+    this.InternalLoad(null /* bodyType */, additionalProperties);
+  }
 
 //        /// <summary>
 //        /// Loads this attachment.
@@ -203,17 +188,15 @@ import 'package:ews/misc/StringUtils.dart';
 //                additionalProperties);
 //        }
 
-        /// <summary>
-        /// Loads this attachment.
-        /// </summary>
-        /// <param name="bodyType">The body type to load.</param>
-        /// <param name="additionalProperties">The optional additional properties to load.</param>
- void LoadWithBodyTypeAndProperties(BodyType bodyType, List<PropertyDefinitionBase> additionalProperties)
-        {
-            this.InternalLoad(
-                bodyType,
-                additionalProperties);
-        }
+  /// <summary>
+  /// Loads this attachment.
+  /// </summary>
+  /// <param name="bodyType">The body type to load.</param>
+  /// <param name="additionalProperties">The optional additional properties to load.</param>
+  void LoadWithBodyTypeAndProperties(
+      BodyType bodyType, List<PropertyDefinitionBase> additionalProperties) {
+    this.InternalLoad(bodyType, additionalProperties);
+  }
 
 //        /// <summary>
 //        /// Loads this attachment.
@@ -226,4 +209,4 @@ import 'package:ews/misc/StringUtils.dart';
 //                bodyType,
 //                additionalProperties);
 //        }
-    }
+}

@@ -36,7 +36,8 @@ import 'package:ews/PropertyDefinitions/GenericPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 
 class MeetingMessageSchemaFieldUris {
-  static const String AssociatedCalendarItemId = "meeting:AssociatedCalendarItemId";
+  static const String AssociatedCalendarItemId =
+      "meeting:AssociatedCalendarItemId";
   static const String IsDelegated = "meeting:IsDelegated";
   static const String IsOutOfDate = "meeting:IsOutOfDate";
   static const String HasBeenProcessed = "meeting:HasBeenProcessed";
@@ -57,42 +58,51 @@ class MeetingMessageSchema extends EmailMessageSchema {
   /// <summary>
   /// Defines the AssociatedAppointmentId property.
   /// </summary>
-  static PropertyDefinition AssociatedAppointmentId = new ComplexPropertyDefinition<ItemId>.withUri(
-      XmlElementNames.AssociatedCalendarItemId,
-      MeetingMessageSchemaFieldUris.AssociatedCalendarItemId,
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition AssociatedAppointmentId =
+      new ComplexPropertyDefinition<ItemId>.withUri(
+          XmlElementNames.AssociatedCalendarItemId,
+          MeetingMessageSchemaFieldUris.AssociatedCalendarItemId,
+          ExchangeVersion.Exchange2007_SP1, () {
     return new ItemId();
   });
 
   /// <summary>
   /// Defines the IsDelegated property.
   /// </summary>
-  static PropertyDefinition IsDelegated = new BoolPropertyDefinition.withUriAndFlags(XmlElementNames.IsDelegated,
-      MeetingMessageSchemaFieldUris.IsDelegated, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsDelegated =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsDelegated,
+          MeetingMessageSchemaFieldUris.IsDelegated,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsOutOfDate property.
   /// </summary>
   static PropertyDefinition IsOutOfDate = new BoolPropertyDefinition(
-      XmlElementNames.IsOutOfDate, MeetingMessageSchemaFieldUris.IsOutOfDate, ExchangeVersion.Exchange2007_SP1);
+      XmlElementNames.IsOutOfDate,
+      MeetingMessageSchemaFieldUris.IsOutOfDate,
+      ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the HasBeenProcessed property.
   /// </summary>
-  static PropertyDefinition HasBeenProcessed = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.HasBeenProcessed,
-      MeetingMessageSchemaFieldUris.HasBeenProcessed,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition HasBeenProcessed =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.HasBeenProcessed,
+          MeetingMessageSchemaFieldUris.HasBeenProcessed,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the ResponseType property.
   /// </summary>
-  static PropertyDefinition ResponseType = new GenericPropertyDefinition<MeetingResponseType>.withUriAndFlags(
-      XmlElementNames.ResponseType,
-      MeetingMessageSchemaFieldUris.ResponseType,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition ResponseType =
+      new GenericPropertyDefinition<MeetingResponseType>.withUriAndFlags(
+          XmlElementNames.ResponseType,
+          MeetingMessageSchemaFieldUris.ResponseType,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the iCalendar Uid property.
@@ -102,18 +112,24 @@ class MeetingMessageSchema extends EmailMessageSchema {
   /// <summary>
   /// Defines the iCalendar RecurrenceId property.
   /// </summary>
-  static PropertyDefinition ICalRecurrenceId = AppointmentSchema.ICalRecurrenceId;
+  static PropertyDefinition ICalRecurrenceId =
+      AppointmentSchema.ICalRecurrenceId;
 
   /// <summary>
   /// Defines the iCalendar DateTimeStamp property.
   /// </summary>
-  static PropertyDefinition ICalDateTimeStamp = AppointmentSchema.ICalDateTimeStamp;
+  static PropertyDefinition ICalDateTimeStamp =
+      AppointmentSchema.ICalDateTimeStamp;
 
   /// <summary>
   /// Defines the IsOrganizer property.
   /// </summary>
-  static PropertyDefinition IsOrganizer = new GenericPropertyDefinition<bool>.withUriAndFlags(XmlElementNames.IsOrganizer,
-      MeetingMessageSchemaFieldUris.IsOrganizer, [PropertyDefinitionFlags.CanFind], ExchangeVersion.Exchange2013);
+  static PropertyDefinition IsOrganizer =
+      new GenericPropertyDefinition<bool>.withUriAndFlags(
+          XmlElementNames.IsOrganizer,
+          MeetingMessageSchemaFieldUris.IsOrganizer,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2013);
 
   // This must be after the declaration of property definitions
   static MeetingMessageSchema Instance = new MeetingMessageSchema();

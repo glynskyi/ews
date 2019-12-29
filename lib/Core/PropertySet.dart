@@ -54,19 +54,21 @@ class PropertySet
   /// <summary>
   /// Returns a predefined property set that only includes the Id property.
   /// </summary>
-  static PropertySet IdOnly =
-      PropertySet._CreateReadonlyPropertySet(enumerations.BasePropertySet.IdOnly);
+  static PropertySet IdOnly = PropertySet._CreateReadonlyPropertySet(
+      enumerations.BasePropertySet.IdOnly);
 
   /// <summary>
   /// Returns a predefined property set that includes the first class properties of an item or folder.
   /// </summary>
   static PropertySet FirstClassProperties =
-      PropertySet._CreateReadonlyPropertySet(enumerations.BasePropertySet.FirstClassProperties);
+      PropertySet._CreateReadonlyPropertySet(
+          enumerations.BasePropertySet.FirstClassProperties);
 
   /// <summary>
   /// Maps BasePropertySet values to EWS's BaseShape values.
   /// </summary>
-  static LazyMember<Map<enumerations.BasePropertySet, String>> _defaultPropertySetMap =
+  static LazyMember<Map<enumerations.BasePropertySet, String>>
+      _defaultPropertySetMap =
       new LazyMember<Map<enumerations.BasePropertySet, String>>(() {
     Map<enumerations.BasePropertySet, String> result =
         new Map<enumerations.BasePropertySet, String>();
@@ -83,7 +85,8 @@ class PropertySet
   /// <summary>
   /// The list of additional properties included in this property set.
   /// </summary>
-  List<PropertyDefinitionBase> _additionalProperties = new List<PropertyDefinitionBase>();
+  List<PropertyDefinitionBase> _additionalProperties =
+      new List<PropertyDefinitionBase>();
 
   /// <summary>
   /// The requested body type for get and find operations. If null, the "best body" is returned.
@@ -165,7 +168,8 @@ class PropertySet
   /// Initializes a new instance of PropertySet based upon BasePropertySet.IdOnly.
   /// </summary>
   /// <param name="additionalProperties">Additional properties to include in the property set. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
-  PropertySet.fromPropertyDefinitions(List<PropertyDefinitionBase> additionalProperties)
+  PropertySet.fromPropertyDefinitions(
+      List<PropertyDefinitionBase> additionalProperties)
       : this(enumerations.BasePropertySet.IdOnly, additionalProperties);
 
   /// <summary>
@@ -217,7 +221,8 @@ class PropertySet
   /// </summary>
   /// <param name="basePropertySet">The base property set.</param>
   /// <returns>PropertySet</returns>
-  static PropertySet _CreateReadonlyPropertySet(enumerations.BasePropertySet basePropertySet) {
+  static PropertySet _CreateReadonlyPropertySet(
+      enumerations.BasePropertySet basePropertySet) {
     PropertySet propertySet = new PropertySet.fromPropertySet(basePropertySet);
     propertySet._isReadOnly = true;
     return propertySet;
@@ -387,7 +392,8 @@ class PropertySet
   /// Gets the <see cref="Microsoft.Exchange.WebServices.Data.PropertyDefinitionBase"/> at the specified index.
   /// </summary>
   /// <param name="index">Index.</param>
-  PropertyDefinitionBase operator [](int index) => this._additionalProperties[index];
+  PropertyDefinitionBase operator [](int index) =>
+      this._additionalProperties[index];
 
   /// <summary>
   /// Implements ISelfValidate.Validate. Validates this property set.
@@ -399,17 +405,18 @@ class PropertySet
   /// <summary>
   /// Maps BasePropertySet values to EWS's BaseShape values.
   /// </summary>
-  static LazyMember<Map<enumerations.BasePropertySet, String>> get DefaultPropertySetMap =>
-      PropertySet._defaultPropertySetMap;
+  static LazyMember<Map<enumerations.BasePropertySet, String>>
+      get DefaultPropertySetMap => PropertySet._defaultPropertySetMap;
 
   /// <summary>
   /// Writes additonal properties to XML.
   /// </summary>
   /// <param name="writer">The writer to write to.</param>
   /// <param name="propertyDefinitions">The property definitions to write.</param>
-  static void WriteAdditionalPropertiesToXml(
-      EwsServiceXmlWriter writer, Iterable<PropertyDefinitionBase> propertyDefinitions) {
-    writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.AdditionalProperties);
+  static void WriteAdditionalPropertiesToXml(EwsServiceXmlWriter writer,
+      Iterable<PropertyDefinitionBase> propertyDefinitions) {
+    writer.WriteStartElement(
+        XmlNamespace.Types, XmlElementNames.AdditionalProperties);
 
     for (PropertyDefinitionBase propertyDefinition in propertyDefinitions) {
       propertyDefinition.WriteToXml(writer);
@@ -424,7 +431,8 @@ class PropertySet
   void InternalValidate() {
     for (int i = 0; i < this._additionalProperties.length; i++) {
       if (this._additionalProperties[i] == null) {
-        throw new ServiceValidationException("string.Format(Strings.AdditionalPropertyIsNull, i)");
+        throw new ServiceValidationException(
+            "string.Format(Strings.AdditionalPropertyIsNull, i)");
       }
     }
   }
@@ -436,11 +444,14 @@ class PropertySet
   /// </summary>
   /// <param name="request">The request.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> then only summary properties are allowed.</param>
-  void ValidateForRequest(ServiceRequestBase request, bool summaryPropertiesOnly) {
+  void ValidateForRequest(
+      ServiceRequestBase request, bool summaryPropertiesOnly) {
     for (PropertyDefinitionBase propDefBase in this._additionalProperties) {
       if (propDefBase is PropertyDefinition) {
-        PropertyDefinition propertyDefinition = propDefBase as PropertyDefinition;
-        if (propertyDefinition.Version.index > request.Service.RequestedServerVersion.index) {
+        PropertyDefinition propertyDefinition =
+            propDefBase as PropertyDefinition;
+        if (propertyDefinition.Version.index >
+            request.Service.RequestedServerVersion.index) {
           throw new ServiceVersionException("""string.Format(
                                 Strings.PropertyIncompatibleWithRequestVersion,
                                 propertyDefinition.Name,
@@ -448,8 +459,8 @@ class PropertySet
         }
 
         if (summaryPropertiesOnly &&
-            !propertyDefinition.HasFlag(
-                PropertyDefinitionFlags.CanFind, request.Service.RequestedServerVersion)) {
+            !propertyDefinition.HasFlag(PropertyDefinitionFlags.CanFind,
+                request.Service.RequestedServerVersion)) {
           throw new ServiceValidationException("""string.Format(
                                 Strings.NonSummaryPropertyCannotBeUsed,
                                 propertyDefinition.Name,
@@ -459,7 +470,8 @@ class PropertySet
     }
 
     if (this.FilterHtmlContent != null) {
-      if (request.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2010.index) {
+      if (request.Service.RequestedServerVersion.index <
+          ExchangeVersion.Exchange2010.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.PropertyIncompatibleWithRequestVersion,
                             "FilterHtmlContent",
@@ -468,7 +480,8 @@ class PropertySet
     }
 
     if (this.ConvertHtmlCodePageToUTF8 != null) {
-      if (request.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2010_SP1.index) {
+      if (request.Service.RequestedServerVersion.index <
+          ExchangeVersion.Exchange2010_SP1.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.PropertyIncompatibleWithRequestVersion,
                             "ConvertHtmlCodePageToUTF8",
@@ -477,7 +490,8 @@ class PropertySet
     }
 
     if (!StringUtils.IsNullOrEmpty(this.InlineImageUrlTemplate)) {
-      if (request.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
+      if (request.Service.RequestedServerVersion.index <
+          ExchangeVersion.Exchange2013.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.PropertyIncompatibleWithRequestVersion,
                             "InlineImageUrlTemplate",
@@ -486,7 +500,8 @@ class PropertySet
     }
 
     if (this.BlockExternalImages != null) {
-      if (request.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
+      if (request.Service.RequestedServerVersion.index <
+          ExchangeVersion.Exchange2013.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.PropertyIncompatibleWithRequestVersion,
                             "BlockExternalImages",
@@ -495,7 +510,8 @@ class PropertySet
     }
 
     if (this.AddBlankTargetToLinks != null) {
-      if (request.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
+      if (request.Service.RequestedServerVersion.index <
+          ExchangeVersion.Exchange2013.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.PropertyIncompatibleWithRequestVersion,
                             "AddTargetToLinks",
@@ -504,7 +520,8 @@ class PropertySet
     }
 
     if (this.MaximumBodySize != null) {
-      if (request.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
+      if (request.Service.RequestedServerVersion.index <
+          ExchangeVersion.Exchange2013.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.PropertyIncompatibleWithRequestVersion,
                             "MaximumBodySize",
@@ -518,63 +535,77 @@ class PropertySet
   /// </summary>
   /// <param name="writer">The writer to write to.</param>
   /// <param name="serviceObjectType">The type of service object the property set is emitted for.</param>
-  void WriteToXml(EwsServiceXmlWriter writer, ServiceObjectType serviceObjectType) {
+  void WriteToXml(
+      EwsServiceXmlWriter writer, ServiceObjectType serviceObjectType) {
     String shapeElementName = _GetShapeName(serviceObjectType);
 
     writer.WriteStartElement(XmlNamespace.Messages, shapeElementName);
 
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.BaseShape,
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types,
+        XmlElementNames.BaseShape,
         _defaultPropertySetMap.Member[this.BasePropertySet]);
 
     if (serviceObjectType == ServiceObjectType.Item) {
       if (this.RequestedBodyType != null) {
-        writer.WriteElementValueWithNamespace(
-            XmlNamespace.Types, XmlElementNames.BodyType, this.RequestedBodyType);
+        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+            XmlElementNames.BodyType, this.RequestedBodyType);
       }
 
       if (this.RequestedUniqueBodyType != null) {
-        writer.WriteElementValueWithNamespace(
-            XmlNamespace.Types, XmlElementNames.UniqueBodyType, this.RequestedUniqueBodyType);
+        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+            XmlElementNames.UniqueBodyType, this.RequestedUniqueBodyType);
       }
 
       if (this.RequestedNormalizedBodyType != null) {
-        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
-            XmlElementNames.NormalizedBodyType, this.RequestedNormalizedBodyType);
+        writer.WriteElementValueWithNamespace(
+            XmlNamespace.Types,
+            XmlElementNames.NormalizedBodyType,
+            this.RequestedNormalizedBodyType);
       }
 
       if (this.FilterHtmlContent != null) {
-        writer.WriteElementValueWithNamespace(
-            XmlNamespace.Types, XmlElementNames.FilterHtmlContent, this.FilterHtmlContent);
+        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+            XmlElementNames.FilterHtmlContent, this.FilterHtmlContent);
       }
 
       if (this.ConvertHtmlCodePageToUTF8 != null &&
-          writer.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010_SP1.index) {
-        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
-            XmlElementNames.ConvertHtmlCodePageToUTF8, this.ConvertHtmlCodePageToUTF8);
+          writer.Service.RequestedServerVersion.index >=
+              ExchangeVersion.Exchange2010_SP1.index) {
+        writer.WriteElementValueWithNamespace(
+            XmlNamespace.Types,
+            XmlElementNames.ConvertHtmlCodePageToUTF8,
+            this.ConvertHtmlCodePageToUTF8);
       }
 
       if (!StringUtils.IsNullOrEmpty(this.InlineImageUrlTemplate) &&
-          writer.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2013.index) {
-        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
-            XmlElementNames.InlineImageUrlTemplate, this.InlineImageUrlTemplate);
+          writer.Service.RequestedServerVersion.index >=
+              ExchangeVersion.Exchange2013.index) {
+        writer.WriteElementValueWithNamespace(
+            XmlNamespace.Types,
+            XmlElementNames.InlineImageUrlTemplate,
+            this.InlineImageUrlTemplate);
       }
 
       if (this.BlockExternalImages != null &&
-          writer.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2013.index) {
-        writer.WriteElementValueWithNamespace(
-            XmlNamespace.Types, XmlElementNames.BlockExternalImages, this.BlockExternalImages);
+          writer.Service.RequestedServerVersion.index >=
+              ExchangeVersion.Exchange2013.index) {
+        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+            XmlElementNames.BlockExternalImages, this.BlockExternalImages);
       }
 
       if (this.AddBlankTargetToLinks != null &&
-          writer.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2013.index) {
-        writer.WriteElementValueWithNamespace(
-            XmlNamespace.Types, XmlElementNames.AddBlankTargetToLinks, this.AddBlankTargetToLinks);
+          writer.Service.RequestedServerVersion.index >=
+              ExchangeVersion.Exchange2013.index) {
+        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+            XmlElementNames.AddBlankTargetToLinks, this.AddBlankTargetToLinks);
       }
 
       if (this.MaximumBodySize != null &&
-          writer.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2013.index) {
-        writer.WriteElementValueWithNamespace(
-            XmlNamespace.Types, XmlElementNames.MaximumBodySize, this.MaximumBodySize);
+          writer.Service.RequestedServerVersion.index >=
+              ExchangeVersion.Exchange2013.index) {
+        writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+            XmlElementNames.MaximumBodySize, this.MaximumBodySize);
       }
     }
 
@@ -586,7 +617,8 @@ class PropertySet
   }
 
   @override
-  Iterator<PropertyDefinitionBase> get iterator => this._additionalProperties.iterator;
+  Iterator<PropertyDefinitionBase> get iterator =>
+      this._additionalProperties.iterator;
 
   /// <summary>
   /// Returns an enumerator that iterates through the collection.

@@ -35,7 +35,9 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents a list of strings.
 /// </summary>
-class StringList extends ComplexProperty with IterableMixin<String> implements Iterable<String> {
+class StringList extends ComplexProperty
+    with IterableMixin<String>
+    implements Iterable<String> {
   List<String> _items = new List<String>();
 
   String _itemXmlElementName = XmlElementNames.String;
@@ -148,7 +150,8 @@ class StringList extends ComplexProperty with IterableMixin<String> implements I
   /// <param name="index">The index of the String to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.length) {
-      throw new RangeError.range(index, 0, this.length, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.length, "index", "Strings.IndexIsOutOfRange");
     }
 
     this._items.removeAt(index);
@@ -185,7 +188,8 @@ class StringList extends ComplexProperty with IterableMixin<String> implements I
   /// <returns>The String at the specified index.</returns>
   String operator [](int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     return this._items[index];
@@ -193,7 +197,8 @@ class StringList extends ComplexProperty with IterableMixin<String> implements I
 
   void operator []=(int index, String value) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     if (this._items[index] != value) {

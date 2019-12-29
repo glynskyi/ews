@@ -54,7 +54,8 @@ abstract class IntervalPattern extends Recurrence {
   IntervalPattern.withStartDateAndInterval(TZDateTime startDate, int interval)
       : super.withStartDate(startDate) {
     if (interval < 1) {
-      throw new RangeError("interval is Strings.IntervalMustBeGreaterOrEqualToOne");
+      throw new RangeError(
+          "interval is Strings.IntervalMustBeGreaterOrEqualToOne");
     }
 
     this.Interval = interval;

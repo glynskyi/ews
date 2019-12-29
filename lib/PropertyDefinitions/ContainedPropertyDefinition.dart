@@ -42,9 +42,13 @@ class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
     extends ComplexPropertyDefinition<TComplexProperty> {
   /* private */ String containedXmlElementName;
 
-  ContainedPropertyDefinition.withFlags(String xmlElementName, List<PropertyDefinitionFlags> flags,
-      ExchangeVersion version, ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate)
-      : super.withFlags(xmlElementName, flags, version, propertyCreationDelegate) {
+  ContainedPropertyDefinition.withFlags(
+      String xmlElementName,
+      List<PropertyDefinitionFlags> flags,
+      ExchangeVersion version,
+      ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate)
+      : super.withFlags(
+            xmlElementName, flags, version, propertyCreationDelegate) {
     throw NotImplementedException("ContainedPropertyDefinition.withFlags");
   }
 
@@ -64,7 +68,8 @@ class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
       List<PropertyDefinitionFlags> flags,
       ExchangeVersion version,
       ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate)
-      : super.withUriAndFlags(xmlElementName, uri, flags, version, propertyCreationDelegate) {
+      : super.withUriAndFlags(
+            xmlElementName, uri, flags, version, propertyCreationDelegate) {
     this.containedXmlElementName = containedXmlElementName;
   }
 
@@ -74,12 +79,15 @@ class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void InternalLoadFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    reader.ReadStartElementWithNamespace(XmlNamespace.Types, this.containedXmlElementName);
+  void InternalLoadFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Types, this.containedXmlElementName);
 
     super.InternalLoadFromXml(reader, propertyBag);
 
-    reader.ReadEndElementIfNecessary(XmlNamespace.Types, this.containedXmlElementName);
+    reader.ReadEndElementIfNecessary(
+        XmlNamespace.Types, this.containedXmlElementName);
   }
 
   /// <summary>
@@ -89,7 +97,8 @@ class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
   @override
-  void WritePropertyValueToXml(EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation) {
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     ComplexProperty complexProperty = propertyBag[this];
 
     if (complexProperty != null) {

@@ -36,7 +36,8 @@ import 'package:ews/Search/Grouping.dart';
 /// Represents a FindItem request.
 /// </summary>
 /// <typeparam name="TItem">The type of the item.</typeparam>
-class FindItemRequest<TItem extends Item> extends FindRequest<FindItemResponse<TItem>> {
+class FindItemRequest<TItem extends Item>
+    extends FindRequest<FindItemResponse<TItem>> {
   Grouping _groupBy;
 
   /// <summary>
@@ -44,7 +45,8 @@ class FindItemRequest<TItem extends Item> extends FindRequest<FindItemResponse<T
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  FindItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  FindItemRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -63,8 +65,10 @@ class FindItemRequest<TItem extends Item> extends FindRequest<FindItemResponse<T
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  FindItemResponse<TItem> CreateServiceResponse(ExchangeService service, int responseIndex) {
-    return new FindItemResponse<TItem>(this.GroupBy != null, this.View.GetPropertySetOrDefault());
+  FindItemResponse<TItem> CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
+    return new FindItemResponse<TItem>(
+        this.GroupBy != null, this.View.GetPropertySetOrDefault());
   }
 
   /// <summary>

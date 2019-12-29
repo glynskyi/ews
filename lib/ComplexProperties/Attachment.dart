@@ -25,6 +25,7 @@
 
 import 'dart:core';
 import 'dart:core' as core;
+
 import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
@@ -163,13 +164,15 @@ abstract class Attachment extends ComplexProperty {
   /// Gets the size of the attachment.
   /// </summary>
   int get Size {
-    EwsUtilities.ValidatePropertyVersion(this._service, ExchangeVersion.Exchange2010, "Size");
+    EwsUtilities.ValidatePropertyVersion(
+        this._service, ExchangeVersion.Exchange2010, "Size");
 
     return this._size;
   }
 
   set Size(int value) {
-    EwsUtilities.ValidatePropertyVersion(this._service, ExchangeVersion.Exchange2010, "Size");
+    EwsUtilities.ValidatePropertyVersion(
+        this._service, ExchangeVersion.Exchange2010, "Size");
     if (CanSetFieldValue(this._size, value)) {
       this._size = value;
       this.Changed();
@@ -201,13 +204,15 @@ abstract class Attachment extends ComplexProperty {
   /// Inline attachments are not visible to end users.
   /// </summary>
   bool get IsInline {
-    EwsUtilities.ValidatePropertyVersion(this._service, ExchangeVersion.Exchange2010, "IsInline");
+    EwsUtilities.ValidatePropertyVersion(
+        this._service, ExchangeVersion.Exchange2010, "IsInline");
 
     return this._isInline;
   }
 
   set IsInline(bool value) {
-    EwsUtilities.ValidatePropertyVersion(this._service, ExchangeVersion.Exchange2010, "IsInline");
+    EwsUtilities.ValidatePropertyVersion(
+        this._service, ExchangeVersion.Exchange2010, "IsInline");
 
     if (CanSetFieldValue(this._isInline, value)) {
       this._isInline = value;
@@ -248,13 +253,15 @@ abstract class Attachment extends ComplexProperty {
         this._id = reader.ReadAttributeValue(XmlAttributeNames.Id);
 
         if (this.Owner != null) {
-          String rootItemChangeKey = reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
+          String rootItemChangeKey =
+              reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
 
           if (!StringUtils.IsNullOrEmpty(rootItemChangeKey)) {
             this.Owner.RootItemId.ChangeKey = rootItemChangeKey;
           }
         }
-        reader.ReadEndElementIfNecessary(XmlNamespace.Types, XmlElementNames.AttachmentId);
+        reader.ReadEndElementIfNecessary(
+            XmlNamespace.Types, XmlElementNames.AttachmentId);
         return true;
       case XmlElementNames.Name:
         this._name = reader.ReadElementValue();
@@ -288,14 +295,16 @@ abstract class Attachment extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Name, this.Name);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Name, this.Name);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.ContentType, this.ContentType);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.ContentId, this.ContentId);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.ContentLocation, this.ContentLocation);
-    if (writer.Service.RequestedServerVersion.index > ExchangeVersion.Exchange2007_SP1.index) {
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.ContentLocation, this.ContentLocation);
+    if (writer.Service.RequestedServerVersion.index >
+        ExchangeVersion.Exchange2007_SP1.index) {
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Types, XmlElementNames.IsInline, this.IsInline);
     }
@@ -306,7 +315,8 @@ abstract class Attachment extends ComplexProperty {
   /// </summary>
   /// <param name="bodyType">Type of the body.</param>
   /// <param name="additionalProperties">The additional properties.</param>
-  Future<void> InternalLoad(BodyType bodyType, Iterable<PropertyDefinitionBase> additionalProperties) {
+  Future<void> InternalLoad(BodyType bodyType,
+      Iterable<PropertyDefinitionBase> additionalProperties) {
     return this._service.GetAttachment(this, bodyType, additionalProperties);
   }
 

@@ -50,7 +50,8 @@ class Attendee extends EmailAddress {
   /// Initializes a new instance of the <see cref="Attendee"/> class from an EmailAddress.
   /// </summary>
   /// <param name="mailbox">The mailbox used to initialize the Attendee.</param>
-  Attendee.withEmailAddress(EmailAddress mailbox) : super.withEmailAddress(mailbox);
+  Attendee.withEmailAddress(EmailAddress mailbox)
+      : super.withEmailAddress(mailbox);
 
   /// <summary>
   /// Gets the type of response the attendee gave to the meeting invitation it received.

@@ -86,7 +86,8 @@ class FolderView extends PagedView {
   /// <param name="offsetBasePoint">The base point of the offset.</param>
   FolderView.withPageSizeAndOffsetAndBasePoint(
       int pageSize, int offset, OffsetBasePoint offsetBasePoint)
-      : super.withPageSizeAndOffsetAndBasePoint(pageSize, offset, offsetBasePoint) {}
+      : super.withPageSizeAndOffsetAndBasePoint(
+            pageSize, offset, offsetBasePoint) {}
 
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to FolderTraversal.Shallow.

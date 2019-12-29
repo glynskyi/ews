@@ -32,7 +32,9 @@ import 'package:ews/Sync/Change.dart';
 /// Represents a collection of changes as returned by a synchronization operation.
 /// </summary>
 /// <typeparam name="TChange">Type representing the type of change (e.g. FolderChange or ItemChange)</typeparam>
-class ChangeCollection<TChange extends Change> with IterableMixin<TChange> implements Iterable<TChange> {
+class ChangeCollection<TChange extends Change>
+    with IterableMixin<TChange>
+    implements Iterable<TChange> {
   /* private */
   List<TChange> changes = new List<TChange>();
 
@@ -69,7 +71,8 @@ class ChangeCollection<TChange extends Change> with IterableMixin<TChange> imple
   /// <returns>An single change.</returns>
   TChange operator [](int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     return this.changes[index];

@@ -23,57 +23,47 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/misc/AbstractItemIdWrapper.dart';
 
 /// <summary>
-    /// Represents an item Id provided by a ItemBase object.
-    /// </summary>
-    class ItemWrapper extends AbstractItemIdWrapper
-    {
-        /// <summary>
-        /// The ItemBase object providing the Id.
-        /// </summary>
-        /* private */ Item item;
+/// Represents an item Id provided by a ItemBase object.
+/// </summary>
+class ItemWrapper extends AbstractItemIdWrapper {
+  /// <summary>
+  /// The ItemBase object providing the Id.
+  /// </summary>
+  /* private */ Item item;
 
-        /// <summary>
-        /// Initializes a new instance of ItemWrapper.
-        /// </summary>
-        /// <param name="item">The ItemBase object provinding the Id.</param>
-        ItemWrapper(Item item)
-        {
-            EwsUtilities.Assert(
-                item != null,
-                "ItemWrapper.ctor",
-                "item is null");
-            EwsUtilities.Assert(
-                !item.IsNew,
-                "ItemWrapper.ctor",
-                "item does not have an Id");
+  /// <summary>
+  /// Initializes a new instance of ItemWrapper.
+  /// </summary>
+  /// <param name="item">The ItemBase object provinding the Id.</param>
+  ItemWrapper(Item item) {
+    EwsUtilities.Assert(item != null, "ItemWrapper.ctor", "item is null");
+    EwsUtilities.Assert(
+        !item.IsNew, "ItemWrapper.ctor", "item does not have an Id");
 
-            this.item = item;
-        }
+    this.item = item;
+  }
 
-        /// <summary>
-        /// Obtains the ItemBase object associated with the wrapper.
-        /// </summary>
-        /// <returns>The ItemBase object associated with the wrapper.</returns>
-@override
- Item GetItem()
-        {
-            return this.item;
-        }
+  /// <summary>
+  /// Obtains the ItemBase object associated with the wrapper.
+  /// </summary>
+  /// <returns>The ItemBase object associated with the wrapper.</returns>
+  @override
+  Item GetItem() {
+    return this.item;
+  }
 
-        /// <summary>
-        /// Writes the Id encapsulated in the wrapper to XML.
-        /// </summary>
-        /// <param name="writer">The writer to write the Id to.</param>
-@override
-        void WriteToXml(EwsServiceXmlWriter writer)
-        {
-            this.item.Id.WriteToXmlElemenetName(writer);
-        }
-    }
+  /// <summary>
+  /// Writes the Id encapsulated in the wrapper to XML.
+  /// </summary>
+  /// <param name="writer">The writer to write the Id to.</param>
+  @override
+  void WriteToXml(EwsServiceXmlWriter writer) {
+    this.item.Id.WriteToXmlElemenetName(writer);
+  }
+}

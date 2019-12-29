@@ -89,7 +89,8 @@ class SearchFolderParameters extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
-    this.Traversal = reader.ReadAttributeValue<SearchFolderTraversal>(XmlAttributeNames.Traversal);
+    this.Traversal = reader.ReadAttributeValue<SearchFolderTraversal>(
+        XmlAttributeNames.Traversal);
   }
 
   /// <summary>
@@ -122,7 +123,8 @@ class SearchFolderParameters extends ComplexProperty {
   void Validate() {
     // Search folder must have at least one root folder id.
     if (this.RootFolderIds.Count == 0) {
-      throw new ServiceValidationException("Strings.SearchParametersRootFolderIdsEmpty");
+      throw new ServiceValidationException(
+          "Strings.SearchParametersRootFolderIdsEmpty");
     }
 
     // Validate the search filter

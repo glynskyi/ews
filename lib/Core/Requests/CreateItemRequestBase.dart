@@ -41,7 +41,8 @@ import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 /// <typeparam name="TServiceObject">The type of the service object.</typeparam>
 /// <typeparam name="TResponse">The type of the response.</typeparam>
 abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
-    TResponse extends ServiceResponse> extends CreateRequest<TServiceObject, TResponse> {
+        TResponse extends ServiceResponse>
+    extends CreateRequest<TServiceObject, TResponse> {
   enumerations.MessageDisposition _messageDisposition;
 
   enumerations.SendInvitationsMode _sendInvitationsMode;
@@ -51,7 +52,8 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  CreateItemRequestBase(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  CreateItemRequestBase(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode);
 
   /// <summary>
@@ -141,7 +143,8 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
     super.WriteAttributesToXml(writer);
 
     if (this.MessageDisposition != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.MessageDisposition, this.MessageDisposition);
+      writer.WriteAttributeValue(
+          XmlAttributeNames.MessageDisposition, this.MessageDisposition);
     }
 
     if (this.SendInvitationsMode != null) {
@@ -154,7 +157,8 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
   /// Gets or sets the message disposition.
   /// </summary>
   /// <value>The message disposition.</value>
-  enumerations.MessageDisposition get MessageDisposition => this._messageDisposition;
+  enumerations.MessageDisposition get MessageDisposition =>
+      this._messageDisposition;
 
   set MessageDisposition(enumerations.MessageDisposition value) {
     this._messageDisposition = value;
@@ -164,7 +168,8 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
   /// Gets or sets the send invitations mode.
   /// </summary>
   /// <value>The send invitations mode.</value>
-  enumerations.SendInvitationsMode get SendInvitationsMode => this._sendInvitationsMode;
+  enumerations.SendInvitationsMode get SendInvitationsMode =>
+      this._sendInvitationsMode;
 
   set SendInvitationsMode(enumerations.SendInvitationsMode value) {
     this._sendInvitationsMode = value;

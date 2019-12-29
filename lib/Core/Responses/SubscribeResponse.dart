@@ -32,7 +32,8 @@ import 'package:ews/Notifications/SubscriptionBase.dart';
 /// Represents the base response class to subscription creation operations.
 /// </summary>
 /// <typeparam name="TSubscription">Subscription type.</typeparam>
-class SubscribeResponse<TSubscription extends SubscriptionBase> extends ServiceResponse {
+class SubscribeResponse<TSubscription extends SubscriptionBase>
+    extends ServiceResponse {
   TSubscription _subscription;
 
   /// <summary>
@@ -40,7 +41,8 @@ class SubscribeResponse<TSubscription extends SubscriptionBase> extends ServiceR
   /// </summary>
   /// <param name="subscription">The subscription.</param>
   SubscribeResponse(TSubscription subscription) : super() {
-    EwsUtilities.Assert(subscription != null, "SubscribeResponse.ctor", "subscription is null");
+    EwsUtilities.Assert(
+        subscription != null, "SubscribeResponse.ctor", "subscription is null");
 
     this._subscription = subscription;
   }

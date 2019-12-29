@@ -32,8 +32,10 @@ import 'package:ews/PropertyDefinitions/ComplexPropertyDefinition.dart';
 /// <summary>
 /// Represents base Attachments property type.
 /// </summary>
-class AttachmentsPropertyDefinition extends ComplexPropertyDefinition<AttachmentCollection> {
-  static List<PropertyDefinitionFlags> _Exchange2010SP2PropertyDefinitionFlags = [
+class AttachmentsPropertyDefinition
+    extends ComplexPropertyDefinition<AttachmentCollection> {
+  static List<PropertyDefinitionFlags> _Exchange2010SP2PropertyDefinitionFlags =
+      [
     PropertyDefinitionFlags.AutoInstantiateOnRead,
     PropertyDefinitionFlags.CanSet,
     PropertyDefinitionFlags.ReuseInstance,
@@ -44,8 +46,11 @@ class AttachmentsPropertyDefinition extends ComplexPropertyDefinition<Attachment
   /// Initializes a new instance of the <see cref="AttachmentsPropertyDefinition"/> class.
   /// </summary>
   AttachmentsPropertyDefinition()
-      : super.withUriAndFlags(XmlElementNames.Attachments, "item:Attachments",
-            [PropertyDefinitionFlags.AutoInstantiateOnRead], ExchangeVersion.Exchange2007_SP1, () {
+      : super.withUriAndFlags(
+            XmlElementNames.Attachments,
+            "item:Attachments",
+            [PropertyDefinitionFlags.AutoInstantiateOnRead],
+            ExchangeVersion.Exchange2007_SP1, () {
           return new AttachmentCollection();
         }) {}
 
@@ -59,7 +64,8 @@ class AttachmentsPropertyDefinition extends ComplexPropertyDefinition<Attachment
   /// </returns>
   @override
   bool HasFlag(PropertyDefinitionFlags flag, ExchangeVersion version) {
-    if (version != null && version.index >= ExchangeVersion.Exchange2010_SP2.index) {
+    if (version != null &&
+        version.index >= ExchangeVersion.Exchange2010_SP2.index) {
       return _Exchange2010SP2PropertyDefinitionFlags.contains(flag);
     }
 

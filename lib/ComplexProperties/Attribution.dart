@@ -81,7 +81,8 @@ class Attribution extends ComplexProperty {
   /// <param name="sourceId">Source Id</param>
   /// <param name="displayName">Display name</param>
   Attribution.withRequiredValues(String id, ItemId sourceId, String displayName)
-      : this.withAllValues(id, sourceId, displayName, false, false, false, null);
+      : this.withAllValues(
+            id, sourceId, displayName, false, false, false, null);
 
   /// <summary>
   /// Creates an instance with all values
@@ -93,8 +94,14 @@ class Attribution extends ComplexProperty {
   /// <param name="isQuickContact">Wther quick contact</param>
   /// <param name="isHidden">Whether hidden</param>
   /// <param name="folderId">Folder id</param>
-  Attribution.withAllValues(String id, ItemId sourceId, String displayName, bool isWritable,
-      bool isQuickContact, bool isHidden, complex.FolderId folderId)
+  Attribution.withAllValues(
+      String id,
+      ItemId sourceId,
+      String displayName,
+      bool isWritable,
+      bool isQuickContact,
+      bool isHidden,
+      complex.FolderId folderId)
       : super() {
     EwsUtilities.ValidateParam(id, "id");
     EwsUtilities.ValidateParam(displayName, "displayName");

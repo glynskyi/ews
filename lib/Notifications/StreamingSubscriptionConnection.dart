@@ -153,7 +153,8 @@ class StreamingSubscriptionConnection // extends IDisposable
 
     EwsUtilities.ValidateParam(subscription, "subscription");
 
-    this.ValidateConnectionState(false, "Strings.CannotAddSubscriptionToLiveConnection");
+    this.ValidateConnectionState(
+        false, "Strings.CannotAddSubscriptionToLiveConnection");
 
     if (this._subscriptions.containsKey(subscription.Id)) {
       return;
@@ -171,7 +172,8 @@ class StreamingSubscriptionConnection // extends IDisposable
 
     EwsUtilities.ValidateParam(subscription, "subscription");
 
-    this.ValidateConnectionState(false, "Strings.CannotRemoveSubscriptionFromLiveConnection");
+    this.ValidateConnectionState(
+        false, "Strings.CannotRemoveSubscriptionFromLiveConnection");
 
     this._subscriptions.remove(subscription.Id);
   }
@@ -211,7 +213,8 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// </summary>
   /// <param name="sender">The sender.</param>
   /// <param name="args">The <see cref="Microsoft.Exchange.WebServices.Data.HangingRequestDisconnectEventArgs"/> instance containing the event data.</param>
-  void _OnRequestDisconnect(Object sender, HangingRequestDisconnectEventArgs args) {
+  void _OnRequestDisconnect(
+      Object sender, HangingRequestDisconnectEventArgs args) {
     throw NotImplementedException("OnRequestDisconnect");
 //            this.InternalOnDisconnect(args.Exception);
   }
@@ -269,7 +272,8 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <param name="errorMessage">The error message.</param>
   /* private */
   void ValidateConnectionState(bool isConnectedExpected, String errorMessage) {
-    if ((isConnectedExpected && !this.IsOpen) || (!isConnectedExpected && this.IsOpen)) {
+    if ((isConnectedExpected && !this.IsOpen) ||
+        (!isConnectedExpected && this.IsOpen)) {
       throw new ServiceLocalException(errorMessage);
     }
   }

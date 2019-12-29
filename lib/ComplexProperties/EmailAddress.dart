@@ -81,7 +81,11 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// <param name="routingType">The routing type used to initialize the EmailAddress.</param>
   /// <param name="mailboxType">Mailbox type of the participant.</param>
   EmailAddress(
-      {String name, String smtpAddress, String routingType, enumerations.MailboxType mailboxType, ItemId itemId})
+      {String name,
+      String smtpAddress,
+      String routingType,
+      enumerations.MailboxType mailboxType,
+      ItemId itemId})
       : super() {
     this.name = name;
     this.address = smtpAddress;
@@ -233,10 +237,14 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Name, this.Name);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.EmailAddress, this.Address);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.RoutingType, this.RoutingType);
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.MailboxType, this.MailboxType);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Name, this.Name);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.EmailAddress, this.Address);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.RoutingType, this.RoutingType);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.MailboxType, this.MailboxType);
 
     if (this.Id != null) {
       this.Id.WriteToXml(writer, XmlElementNames.ItemId);

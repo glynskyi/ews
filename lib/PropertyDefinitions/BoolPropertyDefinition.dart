@@ -38,7 +38,8 @@ class BoolPropertyDefinition extends GenericPropertyDefinition<bool> {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="uri">The URI.</param>
   /// <param name="version">The version.</param>
-  BoolPropertyDefinition(String xmlElementName, String uri, ExchangeVersion version)
+  BoolPropertyDefinition(
+      String xmlElementName, String uri, ExchangeVersion version)
       : super.withUri(xmlElementName, uri, version) {}
 
   /// <summary>
@@ -48,8 +49,8 @@ class BoolPropertyDefinition extends GenericPropertyDefinition<bool> {
   /// <param name="uri">The URI.</param>
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
-  BoolPropertyDefinition.withUriAndFlags(
-      String xmlElementName, String uri, List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+  BoolPropertyDefinition.withUriAndFlags(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
       : super.withUriAndFlags(xmlElementName, uri, flags, version) {}
 
   /// <summary>
@@ -61,8 +62,13 @@ class BoolPropertyDefinition extends GenericPropertyDefinition<bool> {
   /// <param name="version">The version.</param>
   /// <param name="isNullable">Indicates that this property definition is for a nullable property.</param>
   BoolPropertyDefinition.withFlagsAndNullable(
-      String xmlElementName, String uri, List<PropertyDefinitionFlags> flags, ExchangeVersion version, bool isNullable)
-      : super.withFlagsAndNullable(xmlElementName, uri, flags, version, isNullable) {}
+      String xmlElementName,
+      String uri,
+      List<PropertyDefinitionFlags> flags,
+      ExchangeVersion version,
+      bool isNullable)
+      : super.withFlagsAndNullable(
+            xmlElementName, uri, flags, version, isNullable) {}
 
   /// <summary>
   /// Convert instance to string.

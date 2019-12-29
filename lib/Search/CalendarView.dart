@@ -60,7 +60,8 @@ class CalendarView extends ViewBase {
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by clause.</param>
   @override
-  void InternalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
+  void InternalWriteSearchSettingsToXml(
+      EwsServiceXmlWriter writer, Grouping groupBy) {
     // No search settings for calendar views.
   }
 
@@ -98,7 +99,8 @@ class CalendarView extends ViewBase {
   /// <param name="startDate">The start date.</param>
   /// <param name="endDate">The end date.</param>
   /// <param name="maxItemsReturned">The maximum number of items the search operation should return.</param>
-  CalendarView.withMaxItemsReturned(DateTime startDate, DateTime endDate, int maxItemsReturned)
+  CalendarView.withMaxItemsReturned(
+      DateTime startDate, DateTime endDate, int maxItemsReturned)
       : super() {
     this._startDate = startDate;
     this._endDate = endDate;
@@ -113,8 +115,10 @@ class CalendarView extends ViewBase {
     super.InternalValidate(request);
 
     // todo : review time comparision
-    if (this._endDate.millisecondsSinceEpoch < this.StartDate.millisecondsSinceEpoch) {
-      throw new ServiceValidationException("Strings.EndDateMustBeGreaterThanStartDate");
+    if (this._endDate.millisecondsSinceEpoch <
+        this.StartDate.millisecondsSinceEpoch) {
+      throw new ServiceValidationException(
+          "Strings.EndDateMustBeGreaterThanStartDate");
     }
   }
 

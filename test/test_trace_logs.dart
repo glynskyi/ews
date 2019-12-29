@@ -10,7 +10,8 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential)
       ..TraceEnabled = true
       ..TraceListener = traceListener;
-    await Folder.BindWithWellKnownFolder(exchangeService, WellKnownFolderName.Notes);
+    await Folder.BindWithWellKnownFolder(
+        exchangeService, WellKnownFolderName.Notes);
     expect(traceListener.toString(), isNotEmpty);
   });
 
@@ -19,7 +20,8 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential)
       ..TraceListener = traceListener
       ..TraceEnabled = false;
-    await Folder.BindWithWellKnownFolder(exchangeService, WellKnownFolderName.Notes);
+    await Folder.BindWithWellKnownFolder(
+        exchangeService, WellKnownFolderName.Notes);
     expect(traceListener.toString(), isEmpty);
   });
 
@@ -28,7 +30,8 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential)
       ..TraceFlags = [TraceFlags.EwsRequestHttpHeaders]
       ..TraceListener = traceListener;
-    await Folder.BindWithWellKnownFolder(exchangeService, WellKnownFolderName.Notes);
+    await Folder.BindWithWellKnownFolder(
+        exchangeService, WellKnownFolderName.Notes);
     expect(traceListener.toString().toLowerCase(), contains("accept-encoding"));
   });
 
@@ -37,8 +40,10 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential)
       ..TraceFlags = [TraceFlags.EwsResponseHttpHeaders]
       ..TraceListener = traceListener;
-    await Folder.BindWithWellKnownFolder(exchangeService, WellKnownFolderName.Notes);
-    expect(traceListener.toString().toLowerCase(), contains("content-encoding"));
+    await Folder.BindWithWellKnownFolder(
+        exchangeService, WellKnownFolderName.Notes);
+    expect(
+        traceListener.toString().toLowerCase(), contains("content-encoding"));
   });
 
   test('tests trace logs containts request', () async {
@@ -46,7 +51,8 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential)
       ..TraceFlags = [TraceFlags.EwsRequest]
       ..TraceListener = traceListener;
-    await Folder.BindWithWellKnownFolder(exchangeService, WellKnownFolderName.Notes);
+    await Folder.BindWithWellKnownFolder(
+        exchangeService, WellKnownFolderName.Notes);
     expect(traceListener.toString(), contains("DistinguishedFolderId"));
   });
 
@@ -55,7 +61,8 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential)
       ..TraceFlags = [TraceFlags.EwsResponse]
       ..TraceListener = traceListener;
-    await Folder.BindWithWellKnownFolder(exchangeService, WellKnownFolderName.Notes);
+    await Folder.BindWithWellKnownFolder(
+        exchangeService, WellKnownFolderName.Notes);
     expect(traceListener.toString(), contains("GetFolderResponseMessage"));
   });
 }

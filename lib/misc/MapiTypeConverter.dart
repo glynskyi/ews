@@ -32,31 +32,30 @@ import 'package:ews/Enumerations/MapiPropertyType.dart';
 import 'package:ews/misc/MapiTypeConverterMapEntry.dart' as misc;
 
 /// <summary>
-    /// Utility class to convert between MAPI Property type values and strings.
-    /// </summary>
-    class MapiTypeConverter
-    {
-        /// <summary>
-        /// Assume DateTime values are in UTC.
-        /// </summary>
+/// Utility class to convert between MAPI Property type values and strings.
+/// </summary>
+class MapiTypeConverter {
+  /// <summary>
+  /// Assume DateTime values are in UTC.
+  /// </summary>
 //        /* private */ static const UtcDataTimeStyles = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
 
-        /// <summary>
-        /// Map from MAPI property type to converter entry.
-        /// </summary>
-        /* private */ static LazyMember<Map<MapiPropertyType, misc.MapiTypeConverterMapEntry>> MapiTypeConverterMap = new LazyMember(
-            ()
-            {
-                final map = new Map<MapiPropertyType, misc.MapiTypeConverterMapEntry>();
+  /// <summary>
+  /// Map from MAPI property type to converter entry.
+  /// </summary>
+  /* private */
+  static LazyMember<Map<MapiPropertyType, misc.MapiTypeConverterMapEntry>>
+      MapiTypeConverterMap = new LazyMember(() {
+    final map = new Map<MapiPropertyType, misc.MapiTypeConverterMapEntry>();
 
 //                map[MapiPropertyType.ApplicationTime] = new misc.MapiTypeConverterMapEntry(typeof(double));
 //
 //                map[MapiPropertyType.ApplicationTimeArray] = new misc.MapiTypeConverterMapEntry(typeof(double)) { IsArray = true };
 
-                var byteConverter = new misc.MapiTypeConverterMapEntry(Uint8List);
-                byteConverter.Parse = (o) => base64.decode(o);
-                byteConverter.ConvertToString = (s) => base64.encode(s);
-                map[MapiPropertyType.Binary] = byteConverter;
+    var byteConverter = new misc.MapiTypeConverterMapEntry(Uint8List);
+    byteConverter.Parse = (o) => base64.decode(o);
+    byteConverter.ConvertToString = (s) => base64.encode(s);
+    map[MapiPropertyType.Binary] = byteConverter;
 //
 //                var byteArrayConverter = new misc.MapiTypeConverterMapEntry(typeof(Uint8List))
 //                    {
@@ -69,15 +68,15 @@ import 'package:ews/misc/MapiTypeConverterMapEntry.dart' as misc;
 //                    MapiPropertyType.BinaryArray,
 //                    byteArrayConverter);
 //
-                var boolConverter = new misc.MapiTypeConverterMapEntry(bool);
-                boolConverter.Parse = (s) => s.toLowerCase() == "true";
-                boolConverter.ConvertToString = (o) => o.toString().toLowerCase();
-                map[MapiPropertyType.Boolean] = boolConverter;
+    var boolConverter = new misc.MapiTypeConverterMapEntry(bool);
+    boolConverter.Parse = (s) => s.toLowerCase() == "true";
+    boolConverter.ConvertToString = (o) => o.toString().toLowerCase();
+    map[MapiPropertyType.Boolean] = boolConverter;
 
-                var stringConverter = new misc.MapiTypeConverterMapEntry(String);
-                stringConverter.Parse = (s) => s;
-                stringConverter.ConvertToString = (o) => o.toString();
-                map[MapiPropertyType.String] = stringConverter;
+    var stringConverter = new misc.MapiTypeConverterMapEntry(String);
+    stringConverter.Parse = (s) => s;
+    stringConverter.ConvertToString = (o) => o.toString();
+    map[MapiPropertyType.String] = stringConverter;
 //
 //                var clsidConverter = new misc.MapiTypeConverterMapEntry(typeof(Guid))
 //                    {
@@ -212,19 +211,19 @@ import 'package:ews/misc/MapiTypeConverterMapEntry.dart' as misc;
 //                    MapiPropertyType.SystemTimeArray,
 //                    sysTimeArrayConverter);
 
-                return map;
-            });
+    return map;
+  });
 
-        /// <summary>
-        /// Converts the String list to array.
-        /// </summary>
-        /// <param name="mapiPropType">Type of the MAPI property.</param>
-        /// <param name="strings">Strings.</param>
-        /// <returns>Array of objects.</returns>
-        static List ConvertToValue(MapiPropertyType mapiPropType, Iterable<String> strings)
-        {
-          // todo("implement ConvertToValue")
-          print("implement ConvertToValue");
+  /// <summary>
+  /// Converts the String list to array.
+  /// </summary>
+  /// <param name="mapiPropType">Type of the MAPI property.</param>
+  /// <param name="strings">Strings.</param>
+  /// <returns>Array of objects.</returns>
+  static List ConvertToValue(
+      MapiPropertyType mapiPropType, Iterable<String> strings) {
+    // todo("implement ConvertToValue")
+    print("implement ConvertToValue");
 
 //            EwsUtilities.ValidateParam(strings, "strings");
 //
@@ -239,57 +238,57 @@ import 'package:ews/misc/MapiTypeConverterMapEntry.dart' as misc;
 //            }
 //
 //            return array;
-        }
+  }
 
-        /// <summary>
-        /// Converts a String to value consistent with MAPI type.
-        /// </summary>
-        /// <param name="mapiPropType">Type of the MAPI property.</param>
-        /// <param name="stringValue">String to convert to a value.</param>
-        /// <returns></returns>
-        static Object ConvertToValueWithStringValue(MapiPropertyType mapiPropType, String stringValue)
-        {
-            if (!MapiTypeConverterMap.Member.containsKey(mapiPropType)) {
-                throw UnsupportedError("!!! ConvertToValueWithStringValue($mapiPropType)");
-            }
-            return MapiTypeConverterMap.Member[mapiPropType].ConvertToValue(stringValue);
-        }
+  /// <summary>
+  /// Converts a String to value consistent with MAPI type.
+  /// </summary>
+  /// <param name="mapiPropType">Type of the MAPI property.</param>
+  /// <param name="stringValue">String to convert to a value.</param>
+  /// <returns></returns>
+  static Object ConvertToValueWithStringValue(
+      MapiPropertyType mapiPropType, String stringValue) {
+    if (!MapiTypeConverterMap.Member.containsKey(mapiPropType)) {
+      throw UnsupportedError(
+          "!!! ConvertToValueWithStringValue($mapiPropType)");
+    }
+    return MapiTypeConverterMap.Member[mapiPropType]
+        .ConvertToValue(stringValue);
+  }
 
-        /// <summary>
-        /// Converts a value to a string.
-        /// </summary>
-        /// <param name="mapiPropType">Type of the MAPI property.</param>
-        /// <param name="value">Value to convert to string.</param>
-        /// <returns>String value.</returns>
-        static String ConvertToString(MapiPropertyType mapiPropType, Object value)
-        {
-            return (value == null)
-                    ? ""
-                    : MapiTypeConverterMap.Member[mapiPropType].ConvertToString(value);
-        }
+  /// <summary>
+  /// Converts a value to a string.
+  /// </summary>
+  /// <param name="mapiPropType">Type of the MAPI property.</param>
+  /// <param name="value">Value to convert to string.</param>
+  /// <returns>String value.</returns>
+  static String ConvertToString(MapiPropertyType mapiPropType, Object value) {
+    return (value == null)
+        ? ""
+        : MapiTypeConverterMap.Member[mapiPropType].ConvertToString(value);
+  }
 
-        /// <summary>
-        /// Change value to a value of compatible type.
-        /// </summary>
-        /// <param name="mapiType">Type of the mapi property.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>Compatible value.</returns>
-        static Object ChangeType(MapiPropertyType mapiType, Object value)
-        {
-            EwsUtilities.ValidateParam(value, "value");
+  /// <summary>
+  /// Change value to a value of compatible type.
+  /// </summary>
+  /// <param name="mapiType">Type of the mapi property.</param>
+  /// <param name="value">The value.</param>
+  /// <returns>Compatible value.</returns>
+  static Object ChangeType(MapiPropertyType mapiType, Object value) {
+    EwsUtilities.ValidateParam(value, "value");
 
-            return MapiTypeConverterMap.Member[mapiType].ConvertToValue(value);
-        }
+    return MapiTypeConverterMap.Member[mapiType].ConvertToValue(value);
+  }
 
-        /// <summary>
-        /// Converts a MAPI Integer value.
-        /// </summary>
-        /// <remarks>
-        /// Usually the value is an integer but there are cases where the value has been "schematized" to an
-        /// Enumeration value (e.g. NoData) which we have no choice but to fallback and represent as a string.
-        /// </remarks>
-        /// <param name="s">The String value.</param>
-        /// <returns>Integer value or the original String if the value could not be parsed as such.</returns>
+  /// <summary>
+  /// Converts a MAPI Integer value.
+  /// </summary>
+  /// <remarks>
+  /// Usually the value is an integer but there are cases where the value has been "schematized" to an
+  /// Enumeration value (e.g. NoData) which we have no choice but to fallback and represent as a string.
+  /// </remarks>
+  /// <param name="s">The String value.</param>
+  /// <returns>Integer value or the original String if the value could not be parsed as such.</returns>
 //        static object ParseMapiIntegerValue(String s)
 //        {
 //            int intValue;
@@ -303,19 +302,18 @@ import 'package:ews/misc/MapiTypeConverterMapEntry.dart' as misc;
 //            }
 //        }
 
-        /// <summary>
-        /// Determines whether MapiPropertyType is an array type.
-        /// </summary>
-        /// <param name="mapiType">Type of the mapi.</param>
-        /// <returns>True if this is an array type.</returns>
-        static bool IsArrayType(MapiPropertyType mapiType)
-        {
-            return MapiTypeConverterMap.Member[mapiType].IsArray;
-        }
+  /// <summary>
+  /// Determines whether MapiPropertyType is an array type.
+  /// </summary>
+  /// <param name="mapiType">Type of the mapi.</param>
+  /// <returns>True if this is an array type.</returns>
+  static bool IsArrayType(MapiPropertyType mapiType) {
+    return MapiTypeConverterMap.Member[mapiType].IsArray;
+  }
 
-        /// <summary>
-        /// Gets the MAPI type converter map.
-        /// </summary>
-        /// <value>The MAPI type converter map.</value>
+  /// <summary>
+  /// Gets the MAPI type converter map.
+  /// </summary>
+  /// <value>The MAPI type converter map.</value>
 //        static misc.MapiTypeConverterMap get MapiTypeConverterMap => misc.MapiTypeConverterMap.Member;
-    }
+}

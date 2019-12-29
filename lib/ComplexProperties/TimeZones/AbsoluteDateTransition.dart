@@ -95,7 +95,8 @@ class AbsoluteDateTransition extends TimeZoneTransition {
   /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
-  AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition) : super(timeZoneDefinition) {}
+  AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition)
+      : super(timeZoneDefinition) {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
@@ -103,7 +104,8 @@ class AbsoluteDateTransition extends TimeZoneTransition {
   /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
   /// <param name="targetGroup">The transition group the transition will target.</param>
   AbsoluteDateTransition.withTimeZoneTransitionGroup(
-      TimeZoneDefinition timeZoneDefinition, TimeZoneTransitionGroup targetGroup)
+      TimeZoneDefinition timeZoneDefinition,
+      TimeZoneTransitionGroup targetGroup)
       : super.withTimeZoneTransitionGroup(timeZoneDefinition, targetGroup) {}
 
   /// <summary>

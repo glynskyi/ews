@@ -52,7 +52,8 @@ class PostItemSchema extends ItemSchema {
   /// <summary>
   /// Defines the ConversationTopic property.
   /// </summary>
-  static PropertyDefinition ConversationTopic = EmailMessageSchema.ConversationTopic;
+  static PropertyDefinition ConversationTopic =
+      EmailMessageSchema.ConversationTopic;
 
   /// <summary>
   /// Defines the From property.
@@ -63,7 +64,8 @@ class PostItemSchema extends ItemSchema {
   /// <summary>
   /// Defines the InternetMessageId property.
   /// </summary>
-  static PropertyDefinition InternetMessageId = EmailMessageSchema.InternetMessageId;
+  static PropertyDefinition InternetMessageId =
+      EmailMessageSchema.InternetMessageId;
 
   /// <summary>
   /// Defines the IsRead property.
@@ -73,11 +75,12 @@ class PostItemSchema extends ItemSchema {
   /// <summary>
   /// Defines the PostedTime property.
   /// </summary>
-  static PropertyDefinition PostedTime = new DateTimePropertyDefinition.withUriAndFlags(
-      XmlElementNames.PostedTime,
-      _PostItemSchemaFieldUris.PostedTime,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition PostedTime =
+      new DateTimePropertyDefinition.withUriAndFlags(
+          XmlElementNames.PostedTime,
+          _PostItemSchemaFieldUris.PostedTime,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the References property.

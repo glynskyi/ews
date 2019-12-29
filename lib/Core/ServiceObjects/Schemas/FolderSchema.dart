@@ -43,7 +43,8 @@ class FolderSchemaFieldUris {
   static const String TotalCount = "folder:TotalCount";
   static const String ChildFolderCount = "folder:ChildFolderCount";
   static const String FolderClass = "folder:FolderClass";
-  static const String ManagedFolderInformation = "folder:ManagedFolderInformation";
+  static const String ManagedFolderInformation =
+      "folder:ManagedFolderInformation";
   static const String EffectiveRights = "folder:EffectiveRights";
   static const String PermissionSet = "folder:PermissionSet";
   static const String PolicyTag = "folder:PolicyTag";
@@ -64,11 +65,12 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Id property.
   /// </summary>
-  static PropertyDefinition Id = new ComplexPropertyDefinition<FolderId>.withUriAndFlags(
-      XmlElementNames.FolderId,
-      FolderSchemaFieldUris.FolderId,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Id =
+      new ComplexPropertyDefinition<FolderId>.withUriAndFlags(
+          XmlElementNames.FolderId,
+          FolderSchemaFieldUris.FolderId,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new FolderId();
   });
 
@@ -88,22 +90,24 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the ParentFolderId property.
   /// </summary>
-  static PropertyDefinition ParentFolderId = ComplexPropertyDefinition<FolderId>.withUriAndFlags(
-      XmlElementNames.ParentFolderId,
-      FolderSchemaFieldUris.ParentFolderId,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition ParentFolderId =
+      ComplexPropertyDefinition<FolderId>.withUriAndFlags(
+          XmlElementNames.ParentFolderId,
+          FolderSchemaFieldUris.ParentFolderId,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new FolderId();
   });
 
   /// <summary>
   /// Defines the ChildFolderCount property.
   /// </summary>
-  static PropertyDefinition ChildFolderCount = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.ChildFolderCount,
-      FolderSchemaFieldUris.ChildFolderCount,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition ChildFolderCount =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.ChildFolderCount,
+          FolderSchemaFieldUris.ChildFolderCount,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the DisplayName property.
@@ -122,20 +126,22 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the UnreadCount property.
   /// </summary>
-  static PropertyDefinition UnreadCount = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.UnreadCount,
-      FolderSchemaFieldUris.UnreadCount,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition UnreadCount =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.UnreadCount,
+          FolderSchemaFieldUris.UnreadCount,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the TotalCount property.
   /// </summary>
-  static PropertyDefinition TotalCount = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.TotalCount,
-      FolderSchemaFieldUris.TotalCount,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition TotalCount =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.TotalCount,
+          FolderSchemaFieldUris.TotalCount,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the ManagedFolderInformation property.
@@ -151,11 +157,12 @@ class FolderSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the EffectiveRights property.
   /// </summary>
-  static PropertyDefinition EffectiveRights = new EffectiveRightsPropertyDefinition(
-      XmlElementNames.EffectiveRights,
-      FolderSchemaFieldUris.EffectiveRights,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition EffectiveRights =
+      new EffectiveRightsPropertyDefinition(
+          XmlElementNames.EffectiveRights,
+          FolderSchemaFieldUris.EffectiveRights,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Permissions property.

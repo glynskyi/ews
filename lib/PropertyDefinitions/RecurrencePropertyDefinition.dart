@@ -23,7 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'dart:core' ;
+import 'dart:core';
 import 'dart:core' as core;
 
 import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart';
@@ -43,94 +43,86 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
 
 /// <summary>
-    /// Represenrs recurrence property definition.
-    /// </summary>
-        class RecurrencePropertyDefinition extends PropertyDefinition
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RecurrencePropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <param name="uri">The URI.</param>
-        /// <param name="flags">The flags.</param>
-        /// <param name="version">The version.</param>
-        RecurrencePropertyDefinition(
-            String xmlElementName,
-            String uri,
-            List<PropertyDefinitionFlags> flags,
-            ExchangeVersion version)
-            : super.withUriAndFlags(
-                xmlElementName,
-                uri,
-                flags,
-                version)
-        {
-        }
+/// Represenrs recurrence property definition.
+/// </summary>
+class RecurrencePropertyDefinition extends PropertyDefinition {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="RecurrencePropertyDefinition"/> class.
+  /// </summary>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <param name="uri">The URI.</param>
+  /// <param name="flags">The flags.</param>
+  /// <param name="version">The version.</param>
+  RecurrencePropertyDefinition(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+      : super.withUriAndFlags(xmlElementName, uri, flags, version) {}
 
-        /// <summary>
-        /// Loads from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="propertyBag">The property bag.</param>
-@override
-        void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag)
-        {
-            reader.EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace.Types, XmlElementNames.Recurrence);
+  /// <summary>
+  /// Loads from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <param name="propertyBag">The property bag.</param>
+  @override
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Recurrence);
 
-            Recurrence recurrence = null;
+    Recurrence recurrence = null;
 
-            reader.Read(nodeType: XmlNodeType.Element); // This is the pattern element
+    reader.Read(nodeType: XmlNodeType.Element); // This is the pattern element
 
-            recurrence = GetRecurrenceFromString(reader.LocalName);
+    recurrence = GetRecurrenceFromString(reader.LocalName);
 
-            recurrence.LoadFromXml(reader, reader.LocalName);
+    recurrence.LoadFromXml(reader, reader.LocalName);
 
-            reader.Read(nodeType: XmlNodeType.Element); // This is the range element
+    reader.Read(nodeType: XmlNodeType.Element); // This is the range element
 
-            RecurrenceRange range = GetRecurrenceRange(reader.LocalName);
+    RecurrenceRange range = GetRecurrenceRange(reader.LocalName);
 
-            range.LoadFromXml(reader, reader.LocalName);
-            range.SetupRecurrence(recurrence);
+    range.LoadFromXml(reader, reader.LocalName);
+    range.SetupRecurrence(recurrence);
 
-            reader.ReadEndElementIfNecessary(XmlNamespace.Types, XmlElementNames.Recurrence);
+    reader.ReadEndElementIfNecessary(
+        XmlNamespace.Types, XmlElementNames.Recurrence);
 
-            propertyBag[this] = recurrence;
-        }
+    propertyBag[this] = recurrence;
+  }
 
-        /// <summary>
-        /// Gets the recurrence range.
-        /// </summary>
-        /// <param name="recurrenceRangeString">The recurrence range string.</param>
-        /// <returns></returns>
-        /* private */ static RecurrenceRange GetRecurrenceRange(String recurrenceRangeString)
-        {
-            RecurrenceRange range;
+  /// <summary>
+  /// Gets the recurrence range.
+  /// </summary>
+  /// <param name="recurrenceRangeString">The recurrence range string.</param>
+  /// <returns></returns>
+  /* private */
+  static RecurrenceRange GetRecurrenceRange(String recurrenceRangeString) {
+    RecurrenceRange range;
 
-            switch (recurrenceRangeString)
-            {
-                case XmlElementNames.NoEndRecurrence:
-                    range = new NoEndRecurrenceRange();
-                    break;
-                case XmlElementNames.EndDateRecurrence:
-                    range = new EndDateRecurrenceRange();
-                    break;
-                case XmlElementNames.NumberedRecurrence:
-                    range = new NumberedRecurrenceRange();
-                    break;
-                default:
-                    throw new ServiceXmlDeserializationException("string.Format(Strings.InvalidRecurrenceRange, recurrenceRangeString)");
-            }
-            return range;
-        }
+    switch (recurrenceRangeString) {
+      case XmlElementNames.NoEndRecurrence:
+        range = new NoEndRecurrenceRange();
+        break;
+      case XmlElementNames.EndDateRecurrence:
+        range = new EndDateRecurrenceRange();
+        break;
+      case XmlElementNames.NumberedRecurrence:
+        range = new NumberedRecurrenceRange();
+        break;
+      default:
+        throw new ServiceXmlDeserializationException(
+            "string.Format(Strings.InvalidRecurrenceRange, recurrenceRangeString)");
+    }
+    return range;
+  }
 
-        /// <summary>
-        /// Gets the recurrence from string.
-        /// </summary>
-        /// <param name="recurranceString">The recurrance string.</param>
-        /// <returns></returns>
-        /* private */ Recurrence GetRecurrenceFromString(String recurranceString)
-        {
-            throw UnimplementedError("GetRecurrenceFromString");
+  /// <summary>
+  /// Gets the recurrence from string.
+  /// </summary>
+  /// <param name="recurranceString">The recurrance string.</param>
+  /// <returns></returns>
+  /* private */
+  Recurrence GetRecurrenceFromString(String recurranceString) {
+    throw UnimplementedError("GetRecurrenceFromString");
 //            Recurrence recurrence = null;
 //
 //            switch (recurranceString)
@@ -169,31 +161,27 @@ import 'package:ews/Xml/XmlNodeType.dart';
 //                    throw new ServiceXmlDeserializationException(string.Format(Strings.InvalidRecurrencePattern, recurranceString));
 //            }
 //            return recurrence;
-        }
+  }
 
-        /// <summary>
-        /// Writes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        /// <param name="propertyBag">The property bag.</param>
-        /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
-@override
-        void WritePropertyValueToXml(
-            EwsServiceXmlWriter writer,
-            PropertyBag propertyBag,
-            bool isUpdateOperation)
-        {
-            Recurrence value = propertyBag[this];
+  /// <summary>
+  /// Writes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  /// <param name="propertyBag">The property bag.</param>
+  /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
+  @override
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
+    Recurrence value = propertyBag[this];
 
-            if (value != null)
-            {
-                value.WriteToXml(writer, XmlElementNames.Recurrence);
-            }
-        }
-
-        /// <summary>
-        /// Gets the property type.
-        /// </summary>
-@override
- core.Type get Type => Recurrence;
+    if (value != null) {
+      value.WriteToXml(writer, XmlElementNames.Recurrence);
     }
+  }
+
+  /// <summary>
+  /// Gets the property type.
+  /// </summary>
+  @override
+  core.Type get Type => Recurrence;
+}

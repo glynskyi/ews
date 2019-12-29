@@ -23,12 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'dart:collection';
+import 'dart:collection';
 
 import 'package:ews/ComplexProperties/ItemId.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
@@ -39,111 +34,99 @@ import 'package:ews/misc/ItemIdWrapper.dart';
 import 'package:ews/misc/ItemWrapper.dart';
 
 /// <summary>
-    /// Represents a list a abstracted item Ids.
-    /// </summary>
-    class ItemIdWrapperList with IterableMixin<AbstractItemIdWrapper> implements Iterable<AbstractItemIdWrapper>
-    {
-        /// <summary>
-        /// List of <see cref="Microsoft.Exchange.WebServices.Data.Item"/>.
-        /// </summary>
-        /* private */ List<AbstractItemIdWrapper> itemIds = new List<AbstractItemIdWrapper>();
+/// Represents a list a abstracted item Ids.
+/// </summary>
+class ItemIdWrapperList
+    with IterableMixin<AbstractItemIdWrapper>
+    implements Iterable<AbstractItemIdWrapper> {
+  /// <summary>
+  /// List of <see cref="Microsoft.Exchange.WebServices.Data.Item"/>.
+  /// </summary>
+  /* private */
+  List<AbstractItemIdWrapper> itemIds = new List<AbstractItemIdWrapper>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemIdWrapperList"/> class.
-        /// </summary>
-        ItemIdWrapperList()
-        {
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ItemIdWrapperList"/> class.
+  /// </summary>
+  ItemIdWrapperList() {}
 
-        /// <summary>
-        /// Adds the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        void Add(serviceObjects.Item item)
-        {
-            this.itemIds.add(new ItemWrapper(item));
-        }
+  /// <summary>
+  /// Adds the specified item.
+  /// </summary>
+  /// <param name="item">The item.</param>
+  void Add(serviceObjects.Item item) {
+    this.itemIds.add(new ItemWrapper(item));
+  }
 
-        /// <summary>
-        /// Adds the range.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        void AddRange(Iterable<serviceObjects.Item> items)
-        {
-            for (serviceObjects.Item item in items)
-            {
-                this.Add(item);
-            }
-        }
+  /// <summary>
+  /// Adds the range.
+  /// </summary>
+  /// <param name="items">The items.</param>
+  void AddRange(Iterable<serviceObjects.Item> items) {
+    for (serviceObjects.Item item in items) {
+      this.Add(item);
+    }
+  }
 
-        /// <summary>
-        /// Adds the specified item id.
-        /// </summary>
-        /// <param name="itemId">The item id.</param>
-        void AddItemId(ItemId itemId)
-        {
-            this.itemIds.add(new ItemIdWrapper(itemId));
-        }
+  /// <summary>
+  /// Adds the specified item id.
+  /// </summary>
+  /// <param name="itemId">The item id.</param>
+  void AddItemId(ItemId itemId) {
+    this.itemIds.add(new ItemIdWrapper(itemId));
+  }
 
-        /// <summary>
-        /// Adds the range.
-        /// </summary>
-        /// <param name="itemIds">The item ids.</param>
-        void AddRangeItemIds(Iterable<ItemId> itemIds)
-        {
-            for (ItemId itemId in itemIds)
-            {
-                this.AddItemId(itemId);
-            }
-        }
+  /// <summary>
+  /// Adds the range.
+  /// </summary>
+  /// <param name="itemIds">The item ids.</param>
+  void AddRangeItemIds(Iterable<ItemId> itemIds) {
+    for (ItemId itemId in itemIds) {
+      this.AddItemId(itemId);
+    }
+  }
 
-        /// <summary>
-        /// Writes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        /// <param name="ewsNamesapce">The ews namesapce.</param>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        void WriteToXml(
-            EwsServiceXmlWriter writer,
-            XmlNamespace ewsNamesapce,
-            String xmlElementName)
-        {
-            if (this.Count > 0)
-            {
-                writer.WriteStartElement(ewsNamesapce, xmlElementName);
+  /// <summary>
+  /// Writes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  /// <param name="ewsNamesapce">The ews namesapce.</param>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  void WriteToXml(EwsServiceXmlWriter writer, XmlNamespace ewsNamesapce,
+      String xmlElementName) {
+    if (this.Count > 0) {
+      writer.WriteStartElement(ewsNamesapce, xmlElementName);
 
-                for (AbstractItemIdWrapper itemIdWrapper in this.itemIds)
-                {
-                    itemIdWrapper.WriteToXml(writer);
-                }
+      for (AbstractItemIdWrapper itemIdWrapper in this.itemIds) {
+        itemIdWrapper.WriteToXml(writer);
+      }
 
-                writer.WriteEndElement();
-            }
-        }
+      writer.WriteEndElement();
+    }
+  }
 
-        /// <summary>
-        /// Gets the count.
-        /// </summary>
-        /// <value>The count.</value>
-        int get Count=> this.itemIds.length;
+  /// <summary>
+  /// Gets the count.
+  /// </summary>
+  /// <value>The count.</value>
+  int get Count => this.itemIds.length;
 
-        /// <summary>
-        /// Gets the <see cref="Microsoft.Exchange.WebServices.Data.Item"/> at the specified index.
-        /// </summary>
-        /// <param name="index">the index</param>
-        serviceObjects.Item operator [](int index) {
-            return this.itemIds[index].GetItem();
-        }
+  /// <summary>
+  /// Gets the <see cref="Microsoft.Exchange.WebServices.Data.Item"/> at the specified index.
+  /// </summary>
+  /// <param name="index">the index</param>
+  serviceObjects.Item operator [](int index) {
+    return this.itemIds[index].GetItem();
+  }
 
-
-        /// <summary>
-        /// Gets an enumerator that iterates through the elements of the collection.
-        /// </summary>
-        /// <returns>An IEnumerator for the collection.</returns>
-    ///
-    @override
-    // TODO: implement iterator
-    Iterator<AbstractItemIdWrapper> get iterator => this.itemIds.iterator;
+  /// <summary>
+  /// Gets an enumerator that iterates through the elements of the collection.
+  /// </summary>
+  /// <returns>An IEnumerator for the collection.</returns>
+  ///
+  @override
+  // TODO: implement iterator
+  Iterator<AbstractItemIdWrapper> get iterator => this.itemIds.iterator;
 
 //
 // IEnumerator<AbstractItemIdWrapper> GetEnumerator()
@@ -151,12 +134,12 @@ import 'package:ews/misc/ItemWrapper.dart';
 //            return this.itemIds.GetEnumerator();
 //        }
 
-        /// <summary>
-        /// Gets an enumerator that iterates through the elements of the collection.
-        /// </summary>
-        /// <returns>An IEnumerator for the collection.</returns>
+  /// <summary>
+  /// Gets an enumerator that iterates through the elements of the collection.
+  /// </summary>
+  /// <returns>An IEnumerator for the collection.</returns>
 //        System.Collections.IEnumerator System.Collections.Iterable.GetEnumerator()
 //        {
 //            return this.itemIds.GetEnumerator();
 //        }
-    }
+}

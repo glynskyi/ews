@@ -117,5 +117,6 @@ class ExchangeServerInfo {
   /// </summary>
   /// <returns>Canonical ExchangeService version string</returns>
   @override
-  String toString() => "$MajorVersion.$MinorVersion.$MajorBuildNumber.$MinorBuildNumber";
+  String toString() =>
+      "$MajorVersion.$MinorVersion.$MajorBuildNumber.$MinorBuildNumber";
 }

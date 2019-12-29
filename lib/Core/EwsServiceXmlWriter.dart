@@ -63,7 +63,8 @@ class EwsServiceXmlWriter implements IDisposable {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="stream">The stream.</param>
-  EwsServiceXmlWriter(ExchangeServiceBase service, StreamConsumer<List<int>> stream) {
+  EwsServiceXmlWriter(
+      ExchangeServiceBase service, StreamConsumer<List<int>> stream) {
     this._service = service;
 
 //            XmlWriterSettings settings = new XmlWriterSettings();
@@ -110,7 +111,8 @@ class EwsServiceXmlWriter implements IDisposable {
 //            } else if (value instanceof Number) {
 //              str.setParam(value.toString());
       else if (value is DateTime) {
-        strValueOut.param = this.Service.ConvertDateTimeToUniversalDateTimeString(value);
+        strValueOut.param =
+            this.Service.ConvertDateTimeToUniversalDateTimeString(value);
       } else if (value is int) {
         strValueOut.param = value.toString();
       } else if (value is bool) {
@@ -243,7 +245,8 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="localName">The local name of the attribute.</param>
   /// <param name="alwaysWriteEmptyString">Always emit the empty String as the value.</param>
   /// <param name="value">The value.</param>
-  void WriteAttributeValue(String localName, Object value, [bool alwaysWriteEmptyString = false]) {
+  void WriteAttributeValue(String localName, Object value,
+      [bool alwaysWriteEmptyString = false]) {
     OutParam<String> stringValue = new OutParam();
     if (this.TryConvertObjectToString(value, stringValue)) {
       if ((stringValue.param != null) &&
@@ -262,11 +265,13 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">The local name of the attribute.</param>
   /// <param name="value">The value.</param>
-  void WriteAttributeValueWithPrefix(String namespacePrefix, String localName, Object value) {
+  void WriteAttributeValueWithPrefix(
+      String namespacePrefix, String localName, Object value) {
     OutParam<String> stringValue = new OutParam();
     if (this.TryConvertObjectToString(value, stringValue)) {
       if (!StringUtils.IsNullOrEmpty(stringValue.param)) {
-        this.WriteAttributeStringWithPrefix(namespacePrefix, localName, stringValue.param);
+        this.WriteAttributeStringWithPrefix(
+            namespacePrefix, localName, stringValue.param);
       }
     } else {
       throw new ServiceXmlSerializationException(
@@ -302,7 +307,10 @@ class EwsServiceXmlWriter implements IDisposable {
       String namespacePrefix, String localName, String stringValue) {
     try {
       this._xmlWriter.WriteAttributeString(
-          prefix: namespacePrefix, localName: localName, ns: null, value: stringValue);
+          prefix: namespacePrefix,
+          localName: localName,
+          ns: null,
+          value: stringValue);
     } on ArgumentError catch (ex) {
       // XmlTextWriter will throw ArgumentError if String includes invalid characters.
       throw new ServiceXmlSerializationException("""
@@ -335,8 +343,8 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="localName">The local name of the element.</param>
   /// <param name="displayName">The name that should appear in the exception message when the value can not be serialized.</param>
   /// <param name="value">The value.</param>
-  void WriteElementValue(
-      XmlNamespace xmlNamespace, String localName, String displayName, Object value) {
+  void WriteElementValue(XmlNamespace xmlNamespace, String localName,
+      String displayName, Object value) {
     String stringValue;
     OutParam<String> strOut = new OutParam<String>();
     if (this.TryConvertObjectToString(value, strOut)) {
@@ -377,7 +385,8 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">The local name of the element.</param>
   /// <param name="value">The value.</param>
-  void WriteElementValueWithNamespace(XmlNamespace xmlNamespace, String localName, Object value) {
+  void WriteElementValueWithNamespace(
+      XmlNamespace xmlNamespace, String localName, Object value) {
     this.WriteElementValue(xmlNamespace, localName, localName, value);
   }
 
@@ -440,7 +449,8 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <summary>
   /// Gets or sets a value indicating whether the SOAP message need WSSecurity Utility namespace.
   /// </summary>
-  bool get RequireWSSecurityUtilityNamespace => this._requireWSSecurityUtilityNamespace;
+  bool get RequireWSSecurityUtilityNamespace =>
+      this._requireWSSecurityUtilityNamespace;
 
   set RequireWSSecurityUtilityNamespace(bool value) {
     this._requireWSSecurityUtilityNamespace = value;

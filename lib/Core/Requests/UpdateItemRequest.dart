@@ -35,7 +35,8 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/ConflictResolutionMode.dart' as enumerations;
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/MessageDisposition.dart' as enumerations;
-import 'package:ews/Enumerations/SendInvitationsOrCancellationsMode.dart' as enumerations;
+import 'package:ews/Enumerations/SendInvitationsOrCancellationsMode.dart'
+    as enumerations;
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
@@ -43,7 +44,8 @@ import 'package:ews/Exceptions/ServiceVersionException.dart';
 /// <summary>
 /// Represents an UpdateItem request.
 /// </summary>
-class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> {
+class UpdateItemRequest
+    extends MultiResponseServiceRequest<UpdateItemResponse> {
   List<Item> _items = new List<Item>();
 
   FolderId _savedItemsDestinationFolder;
@@ -52,14 +54,16 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
 
   enumerations.MessageDisposition _messageDisposition;
 
-  enumerations.SendInvitationsOrCancellationsMode _sendInvitationsOrCancellationsMode;
+  enumerations.SendInvitationsOrCancellationsMode
+      _sendInvitationsOrCancellationsMode;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UpdateItemRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  UpdateItemRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  UpdateItemRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -94,12 +98,15 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
     EwsUtilities.ValidateParamCollection(this.Items, "Items");
     for (int i = 0; i < this.Items.length; i++) {
       if ((this.Items[i] == null) || this.Items[i].IsNew) {
-        throw new ArgumentError("string.Format(Strings.ItemToUpdateCannotBeNullOrNew, i)");
+        throw new ArgumentError(
+            "string.Format(Strings.ItemToUpdateCannotBeNullOrNew, i)");
       }
     }
 
     if (this.SavedItemsDestinationFolder != null) {
-      this.SavedItemsDestinationFolder.ValidateExchangeVersion(this.Service.RequestedServerVersion);
+      this
+          .SavedItemsDestinationFolder
+          .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
 
     // Validate each item.
@@ -108,7 +115,8 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
     }
 
     if (this.SuppressReadReceipts &&
-        this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
+        this.Service.RequestedServerVersion.index <
+            ExchangeVersion.Exchange2013.index) {
       throw new ServiceVersionException("""string.Format(
                         Strings.ParameterIncompatibleWithRequestVersion,
                         "SuppressReadReceipts",
@@ -123,7 +131,8 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Response object.</returns>
   @override
-  UpdateItemResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  UpdateItemResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new UpdateItemResponse(this.Items[responseIndex]);
   }
 
@@ -172,17 +181,20 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
     super.WriteAttributesToXml(writer);
 
     if (this.MessageDisposition != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.MessageDisposition, this.MessageDisposition);
+      writer.WriteAttributeValue(
+          XmlAttributeNames.MessageDisposition, this.MessageDisposition);
     }
 
     if (this.SuppressReadReceipts) {
       writer.WriteAttributeValue(XmlAttributeNames.SuppressReadReceipts, true);
     }
 
-    writer.WriteAttributeValue(XmlAttributeNames.ConflictResolution, this.ConflictResolutionMode);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.ConflictResolution, this.ConflictResolutionMode);
 
     if (this.SendInvitationsOrCancellationsMode != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.SendMeetingInvitationsOrCancellations,
+      writer.WriteAttributeValue(
+          XmlAttributeNames.SendMeetingInvitationsOrCancellations,
           this.SendInvitationsOrCancellationsMode);
     }
   }
@@ -194,12 +206,14 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.SavedItemsDestinationFolder != null) {
-      writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.SavedItemFolderId);
+      writer.WriteStartElement(
+          XmlNamespace.Messages, XmlElementNames.SavedItemFolderId);
       this.SavedItemsDestinationFolder.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
 
-    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.ItemChanges);
+    writer.WriteStartElement(
+        XmlNamespace.Messages, XmlElementNames.ItemChanges);
 
     for (Item item in this._items) {
       item.WriteToXmlForUpdate(writer);
@@ -221,7 +235,8 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
   /// Gets or sets the message disposition.
   /// </summary>
   /// <value>The message disposition.</value>
-  enumerations.MessageDisposition get MessageDisposition => this._messageDisposition;
+  enumerations.MessageDisposition get MessageDisposition =>
+      this._messageDisposition;
 
   set MessageDisposition(enumerations.MessageDisposition value) {
     this._messageDisposition = value;
@@ -231,7 +246,8 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
   /// Gets or sets the conflict resolution mode.
   /// </summary>
   /// <value>The conflict resolution mode.</value>
-  enumerations.ConflictResolutionMode get ConflictResolutionMode => this._conflictResolutionMode;
+  enumerations.ConflictResolutionMode get ConflictResolutionMode =>
+      this._conflictResolutionMode;
 
   set ConflictResolutionMode(enumerations.ConflictResolutionMode value) {
     this._conflictResolutionMode = value;
@@ -241,10 +257,12 @@ class UpdateItemRequest extends MultiResponseServiceRequest<UpdateItemResponse> 
   /// Gets or sets the send invitations or cancellations mode.
   /// </summary>
   /// <value>The send invitations or cancellations mode.</value>
-  enumerations.SendInvitationsOrCancellationsMode get SendInvitationsOrCancellationsMode =>
-      this._sendInvitationsOrCancellationsMode;
+  enumerations.SendInvitationsOrCancellationsMode
+      get SendInvitationsOrCancellationsMode =>
+          this._sendInvitationsOrCancellationsMode;
 
-  set SendInvitationsOrCancellationsMode(enumerations.SendInvitationsOrCancellationsMode value) {
+  set SendInvitationsOrCancellationsMode(
+      enumerations.SendInvitationsOrCancellationsMode value) {
     this._sendInvitationsOrCancellationsMode = value;
   }
 

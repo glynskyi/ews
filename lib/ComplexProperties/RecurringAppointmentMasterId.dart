@@ -36,7 +36,8 @@ class RecurringAppointmentMasterId extends ItemId {
   /// Initializes a new instance of the <see cref="RecurringAppointmentMasterId"/> class.
   /// </summary>
   /// <param name="occurrenceId">The Id of an occurrence in the recurring series.</param>
-  RecurringAppointmentMasterId(String occurrenceId) : super.withUniqueId(occurrenceId) {}
+  RecurringAppointmentMasterId(String occurrenceId)
+      : super.withUniqueId(occurrenceId) {}
 
   /// <summary>
   /// Gets the name of the XML element.

@@ -83,7 +83,8 @@ class EwsXmlReader {
   /// <param name="localElementName">Name of the local element.</param>
   /// <returns>Element name.</returns>
   /* private */
-  static String FormatElementName(String namespacePrefix, String localElementName) {
+  static String FormatElementName(
+      String namespacePrefix, String localElementName) {
     return namespacePrefix == null || namespacePrefix.isEmpty
         ? localElementName
         : namespacePrefix + ":" + localElementName;
@@ -122,10 +123,12 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
   /// <param name="nodeType">Type of the node.</param>
-  void _InternalReadElement(String namespacePrefix, String localName, XmlNodeType nodeType) {
+  void _InternalReadElement(
+      String namespacePrefix, String localName, XmlNodeType nodeType) {
     this.Read(nodeType: nodeType);
 
-    if ((this.LocalName != localName) || (this.NamespacePrefix != namespacePrefix)) {
+    if ((this.LocalName != localName) ||
+        (this.NamespacePrefix != namespacePrefix)) {
       throw new ServiceXmlDeserializationException("""string.Format(
                                     Strings.UnexpectedElement,
                                     namespacePrefix,
@@ -147,7 +150,8 @@ class EwsXmlReader {
     // read. Throw an exception if not true.
     bool nodeRead = this._xmlReader.Read();
     if (!nodeRead) {
-      throw new ServiceXmlDeserializationException("Strings.UnexpectedEndOfXmlDocument");
+      throw new ServiceXmlDeserializationException(
+          "Strings.UnexpectedEndOfXmlDocument");
     }
     if (nodeType != null && this.NodeType != nodeType) {
       throw new ServiceXmlDeserializationException("""string.Format(
@@ -163,13 +167,13 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="attributeName">Name of the attribute.</param>
   /// <returns>Attribute value.</returns>
-  String ReadAttributeValueWithNamespace(XmlNamespace xmlNamespace, String attributeName) {
+  String ReadAttributeValueWithNamespace(
+      XmlNamespace xmlNamespace, String attributeName) {
     if (xmlNamespace == XmlNamespace.NotSpecified) {
       return this.ReadAttributeValue(attributeName);
     } else {
-      return this
-          ._xmlReader
-          .GetAttributeWithNamespace(attributeName, EwsUtilities.GetNamespaceUri(xmlNamespace));
+      return this._xmlReader.GetAttributeWithNamespace(
+          attributeName, EwsUtilities.GetNamespaceUri(xmlNamespace));
     }
   }
 
@@ -213,7 +217,8 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
   /// <returns>Element value.</returns>
-  String ReadElementStringValueWithPrefix(String namespacePrefix, String localName) {
+  String ReadElementStringValueWithPrefix(
+      String namespacePrefix, String localName) {
     if (!this.IsStartElementWithPrefix(namespacePrefix, localName)) {
       this.ReadStartElement(namespacePrefix, localName);
     }
@@ -233,7 +238,8 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
   /// <returns>Element value.</returns>
-  String ReadElementStringValueWithNamespace(XmlNamespace xmlNamespace, String localName) {
+  String ReadElementStringValueWithNamespace(
+      XmlNamespace xmlNamespace, String localName) {
     if (!this.IsStartElementWithNamespace(xmlNamespace, localName)) {
       this.ReadStartElementWithNamespace(xmlNamespace, localName);
     }
@@ -254,7 +260,8 @@ class EwsXmlReader {
   String ReadElementStringValue() {
     this.EnsureCurrentNodeIsStartElement();
 
-    return this.ReadElementStringValueWithPrefix(this.NamespacePrefix, this.LocalName);
+    return this
+        .ReadElementStringValueWithPrefix(this.NamespacePrefix, this.LocalName);
   }
 
   /// <summary>
@@ -264,7 +271,8 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
   /// <returns>Element value.</returns>
-  T ReadElementValueWithNamespace<T>(XmlNamespace xmlNamespace, String localName) {
+  T ReadElementValueWithNamespace<T>(
+      XmlNamespace xmlNamespace, String localName) {
     if (!this.IsStartElementWithNamespace(xmlNamespace, localName)) {
       this.ReadStartElementWithNamespace(xmlNamespace, localName);
     }
@@ -393,8 +401,10 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void ReadStartElementWithNamespace(XmlNamespace xmlNamespace, String localName) {
-    this.InternalReadElementWithNamespace(xmlNamespace, localName, XmlNodeType.Element);
+  void ReadStartElementWithNamespace(
+      XmlNamespace xmlNamespace, String localName) {
+    this.InternalReadElementWithNamespace(
+        xmlNamespace, localName, XmlNodeType.Element);
   }
 
   /// <summary>
@@ -403,7 +413,8 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="elementName">Name of the element.</param>
   void ReadEndElementWithPrefix(String namespacePrefix, String elementName) {
-    this._InternalReadElement(namespacePrefix, elementName, XmlNodeType.EndElement);
+    this._InternalReadElement(
+        namespacePrefix, elementName, XmlNodeType.EndElement);
   }
 
   /// <summary>
@@ -411,8 +422,10 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void ReadEndElementWithNamespace(XmlNamespace xmlNamespace, String localName) {
-    this.InternalReadElementWithNamespace(xmlNamespace, localName, XmlNodeType.EndElement);
+  void ReadEndElementWithNamespace(
+      XmlNamespace xmlNamespace, String localName) {
+    this.InternalReadElementWithNamespace(
+        xmlNamespace, localName, XmlNodeType.EndElement);
   }
 
   /// <summary>
@@ -421,7 +434,8 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
   void ReadEndElementIfNecessary(XmlNamespace xmlNamespace, String localName) {
-    if (!(this.IsStartElementWithNamespace(xmlNamespace, localName) && this.IsEmptyElement)) {
+    if (!(this.IsStartElementWithNamespace(xmlNamespace, localName) &&
+        this.IsEmptyElement)) {
       if (!this.IsEndElementWithNamespace(xmlNamespace, localName)) {
         this.ReadEndElementWithNamespace(xmlNamespace, localName);
       }
@@ -439,7 +453,8 @@ class EwsXmlReader {
   bool IsStartElementWithPrefix(String namespacePrefix, String localName) {
     String fullyQualifiedName = FormatElementName(namespacePrefix, localName);
 
-    return this.NodeType == XmlNodeType.Element && this._xmlReader.Name == fullyQualifiedName;
+    return this.NodeType == XmlNodeType.Element &&
+        this._xmlReader.Name == fullyQualifiedName;
   }
 
   /// <summary>
@@ -450,10 +465,12 @@ class EwsXmlReader {
   /// <returns>
   ///     <c>true</c> if current element is a start element; otherwise, <c>false</c>.
   /// </returns>
-  bool IsStartElementWithNamespace(XmlNamespace xmlNamespace, String localName) {
+  bool IsStartElementWithNamespace(
+      XmlNamespace xmlNamespace, String localName) {
     return (this.LocalName == localName) &&
         this.IsStartElement() &&
-        ((this.NamespacePrefix == EwsUtilities.GetNamespacePrefix(xmlNamespace)) ||
+        ((this.NamespacePrefix ==
+                EwsUtilities.GetNamespacePrefix(xmlNamespace)) ||
             (this.NamespaceUri == EwsUtilities.GetNamespaceUri(xmlNamespace)));
   }
 
@@ -478,7 +495,8 @@ class EwsXmlReader {
   bool IsEndElement(String namespacePrefix, String localName) {
     String fullyQualifiedName = FormatElementName(namespacePrefix, localName);
 
-    return this.NodeType == XmlNodeType.EndElement && this._xmlReader.Name == fullyQualifiedName;
+    return this.NodeType == XmlNodeType.EndElement &&
+        this._xmlReader.Name == fullyQualifiedName;
   }
 
   /// <summary>
@@ -492,7 +510,8 @@ class EwsXmlReader {
   bool IsEndElementWithNamespace(XmlNamespace xmlNamespace, String localName) {
     return (this.LocalName == localName) &&
         (this.NodeType == XmlNodeType.EndElement) &&
-        ((this.NamespacePrefix == EwsUtilities.GetNamespacePrefix(xmlNamespace)) ||
+        ((this.NamespacePrefix ==
+                EwsUtilities.GetNamespacePrefix(xmlNamespace)) ||
             (this.NamespaceUri == EwsUtilities.GetNamespaceUri(xmlNamespace)));
   }
 
@@ -546,7 +565,8 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace xmlNamespace, String localName) {
+  void EnsureCurrentNodeIsStartElementWithNamespace(
+      XmlNamespace xmlNamespace, String localName) {
     if (!this.IsStartElementWithNamespace(xmlNamespace, localName)) {
       throw new ServiceXmlDeserializationException("""string.Format(
                         Strings.ElementNotFound,
@@ -572,9 +592,11 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void EnsureCurrentNodeIsEndElement(XmlNamespace xmlNamespace, String localName) {
+  void EnsureCurrentNodeIsEndElement(
+      XmlNamespace xmlNamespace, String localName) {
     if (!this.IsEndElementWithNamespace(xmlNamespace, localName)) {
-      if (!(this.IsStartElementWithNamespace(xmlNamespace, localName) && this.IsEmptyElement)) {
+      if (!(this.IsStartElementWithNamespace(xmlNamespace, localName) &&
+          this.IsEmptyElement)) {
         throw new ServiceXmlDeserializationException("""string.Format(
                             Strings.ElementNotFound,
                             localName,
@@ -591,7 +613,8 @@ class EwsXmlReader {
   /// </returns>
   String ReadOuterXml() {
     if (!this.IsStartElement()) {
-      throw new ServiceXmlDeserializationException("Strings.CurrentPositionNotElementStart");
+      throw new ServiceXmlDeserializationException(
+          "Strings.CurrentPositionNotElementStart");
     }
 
     return this._xmlReader.ReadOuterXml();
@@ -605,7 +628,8 @@ class EwsXmlReader {
   /// </returns>
   String ReadInnerXml() {
     if (!this.IsStartElement()) {
-      throw new ServiceXmlDeserializationException("Strings.CurrentPositionNotElementStart");
+      throw new ServiceXmlDeserializationException(
+          "Strings.CurrentPositionNotElementStart");
     }
 
     return this._xmlReader.ReadInnerXml();
@@ -625,7 +649,8 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The namespace of the element you with to move to.</param>
   /// <param name="localName">The local name of the element you wish to move to.</param>
   void ReadToDescendant(XmlNamespace xmlNamespace, String localName) {
-    this._xmlReader.ReadToDescendant(localName, EwsUtilities.GetNamespaceUri(xmlNamespace));
+    this._xmlReader.ReadToDescendant(
+        localName, EwsUtilities.GetNamespaceUri(xmlNamespace));
   }
 
   /// <summary>

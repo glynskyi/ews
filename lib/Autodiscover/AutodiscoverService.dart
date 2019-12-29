@@ -61,7 +61,8 @@ import 'package:ews/misc/UriHelper.dart';
 /// </summary>
 /// <param name="redirectionUrl">Redirection URL that Autodiscover wants to use.</param>
 /// <returns>Delegate returns true if Autodiscover is allowed to use this URL.</returns>
-typedef AutodiscoverRedirectionUrlValidationCallback = bool Function(String redirectionUrl);
+typedef AutodiscoverRedirectionUrlValidationCallback = bool Function(
+    String redirectionUrl);
 
 typedef GetDomainCallback = String Function();
 
@@ -80,7 +81,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <summary>
   /// Autodiscover legacy path
   /// </summary>
-  static const String _AutodiscoverLegacyPath = "/autodiscover/autodiscover.xml";
+  static const String _AutodiscoverLegacyPath =
+      "/autodiscover/autodiscover.xml";
 
   /// <summary>
   /// Autodiscover legacy Url with protocol fill-in
@@ -90,17 +92,20 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <summary>
   /// Autodiscover legacy HTTPS Url
   /// </summary>
-  static const String _AutodiscoverLegacyHttpsUrl = "https://{0}" + _AutodiscoverLegacyPath;
+  static const String _AutodiscoverLegacyHttpsUrl =
+      "https://{0}" + _AutodiscoverLegacyPath;
 
   /// <summary>
   /// Autodiscover legacy HTTP Url
   /// </summary>
-  static const String _AutodiscoverLegacyHttpUrl = "http://{0}" + _AutodiscoverLegacyPath;
+  static const String _AutodiscoverLegacyHttpUrl =
+      "http://{0}" + _AutodiscoverLegacyPath;
 
   /// <summary>
   /// Autodiscover SOAP HTTPS Url
   /// </summary>
-  static const String _AutodiscoverSoapHttpsUrl = "https://{0}/autodiscover/autodiscover.svc";
+  static const String _AutodiscoverSoapHttpsUrl =
+      "https://{0}/autodiscover/autodiscover.svc";
 
   /// <summary>
   /// Autodiscover SOAP WS-Security HTTPS Url
@@ -129,8 +134,9 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <summary>
   /// Legacy path regular expression.
   /// </summary>
-  static RegExp _LegacyPathRegex =
-      new RegExp("/autodiscover/([^/]+/)*autodiscover.xml", caseSensitive: false);
+  static RegExp _LegacyPathRegex = new RegExp(
+      "/autodiscover/([^/]+/)*autodiscover.xml",
+      caseSensitive: false);
 
   /// <summary>
   /// Maximum number of Url (or address) redirections that will be followed by an Autodiscover call
@@ -145,7 +151,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <summary>
   /// HTTP header indicating that WS-Security Autodiscover service is enabled.
   /// </summary>
-  static const String _AutodiscoverWsSecurityEnabledHeaderName = "X-WSSecurity-Enabled";
+  static const String _AutodiscoverWsSecurityEnabledHeaderName =
+      "X-WSSecurity-Enabled";
 
   /// <summary>
   /// HTTP header indicating that WS-Security/SymmetricKey Autodiscover service is enabled.
@@ -167,13 +174,15 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <summary>
   /// Minimum request version for Autodiscover SOAP service.
   /// </summary>
-  static const ExchangeVersion _MinimumRequestVersionForAutoDiscoverSoapService =
+  static const ExchangeVersion
+      _MinimumRequestVersionForAutoDiscoverSoapService =
       ExchangeVersion.Exchange2010;
 
   String _domain;
   bool _isExternal = true;
   Uri _url;
-  AutodiscoverRedirectionUrlValidationCallback _redirectionUrlValidationCallback;
+  AutodiscoverRedirectionUrlValidationCallback
+      _redirectionUrlValidationCallback;
 
   // TODO: return AutodiscoverDnsClient
 //        /* private */ AutodiscoverDnsClient dnsClient;
@@ -187,7 +196,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="redirectionUrl">The redirection URL.</param>
   /// <returns>Returns true.</returns>
   /* private */
-  bool DefaultAutodiscoverRedirectionUrlValidationCallback(String redirectionUrl) {
+  bool DefaultAutodiscoverRedirectionUrlValidationCallback(
+      String redirectionUrl) {
     throw new AutodiscoverLocalException(
         "string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
   }
@@ -199,8 +209,9 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="emailAddress">The email address to retrieve configuration settings for.</param>
   /// <param name="url">The URL of the Autodiscover service.</param>
   /// <returns>The requested configuration settings.</returns>
-  TSettings _GetLegacyUserSettingsAtUrl<TSettings extends ConfigurationSettingsBase>(
-      TSettings settings, String emailAddress, Uri url) {
+  TSettings
+      _GetLegacyUserSettingsAtUrl<TSettings extends ConfigurationSettingsBase>(
+          TSettings settings, String emailAddress, Uri url) {
     throw UnimplementedError("GetLegacyUserSettingsAtUrl");
 //            this.TraceMessage(
 //                enumerations.TraceFlags.AutodiscoverConfiguration,
@@ -309,12 +320,14 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="domainName">The name of the domain to call Autodiscover on.</param>
   /// <returns>A valid SSL-enabled redirection URL. (May be null).</returns>
   Future<Uri> _GetRedirectUrl(String domainName) async {
-    String url = _AutodiscoverLegacyHttpUrl.replaceAll("{0}", "autodiscover." + domainName);
+    String url = _AutodiscoverLegacyHttpUrl.replaceAll(
+        "{0}", "autodiscover." + domainName);
 
     this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
         "Trying to get Autodiscover redirection URL from $url.");
 
-    IEwsHttpWebRequest request = this.HttpWebRequestFactory.CreateRequestWithUrl(Uri.parse(url));
+    IEwsHttpWebRequest request =
+        this.HttpWebRequestFactory.CreateRequestWithUrl(Uri.parse(url));
 
     request.Method = "GET";
     request.AllowAutoRedirect = false;
@@ -325,7 +338,8 @@ class AutodiscoverService extends ExchangeServiceBase {
     try {
       response = await request.GetResponse();
     } on WebException catch (ex) {
-      this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration, "Request error: $ex");
+      this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+          "Request error: $ex");
 
       // The exception response factory requires a valid HttpWebResponse,
       // but there will be no web response if the web request couldn't be
@@ -334,7 +348,8 @@ class AutodiscoverService extends ExchangeServiceBase {
         response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
       }
     } on IOException catch (ex) {
-      this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration, "I/O error: $ex");
+      this.TraceMessage(
+          enumerations.TraceFlags.AutodiscoverConfiguration, "I/O error: $ex");
     }
 
     if (response != null) {
@@ -358,7 +373,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="response">The response.</param>
   /// <param name="redirectUrl">The redirect URL.</param>
   /// <returns>True if a valid redirection URL was found.</returns>
-  bool _TryGetRedirectionResponse(IEwsHttpWebResponse response, OutParam<Uri> redirectUrlOutParam) {
+  bool _TryGetRedirectionResponse(
+      IEwsHttpWebResponse response, OutParam<Uri> redirectUrlOutParam) {
     redirectUrlOutParam.param = null;
     if (AutodiscoverRequest.IsRedirectionResponse(response)) {
       // Get the redirect location and verify that it's valid.
@@ -366,11 +382,13 @@ class AutodiscoverService extends ExchangeServiceBase {
 
       if (!StringUtils.IsNullOrEmpty(location)) {
         try {
-          redirectUrlOutParam.param = UriHelper.concat(response.ResponseUri, location);
+          redirectUrlOutParam.param =
+              UriHelper.concat(response.ResponseUri, location);
 
           // Check if URL is SSL and that the path matches.
           // TODO check absolute path of the redirectUrl
-          bool hasMatches = _LegacyPathRegex.hasMatch(redirectUrlOutParam.param.path);
+          bool hasMatches =
+              _LegacyPathRegex.hasMatch(redirectUrlOutParam.param.path);
           if ((redirectUrlOutParam.param.scheme == "https") && hasMatches) {
             this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
                 "Redirection URL found: '${redirectUrlOutParam.param}'");
@@ -394,32 +412,35 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <typeparam name="TSettings">The type of the settings to retrieve.</typeparam>
   /// <param name="emailAddress">The email address to retrieve configuration settings for.</param>
   /// <returns>The requested configuration settings.</returns>
-  Future<TSettings> GetLegacyUserSettings<TSettings extends ConfigurationSettingsBase>(
-      TSettings newSettings, String emailAddress) async {
+  Future<TSettings>
+      GetLegacyUserSettings<TSettings extends ConfigurationSettingsBase>(
+          TSettings newSettings, String emailAddress) async {
     // If Url is specified, call service directly.
     if (this.Url != null) {
       bool hasMatch = _LegacyPathRegex.hasMatch(this.Url.path);
       if (hasMatch) {
-        return this._GetLegacyUserSettingsAtUrl<TSettings>(newSettings, emailAddress, this.Url);
+        return this._GetLegacyUserSettingsAtUrl<TSettings>(
+            newSettings, emailAddress, this.Url);
       }
 
       // this.Uri is intended for Autodiscover SOAP service, convert to Legacy endpoint URL.
       Uri autodiscoverUrl = UriHelper.concat(this.Url, _AutodiscoverLegacyPath);
-      return this
-          ._GetLegacyUserSettingsAtUrl<TSettings>(newSettings, emailAddress, autodiscoverUrl);
+      return this._GetLegacyUserSettingsAtUrl<TSettings>(
+          newSettings, emailAddress, autodiscoverUrl);
     }
 
     // If Domain is specified, figure out the endpoint Url and call service.
     else if (!StringUtils.IsNullOrEmpty(this.Domain)) {
-      Uri autodiscoverUrl = Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll("{0}", this.Domain));
-      return this
-          ._GetLegacyUserSettingsAtUrl<TSettings>(newSettings, emailAddress, autodiscoverUrl);
+      Uri autodiscoverUrl =
+          Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll("{0}", this.Domain));
+      return this._GetLegacyUserSettingsAtUrl<TSettings>(
+          newSettings, emailAddress, autodiscoverUrl);
     } else {
       // No Url or Domain specified, need to figure out which endpoint to use.
       OutParam<int> currentHopOutParam = OutParam()..param = 1;
       List<String> redirectionEmailAddresses = new List<String>();
-      return await this.InternalGetLegacyUserSettings<TSettings>(
-          newSettings, emailAddress, redirectionEmailAddresses, currentHopOutParam);
+      return await this.InternalGetLegacyUserSettings<TSettings>(newSettings,
+          emailAddress, redirectionEmailAddresses, currentHopOutParam);
     }
   }
 
@@ -432,7 +453,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="currentHop">Current number of redirection urls/addresses attempted so far.</param>
   /// <returns>The requested configuration settings.</returns>
   /* private */
-  Future<TSettings> InternalGetLegacyUserSettings<TSettings extends ConfigurationSettingsBase>(
+  Future<TSettings> InternalGetLegacyUserSettings<
+          TSettings extends ConfigurationSettingsBase>(
       TSettings newSettings,
       String emailAddress,
       List<String> redirectionEmailAddresses,
@@ -441,10 +463,12 @@ class AutodiscoverService extends ExchangeServiceBase {
 
     OutParam<int> scpUrlCountOutParam = OutParam();
     scpUrlCountOutParam.param = 0;
-    List<Uri> urls = this.GetAutodiscoverServiceUrls(domainName, scpUrlCountOutParam);
+    List<Uri> urls =
+        this.GetAutodiscoverServiceUrls(domainName, scpUrlCountOutParam);
 
     if (urls.length == 0) {
-      throw new ServiceValidationException("Strings.AutodiscoverServiceRequestRequiresDomainOrUrl");
+      throw new ServiceValidationException(
+          "Strings.AutodiscoverServiceRequestRequiresDomainOrUrl");
     }
 
     // Assume caller is not inside the Intranet, regardless of whether SCP Urls
@@ -463,8 +487,8 @@ class AutodiscoverService extends ExchangeServiceBase {
       bool isScpUrl = currentUrlIndex < scpUrlCountOutParam.param;
 
       try {
-        settingsOutParam.param =
-            this._GetLegacyUserSettingsAtUrl<TSettings>(newSettings, emailAddress, autodiscoverUrl);
+        settingsOutParam.param = this._GetLegacyUserSettingsAtUrl<TSettings>(
+            newSettings, emailAddress, autodiscoverUrl);
 
         switch (settingsOutParam.param.ResponseType) {
           case AutodiscoverResponseType.Success:
@@ -480,9 +504,11 @@ class AutodiscoverService extends ExchangeServiceBase {
               this.TraceMessage(enumerations.TraceFlags.AutodiscoverResponse,
                   "Autodiscover service returned redirection URL '${settingsOutParam.param.RedirectTarget}'.");
 
-              urls[currentUrlIndex] = Uri.parse(settingsOutParam.param.RedirectTarget);
+              urls[currentUrlIndex] =
+                  Uri.parse(settingsOutParam.param.RedirectTarget);
             } else {
-              throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+              throw new AutodiscoverLocalException(
+                  "Strings.MaximumRedirectionHopsExceeded");
             }
             break;
           case AutodiscoverResponseType.RedirectAddress:
@@ -494,7 +520,8 @@ class AutodiscoverService extends ExchangeServiceBase {
               // If this email address was already tried, we may have a loop
               // in SCP lookups. Disable consideration of SCP records.
               this._DisableScpLookupIfDuplicateRedirection(
-                  settingsOutParam.param.RedirectTarget, redirectionEmailAddresses);
+                  settingsOutParam.param.RedirectTarget,
+                  redirectionEmailAddresses);
 
               return this.InternalGetLegacyUserSettings<TSettings>(
                   newSettings,
@@ -502,14 +529,16 @@ class AutodiscoverService extends ExchangeServiceBase {
                   redirectionEmailAddresses,
                   currentHopOutParam);
             } else {
-              throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+              throw new AutodiscoverLocalException(
+                  "Strings.MaximumRedirectionHopsExceeded");
             }
             break;
           case AutodiscoverResponseType.Error:
             // Don't treat errors from an SCP-based Autodiscover service to be conclusive.
             // We'll try the next one and record the error for later.
             if (isScpUrl) {
-              this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+              this.TraceMessage(
+                  enumerations.TraceFlags.AutodiscoverConfiguration,
                   "Error returned by Autodiscover service found via SCP, treating as inconclusive.");
 
               delayedException = new AutodiscoverRemoteException(
@@ -527,7 +556,8 @@ class AutodiscoverService extends ExchangeServiceBase {
         }
       } on WebException catch (ex) {
         if (ex.Response != null) {
-          IEwsHttpWebResponse response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
+          IEwsHttpWebResponse response =
+              this.HttpWebRequestFactory.CreateExceptionResponse(ex);
           OutParam<Uri> redirectUrlOutParam = OutParam();
           if (this._TryGetRedirectionResponse(response, redirectUrlOutParam)) {
             this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
@@ -558,8 +588,8 @@ class AutodiscoverService extends ExchangeServiceBase {
         // The content at the URL wasn't a valid response, let's try the next.
         currentUrlIndex++;
       } on IOException catch (ex) {
-        this.TraceMessage(
-            enumerations.TraceFlags.AutodiscoverConfiguration, "$_url failed: I/O error: $ex");
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+            "$_url failed: I/O error: $ex");
 
         // The content at the URL wasn't a valid response, let's try the next.
         currentUrlIndex++;
@@ -590,7 +620,8 @@ class AutodiscoverService extends ExchangeServiceBase {
       else if (delayedException != null) {
         throw delayedException;
       } else {
-        throw new AutodiscoverLocalException("Strings.AutodiscoverCouldNotBeLocated");
+        throw new AutodiscoverLocalException(
+            "Strings.AutodiscoverCouldNotBeLocated");
       }
     }
   }
@@ -633,11 +664,12 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="redirectionUrl">Redirection Url.</param>
   /// <param name="settings">The settings.</param>
   /* private */
-  Future<bool> TryLastChanceHostRedirection<TSettings extends ConfigurationSettingsBase>(
-      TSettings newSettings,
-      String emailAddress,
-      Uri redirectionUrl,
-      OutParam<TSettings> settings) async {
+  Future<bool>
+      TryLastChanceHostRedirection<TSettings extends ConfigurationSettingsBase>(
+          TSettings newSettings,
+          String emailAddress,
+          Uri redirectionUrl,
+          OutParam<TSettings> settings) async {
     settings.param = null;
 
     List<String> redirectionEmailAddresses = new List<String>();
@@ -649,8 +681,8 @@ class AutodiscoverService extends ExchangeServiceBase {
           currentHop < AutodiscoverService.AutodiscoverMaxRedirections;
           currentHop++) {
         try {
-          settings.param = this
-              ._GetLegacyUserSettingsAtUrl<TSettings>(newSettings, emailAddress, redirectionUrl);
+          settings.param = this._GetLegacyUserSettingsAtUrl<TSettings>(
+              newSettings, emailAddress, redirectionUrl);
 
           switch (settings.param.ResponseType) {
             case AutodiscoverResponseType.Success:
@@ -664,17 +696,19 @@ class AutodiscoverService extends ExchangeServiceBase {
               this._DisableScpLookupIfDuplicateRedirection(
                   settings.param.RedirectTarget, redirectionEmailAddresses);
 
-              settings.param = await this.InternalGetLegacyUserSettings<TSettings>(
-                  newSettings,
-                  settings.param.RedirectTarget,
-                  redirectionEmailAddresses,
-                  OutParam()..param = currentHop);
+              settings.param = await this
+                  .InternalGetLegacyUserSettings<TSettings>(
+                      newSettings,
+                      settings.param.RedirectTarget,
+                      redirectionEmailAddresses,
+                      OutParam()..param = currentHop);
               return true;
             case AutodiscoverResponseType.RedirectUrl:
               try {
                 redirectionUrl = Uri.parse(settings.param.RedirectTarget);
               } catch (UriFormatException) {
-                this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+                this.TraceMessage(
+                    enumerations.TraceFlags.AutodiscoverConfiguration,
                     "Service returned invalid redirection URL ${settings.param.RedirectTarget}");
                 return false;
               }
@@ -682,14 +716,19 @@ class AutodiscoverService extends ExchangeServiceBase {
             default:
               String failureMessage =
                   "Autodiscover call at $redirectionUrl failed with error ${settings.param.ResponseType}, target ${settings.param.RedirectTarget}";
-              this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration, failureMessage);
+              this.TraceMessage(
+                  enumerations.TraceFlags.AutodiscoverConfiguration,
+                  failureMessage);
               return false;
           }
         } on WebException catch (ex) {
           if (ex.Response != null) {
-            IEwsHttpWebResponse response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
-            if (this._TryGetRedirectionResponse(response, OutParam()..param = redirectionUrl)) {
-              this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+            IEwsHttpWebResponse response =
+                this.HttpWebRequestFactory.CreateExceptionResponse(ex);
+            if (this._TryGetRedirectionResponse(
+                response, OutParam()..param = redirectionUrl)) {
+              this.TraceMessage(
+                  enumerations.TraceFlags.AutodiscoverConfiguration,
                   "Host returned a redirection to url ${redirectionUrl}");
               continue;
             } else {
@@ -773,8 +812,9 @@ class AutodiscoverService extends ExchangeServiceBase {
     for (int currentHop = 0;
         currentHop < AutodiscoverService.AutodiscoverMaxRedirections;
         currentHop++) {
-      GetUserSettingsResponse response =
-          (await this.GetUserSettingsWithSmptAddresses(smtpAddresses, requestedSettings))[0];
+      GetUserSettingsResponse response = (await this
+          .GetUserSettingsWithSmptAddresses(
+              smtpAddresses, requestedSettings))[0];
 
       switch (response.ErrorCode) {
         case AutodiscoverErrorCode.RedirectAddress:
@@ -796,7 +836,8 @@ class AutodiscoverService extends ExchangeServiceBase {
           this.TraceMessage(enumerations.TraceFlags.AutodiscoverResponse,
               "Autodiscover service returned redirection URL '${response.RedirectTarget}'");
 
-          this.Url = this.Credentials.AdjustUrl(Uri.parse(response.RedirectTarget));
+          this.Url =
+              this.Credentials.AdjustUrl(Uri.parse(response.RedirectTarget));
           break;
 
         case AutodiscoverErrorCode.NoError:
@@ -805,7 +846,8 @@ class AutodiscoverService extends ExchangeServiceBase {
       }
     }
 
-    throw new AutodiscoverLocalException("Strings.AutodiscoverCouldNotBeLocated");
+    throw new AutodiscoverLocalException(
+        "Strings.AutodiscoverCouldNotBeLocated");
   }
 
   /// <summary>
@@ -837,12 +879,14 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="getDomainMethod">The method to calculate the domain value.</param>
   /// <returns></returns>
   /* private */
-  Future<TGetSettingsResponseCollection> GetSettings<TGetSettingsResponseCollection, TSettingName>(
-      List<String> identities,
-      List<TSettingName> settings,
-      ExchangeVersion requestedVersion,
-      GetSettingsMethod<TGetSettingsResponseCollection, TSettingName> getSettingsMethod,
-      GetDomainCallback getDomainMethod) async {
+  Future<TGetSettingsResponseCollection>
+      GetSettings<TGetSettingsResponseCollection, TSettingName>(
+          List<String> identities,
+          List<TSettingName> settings,
+          ExchangeVersion requestedVersion,
+          GetSettingsMethod<TGetSettingsResponseCollection, TSettingName>
+              getSettingsMethod,
+          GetDomainCallback getDomainMethod) async {
     TGetSettingsResponseCollection response;
 
     // Autodiscover service only exists in E14 or later.
@@ -858,7 +902,8 @@ class AutodiscoverService extends ExchangeServiceBase {
       OutParam<Uri> autodiscoverUrl = OutParam();
       autodiscoverUrl.param = this.Url;
 
-      response = await getSettingsMethod(identities, settings, requestedVersion, autodiscoverUrl);
+      response = await getSettingsMethod(
+          identities, settings, requestedVersion, autodiscoverUrl);
 
       this.Url = autodiscoverUrl.param;
       return response;
@@ -868,9 +913,11 @@ class AutodiscoverService extends ExchangeServiceBase {
     else if (!StringUtils.IsNullOrEmpty(this.Domain)) {
       OutParam<String> hostOutParam = OutParam()..param = this.Domain;
       OutParam<Uri> autodiscoverUrl = OutParam();
-      autodiscoverUrl.param = await this._GetAutodiscoverEndpointUrl(hostOutParam);
+      autodiscoverUrl.param =
+          await this._GetAutodiscoverEndpointUrl(hostOutParam);
       this.Domain = hostOutParam.param;
-      response = await getSettingsMethod(identities, settings, requestedVersion, autodiscoverUrl);
+      response = await getSettingsMethod(
+          identities, settings, requestedVersion, autodiscoverUrl);
 
       // If we got this far, response was successful, set Url.
       this.Url = autodiscoverUrl.param;
@@ -888,21 +935,26 @@ class AutodiscoverService extends ExchangeServiceBase {
 
       String domainName = getDomainMethod();
       OutParam<int> scpHostCountOutParam = OutParam();
-      List<String> hosts = await this.GetAutodiscoverServiceHosts(domainName, scpHostCountOutParam);
+      List<String> hosts = await this
+          .GetAutodiscoverServiceHosts(domainName, scpHostCountOutParam);
 
       if (hosts.length == 0) {
         throw new ServiceValidationException(
             "Strings.AutodiscoverServiceRequestRequiresDomainOrUrl");
       }
 
-      for (int currentHostIndex = 0; currentHostIndex < hosts.length; currentHostIndex++) {
-        OutParam<String> hostOutParam = OutParam()..param = hosts[currentHostIndex];
+      for (int currentHostIndex = 0;
+          currentHostIndex < hosts.length;
+          currentHostIndex++) {
+        OutParam<String> hostOutParam = OutParam()
+          ..param = hosts[currentHostIndex];
         bool isScpHost = currentHostIndex < scpHostCountOutParam.param;
 
-        if (await this._TryGetAutodiscoverEndpointUrl(hostOutParam, autodiscoverUrlOutParam)) {
+        if (await this._TryGetAutodiscoverEndpointUrl(
+            hostOutParam, autodiscoverUrlOutParam)) {
           try {
-            response = await getSettingsMethod(
-                identities, settings, requestedVersion, autodiscoverUrlOutParam);
+            response = await getSettingsMethod(identities, settings,
+                requestedVersion, autodiscoverUrlOutParam);
 
             // If we got this far, the response was successful, set Url.
             this.Url = autodiscoverUrlOutParam.param;
@@ -924,9 +976,11 @@ class AutodiscoverService extends ExchangeServiceBase {
       // Next-to-last chance: try unauthenticated GET over HTTP to be redirected to appropriate service endpoint.
       autodiscoverUrlOutParam.param = await this._GetRedirectUrl(domainName);
       if ((autodiscoverUrlOutParam.param != null) &&
-          this.CallRedirectionUrlValidationCallback(autodiscoverUrlOutParam.param.toString()) &&
+          this.CallRedirectionUrlValidationCallback(
+              autodiscoverUrlOutParam.param.toString()) &&
           await this._TryGetAutodiscoverEndpointUrl(
-              OutParam()..param = autodiscoverUrlOutParam.param.host, autodiscoverUrlOutParam)) {
+              OutParam()..param = autodiscoverUrlOutParam.param.host,
+              autodiscoverUrlOutParam)) {
         response = await getSettingsMethod(
             identities, settings, requestedVersion, autodiscoverUrlOutParam);
 
@@ -957,7 +1011,8 @@ class AutodiscoverService extends ExchangeServiceBase {
 //                }
 //                else
 //                {
-      throw new AutodiscoverLocalException("Strings.AutodiscoverCouldNotBeLocated");
+      throw new AutodiscoverLocalException(
+          "Strings.AutodiscoverCouldNotBeLocated");
 //                }
     }
   }
@@ -1003,7 +1058,8 @@ class AutodiscoverService extends ExchangeServiceBase {
     this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
         "Maximum number of redirection hops $AutodiscoverMaxRedirections exceeded");
 
-    throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+    throw new AutodiscoverLocalException(
+        "Strings.MaximumRedirectionHopsExceeded");
   }
 
   /// <summary>
@@ -1066,7 +1122,8 @@ class AutodiscoverService extends ExchangeServiceBase {
     this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
         "Maximum number of redirection hops $AutodiscoverMaxRedirections exceeded");
 
-    throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+    throw new AutodiscoverLocalException(
+        "Strings.MaximumRedirectionHopsExceeded");
   }
 
   /// <summary>
@@ -1077,10 +1134,12 @@ class AutodiscoverService extends ExchangeServiceBase {
   Future<Uri> _GetAutodiscoverEndpointUrl(OutParam<String> host) async {
     OutParam<Uri> autodiscoverUrlOutParam = OutParam();
 
-    if (await this._TryGetAutodiscoverEndpointUrl(host, autodiscoverUrlOutParam)) {
+    if (await this
+        ._TryGetAutodiscoverEndpointUrl(host, autodiscoverUrlOutParam)) {
       return autodiscoverUrlOutParam.param;
     } else {
-      throw new AutodiscoverLocalException("Strings.NoSoapOrWsSecurityEndpointAvailable");
+      throw new AutodiscoverLocalException(
+          "Strings.NoSoapOrWsSecurityEndpointAvailable");
     }
   }
 
@@ -1095,15 +1154,18 @@ class AutodiscoverService extends ExchangeServiceBase {
     urlOutParam.param = null;
 
     OutParam<Set<AutodiscoverEndpoints>> endpointsOutParam = OutParam();
-    if (await this._TryGetEnabledEndpointsForHost(hostOutParam, endpointsOutParam)) {
-      urlOutParam.param =
-          Uri.parse(_AutodiscoverSoapHttpsUrl.replaceAll("{0}", hostOutParam.param));
+    if (await this
+        ._TryGetEnabledEndpointsForHost(hostOutParam, endpointsOutParam)) {
+      urlOutParam.param = Uri.parse(
+          _AutodiscoverSoapHttpsUrl.replaceAll("{0}", hostOutParam.param));
 
       // Make sure that at least one of the non-legacy endpoints is available.
       if (!endpointsOutParam.param.contains(AutodiscoverEndpoints.Soap) &&
           !endpointsOutParam.param.contains(AutodiscoverEndpoints.WsSecurity) &&
-          !endpointsOutParam.param.contains(AutodiscoverEndpoints.WSSecuritySymmetricKey) &&
-          !endpointsOutParam.param.contains(AutodiscoverEndpoints.WSSecurityX509Cert) &&
+          !endpointsOutParam.param
+              .contains(AutodiscoverEndpoints.WSSecuritySymmetricKey) &&
+          !endpointsOutParam.param
+              .contains(AutodiscoverEndpoints.WSSecurityX509Cert) &&
           !endpointsOutParam.param.contains(AutodiscoverEndpoints.OAuth)) {
         this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
             "No Autodiscover endpoints are available  for host ${hostOutParam.param}");
@@ -1190,7 +1252,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="domainName">Domain name.</param>
   /// <param name="scpHostCount">Count of hosts found via SCP lookup.</param>
   /// <returns>List of Autodiscover URLs.</returns>
-  List<Uri> GetAutodiscoverServiceUrls(String domainName, OutParam<int> scpHostCountOutParam) {
+  List<Uri> GetAutodiscoverServiceUrls(
+      String domainName, OutParam<int> scpHostCountOutParam) {
     List<Uri> urls = new List<Uri>();
 
     if (this._enableScpLookup) {
@@ -1207,9 +1270,10 @@ class AutodiscoverService extends ExchangeServiceBase {
     scpHostCountOutParam.param = urls.length;
 
     // As a fallback, add autodiscover URLs base on the domain name.
-    urls.add(Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll("{0}", domainName)));
     urls.add(
-        Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll("{0}", "autodiscover." + domainName)));
+        Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll("{0}", domainName)));
+    urls.add(Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll(
+        "{0}", "autodiscover." + domainName)));
 
     return urls;
   }
@@ -1220,9 +1284,11 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="domainName">Name of the domain.</param>
   /// <param name="scpHostCount">Count of SCP hosts that were found.</param>
   /// <returns>List of host names.</returns>
-  List<String> GetAutodiscoverServiceHosts(String domainName, OutParam<int> scpHostCountOutParam) {
+  List<String> GetAutodiscoverServiceHosts(
+      String domainName, OutParam<int> scpHostCountOutParam) {
     List<String> serviceHosts = new List<String>();
-    for (Uri url in this.GetAutodiscoverServiceUrls(domainName, scpHostCountOutParam)) {
+    for (Uri url
+        in this.GetAutodiscoverServiceUrls(domainName, scpHostCountOutParam)) {
       serviceHosts.add(url.host);
     }
 
@@ -1235,20 +1301,23 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="host">The host.</param>
   /// <param name="endpoints">Endpoints found for host.</param>
   /// <returns>Flags indicating which endpoints are enabled.</returns>
-  Future<bool> _TryGetEnabledEndpointsForHost(
-      OutParam<String> hostOutParam, OutParam<Set<AutodiscoverEndpoints>> endpointsOutParam) async {
+  Future<bool> _TryGetEnabledEndpointsForHost(OutParam<String> hostOutParam,
+      OutParam<Set<AutodiscoverEndpoints>> endpointsOutParam) async {
     this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
         "Determining which endpoints are enabled for host ${hostOutParam.param}");
 
     // We may get redirected to another host. And therefore need to limit the number
     // of redirections we'll tolerate.
-    for (int currentHop = 0; currentHop < AutodiscoverMaxRedirections; currentHop++) {
-      Uri autoDiscoverUrl =
-          Uri.parse(_AutodiscoverLegacyHttpsUrl.replaceAll("{0}", hostOutParam.param));
+    for (int currentHop = 0;
+        currentHop < AutodiscoverMaxRedirections;
+        currentHop++) {
+      Uri autoDiscoverUrl = Uri.parse(
+          _AutodiscoverLegacyHttpsUrl.replaceAll("{0}", hostOutParam.param));
 
       endpointsOutParam.param = Set.of([AutodiscoverEndpoints.None]);
 
-      IEwsHttpWebRequest request = this.HttpWebRequestFactory.CreateRequestWithUrl(autoDiscoverUrl);
+      IEwsHttpWebRequest request =
+          this.HttpWebRequestFactory.CreateRequestWithUrl(autoDiscoverUrl);
 
       request.Method = "GET";
       request.AllowAutoRedirect = false;
@@ -1260,8 +1329,8 @@ class AutodiscoverService extends ExchangeServiceBase {
       try {
         response = await request.GetResponse();
       } on WebException catch (ex) {
-        this.TraceMessage(
-            enumerations.TraceFlags.AutodiscoverConfiguration, "Request error: ${ex.message}");
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+            "Request error: ${ex.message}");
 
         // The exception response factory requires a valid HttpWebResponse,
         // but there will be no web response if the web request couldn't be
@@ -1270,7 +1339,8 @@ class AutodiscoverService extends ExchangeServiceBase {
           response = this.HttpWebRequestFactory.CreateExceptionResponse(ex);
         }
       } on IOException catch (ex) {
-        this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration, "I/O error: $ex");
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
+            "I/O error: $ex");
       }
 
       if (response != null) {
@@ -1282,7 +1352,8 @@ class AutodiscoverService extends ExchangeServiceBase {
 
             hostOutParam.param = redirectUrlOutParam.param.host;
           } else {
-            endpointsOutParam.param = await this._GetEndpointsFromHttpWebResponse(response);
+            endpointsOutParam.param =
+                await this._GetEndpointsFromHttpWebResponse(response);
 
             this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
                 "Host returned enabled endpoint flags: ${endpointsOutParam.param}");
@@ -1298,7 +1369,8 @@ class AutodiscoverService extends ExchangeServiceBase {
     this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
         "Maximum number of redirection hops $AutodiscoverMaxRedirections exceeded");
 
-    throw new AutodiscoverLocalException("Strings.MaximumRedirectionHopsExceeded");
+    throw new AutodiscoverLocalException(
+        "Strings.MaximumRedirectionHopsExceeded");
   }
 
   /// <summary>
@@ -1306,23 +1378,28 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="response">The response.</param>
   /// <returns>Endpoints enabled.</returns>
-  Set<AutodiscoverEndpoints> _GetEndpointsFromHttpWebResponse(IEwsHttpWebResponse response) {
-    Set<AutodiscoverEndpoints> endpoints = Set.of([AutodiscoverEndpoints.Legacy]);
-    if (!StringUtils.IsNullOrEmpty(response.Headers[_AutodiscoverSoapEnabledHeaderName])) {
+  Set<AutodiscoverEndpoints> _GetEndpointsFromHttpWebResponse(
+      IEwsHttpWebResponse response) {
+    Set<AutodiscoverEndpoints> endpoints =
+        Set.of([AutodiscoverEndpoints.Legacy]);
+    if (!StringUtils.IsNullOrEmpty(
+        response.Headers[_AutodiscoverSoapEnabledHeaderName])) {
       endpoints.add(AutodiscoverEndpoints.Soap);
     }
-    if (!StringUtils.IsNullOrEmpty(response.Headers[_AutodiscoverWsSecurityEnabledHeaderName])) {
+    if (!StringUtils.IsNullOrEmpty(
+        response.Headers[_AutodiscoverWsSecurityEnabledHeaderName])) {
       endpoints.add(AutodiscoverEndpoints.WsSecurity);
     }
-    if (!StringUtils.IsNullOrEmpty(
-        response.Headers[_AutodiscoverWsSecuritySymmetricKeyEnabledHeaderName])) {
+    if (!StringUtils.IsNullOrEmpty(response
+        .Headers[_AutodiscoverWsSecuritySymmetricKeyEnabledHeaderName])) {
       endpoints.add(AutodiscoverEndpoints.WSSecuritySymmetricKey);
     }
     if (!StringUtils.IsNullOrEmpty(
         response.Headers[_AutodiscoverWsSecurityX509CertEnabledHeaderName])) {
       endpoints.add(AutodiscoverEndpoints.WSSecurityX509Cert);
     }
-    if (!StringUtils.IsNullOrEmpty(response.Headers[_AutodiscoverOAuthEnabledHeaderName])) {
+    if (!StringUtils.IsNullOrEmpty(
+        response.Headers[_AutodiscoverOAuthEnabledHeaderName])) {
       endpoints.add(AutodiscoverEndpoints.OAuth);
     }
     return endpoints;
@@ -1340,10 +1417,13 @@ class AutodiscoverService extends ExchangeServiceBase {
     if (this.TraceEnabled) {
       if (!StringUtils.IsNullOrEmpty(response.ContentType) &&
           (response.ContentType.toLowerCase().startsWith("text/") ||
-              response.ContentType.toLowerCase().startsWith("application/soap"))) {
-        this.TraceXml(enumerations.TraceFlags.AutodiscoverResponse, memoryStream);
+              response.ContentType.toLowerCase()
+                  .startsWith("application/soap"))) {
+        this.TraceXml(
+            enumerations.TraceFlags.AutodiscoverResponse, memoryStream);
       } else {
-        this.TraceMessage(enumerations.TraceFlags.AutodiscoverResponse, "Non-textual response");
+        this.TraceMessage(enumerations.TraceFlags.AutodiscoverResponse,
+            "Non-textual response");
       }
     }
   }
@@ -1385,7 +1465,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="httpWebResponse">The HTTP web response.</param>
   /// <param name="webException">The web exception.</param>
   @override
-  void ProcessHttpErrorResponse(IEwsHttpWebResponse httpWebResponse, WebException webException) {
+  void ProcessHttpErrorResponse(
+      IEwsHttpWebResponse httpWebResponse, WebException webException) {
     this.InternalProcessHttpErrorResponse(
         httpWebResponse,
         webException,
@@ -1489,7 +1570,8 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// <param name="requestedServerVersion">The requested server version.</param>
   AutodiscoverService.withExchangeServiceAndExchangeVersion(
       ExchangeServiceBase service, ExchangeVersion requestedServerVersion)
-      : super.withExchangeServiceAndExchangeVersion(service, requestedServerVersion);
+      : super.withExchangeServiceAndExchangeVersion(
+            service, requestedServerVersion);
 
   // TODO fix dns client
 //        {
@@ -1516,14 +1598,17 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// </remarks>
   Future<GetUserSettingsResponse> GetUserSettingsWithSmtpAddress(
       String userSmtpAddress, List<UserSettingName> userSettingNames) async {
-    List<UserSettingName> requestedSettings = new List<UserSettingName>.of(userSettingNames);
+    List<UserSettingName> requestedSettings =
+        new List<UserSettingName>.of(userSettingNames);
 
     if (StringUtils.IsNullOrEmpty(userSmtpAddress)) {
-      throw new ServiceValidationException("Strings.InvalidAutodiscoverSmtpAddress");
+      throw new ServiceValidationException(
+          "Strings.InvalidAutodiscoverSmtpAddress");
     }
 
     if (requestedSettings.length == 0) {
-      throw new ServiceValidationException("Strings.InvalidAutodiscoverSettingsCount");
+      throw new ServiceValidationException(
+          "Strings.InvalidAutodiscoverSettingsCount");
     }
 
     if (this.RequestedServerVersion.index <
@@ -1532,7 +1617,8 @@ class AutodiscoverService extends ExchangeServiceBase {
       throw UnsupportedError("Doesn't support autodiscovery for Exchange2007");
 //                return await this.InternalGetLegacyUserSettings(userSmtpAddress, requestedSettings);
     } else {
-      return await this.InternalGetSoapUserSettings(userSmtpAddress, requestedSettings);
+      return await this
+          .InternalGetSoapUserSettings(userSmtpAddress, requestedSettings);
     }
   }
 
@@ -1732,10 +1818,12 @@ class AutodiscoverService extends ExchangeServiceBase {
   /// Gets or sets the redirection URL validation callback.
   /// </summary>
   /// <value>The redirection URL validation callback.</value>
-  AutodiscoverRedirectionUrlValidationCallback get RedirectionUrlValidationCallback =>
-      this._redirectionUrlValidationCallback;
+  AutodiscoverRedirectionUrlValidationCallback
+      get RedirectionUrlValidationCallback =>
+          this._redirectionUrlValidationCallback;
 
-  set RedirectionUrlValidationCallback(AutodiscoverRedirectionUrlValidationCallback value) =>
+  set RedirectionUrlValidationCallback(
+          AutodiscoverRedirectionUrlValidationCallback value) =>
       this._redirectionUrlValidationCallback = value;
 
   /// <summary>

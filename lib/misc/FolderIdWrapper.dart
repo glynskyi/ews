@@ -43,7 +43,8 @@ class FolderIdWrapper extends AbstractFolderIdWrapper {
   /// </summary>
   /// <param name="folderId">The FolderId object providing the Id.</param>
   FolderIdWrapper(FolderId folderId) {
-    EwsUtilities.Assert(folderId != null, "FolderIdWrapper.ctor", "folderId is null");
+    EwsUtilities.Assert(
+        folderId != null, "FolderIdWrapper.ctor", "folderId is null");
 
     this._folderId = folderId;
   }

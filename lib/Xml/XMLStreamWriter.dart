@@ -1,3 +1,1 @@
-class XMLStreamWriter {
-
-}
+class XMLStreamWriter {}

@@ -30,7 +30,8 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// <summary>
 /// Represents a collection of OccurrenceInfo objects.
 /// </summary>
-class OccurrenceInfoCollection extends ComplexPropertyCollection<OccurrenceInfo> {
+class OccurrenceInfoCollection
+    extends ComplexPropertyCollection<OccurrenceInfo> {
   /// <summary>
   /// Initializes a new instance of the <see cref="OccurrenceInfoCollection"/> class.
   /// </summary>

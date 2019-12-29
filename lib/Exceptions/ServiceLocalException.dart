@@ -41,8 +41,7 @@ class ServiceLocalException implements Exception {
     return 'ServiceLocalException{message: $message}';
   }
 
-
-/// <summary>
+  /// <summary>
   /// ServiceLocalException Constructor.
   /// </summary>
   /// <param name="message">Error message text.</param>

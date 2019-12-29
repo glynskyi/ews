@@ -82,7 +82,8 @@ class GetStreamingEventsResponse extends ServiceResponse {
           XmlNamespace.Messages, XmlElementNames.ConnectionStatus);
 
       if (EnumToString.parse(ConnectionStatus.Closed) == connectionStatus) {
-        this._request.DisconnectWithException(HangingRequestDisconnectReason.Clean, null);
+        this._request.DisconnectWithException(
+            HangingRequestDisconnectReason.Clean, null);
       }
     }
   }
@@ -97,8 +98,10 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// False if the element name does not match the expected element.
   /// </returns>
   @override
-  bool LoadExtraErrorDetailsFromXml(EwsServiceXmlReader reader, String xmlElementName) {
-    bool baseReturnVal = super.LoadExtraErrorDetailsFromXml(reader, xmlElementName);
+  bool LoadExtraErrorDetailsFromXml(
+      EwsServiceXmlReader reader, String xmlElementName) {
+    bool baseReturnVal =
+        super.LoadExtraErrorDetailsFromXml(reader, xmlElementName);
 
     if (reader.IsStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds)) {

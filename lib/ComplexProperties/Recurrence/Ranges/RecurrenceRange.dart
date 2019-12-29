@@ -24,7 +24,8 @@
  */
 
 import 'package:ews/ComplexProperties/ComplexProperty.dart';
-import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart' as complex;
+import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart'
+    as complex;
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
@@ -74,7 +75,9 @@ abstract class RecurrenceRange extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.StartDate,
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types,
+        XmlElementNames.StartDate,
         EwsUtilities.DateTimeToXSDate(this.StartDate));
   }
 

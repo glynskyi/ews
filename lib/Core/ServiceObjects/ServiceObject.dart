@@ -194,7 +194,8 @@ abstract class ServiceObject {
   /// <param name="service">EWS service to which this object belongs.</param>
   ServiceObject(ExchangeService service) {
     EwsUtilities.ValidateParam(service, "service");
-    EwsUtilities.ValidateServiceObjectVersion(this, service.RequestedServerVersion);
+    EwsUtilities.ValidateServiceObjectVersion(
+        this, service.RequestedServerVersion);
 
     this._service = service;
     this._propertyBag = new core.PropertyBag(this);
@@ -244,11 +245,13 @@ abstract class ServiceObject {
   /// <param name="clearPropertyBag">if set to <c>true</c> [clear property bag].</param>
   /// <param name="requestedPropertySet">The property set.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> [summary props only].</param>
-  void LoadFromXmlWithPropertySet(EwsServiceXmlReader reader, bool clearPropertyBag,
-      PropertySet requestedPropertySet, bool summaryPropertiesOnly) {
-    this
-        .PropertyBag
-        .LoadFromXml(reader, clearPropertyBag, requestedPropertySet, summaryPropertiesOnly);
+  void LoadFromXmlWithPropertySet(
+      EwsServiceXmlReader reader,
+      bool clearPropertyBag,
+      PropertySet requestedPropertySet,
+      bool summaryPropertiesOnly) {
+    this.PropertyBag.LoadFromXml(
+        reader, clearPropertyBag, requestedPropertySet, summaryPropertiesOnly);
   }
 
   /// <summary>
@@ -286,7 +289,9 @@ abstract class ServiceObject {
   /// <param name="deleteMode">The deletion mode.</param>
   /// <param name="sendCancellationsMode">Indicates whether meeting cancellation messages should be sent.</param>
   /// <param name="affectedTaskOccurrences">Indicate which occurrence of a recurring task should be deleted.</param>
-  Future<void> InternalDelete(DeleteMode deleteMode, SendCancellationsMode sendCancellationsMode,
+  Future<void> InternalDelete(
+      DeleteMode deleteMode,
+      SendCancellationsMode sendCancellationsMode,
       AffectedTaskOccurrence affectedTaskOccurrences);
 
   /// <summary>
@@ -317,13 +322,16 @@ abstract class ServiceObject {
     if (propDef != null) {
       return this.PropertyBag[propDef];
     } else {
-      ExtendedPropertyDefinition extendedPropDef = propertyDefinition as ExtendedPropertyDefinition;
+      ExtendedPropertyDefinition extendedPropDef =
+          propertyDefinition as ExtendedPropertyDefinition;
       if (extendedPropDef != null) {
         OutParam<Object> propertyValueOutParam = OutParam();
-        if (this.TryGetExtendedProperty(extendedPropDef, propertyValueOutParam)) {
+        if (this
+            .TryGetExtendedProperty(extendedPropDef, propertyValueOutParam)) {
           return propertyValue;
         } else {
-          throw new ServiceObjectPropertyException(/*Strings.MustLoadOrAssignPropertyBeforeAccess,*/
+          throw new ServiceObjectPropertyException(
+              /*Strings.MustLoadOrAssignPropertyBeforeAccess,*/
               propertyDefinition);
         }
       } else {
@@ -342,12 +350,14 @@ abstract class ServiceObject {
   /// <param name="propertyValue">The property value.</param>
   /// <typeparam name="T">Type of expected property value.</typeparam>
   /// <returns>True if property retrieved, false otherwise.</returns>
-  bool TryGetExtendedProperty<T>(
-      ExtendedPropertyDefinition propertyDefinition, OutParam<T> propertyValueOutParam) {
-    ExtendedPropertyCollection propertyCollection = this.GetExtendedProperties();
+  bool TryGetExtendedProperty<T>(ExtendedPropertyDefinition propertyDefinition,
+      OutParam<T> propertyValueOutParam) {
+    ExtendedPropertyCollection propertyCollection =
+        this.GetExtendedProperties();
 
     if ((propertyCollection != null) &&
-        propertyCollection.TryGetValueGeneric<T>(propertyDefinition, propertyValueOutParam)) {
+        propertyCollection.TryGetValueGeneric<T>(
+            propertyDefinition, propertyValueOutParam)) {
       return true;
     } else {
       propertyValueOutParam.param = null;
@@ -361,9 +371,10 @@ abstract class ServiceObject {
   /// <param name="propertyDefinition">The property definition.</param>
   /// <param name="propertyValue">The property value.</param>
   /// <returns>True if property retrieved, false otherwise.</returns>
-  bool TryGetProperty(
-      PropertyDefinitionBase propertyDefinition, OutParam<Object> propertyValueOutParam) {
-    return this.TryGetPropertyGeneric<Object>(propertyDefinition, propertyValueOutParam);
+  bool TryGetProperty(PropertyDefinitionBase propertyDefinition,
+      OutParam<Object> propertyValueOutParam) {
+    return this.TryGetPropertyGeneric<Object>(
+        propertyDefinition, propertyValueOutParam);
   }
 
   /// <summary>
@@ -373,15 +384,19 @@ abstract class ServiceObject {
   /// <param name="propertyValue">The property value.</param>
   /// <typeparam name="T">Type of expected property value.</typeparam>
   /// <returns>True if property retrieved, false otherwise.</returns>
-  bool TryGetPropertyGeneric<T>(
-      PropertyDefinitionBase propertyDefinition, OutParam<T> propertyValueOutParam) {
+  bool TryGetPropertyGeneric<T>(PropertyDefinitionBase propertyDefinition,
+      OutParam<T> propertyValueOutParam) {
     PropertyDefinition propDef = propertyDefinition as PropertyDefinition;
     if (propDef != null) {
-      return this.PropertyBag.TryGetPropertyTypeGeneric<T>(propDef, propertyValueOutParam);
+      return this
+          .PropertyBag
+          .TryGetPropertyTypeGeneric<T>(propDef, propertyValueOutParam);
     } else {
-      ExtendedPropertyDefinition extPropDef = propertyDefinition as ExtendedPropertyDefinition;
+      ExtendedPropertyDefinition extPropDef =
+          propertyDefinition as ExtendedPropertyDefinition;
       if (extPropDef != null) {
-        return this.TryGetExtendedProperty<T>(extPropDef, propertyValueOutParam);
+        return this
+            .TryGetExtendedProperty<T>(extPropDef, propertyValueOutParam);
       } else {
         // Other subclasses of PropertyDefinitionBase are not supported.
         throw new NotSupportedException("""string.Format(
@@ -469,6 +484,7 @@ abstract class ServiceObject {
   /// <summary>
   /// Defines an event that is triggered when the service object changes.
   /// </summary>
-  List<IServiceObjectChangedDelegate> onChange = new List<IServiceObjectChangedDelegate>();
+  List<IServiceObjectChangedDelegate> onChange =
+      new List<IServiceObjectChangedDelegate>();
 //        event ServiceObjectChangedDelegate OnChange;
 }

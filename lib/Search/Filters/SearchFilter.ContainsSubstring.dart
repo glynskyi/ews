@@ -46,10 +46,12 @@ import 'package:ews/misc/StringUtils.dart';
 /// </summary>
 class ContainsSubString extends PropertyBasedFilter {
   /* private */
-  enumerations.ContainmentMode containmentMode = enumerations.ContainmentMode.Substring;
+  enumerations.ContainmentMode containmentMode =
+      enumerations.ContainmentMode.Substring;
 
   /* private */
-  enumerations.ComparisonMode comparisonMode = enumerations.ComparisonMode.IgnoreCase;
+  enumerations.ComparisonMode comparisonMode =
+      enumerations.ComparisonMode.IgnoreCase;
 
   /* private */
   String value;
@@ -66,7 +68,8 @@ class ContainsSubString extends PropertyBasedFilter {
   /// </summary>
   /// <param name="propertyDefinition">The definition of the property that is being compared. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   /// <param name="value">The value to compare with.</param>
-  ContainsSubString.withPropertyAndValue(PropertyDefinitionBase propertyDefinition, String value)
+  ContainsSubString.withPropertyAndValue(
+      PropertyDefinitionBase propertyDefinition, String value)
       : super.withProperty(propertyDefinition) {
     this.value = value;
   }
@@ -78,8 +81,11 @@ class ContainsSubString extends PropertyBasedFilter {
   /// <param name="value">The value to compare with.</param>
   /// <param name="containmentMode">The containment mode.</param>
   /// <param name="comparisonMode">The comparison mode.</param>
-  ContainsSubString.withPropertyAndValueAndModes(PropertyDefinitionBase propertyDefinition, String value,
-      enumerations.ContainmentMode containmentMode, enumerations.ComparisonMode comparisonMode)
+  ContainsSubString.withPropertyAndValueAndModes(
+      PropertyDefinitionBase propertyDefinition,
+      String value,
+      enumerations.ContainmentMode containmentMode,
+      enumerations.ComparisonMode comparisonMode)
       : super.withProperty(propertyDefinition) {
     this.value = value;
     this.containmentMode = containmentMode;
@@ -135,15 +141,19 @@ class ContainsSubString extends PropertyBasedFilter {
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
     super.ReadAttributesFromXml(reader);
 
-    this.containmentMode = reader.ReadAttributeValue<enumerations.ContainmentMode>(XmlAttributeNames.ContainmentMode);
+    this.containmentMode =
+        reader.ReadAttributeValue<enumerations.ContainmentMode>(
+            XmlAttributeNames.ContainmentMode);
 
     try {
       this.comparisonMode =
-          reader.ReadAttributeValue<enumerations.ComparisonMode>(XmlAttributeNames.ContainmentComparison);
+          reader.ReadAttributeValue<enumerations.ComparisonMode>(
+              XmlAttributeNames.ContainmentComparison);
     } catch (ArgumentError) {
       // This will happen if we receive a value that is defined in the EWS schema but that is not defined
       // in the API (see the comments in ComparisonMode.cs). We map that value to IgnoreCaseAndNonSpacingCharacters.
-      this.comparisonMode = enumerations.ComparisonMode.IgnoreCaseAndNonSpacingCharacters;
+      this.comparisonMode =
+          enumerations.ComparisonMode.IgnoreCaseAndNonSpacingCharacters;
     }
   }
 
@@ -155,8 +165,10 @@ class ContainsSubString extends PropertyBasedFilter {
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     super.WriteAttributesToXml(writer);
 
-    writer.WriteAttributeValue(XmlAttributeNames.ContainmentMode, this.ContainmentMode);
-    writer.WriteAttributeValue(XmlAttributeNames.ContainmentComparison, this.ComparisonMode);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.ContainmentMode, this.ContainmentMode);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.ContainmentComparison, this.ComparisonMode);
   }
 
   /// <summary>

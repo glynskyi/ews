@@ -18,7 +18,8 @@ main() {
     taskItem.Body = MessageBody.withText("Monthly Review from 11th to 20th");
     taskItem.StartDate = new DateTime(2012, 04, 11, 10, 00, 00);
     taskItem.DueDate = new DateTime(2012, 04, 20, 10, 00, 00);
-    taskItem.Recurrence = MonthlyPattern.withStartDateAndIntervalAndDayOfMonth(TZDateTime(kiev, 2012, 04, 11, 10, 0, 0), 1, 11);
+    taskItem.Recurrence = MonthlyPattern.withStartDateAndIntervalAndDayOfMonth(
+        TZDateTime(kiev, 2012, 04, 11, 10, 0, 0), 1, 11);
     taskItem.Recurrence.StartDate = TZDateTime(kiev, 2012, 04, 11, 10, 0, 0);
     taskItem.Recurrence.NumberOfOccurrences = 5;
 
@@ -34,13 +35,13 @@ main() {
     emailMessage.Subject = Uuid.randomUuid().toString();
     await emailMessage.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
 
-    final updatedEmailMessage =
-        await EmailMessage.Bind(exchangeService, emailMessage.Id, PropertySet.FirstClassProperties);
+    final updatedEmailMessage = await EmailMessage.Bind(
+        exchangeService, emailMessage.Id, PropertySet.FirstClassProperties);
     updatedEmailMessage.Subject = updatedSubject;
     await updatedEmailMessage.Update(ConflictResolutionMode.AlwaysOverwrite);
 
-    final foundEmailMessage =
-        await EmailMessage.Bind(exchangeService, updatedEmailMessage.Id, PropertySet.FirstClassProperties);
+    final foundEmailMessage = await EmailMessage.Bind(exchangeService,
+        updatedEmailMessage.Id, PropertySet.FirstClassProperties);
     expect(foundEmailMessage.Subject, updatedSubject);
   });
 }

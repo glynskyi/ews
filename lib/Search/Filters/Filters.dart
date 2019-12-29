@@ -1,5 +1,4 @@
 export 'SearchFilter.ContainsSubstring.dart';
-export 'SearchFilter.dart';
 export 'SearchFilter.ExcludesBitmask.dart';
 export 'SearchFilter.Exists.dart';
 export 'SearchFilter.IsEqualTo.dart';
@@ -12,3 +11,4 @@ export 'SearchFilter.Not.dart';
 export 'SearchFilter.PropertyBasedFilter.dart';
 export 'SearchFilter.RelationalFilter.dart';
 export 'SearchFilter.SearchFilterCollection.dart';
+export 'SearchFilter.dart';

@@ -77,17 +77,18 @@ class TaskSchema extends ItemSchema {
   /// <summary>
   /// Defines the ActualWork property.
   /// </summary>
-  static PropertyDefinition ActualWork = new IntPropertyDefinition.withFlagsAndNullable(
-      XmlElementNames.ActualWork,
-      _TaskSchemaFieldUris.ActualWork,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1,
-      true); // isNullable
+  static PropertyDefinition ActualWork =
+      new IntPropertyDefinition.withFlagsAndNullable(
+          XmlElementNames.ActualWork,
+          _TaskSchemaFieldUris.ActualWork,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1,
+          true); // isNullable
 
   /// <summary>
   /// Defines the AssignedTime property.
@@ -117,26 +118,28 @@ class TaskSchema extends ItemSchema {
   /// <summary>
   /// Defines the ChangeCount property.
   /// </summary>
-  static PropertyDefinition ChangeCount = new IntPropertyDefinition.withUriAndFlags(
-      XmlElementNames.ChangeCount,
-      _TaskSchemaFieldUris.ChangeCount,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition ChangeCount =
+      new IntPropertyDefinition.withUriAndFlags(
+          XmlElementNames.ChangeCount,
+          _TaskSchemaFieldUris.ChangeCount,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Companies property.
   /// </summary>
-  static PropertyDefinition Companies = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-      XmlElementNames.Companies,
-      _TaskSchemaFieldUris.Companies,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Companies =
+      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+          XmlElementNames.Companies,
+          _TaskSchemaFieldUris.Companies,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
@@ -159,28 +162,30 @@ class TaskSchema extends ItemSchema {
   /// <summary>
   /// Defines the Contacts property.
   /// </summary>
-  static PropertyDefinition Contacts = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-      XmlElementNames.Contacts,
-      _TaskSchemaFieldUris.Contacts,
-      [
-        PropertyDefinitionFlags.AutoInstantiateOnRead,
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Contacts =
+      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+          XmlElementNames.Contacts,
+          _TaskSchemaFieldUris.Contacts,
+          [
+            PropertyDefinitionFlags.AutoInstantiateOnRead,
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
   /// <summary>
   /// Defines the DelegationState property.
   /// </summary>
-  static PropertyDefinition DelegationState = new TaskDelegationStatePropertyDefinition(
-      XmlElementNames.DelegationState,
-      _TaskSchemaFieldUris.DelegationState,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition DelegationState =
+      new TaskDelegationStatePropertyDefinition(
+          XmlElementNames.DelegationState,
+          _TaskSchemaFieldUris.DelegationState,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Delegator property.
@@ -194,55 +199,60 @@ class TaskSchema extends ItemSchema {
   /// <summary>
   /// Defines the DueDate property.
   /// </summary>
-  static PropertyDefinition DueDate = new DateTimePropertyDefinition.withUriAndFlagsANdNullable(
-      XmlElementNames.DueDate,
-      _TaskSchemaFieldUris.DueDate,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1,
-      true); // isNullable
+  static PropertyDefinition DueDate =
+      new DateTimePropertyDefinition.withUriAndFlagsANdNullable(
+          XmlElementNames.DueDate,
+          _TaskSchemaFieldUris.DueDate,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1,
+          true); // isNullable
 
   // TODO : This is the worst possible name for that property
 
   /// <summary>
   /// Defines the Mode property.
   /// </summary>
-  static PropertyDefinition Mode = new GenericPropertyDefinition<TaskMode>.withUriAndFlags(
-      XmlElementNames.IsAssignmentEditable,
-      _TaskSchemaFieldUris.IsAssignmentEditable,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition Mode =
+      new GenericPropertyDefinition<TaskMode>.withUriAndFlags(
+          XmlElementNames.IsAssignmentEditable,
+          _TaskSchemaFieldUris.IsAssignmentEditable,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsComplete property.
   /// </summary>
-  static PropertyDefinition IsComplete = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsComplete,
-      _TaskSchemaFieldUris.IsComplete,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsComplete =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsComplete,
+          _TaskSchemaFieldUris.IsComplete,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsRecurring property.
   /// </summary>
-  static PropertyDefinition IsRecurring = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsRecurring,
-      _TaskSchemaFieldUris.IsRecurring,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsRecurring =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsRecurring,
+          _TaskSchemaFieldUris.IsRecurring,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsTeamTask property.
   /// </summary>
-  static PropertyDefinition IsTeamTask = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsTeamTask,
-      _TaskSchemaFieldUris.IsTeamTask,
-      [PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsTeamTask =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsTeamTask,
+          _TaskSchemaFieldUris.IsTeamTask,
+          [PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the Mileage property.
@@ -296,30 +306,32 @@ class TaskSchema extends ItemSchema {
   /// <summary>
   /// Defines the StartDate property.
   /// </summary>
-  static PropertyDefinition StartDate = new DateTimePropertyDefinition.withUriAndFlagsANdNullable(
-      XmlElementNames.StartDate,
-      _TaskSchemaFieldUris.StartDate,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1,
-      true); // isNullable
+  static PropertyDefinition StartDate =
+      new DateTimePropertyDefinition.withUriAndFlagsANdNullable(
+          XmlElementNames.StartDate,
+          _TaskSchemaFieldUris.StartDate,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1,
+          true); // isNullable
 
   /// <summary>
   /// Defines the Status property.
   /// </summary>
-  static PropertyDefinition Status = new GenericPropertyDefinition<TaskStatus>.withUriAndFlags(
-      XmlElementNames.Status,
-      _TaskSchemaFieldUris.Status,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition Status =
+      new GenericPropertyDefinition<TaskStatus>.withUriAndFlags(
+          XmlElementNames.Status,
+          _TaskSchemaFieldUris.Status,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the StatusDescription property.
@@ -333,17 +345,18 @@ class TaskSchema extends ItemSchema {
   /// <summary>
   /// Defines the TotalWork property.
   /// </summary>
-  static PropertyDefinition TotalWork = new IntPropertyDefinition.withFlagsAndNullable(
-      XmlElementNames.TotalWork,
-      _TaskSchemaFieldUris.TotalWork,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1,
-      true); // isNullable
+  static PropertyDefinition TotalWork =
+      new IntPropertyDefinition.withFlagsAndNullable(
+          XmlElementNames.TotalWork,
+          _TaskSchemaFieldUris.TotalWork,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1,
+          true); // isNullable
 
   // This must be declared after the property definitions
   static TaskSchema Instance = new TaskSchema();

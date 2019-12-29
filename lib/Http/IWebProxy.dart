@@ -1,2 +1,1 @@
-abstract class IWebProxy {
-}
+abstract class IWebProxy {}

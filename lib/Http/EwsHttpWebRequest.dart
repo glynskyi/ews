@@ -110,7 +110,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(
+          WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }

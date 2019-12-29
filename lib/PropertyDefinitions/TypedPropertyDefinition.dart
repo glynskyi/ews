@@ -33,127 +33,105 @@ import 'package:ews/PropertyDefinitions/PropertyDefinition.dart';
 import 'package:ews/misc/StringUtils.dart';
 
 /// <summary>
-    /// Represents typed property definition.
-    /// </summary>
-    abstract class TypedPropertyDefinition extends PropertyDefinition
-    {
-        /* private */ bool isNullable = false;
+/// Represents typed property definition.
+/// </summary>
+abstract class TypedPropertyDefinition extends PropertyDefinition {
+  /* private */
+  bool isNullable = false;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TypedPropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <param name="uri">The URI.</param>
-        /// <param name="version">The version.</param>
-        TypedPropertyDefinition.withUri(
-            String xmlElementName,
-            String uri,
-            ExchangeVersion version)
-            : super.withUri(
-                xmlElementName,
-                uri,
-                version)
-        {
-            this.isNullable = false;
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TypedPropertyDefinition"/> class.
+  /// </summary>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <param name="uri">The URI.</param>
+  /// <param name="version">The version.</param>
+  TypedPropertyDefinition.withUri(
+      String xmlElementName, String uri, ExchangeVersion version)
+      : super.withUri(xmlElementName, uri, version) {
+    this.isNullable = false;
+  }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TypedPropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <param name="uri">The URI.</param>
-        /// <param name="flags">The flags.</param>
-        /// <param name="version">The version.</param>
-        TypedPropertyDefinition.withUriAndFlags(
-            String xmlElementName,
-            String uri,
-            List<PropertyDefinitionFlags> flags,
-            ExchangeVersion version)
-            : super.withUriAndFlags(
-                xmlElementName,
-                uri,
-                flags,
-                version);
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TypedPropertyDefinition"/> class.
+  /// </summary>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <param name="uri">The URI.</param>
+  /// <param name="flags">The flags.</param>
+  /// <param name="version">The version.</param>
+  TypedPropertyDefinition.withUriAndFlags(String xmlElementName, String uri,
+      List<PropertyDefinitionFlags> flags, ExchangeVersion version)
+      : super.withUriAndFlags(xmlElementName, uri, flags, version);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TypedPropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="xmlElementName">Name of the XML element.</param>
-        /// <param name="uri">The URI.</param>
-        /// <param name="flags">The flags.</param>
-        /// <param name="version">The version.</param>
-        /// <param name="isNullable">Indicates that this property definition is for a nullable property.</param>
-        TypedPropertyDefinition.withUriAndFlagsAndNullable(
-            String xmlElementName,
-            String uri,
-            List<PropertyDefinitionFlags> flags,
-            ExchangeVersion version,
-            bool isNullable)
-            : super.withUriAndFlags(
-                xmlElementName,
-                uri,
-                flags,
-                version)
-        {
-            this.isNullable = isNullable;
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TypedPropertyDefinition"/> class.
+  /// </summary>
+  /// <param name="xmlElementName">Name of the XML element.</param>
+  /// <param name="uri">The URI.</param>
+  /// <param name="flags">The flags.</param>
+  /// <param name="version">The version.</param>
+  /// <param name="isNullable">Indicates that this property definition is for a nullable property.</param>
+  TypedPropertyDefinition.withUriAndFlagsAndNullable(
+      String xmlElementName,
+      String uri,
+      List<PropertyDefinitionFlags> flags,
+      ExchangeVersion version,
+      bool isNullable)
+      : super.withUriAndFlags(xmlElementName, uri, flags, version) {
+    this.isNullable = isNullable;
+  }
 
-        /// <summary>
-        /// Parses the specified value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>Typed value.</returns>
-        Object Parse(String value);
+  /// <summary>
+  /// Parses the specified value.
+  /// </summary>
+  /// <param name="value">The value.</param>
+  /// <returns>Typed value.</returns>
+  Object Parse(String value);
 
-        /// <summary>
-        /// Gets a value indicating whether this property definition is for a nullable type (ref, int?, bool?...).
-        /// </summary>
-@override
-        bool get IsNullable => this.isNullable;
+  /// <summary>
+  /// Gets a value indicating whether this property definition is for a nullable type (ref, int?, bool?...).
+  /// </summary>
+  @override
+  bool get IsNullable => this.isNullable;
 
-        /// <summary>
-        /// Convert instance to string.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>String representation of property value.</returns>
-        String toStringWithObject(Object value)
-        {
-            return value.toString();
-        }
+  /// <summary>
+  /// Convert instance to string.
+  /// </summary>
+  /// <param name="value">The value.</param>
+  /// <returns>String representation of property value.</returns>
+  String toStringWithObject(Object value) {
+    return value.toString();
+  }
 
-        /// <summary>
-        /// Loads from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="propertyBag">The property bag.</param>
-@override
-        void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag)
-        {
-            String value = reader.ReadElementValueWithNamespace(XmlNamespace.Types, this.XmlElementName);
+  /// <summary>
+  /// Loads from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <param name="propertyBag">The property bag.</param>
+  @override
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+    String value = reader.ReadElementValueWithNamespace(
+        XmlNamespace.Types, this.XmlElementName);
 
-            if (!StringUtils.IsNullOrEmpty(value))
-            {
-                propertyBag[this] = this.Parse(value);
-            }
-        }
-
-        /// <summary>
-        /// Writes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        /// <param name="propertyBag">The property bag.</param>
-        /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
-@override
-        void WritePropertyValueToXml(
-            EwsServiceXmlWriter writer,
-            PropertyBag propertyBag,
-            bool isUpdateOperation)
-        {
-            Object value = propertyBag[this];
-
-            if (value != null)
-            {
-                writer.WriteElementValue(XmlNamespace.Types, this.XmlElementName, this.Name, value);
-            }
-        }
+    if (!StringUtils.IsNullOrEmpty(value)) {
+      propertyBag[this] = this.Parse(value);
     }
+  }
+
+  /// <summary>
+  /// Writes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  /// <param name="propertyBag">The property bag.</param>
+  /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
+  @override
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
+    Object value = propertyBag[this];
+
+    if (value != null) {
+      writer.WriteElementValue(
+          XmlNamespace.Types, this.XmlElementName, this.Name, value);
+    }
+  }
+}

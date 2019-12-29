@@ -26,7 +26,8 @@
 import 'package:ews/Attributes/ServiceObjectDefinitionAttribute.dart';
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
 import 'package:ews/ComplexProperties/ItemId.dart';
-import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart' as complex;
+import 'package:ews/ComplexProperties/Recurrence/Patterns/Recurrence.dart'
+    as complex;
 import 'package:ews/ComplexProperties/StringList.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/PropertySet.dart';
@@ -59,7 +60,8 @@ class Task extends Item {
   /// Initializes a new instance of the <see cref="Task"/> class.
   /// </summary>
   /// <param name="parentAttachment">The parent attachment.</param>
-  Task.withAttachment(ItemAttachment parentAttachment) : super.withAttachment(parentAttachment);
+  Task.withAttachment(ItemAttachment parentAttachment)
+      : super.withAttachment(parentAttachment);
 
   /// <summary>
   /// Binds to an existing task and loads the specified set of properties.
@@ -69,7 +71,8 @@ class Task extends Item {
   /// <param name="id">The Id of the task to bind to.</param>
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A Task instance representing the task corresponding to the specified Id.</returns>
-  static Future<Task> BindWithPropertySet(ExchangeService service, ItemId id, PropertySet propertySet) {
+  static Future<Task> BindWithPropertySet(
+      ExchangeService service, ItemId id, PropertySet propertySet) {
     return service.BindToItemGeneric<Task>(id, propertySet);
   }
 
@@ -81,7 +84,8 @@ class Task extends Item {
   /// <param name="id">The Id of the task to bind to.</param>
   /// <returns>A Task instance representing the task corresponding to the specified Id.</returns>
   static Future<Task> BindWithItemId(ExchangeService service, ItemId id) {
-    return Task.BindWithPropertySet(service, id, PropertySet.FirstClassProperties);
+    return Task.BindWithPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -122,7 +126,8 @@ class Task extends Item {
   /// </summary>
   /// <param name="deleteMode">The deletion mode.</param>
   void DeleteCurrentOccurrence(DeleteMode deleteMode) {
-    this.InternalDelete(deleteMode, null, AffectedTaskOccurrence.SpecifiedOccurrenceOnly);
+    this.InternalDelete(
+        deleteMode, null, AffectedTaskOccurrence.SpecifiedOccurrenceOnly);
   }
 
   /// <summary>
@@ -135,8 +140,10 @@ class Task extends Item {
   /// a Task object representing the current occurrence if the task is recurring and the uypdate changed its recurrence
   /// pattern; or null in every other case.
   /// </returns>
-  Future<Task> Update(ConflictResolutionMode conflictResolutionMode, [bool suppressReadReceipts = false]) async {
-    Item item = await this.InternalUpdate(null /* parentFolder */, conflictResolutionMode, MessageDisposition.SaveOnly, null);
+  Future<Task> Update(ConflictResolutionMode conflictResolutionMode,
+      [bool suppressReadReceipts = false]) async {
+    Item item = await this.InternalUpdate(null /* parentFolder */,
+        conflictResolutionMode, MessageDisposition.SaveOnly, null);
     return item as Task;
   }
 
@@ -155,9 +162,11 @@ class Task extends Item {
   /// <summary>
   /// Gets or sets the billing information of the task.
   /// </summary>
-  String get BillingInformation => this.PropertyBag[TaskSchema.BillingInformation];
+  String get BillingInformation =>
+      this.PropertyBag[TaskSchema.BillingInformation];
 
-  set BillingInformation(String value) => this.PropertyBag[TaskSchema.BillingInformation] = value;
+  set BillingInformation(String value) =>
+      this.PropertyBag[TaskSchema.BillingInformation] = value;
 
   /// <summary>
   /// Gets the number of times the task has changed since it was created.
@@ -169,26 +178,30 @@ class Task extends Item {
   /// </summary>
   StringList get Companies => this.PropertyBag[TaskSchema.Companies];
 
-  set Companies(StringList value) => this.PropertyBag[TaskSchema.Companies] = value;
+  set Companies(StringList value) =>
+      this.PropertyBag[TaskSchema.Companies] = value;
 
   /// <summary>
   /// Gets or sets the date and time on which the task was completed.
   /// </summary>
   DateTime get CompleteDate => this.PropertyBag[TaskSchema.CompleteDate];
 
-  set CompleteDate(DateTime value) => this.PropertyBag[TaskSchema.CompleteDate] = value;
+  set CompleteDate(DateTime value) =>
+      this.PropertyBag[TaskSchema.CompleteDate] = value;
 
   /// <summary>
   /// Gets or sets a list of contacts associated with the task.
   /// </summary>
   StringList get Contacts => this.PropertyBag[TaskSchema.Contacts];
 
-  set Contacts(StringList value) => this.PropertyBag[TaskSchema.Contacts] = value;
+  set Contacts(StringList value) =>
+      this.PropertyBag[TaskSchema.Contacts] = value;
 
   /// <summary>
   /// Gets the current delegation state of the task.
   /// </summary>
-  TaskDelegationState get DelegationState => this.PropertyBag[TaskSchema.DelegationState];
+  TaskDelegationState get DelegationState =>
+      this.PropertyBag[TaskSchema.DelegationState];
 
   /// <summary>
   /// Gets the name of the delegator of this task.
@@ -239,7 +252,8 @@ class Task extends Item {
   /// </summary>
   double get PercentComplete => this.PropertyBag[TaskSchema.PercentComplete];
 
-  set PercentComplete(double value) => this.PropertyBag[TaskSchema.PercentComplete] = value;
+  set PercentComplete(double value) =>
+      this.PropertyBag[TaskSchema.PercentComplete] = value;
 
   /// <summary>
   /// Gets or sets the recurrence pattern for this task. Available recurrence pattern classes include
@@ -247,14 +261,16 @@ class Task extends Item {
   /// </summary>
   complex.Recurrence get Recurrence => this.PropertyBag[TaskSchema.Recurrence];
 
-  set Recurrence(complex.Recurrence value) => this.PropertyBag[TaskSchema.Recurrence] = value;
+  set Recurrence(complex.Recurrence value) =>
+      this.PropertyBag[TaskSchema.Recurrence] = value;
 
   /// <summary>
   /// Gets or sets the date and time on which the task starts.
   /// </summary>
   DateTime get StartDate => this.PropertyBag[TaskSchema.StartDate];
 
-  set StartDate(DateTime value) => this.PropertyBag[TaskSchema.StartDate] = value;
+  set StartDate(DateTime value) =>
+      this.PropertyBag[TaskSchema.StartDate] = value;
 
   /// <summary>
   /// Gets or sets the status of the task.
@@ -267,7 +283,8 @@ class Task extends Item {
   /// Gets a String representing the status of the task, localized according to the PreferredCulture
   /// property of the ExchangeService object the task is bound to.
   /// </summary>
-  String get StatusDescription => this.PropertyBag[TaskSchema.StatusDescription];
+  String get StatusDescription =>
+      this.PropertyBag[TaskSchema.StatusDescription];
 
   /// <summary>
   /// Gets or sets the total amount of work spent on the task.
@@ -281,7 +298,8 @@ class Task extends Item {
   /// </summary>
   /// <value>AffectedTaskOccurrence.AllOccurrences: All affected Task occurrences will be deleted.</value>
   @override
-  AffectedTaskOccurrence get DefaultAffectedTaskOccurrences => AffectedTaskOccurrence.AllOccurrences;
+  AffectedTaskOccurrence get DefaultAffectedTaskOccurrences =>
+      AffectedTaskOccurrence.AllOccurrences;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

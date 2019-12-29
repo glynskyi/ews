@@ -67,12 +67,15 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.TimeOffset:
-          this.timeOffset = EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
+          this.timeOffset =
+              EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
           return true;
         case XmlElementNames.Month:
           this.month = reader.ReadElementValue<int>();
 
-          EwsUtilities.Assert(this.month > 0 && this.month <= 12, "AbsoluteMonthTransition.TryReadElementFromXml",
+          EwsUtilities.Assert(
+              this.month > 0 && this.month <= 12,
+              "AbsoluteMonthTransition.TryReadElementFromXml",
               "month is not in the valid 1 - 12 range.");
 
           return true;
@@ -91,23 +94,28 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
     super.WriteElementsToXml(writer);
 
     writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.TimeOffset, EwsUtilities.TimeSpanToXSDuration(this.timeOffset));
+        XmlNamespace.Types,
+        XmlElementNames.TimeOffset,
+        EwsUtilities.TimeSpanToXSDuration(this.timeOffset));
 
-    writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Month, this.month);
+    writer.WriteElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.Month, this.month);
   }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AbsoluteMonthTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-  AbsoluteMonthTransition(TimeZoneDefinition timeZoneDefinition) : super(timeZoneDefinition) {}
+  AbsoluteMonthTransition(TimeZoneDefinition timeZoneDefinition)
+      : super(timeZoneDefinition) {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AbsoluteMonthTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
   /// <param name="targetPeriod">The period the transition will target.</param>
-  AbsoluteMonthTransition.withTimeZonePeriod(TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod)
+  AbsoluteMonthTransition.withTimeZonePeriod(
+      TimeZoneDefinition timeZoneDefinition, TimeZonePeriod targetPeriod)
       : super.withTimeZonePeriod(timeZoneDefinition, targetPeriod) {}
 
   /// <summary>

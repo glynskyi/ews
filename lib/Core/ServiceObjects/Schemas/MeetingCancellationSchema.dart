@@ -62,7 +62,8 @@ class MeetingCancellationSchema extends MeetingMessageSchema {
   /// <summary>
   /// Enhanced Location property.
   /// </summary>
-  static PropertyDefinition EnhancedLocation = AppointmentSchema.EnhancedLocation;
+  static PropertyDefinition EnhancedLocation =
+      AppointmentSchema.EnhancedLocation;
 
   // This must be after the declaration of property definitions
   static MeetingCancellationSchema Instance = new MeetingCancellationSchema();

@@ -35,12 +35,14 @@ import 'package:ews/misc/StringUtils.dart';
 /// <summary>
 /// Represents a "Streaming" Subscribe request.
 /// </summary>
-class SubscribeToStreamingNotificationsRequest extends SubscribeRequest<StreamingSubscription> {
+class SubscribeToStreamingNotificationsRequest
+    extends SubscribeRequest<StreamingSubscription> {
   /// <summary>
   /// Initializes a new instance of the <see cref="SubscribeToStreamingNotificationsRequest"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  SubscribeToStreamingNotificationsRequest(ExchangeService service) : super(service) {}
+  SubscribeToStreamingNotificationsRequest(ExchangeService service)
+      : super(service) {}
 
   /// <summary>
   /// Validate request.
@@ -50,7 +52,8 @@ class SubscribeToStreamingNotificationsRequest extends SubscribeRequest<Streamin
     super.Validate();
 
     if (!StringUtils.IsNullOrEmpty(this.Watermark)) {
-      throw new ArgumentError("Watermarks cannot be used with StreamingSubscriptions., Watermark");
+      throw new ArgumentError(
+          "Watermarks cannot be used with StreamingSubscriptions., Watermark");
     }
   }
 
@@ -77,8 +80,10 @@ class SubscribeToStreamingNotificationsRequest extends SubscribeRequest<Streamin
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  SubscribeResponse<StreamingSubscription> CreateServiceResponse(ExchangeService service, int responseIndex) {
-    return new SubscribeResponse<StreamingSubscription>(new StreamingSubscription(service));
+  SubscribeResponse<StreamingSubscription> CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
+    return new SubscribeResponse<StreamingSubscription>(
+        new StreamingSubscription(service));
   }
 
   /// <summary>

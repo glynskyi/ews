@@ -76,8 +76,8 @@ class ReferenceAttachment extends Attachment {
   /// </summary>
   /// <param name="owner">The owner.</param>
   ReferenceAttachment.withOwner(Item owner) : super.withOwner(owner) {
-    EwsUtilities.ValidateClassVersion(
-        this.Owner.Service, ExchangeVersion.Exchange2015, this.runtimeType.toString());
+    EwsUtilities.ValidateClassVersion(this.Owner.Service,
+        ExchangeVersion.Exchange2015, this.runtimeType.toString());
   }
 
   /// <summary>
@@ -156,20 +156,20 @@ class ReferenceAttachment extends Attachment {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     super.WriteElementsToXml(writer);
 
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.AttachLongPathName, this.AttachmentLongPathName);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.AttachLongPathName, this.AttachmentLongPathName);
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.ProviderType, this.ProviderType);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.ProviderEndpointUrl, this.ProviderEndpointUrl);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.AttachmentThumbnailUrl, this.AttachmentThumbnailUrl);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.AttachmentPreviewUrl, this.AttachmentPreviewUrl);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.PermissionType, this.PermissionType);
-    writer.WriteElementValueWithNamespace(
-        XmlNamespace.Types, XmlElementNames.AttachmentIsFolder, this.AttachmentIsFolder);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.ProviderEndpointUrl, this.ProviderEndpointUrl);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.AttachmentThumbnailUrl, this.AttachmentThumbnailUrl);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.AttachmentPreviewUrl, this.AttachmentPreviewUrl);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.PermissionType, this.PermissionType);
+    writer.WriteElementValueWithNamespace(XmlNamespace.Types,
+        XmlElementNames.AttachmentIsFolder, this.AttachmentIsFolder);
   }
 
   /// <summary>

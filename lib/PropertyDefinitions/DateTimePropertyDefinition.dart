@@ -48,7 +48,8 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="uri">The URI.</param>
   /// <param name="version">The version.</param>
-  DateTimePropertyDefinition(String xmlElementName, String uri, ExchangeVersion version)
+  DateTimePropertyDefinition(
+      String xmlElementName, String uri, ExchangeVersion version)
       : super.withUri(xmlElementName, uri, version);
 
   /// <summary>
@@ -70,8 +71,12 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="flags">The flags.</param>
   /// <param name="version">The version.</param>
   /// <param name="isNullable">Indicates that this property definition is for a nullable property.</param>
-  DateTimePropertyDefinition.withUriAndFlagsANdNullable(String xmlElementName, String uri,
-      List<PropertyDefinitionFlags> flags, ExchangeVersion version, bool isNullable)
+  DateTimePropertyDefinition.withUriAndFlagsANdNullable(
+      String xmlElementName,
+      String uri,
+      List<PropertyDefinitionFlags> flags,
+      ExchangeVersion version,
+      bool isNullable)
       : super.withUriAndFlags(xmlElementName, uri, flags, version) {
     this._isNullable = isNullable;
   }
@@ -82,10 +87,13 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    String value = reader.ReadElementValueWithNamespace(XmlNamespace.Types, this.XmlElementName);
+  void LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+    String value = reader.ReadElementValueWithNamespace(
+        XmlNamespace.Types, this.XmlElementName);
 
-    propertyBag[this] = reader.Service.ConvertUniversalDateTimeStringToLocalDateTime(value);
+    propertyBag[this] =
+        reader.Service.ConvertUniversalDateTimeStringToLocalDateTime(value);
   }
 
   /// <summary>
@@ -96,8 +104,8 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the scoping is to be performed in the context of an update operation.</param>
   /// <returns>The converted DateTime.</returns>
-  DateTime ScopeToTimeZone(ExchangeServiceBase service, DateTime dateTime, PropertyBag propertyBag,
-      bool isUpdateOperation) {
+  DateTime ScopeToTimeZone(ExchangeServiceBase service, DateTime dateTime,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     // todo : unsafe ScopeToTimeZone
     print("!!! using unsafe ScopeToTimeZone");
     return dateTime;
@@ -126,17 +134,18 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="propertyBag">The property bag.</param>
   /// <param name="isUpdateOperation">Indicates whether the context is an update operation.</param>
   @override
-  void WritePropertyValueToXml(
-      EwsServiceXmlWriter writer, PropertyBag propertyBag, bool isUpdateOperation) {
+  void WritePropertyValueToXml(EwsServiceXmlWriter writer,
+      PropertyBag propertyBag, bool isUpdateOperation) {
     Object value = propertyBag[this];
 
     if (value != null) {
       writer.WriteStartElement(XmlNamespace.Types, this.XmlElementName);
 
-      DateTime convertedDateTime =
-          _GetConvertedDateTime(writer.Service, propertyBag, isUpdateOperation, value);
+      DateTime convertedDateTime = _GetConvertedDateTime(
+          writer.Service, propertyBag, isUpdateOperation, value);
 
-      writer.WriteValue(EwsUtilities.DateTimeToXSDateTime(convertedDateTime), this.Name);
+      writer.WriteValue(
+          EwsUtilities.DateTimeToXSDateTime(convertedDateTime), this.Name);
 
       writer.WriteEndElement();
     }
@@ -150,8 +159,8 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="isUpdateOperation">if set to <c>true</c> [is update operation].</param>
   /// <param name="value">The value.</param>
   /// <returns></returns>
-  DateTime _GetConvertedDateTime(
-      ExchangeServiceBase service, PropertyBag propertyBag, bool isUpdateOperation, Object value) {
+  DateTime _GetConvertedDateTime(ExchangeServiceBase service,
+      PropertyBag propertyBag, bool isUpdateOperation, Object value) {
     // TODO : fix GetConvertedDateTime
     print(".. used incorect GetConvertedDateTime");
     DateTime dateTime = value;

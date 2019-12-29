@@ -65,10 +65,10 @@ class ComplexPropertyDefinition<TComplexProperty extends ComplexProperty>
       ExchangeVersion version,
       ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate)
       : super.withFlags(xmlElementName, flags, version) {
-            EwsUtilities.Assert(
-                propertyCreationDelegate != null,
-                "ComplexPropertyDefinition ctor",
-                "CreateComplexPropertyDelegate cannot be null");
+    EwsUtilities.Assert(
+        propertyCreationDelegate != null,
+        "ComplexPropertyDefinition ctor",
+        "CreateComplexPropertyDelegate cannot be null");
 
     this.propertyCreationDelegate = propertyCreationDelegate;
   }

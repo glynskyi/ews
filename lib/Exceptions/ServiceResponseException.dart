@@ -100,7 +100,8 @@ class ServiceResponseException extends ServiceRemoteException {
           this.Response.ErrorDetails.containsKey(_ExceptionMessageKey) &&
           this.Response.ErrorDetails.containsKey(_StackTraceKey)) {
         String exceptionClass = this.Response.ErrorDetails[_ExceptionClassKey];
-        String exceptionMessage = this.Response.ErrorDetails[_ExceptionMessageKey];
+        String exceptionMessage =
+            this.Response.ErrorDetails[_ExceptionMessageKey];
         String stackTrace = this.Response.ErrorDetails[_StackTraceKey];
 
 //                        return StringUtils.Format(

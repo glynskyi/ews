@@ -41,12 +41,14 @@ import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 /// <summary>
 /// Represents a GetAttachment request.
 /// </summary>
-class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResponse> {
+class GetAttachmentRequest
+    extends MultiResponseServiceRequest<GetAttachmentResponse> {
   List<Attachment> _attachments = new List<Attachment>();
 
   List<String> _attachmentIds = new List<String>();
 
-  List<PropertyDefinitionBase> _additionalProperties = new List<PropertyDefinitionBase>();
+  List<PropertyDefinitionBase> _additionalProperties =
+      new List<PropertyDefinitionBase>();
 
   enumerations.BodyType _bodyType;
 
@@ -55,7 +57,8 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  GetAttachmentRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  GetAttachmentRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode);
 
   /// <summary>
@@ -73,10 +76,12 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
     }
 
     if (this.AttachmentIds.length == 0 && this.Attachments.length == 0) {
-      throw new ArgumentError("Strings.CollectionIsEmpty, Attachments/AttachmentIds");
+      throw new ArgumentError(
+          "Strings.CollectionIsEmpty, Attachments/AttachmentIds");
     }
     for (int i = 0; i < this.AdditionalProperties.length; i++) {
-      EwsUtilities.ValidateParam(this.AdditionalProperties[i], "AdditionalProperties[$i]");
+      EwsUtilities.ValidateParam(
+          this.AdditionalProperties[i], "AdditionalProperties[$i]");
     }
   }
 
@@ -87,7 +92,8 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  GetAttachmentResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  GetAttachmentResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new GetAttachmentResponse(
         this.Attachments.length > 0 ? this.Attachments[responseIndex] : null);
   }
@@ -135,7 +141,8 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.BodyType != null || this.AdditionalProperties.length > 0) {
-      writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.AttachmentShape);
+      writer.WriteStartElement(
+          XmlNamespace.Messages, XmlElementNames.AttachmentShape);
 
       if (this.BodyType != null) {
         writer.WriteElementValueWithNamespace(
@@ -143,13 +150,15 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
       }
 
       if (this.AdditionalProperties.length > 0) {
-        PropertySet.WriteAdditionalPropertiesToXml(writer, this.AdditionalProperties);
+        PropertySet.WriteAdditionalPropertiesToXml(
+            writer, this.AdditionalProperties);
       }
 
       writer.WriteEndElement(); // AttachmentShape
     }
 
-    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.AttachmentIds);
+    writer.WriteStartElement(
+        XmlNamespace.Messages, XmlElementNames.AttachmentIds);
 
     for (Attachment attachment in this.Attachments) {
       this._WriteAttachmentIdXml(writer, attachment.Id);
@@ -188,7 +197,8 @@ class GetAttachmentRequest extends MultiResponseServiceRequest<GetAttachmentResp
   /// Gets the additional properties.
   /// </summary>
   /// <value>The additional properties.</value>
-  List<PropertyDefinitionBase> get AdditionalProperties => this._additionalProperties;
+  List<PropertyDefinitionBase> get AdditionalProperties =>
+      this._additionalProperties;
 
   /// <summary>
   /// Gets or sets the type of the body.

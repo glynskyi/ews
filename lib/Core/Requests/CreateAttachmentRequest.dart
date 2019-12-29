@@ -38,7 +38,8 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// <summary>
 /// Represents a CreateAttachment request.
 /// </summary>
-class CreateAttachmentRequest extends MultiResponseServiceRequest<CreateAttachmentResponse> {
+class CreateAttachmentRequest
+    extends MultiResponseServiceRequest<CreateAttachmentResponse> {
   String _parentItemId;
 
   List<Attachment> _attachments = new List<Attachment>();
@@ -48,7 +49,8 @@ class CreateAttachmentRequest extends MultiResponseServiceRequest<CreateAttachme
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  CreateAttachmentRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  CreateAttachmentRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -67,7 +69,8 @@ class CreateAttachmentRequest extends MultiResponseServiceRequest<CreateAttachme
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service response.</returns>
   @override
-  CreateAttachmentResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  CreateAttachmentResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new CreateAttachmentResponse(this.Attachments[responseIndex]);
   }
 
@@ -113,11 +116,13 @@ class CreateAttachmentRequest extends MultiResponseServiceRequest<CreateAttachme
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.ParentItemId);
+    writer.WriteStartElement(
+        XmlNamespace.Messages, XmlElementNames.ParentItemId);
     writer.WriteAttributeValue(XmlAttributeNames.Id, this.ParentItemId);
     writer.WriteEndElement();
 
-    writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.Attachments);
+    writer.WriteStartElement(
+        XmlNamespace.Messages, XmlElementNames.Attachments);
     for (Attachment attachment in this.Attachments) {
       attachment.WriteToXml(writer, attachment.GetXmlElementName());
     }

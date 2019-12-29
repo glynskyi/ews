@@ -36,7 +36,8 @@ abstract class NotificationEventArgs /* extends EventArgs */ {
   /// <param name="subscription">The subscription for which notifications have been received.</param>
   /// <param name="events">The events that were received.</param>
 
-  NotificationEventArgs(StreamingSubscription subscription, Iterable<NotificationEvent> events) {
+  NotificationEventArgs(
+      StreamingSubscription subscription, Iterable<NotificationEvent> events) {
     this.Subscription = subscription;
     this.Events = events;
   }

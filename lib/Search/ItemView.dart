@@ -68,7 +68,8 @@ class ItemView extends PagedView {
   void InternalValidate(ServiceRequestBase request) {
     super.InternalValidate(request);
 
-    EwsUtilities.ValidateEnumVersionValue(this._traversal, request.Service.RequestedServerVersion);
+    EwsUtilities.ValidateEnumVersionValue(
+        this._traversal, request.Service.RequestedServerVersion);
   }
 
   /// <summary>
@@ -86,7 +87,8 @@ class ItemView extends PagedView {
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by.</param>
   @override
-  void InternalWriteSearchSettingsToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
+  void InternalWriteSearchSettingsToXml(
+      EwsServiceXmlWriter writer, Grouping groupBy) {
     super.InternalWriteSearchSettingsToXml(writer, groupBy);
   }
 
@@ -123,7 +125,8 @@ class ItemView extends PagedView {
   /// <param name="offsetBasePoint">The base point of the offset.</param>
   ItemView.withPageSizeAndOffsetAndBasePoint(
       int pageSize, int offset, OffsetBasePoint offsetBasePoint)
-      : super.withPageSizeAndOffsetAndBasePoint(pageSize, offset, offsetBasePoint) {}
+      : super.withPageSizeAndOffsetAndBasePoint(
+            pageSize, offset, offsetBasePoint) {}
 
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to ItemTraversal.Shallow.

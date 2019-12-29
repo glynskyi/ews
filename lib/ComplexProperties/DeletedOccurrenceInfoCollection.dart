@@ -30,7 +30,8 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// <summary>
 /// Represents a collection of deleted occurrence objects.
 /// </summary>
-class DeletedOccurrenceInfoCollection extends ComplexPropertyCollection<DeletedOccurrenceInfo> {
+class DeletedOccurrenceInfoCollection
+    extends ComplexPropertyCollection<DeletedOccurrenceInfo> {
   /// <summary>
   /// Initializes a new instance of the <see cref="OccurrenceInfoCollection"/> class.
   /// </summary>
@@ -56,7 +57,8 @@ class DeletedOccurrenceInfoCollection extends ComplexPropertyCollection<DeletedO
   /// <param name="complexProperty">The complex property.</param>
   /// <returns>XML element name.</returns>
   @override
-  String GetCollectionItemXmlElementName(DeletedOccurrenceInfo complexProperty) {
+  String GetCollectionItemXmlElementName(
+      DeletedOccurrenceInfo complexProperty) {
     return XmlElementNames.Occurrence;
   }
 }

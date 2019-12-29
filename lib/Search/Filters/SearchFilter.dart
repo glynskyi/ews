@@ -91,10 +91,12 @@ abstract class SearchFilter extends ComplexProperty {
         searchFilter = new Not();
         break;
       case XmlElementNames.And:
-        searchFilter = new SearchFilterCollection.withOperator(LogicalOperator.And);
+        searchFilter =
+            new SearchFilterCollection.withOperator(LogicalOperator.And);
         break;
       case XmlElementNames.Or:
-        searchFilter = new SearchFilterCollection.withOperator(LogicalOperator.Or);
+        searchFilter =
+            new SearchFilterCollection.withOperator(LogicalOperator.Or);
         break;
       case XmlElementNames.IsEqualTo:
         searchFilter = new IsEqualTo();

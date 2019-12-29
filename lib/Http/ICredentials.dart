@@ -1,2 +1,1 @@
-abstract class ICredentials {
-}
+abstract class ICredentials {}

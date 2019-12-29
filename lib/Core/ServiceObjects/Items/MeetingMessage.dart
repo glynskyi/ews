@@ -44,7 +44,8 @@ class MeetingMessage extends EmailMessage {
   /// Initializes a new instance of the <see cref="MeetingMessage"/> class.
   /// </summary>
   /// <param name="parentAttachment">The parent attachment.</param>
-  MeetingMessage.withAttachment(ItemAttachment parentAttachment) : super.withAttachment(parentAttachment) {}
+  MeetingMessage.withAttachment(ItemAttachment parentAttachment)
+      : super.withAttachment(parentAttachment) {}
 
   /// <summary>
   /// Initializes a new instance of the <see cref="MeetingMessage"/> class.
@@ -72,8 +73,10 @@ class MeetingMessage extends EmailMessage {
   /// <param name="service">The service to use to bind to the meeting message.</param>
   /// <param name="id">The Id of the meeting message to bind to.</param>
   /// <returns>A MeetingMessage instance representing the meeting message corresponding to the specified Id.</returns>
-  static Future<MeetingMessage> BindWithItemId(ExchangeService service, ItemId id) {
-    return MeetingMessage.BindWithItemIdAndPropertySet(service, id, PropertySet.FirstClassProperties);
+  static Future<MeetingMessage> BindWithItemId(
+      ExchangeService service, ItemId id) {
+    return MeetingMessage.BindWithItemIdAndPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -97,7 +100,8 @@ class MeetingMessage extends EmailMessage {
   /// <summary>
   /// Gets the Id of the appointment associated with the meeting message.
   /// </summary>
-  ItemId get AssociatedAppointmentId => this.PropertyBag[MeetingMessageSchema.AssociatedAppointmentId];
+  ItemId get AssociatedAppointmentId =>
+      this.PropertyBag[MeetingMessageSchema.AssociatedAppointmentId];
 
   /// <summary>
   /// Gets a value indicating whether the meeting message is delegated.
@@ -113,7 +117,8 @@ class MeetingMessage extends EmailMessage {
   ///  Gets a value indicating whether the meeting message has been processed by Exchange (i.e. Exchange has noted
   ///  the arrival of a meeting request and has created the associated meeting item in the calendar).
   /// </summary>
-  bool get HasBeenProcessed => this.PropertyBag[MeetingMessageSchema.HasBeenProcessed];
+  bool get HasBeenProcessed =>
+      this.PropertyBag[MeetingMessageSchema.HasBeenProcessed];
 
   /// <summary>
   /// Gets the isorganizer property for this meeting
@@ -123,7 +128,8 @@ class MeetingMessage extends EmailMessage {
   /// <summary>
   /// Gets the type of response the meeting message represents.
   /// </summary>
-  MeetingResponseType get ResponseType => this.PropertyBag[MeetingMessageSchema.ResponseType];
+  MeetingResponseType get ResponseType =>
+      this.PropertyBag[MeetingMessageSchema.ResponseType];
 
   /// <summary>
   /// Gets the ICalendar Uid.
@@ -133,12 +139,14 @@ class MeetingMessage extends EmailMessage {
   /// <summary>
   /// Gets the ICalendar RecurrenceId.
   /// </summary>
-  DateTime get ICalRecurrenceId => this.PropertyBag[MeetingMessageSchema.ICalRecurrenceId];
+  DateTime get ICalRecurrenceId =>
+      this.PropertyBag[MeetingMessageSchema.ICalRecurrenceId];
 
   /// <summary>
   /// Gets the ICalendar DateTimeStamp.
   /// </summary>
-  DateTime get ICalDateTimeStamp => this.PropertyBag[MeetingMessageSchema.ICalDateTimeStamp];
+  DateTime get ICalDateTimeStamp =>
+      this.PropertyBag[MeetingMessageSchema.ICalDateTimeStamp];
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

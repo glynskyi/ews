@@ -142,7 +142,8 @@ class TimeChange extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Offset:
-        this._offset = EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
+        this._offset =
+            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
         return true;
       case XmlElementNames.RelativeYearlyRecurrence:
         throw UnimplementedError("XmlElementNames.RelativeYearlyRecurrence");
@@ -157,7 +158,8 @@ class TimeChange extends ComplexProperty {
 //                    this.absoluteDate = new DateTime(dateTime.ToUniversalTime().Ticks, DateTimeKind.Unspecified);
         return true;
       case XmlElementNames.Time:
-        this._time = new misc.Time.fromDateTime(DateTime.parse(reader.ReadElementValue()));
+        this._time = new misc.Time.fromDateTime(
+            DateTime.parse(reader.ReadElementValue()));
         return true;
       default:
         return false;
@@ -170,7 +172,8 @@ class TimeChange extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
-    this._timeZoneName = reader.ReadAttributeValue(XmlAttributeNames.TimeZoneName);
+    this._timeZoneName =
+        reader.ReadAttributeValue(XmlAttributeNames.TimeZoneName);
   }
 
   /// <summary>
@@ -179,7 +182,8 @@ class TimeChange extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
-    writer.WriteAttributeValue(XmlAttributeNames.TimeZoneName, this.TimeZoneName);
+    writer.WriteAttributeValue(
+        XmlAttributeNames.TimeZoneName, this.TimeZoneName);
   }
 
   /// <summary>
@@ -189,16 +193,22 @@ class TimeChange extends ComplexProperty {
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.Offset != null) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Offset,
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Types,
+          XmlElementNames.Offset,
           EwsUtilities.TimeSpanToXSDuration(this.Offset));
     }
 
     if (this.Recurrence != null) {
-      this.Recurrence.WriteToXml(writer, XmlElementNames.RelativeYearlyRecurrence);
+      this
+          .Recurrence
+          .WriteToXml(writer, XmlElementNames.RelativeYearlyRecurrence);
     }
 
     if (this.AbsoluteDate != null) {
-      writer.WriteElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.AbsoluteDate,
+      writer.WriteElementValueWithNamespace(
+          XmlNamespace.Types,
+          XmlElementNames.AbsoluteDate,
           EwsUtilities.DateTimeToXSDate(this.AbsoluteDate));
       // todo : review absolute date conversation
 //                    EwsUtilities.DateTimeToXSDate(new DateTime(this.AbsoluteDate.Value.Ticks, DateTimeKind.Unspecified)));

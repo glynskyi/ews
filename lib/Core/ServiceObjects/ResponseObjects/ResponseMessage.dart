@@ -55,7 +55,8 @@ class ResponseMessage extends ResponseObject<EmailMessage> {
   /// </summary>
   /// <param name="referenceItem">The reference item.</param>
   /// <param name="responseType">Type of the response.</param>
-  ResponseMessage(Item referenceItem, ResponseMessageType responseType) : super(referenceItem) {
+  ResponseMessage(Item referenceItem, ResponseMessageType responseType)
+      : super(referenceItem) {
     this._responseType = responseType;
   }
 
@@ -122,17 +123,20 @@ class ResponseMessage extends ResponseObject<EmailMessage> {
   /// <summary>
   /// Gets a list of recipients the response will be sent to.
   /// </summary>
-  EmailAddressCollection get ToRecipients => this.PropertyBag[EmailMessageSchema.ToRecipients];
+  EmailAddressCollection get ToRecipients =>
+      this.PropertyBag[EmailMessageSchema.ToRecipients];
 
   /// <summary>
   /// Gets a list of recipients the response will be sent to as Cc.
   /// </summary>
-  EmailAddressCollection get CcRecipients => this.PropertyBag[EmailMessageSchema.CcRecipients];
+  EmailAddressCollection get CcRecipients =>
+      this.PropertyBag[EmailMessageSchema.CcRecipients];
 
   /// <summary>
   /// Gets a list of recipients this response will be sent to as Bcc.
   /// </summary>
-  EmailAddressCollection get BccRecipients => this.PropertyBag[EmailMessageSchema.BccRecipients];
+  EmailAddressCollection get BccRecipients =>
+      this.PropertyBag[EmailMessageSchema.BccRecipients];
 
   /// <summary>
   /// Gets or sets the subject of this response.
@@ -144,7 +148,9 @@ class ResponseMessage extends ResponseObject<EmailMessage> {
   /// Gets or sets the body prefix of this response. The body prefix will be prepended to the original
   /// message's body when the response is created.
   /// </summary>
-  MessageBody get BodyPrefix => this.PropertyBag[ResponseObjectSchema.BodyPrefix];
+  MessageBody get BodyPrefix =>
+      this.PropertyBag[ResponseObjectSchema.BodyPrefix];
 
-  set BodyPrefix(MessageBody value) => this.PropertyBag[ResponseObjectSchema.BodyPrefix] = value;
+  set BodyPrefix(MessageBody value) =>
+      this.PropertyBag[ResponseObjectSchema.BodyPrefix] = value;
 }

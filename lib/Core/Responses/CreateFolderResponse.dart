@@ -55,7 +55,8 @@ class CreateFolderResponse extends ServiceResponse {
     if (this._folder != null) {
       return this._folder;
     } else {
-      return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(service, xmlElementName);
+      return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(
+          service, xmlElementName);
     }
   }
 

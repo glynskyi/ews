@@ -4,7 +4,8 @@ abstract class UriHelper {
     if (relativeUri.isAbsolute) {
       return relativeUri;
     } else {
-      return relativeUri.replace(scheme: base.scheme,
+      return relativeUri.replace(
+          scheme: base.scheme,
           userInfo: base.userInfo,
           host: base.host,
           port: base.port);

@@ -84,7 +84,8 @@ class RetentionTagBase extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
-    this._isExplicit = reader.ReadAttributeValue<bool>(XmlAttributeNames.IsExplicit);
+    this._isExplicit =
+        reader.ReadAttributeValue<bool>(XmlAttributeNames.IsExplicit);
   }
 
   /// <summary>

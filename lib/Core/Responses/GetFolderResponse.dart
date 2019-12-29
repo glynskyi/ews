@@ -44,12 +44,13 @@ class GetFolderResponse extends ServiceResponse {
   /// </summary>
   /// <param name="folder">The folders.</param>
   /// <param name="propertySet">The property set from the request.</param>
-  GetFolderResponse(ServiceObjects.Folder folder, PropertySet propertySet) : super() {
+  GetFolderResponse(ServiceObjects.Folder folder, PropertySet propertySet)
+      : super() {
     this._folder = folder;
     this._propertySet = propertySet;
 
-    EwsUtilities.Assert(
-        this._propertySet != null, "GetFolderResponse.ctor", "PropertySet should not be null");
+    EwsUtilities.Assert(this._propertySet != null, "GetFolderResponse.ctor",
+        "PropertySet should not be null");
   }
 
   /// <summary>
@@ -79,12 +80,13 @@ class GetFolderResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>folders.</returns>
-  ServiceObjects.Folder _GetObjectInstance(ExchangeService service, String xmlElementName) {
+  ServiceObjects.Folder _GetObjectInstance(
+      ExchangeService service, String xmlElementName) {
     if (this.Folder != null) {
       return this.Folder;
     } else {
-      return EwsUtilities.CreateEwsObjectFromXmlElementName<ServiceObjects.Folder>(
-          service, xmlElementName);
+      return EwsUtilities.CreateEwsObjectFromXmlElementName<
+          ServiceObjects.Folder>(service, xmlElementName);
     }
   }
 

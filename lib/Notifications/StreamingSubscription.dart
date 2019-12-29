@@ -42,7 +42,9 @@ class StreamingSubscription extends SubscriptionBase {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="subscriptionId">The id of a previously created streaming subscription.</param>
-  StreamingSubscription.witSubscriptionId(ExchangeService service, String subscriptionId) : super(service) {
+  StreamingSubscription.witSubscriptionId(
+      ExchangeService service, String subscriptionId)
+      : super(service) {
     this.Id = subscriptionId;
   }
 

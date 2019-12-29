@@ -23,8 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:ews/ComplexProperties/Mailbox.dart'
-    as complexProperties;
+import 'package:ews/ComplexProperties/Mailbox.dart' as complexProperties;
 import 'package:ews/ComplexProperties/ServiceId.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
@@ -95,8 +94,8 @@ class FolderId extends ServiceId {
   @override
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     if (this.FolderName != null) {
-      writer.WriteAttributeValue(
-          XmlAttributeNames.Id, EnumToString.parse(this.FolderName).toLowerCase());
+      writer.WriteAttributeValue(XmlAttributeNames.Id,
+          EnumToString.parse(this.FolderName).toLowerCase());
 
       if (this.Mailbox != null) {
         this.Mailbox.WriteToXml(writer, XmlElementNames.Mailbox);

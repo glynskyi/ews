@@ -35,8 +35,8 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a collection of properties that can be sent to and retrieved from EWS.
 /// </summary>
 /// <typeparam name="TComplexProperty">ComplexProperty type.</typeparam>
-abstract class ComplexPropertyCollection<TComplexProperty extends ComplexProperty>
-    extends ComplexProperty
+abstract class ComplexPropertyCollection<
+        TComplexProperty extends ComplexProperty> extends ComplexProperty
     with IterableMixin<TComplexProperty>
     implements Iterable<TComplexProperty> //, ICustomUpdateSerializer
 {
@@ -71,7 +71,9 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   void ItemChanged(ComplexProperty complexProperty) {
     TComplexProperty property = complexProperty as TComplexProperty;
 
-    EwsUtilities.Assert(property != null, "ComplexPropertyCollection.ItemChanged",
+    EwsUtilities.Assert(
+        property != null,
+        "ComplexPropertyCollection.ItemChanged",
         "ComplexPropertyCollection.ItemChanged: the type of the complexProperty argument (${complexProperty.runtimeType}) is not supported.");
 
     if (!this._addedItems.contains(property)) {
@@ -99,16 +101,18 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXmlWithNamespace(
-      EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String localElementName) {
-    reader.EnsureCurrentNodeIsStartElementWithNamespace(xmlNamespace, localElementName);
+  void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String localElementName) {
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        xmlNamespace, localElementName);
 
     if (!reader.IsEmptyElement) {
       do {
         reader.Read();
 
         if (reader.IsStartElement()) {
-          TComplexProperty complexProperty = this.CreateComplexProperty(reader.LocalName);
+          TComplexProperty complexProperty =
+              this.CreateComplexProperty(reader.LocalName);
 
           if (complexProperty != null) {
             complexProperty.LoadFromXml(reader, reader.LocalName);
@@ -117,7 +121,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
             reader.SkipCurrentElement();
           }
         }
-      } while (!reader.IsEndElementWithNamespace(xmlNamespace, localElementName));
+      } while (
+          !reader.IsEndElementWithNamespace(xmlNamespace, localElementName));
     }
   }
 
@@ -128,9 +133,10 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void UpdateFromXmlWithNamespace(
-      EwsServiceXmlReader reader, XmlNamespace xmlNamespace, String xmlElementName) {
-    reader.EnsureCurrentNodeIsStartElementWithNamespace(xmlNamespace, xmlElementName);
+  void UpdateFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName) {
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        xmlNamespace, xmlElementName);
 
     if (!reader.IsEmptyElement) {
       int index = 0;
@@ -138,7 +144,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
         reader.Read();
 
         if (reader.IsStartElement()) {
-          TComplexProperty complexProperty = this.CreateComplexProperty(reader.LocalName);
+          TComplexProperty complexProperty =
+              this.CreateComplexProperty(reader.LocalName);
           TComplexProperty actualComplexProperty = this[index++];
 
           // todo("implement check")
@@ -147,7 +154,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
 //                            throw new ServiceLocalException("Strings.PropertyTypeIncompatibleWhenUpdatingCollection");
 //                        }
 
-          actualComplexProperty.UpdateFromXmlWithNamespace(reader, xmlNamespace, reader.LocalName);
+          actualComplexProperty.UpdateFromXmlWithNamespace(
+              reader, xmlNamespace, reader.LocalName);
         }
       } while (!reader.IsEndElementWithNamespace(xmlNamespace, xmlElementName));
     }
@@ -160,8 +168,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void WriteToXmlWithNamespace(
-      EwsServiceXmlWriter writer, XmlNamespace xmlNamespace, String xmlElementName) {
+  void WriteToXmlWithNamespace(EwsServiceXmlWriter writer,
+      XmlNamespace xmlNamespace, String xmlElementName) {
     if (this.ShouldWriteToRequest()) {
       super.WriteToXmlWithNamespace(writer, xmlNamespace, xmlElementName);
     }
@@ -183,7 +191,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     for (TComplexProperty complexProperty in this) {
-      complexProperty.WriteToXml(writer, this.GetCollectionItemXmlElementName(complexProperty));
+      complexProperty.WriteToXml(
+          writer, this.GetCollectionItemXmlElementName(complexProperty));
     }
   }
 
@@ -238,8 +247,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   /// <param name="loading">If true, collection is being loaded.</param>
   /* private */
   void InternalAdd(TComplexProperty complexProperty, [bool loading = false]) {
-    EwsUtilities.Assert(complexProperty != null, "ComplexPropertyCollection.InternalAdd",
-        "complexProperty is null");
+    EwsUtilities.Assert(complexProperty != null,
+        "ComplexPropertyCollection.InternalAdd", "complexProperty is null");
 
     if (!this._items.contains(complexProperty)) {
       this._items.add(complexProperty);
@@ -278,8 +287,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   /// <param name="complexProperty">The complex property.</param>
   /// <returns>True if the complex property was successfully removed from the collection, false otherwise.</returns>
   bool InternalRemove(TComplexProperty complexProperty) {
-    EwsUtilities.Assert(complexProperty != null, "ComplexPropertyCollection.InternalRemove",
-        "complexProperty is null");
+    EwsUtilities.Assert(complexProperty != null,
+        "ComplexPropertyCollection.InternalRemove", "complexProperty is null");
 
     if (this._items.remove(complexProperty)) {
       complexProperty.removeChangeEvent(this.ItemChanged);
@@ -327,7 +336,8 @@ abstract class ComplexPropertyCollection<TComplexProperty extends ComplexPropert
   /// <returns>The property at the specified index.</returns>
   TComplexProperty operator [](int index) {
     if (index < 0 || index >= this.length) {
-      throw new RangeError.range(index, 0, this.length, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.length, "index", "Strings.IndexIsOutOfRange");
     }
 
     return this._items[index];

@@ -85,7 +85,8 @@ class GroupMemberCollection
   void Add(GroupMember member) {
     EwsUtilities.ValidateParam(member, "member");
 
-    EwsUtilities.Assert(member.Key == null, "GroupMemberCollection.Add", "member.Key is not null.");
+    EwsUtilities.Assert(member.Key == null, "GroupMemberCollection.Add",
+        "member.Key is not null.");
 
     EwsUtilities.Assert(!this.Contains(member), "GroupMemberCollection.Add",
         "The member is already in the collection");
@@ -226,7 +227,8 @@ class GroupMemberCollection
   /// <param name="index">The index of the member to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new ArgumentError.value(index, "index", "Strings.IndexIsOutOfRange");
+      throw new ArgumentError.value(
+          index, "index", "Strings.IndexIsOutOfRange");
     }
 
     this.InternalRemoveAt(index);
@@ -330,7 +332,8 @@ class GroupMemberCollection
   /// <param name="writer">Xml writer.</param>
   /* private */
   void WriteDeleteMembersCollectionToXml(EwsServiceXmlWriter writer) {
-    writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.DeleteItemField);
+    writer.WriteStartElement(
+        XmlNamespace.Types, XmlElementNames.DeleteItemField);
     ContactGroupSchema.Members.WriteToXml(writer);
     writer.WriteEndElement();
   }
@@ -370,12 +373,16 @@ class GroupMemberCollection
   void WriteSetOrAppendMembersToXml(
       EwsServiceXmlWriter writer, List<GroupMember> members, bool setMode) {
     if (members.length != 0) {
-      writer.WriteStartElement(XmlNamespace.Types,
-          setMode ? XmlElementNames.SetItemField : XmlElementNames.AppendToItemField);
+      writer.WriteStartElement(
+          XmlNamespace.Types,
+          setMode
+              ? XmlElementNames.SetItemField
+              : XmlElementNames.AppendToItemField);
 
       ContactGroupSchema.Members.WriteToXml(writer);
 
-      writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.DistributionList);
+      writer.WriteStartElement(
+          XmlNamespace.Types, XmlElementNames.DistributionList);
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Members);
 
       for (GroupMember member in members) {

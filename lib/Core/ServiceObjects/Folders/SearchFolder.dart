@@ -60,8 +60,10 @@ class SearchFolder extends Folder {
   /// <param name="service">The service to use to bind to the search folder.</param>
   /// <param name="id">The Id of the search folder to bind to.</param>
   /// <returns>A SearchFolder instance representing the search folder corresponding to the specified Id.</returns>
-  static Future<SearchFolder> BindWithFolderId(ExchangeService service, FolderId id) {
-    return SearchFolder.BindWithFolderIdAndPropertySet(service, id, PropertySet.FirstClassProperties);
+  static Future<SearchFolder> BindWithFolderId(
+      ExchangeService service, FolderId id) {
+    return SearchFolder.BindWithFolderIdAndPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -73,8 +75,11 @@ class SearchFolder extends Folder {
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A SearchFolder instance representing the search folder with the specified name.</returns>
   static Future<SearchFolder> BindWithWellKnownFolderAndPropertySet(
-      ExchangeService service, WellKnownFolderName name, PropertySet propertySet) {
-    return SearchFolder.BindWithFolderIdAndPropertySet(service, new FolderId.fromWellKnownFolder(name), propertySet);
+      ExchangeService service,
+      WellKnownFolderName name,
+      PropertySet propertySet) {
+    return SearchFolder.BindWithFolderIdAndPropertySet(
+        service, new FolderId.fromWellKnownFolder(name), propertySet);
   }
 
   /// <summary>
@@ -84,9 +89,12 @@ class SearchFolder extends Folder {
   /// <param name="service">The service to use to bind to the search folder.</param>
   /// <param name="name">The name of the search folder to bind to.</param>
   /// <returns>A SearchFolder instance representing the search folder with the specified name.</returns>
-  static Future<SearchFolder> BindWithWellKnownFolder(ExchangeService service, WellKnownFolderName name) {
+  static Future<SearchFolder> BindWithWellKnownFolder(
+      ExchangeService service, WellKnownFolderName name) {
     return SearchFolder.BindWithFolderIdAndPropertySet(
-        service, new FolderId.fromWellKnownFolder(name), PropertySet.FirstClassProperties);
+        service,
+        new FolderId.fromWellKnownFolder(name),
+        PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -128,7 +136,8 @@ class SearchFolder extends Folder {
   /// <summary>
   /// Gets the search parameters associated with the search folder.
   /// </summary>
-  SearchFolderParameters get SearchParameters => this.PropertyBag[SearchFolderSchema.SearchParameters];
+  SearchFolderParameters get SearchParameters =>
+      this.PropertyBag[SearchFolderSchema.SearchParameters];
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

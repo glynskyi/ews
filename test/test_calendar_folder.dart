@@ -17,15 +17,18 @@ main() {
 //    new ExtendedPropertyDefinition.withPropertySetAndId(PropertySetId., "Expiration Date", MapiPropertyType.String);
 
     // Initialize the calendar folder object with only the folder ID.
-    CalendarFolder calendar = await CalendarFolder.BindWithWellKnownFolderAndPropertySet(
-        service, WellKnownFolderName.Calendar, PropertySet.idOnly());
+    CalendarFolder calendar =
+        await CalendarFolder.BindWithWellKnownFolderAndPropertySet(
+            service, WellKnownFolderName.Calendar, PropertySet.idOnly());
 
     // Set the start and end time and number of appointments to retrieve.
-    CalendarView cView = new CalendarView.withMaxItemsReturned(startDate, endDate, NUM_APPTS);
+    CalendarView cView =
+        new CalendarView.withMaxItemsReturned(startDate, endDate, NUM_APPTS);
 
     // Limit the properties returned to the appointment's subject, start time, and end time.
-    final specialProperty = ExtendedPropertyDefinition.withDefaultPropertySetAndId(
-        DefaultExtendedPropertySet.Meeting, 3, MapiPropertyType.Binary);
+    final specialProperty =
+        ExtendedPropertyDefinition.withDefaultPropertySetAndId(
+            DefaultExtendedPropertySet.Meeting, 3, MapiPropertyType.Binary);
     cView.PropertySet = new PropertySet.fromPropertyDefinitions([
       specialProperty,
       ItemSchema.Subject,
@@ -36,7 +39,8 @@ main() {
     ]);
 
     // Retrieve a collection of appointments by using the calendar view.
-    FindItemsResults<Appointment> appointments = await calendar.FindAppointments(cView);
+    FindItemsResults<Appointment> appointments =
+        await calendar.FindAppointments(cView);
 
     print("MoreAvailable : ${appointments.moreAvailable}");
 

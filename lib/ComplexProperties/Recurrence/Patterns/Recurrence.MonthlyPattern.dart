@@ -108,14 +108,16 @@ class MonthlyPattern extends IntervalPattern {
     super.InternalValidate();
 
     if (this._dayOfMonth == null) {
-      throw new ServiceValidationException("Strings.DayOfMonthMustBeBetween1And31");
+      throw new ServiceValidationException(
+          "Strings.DayOfMonthMustBeBetween1And31");
     }
   }
 
   /// <summary>
   /// Gets or sets the day of the month when each occurrence happens. DayOfMonth must be between 1 and 31.
   /// </summary>
-  int get DayOfMonth => this.GetFieldValueOrThrowIfNull<int>(this._dayOfMonth, "DayOfMonth");
+  int get DayOfMonth =>
+      this.GetFieldValueOrThrowIfNull<int>(this._dayOfMonth, "DayOfMonth");
 
   set DayOfMonth(int value) {
     if (value < 1 || value > 31) {

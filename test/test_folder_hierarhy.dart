@@ -13,7 +13,9 @@ main() {
   test('syncs folder hierarhy', () async {
     final service = prepareExchangeService(primaryUserCredential);
     ChangeCollection<FolderChange> fcc = await service.SyncFolderHierarchy(
-        new FolderId.fromWellKnownFolder(WellKnownFolderName.Root), PropertySet.IdOnly, "");
+        new FolderId.fromWellKnownFolder(WellKnownFolderName.Root),
+        PropertySet.IdOnly,
+        "");
     print(fcc.syncState);
   });
 

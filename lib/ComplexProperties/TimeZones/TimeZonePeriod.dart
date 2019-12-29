@@ -23,12 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-    import 'package:ews/ComplexProperties/ComplexProperty.dart';
+import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
@@ -38,98 +33,97 @@ import 'package:ews/misc/StringUtils.dart';
 import 'package:ews/misc/TimeSpan.dart';
 
 /// <summary>
-    /// Represents a time zone period as defined in the EWS schema.
-    /// </summary>
-    class TimeZonePeriod extends ComplexProperty
-    {
-        static const String StandardPeriodId = "Std";
-        static const String StandardPeriodName = "Standard";
-        static const String DaylightPeriodId = "Dlt";
-        static const String DaylightPeriodName = "Daylight";
+/// Represents a time zone period as defined in the EWS schema.
+/// </summary>
+class TimeZonePeriod extends ComplexProperty {
+  static const String StandardPeriodId = "Std";
+  static const String StandardPeriodName = "Standard";
+  static const String DaylightPeriodId = "Dlt";
+  static const String DaylightPeriodName = "Daylight";
 
-        /* private */ TimeSpan bias;
-        /* private */ String name;
-        /* private */ String id;
+  /* private */
+  TimeSpan bias;
 
-        /// <summary>
-        /// Reads the attributes from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-@override
-        void ReadAttributesFromXml(EwsServiceXmlReader reader)
-        {
-            this.id = reader.ReadAttributeValue(XmlAttributeNames.Id);
-            this.name = reader.ReadAttributeValue(XmlAttributeNames.Name);
-            this.bias = EwsUtilities.XSDurationToTimeSpan(reader.ReadAttributeValue(XmlAttributeNames.Bias));
-        }
+  /* private */
+  String name;
 
-        /// <summary>
-        /// Writes the attributes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-@override
-        void WriteAttributesToXml(EwsServiceXmlWriter writer)
-        {
-            writer.WriteAttributeValue(XmlAttributeNames.Bias, EwsUtilities.TimeSpanToXSDuration(this.bias));
-            writer.WriteAttributeValue(XmlAttributeNames.Name, this.name);
-            writer.WriteAttributeValue(XmlAttributeNames.Id, this.id);
-        }
+  /* private */
+  String id;
 
-        /// <summary>
-        /// Loads from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        void LoadFromXmlElementName(EwsServiceXmlReader reader)
-        {
-            this.LoadFromXml(reader, XmlElementNames.Period);
-        }
+  /// <summary>
+  /// Reads the attributes from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  @override
+  void ReadAttributesFromXml(EwsServiceXmlReader reader) {
+    this.id = reader.ReadAttributeValue(XmlAttributeNames.Id);
+    this.name = reader.ReadAttributeValue(XmlAttributeNames.Name);
+    this.bias = EwsUtilities.XSDurationToTimeSpan(
+        reader.ReadAttributeValue(XmlAttributeNames.Bias));
+  }
 
-        /// <summary>
-        /// Writes to XML.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        void WriteToXmlElementName(EwsServiceXmlWriter writer)
-        {
-            this.WriteToXml(writer, XmlElementNames.Period);
-        }
+  /// <summary>
+  /// Writes the attributes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  @override
+  void WriteAttributesToXml(EwsServiceXmlWriter writer) {
+    writer.WriteAttributeValue(
+        XmlAttributeNames.Bias, EwsUtilities.TimeSpanToXSDuration(this.bias));
+    writer.WriteAttributeValue(XmlAttributeNames.Name, this.name);
+    writer.WriteAttributeValue(XmlAttributeNames.Id, this.id);
+  }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TimeZonePeriod"/> class.
-        /// </summary>
-        TimeZonePeriod()
-            : super()
-        {
-        }
+  /// <summary>
+  /// Loads from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
+    this.LoadFromXml(reader, XmlElementNames.Period);
+  }
 
-        /// <summary>
-        /// Gets a value indicating whether this period represents the Standard period.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance is standard period; otherwise, <c>false</c>.
-        /// </value>
-        bool get IsStandardPeriod
-        {
+  /// <summary>
+  /// Writes to XML.
+  /// </summary>
+  /// <param name="writer">The writer.</param>
+  void WriteToXmlElementName(EwsServiceXmlWriter writer) {
+    this.WriteToXml(writer, XmlElementNames.Period);
+  }
 
-                return StringUtils.EqualsIgnoreCase(
-                    this.name,
-                    TimeZonePeriod.StandardPeriodName);
-        }
+  /// <summary>
+  /// Initializes a new instance of the <see cref="TimeZonePeriod"/> class.
+  /// </summary>
+  TimeZonePeriod() : super() {}
 
-        /// <summary>
-        /// Gets or sets the bias to UTC associated with this period.
-        /// </summary>
-        TimeSpan get Bias => this.bias;
-        set Bias(TimeSpan value) => this.bias = value;
+  /// <summary>
+  /// Gets a value indicating whether this period represents the Standard period.
+  /// </summary>
+  /// <value>
+  ///     <c>true</c> if this instance is standard period; otherwise, <c>false</c>.
+  /// </value>
+  bool get IsStandardPeriod {
+    return StringUtils.EqualsIgnoreCase(
+        this.name, TimeZonePeriod.StandardPeriodName);
+  }
 
-        /// <summary>
-        /// Gets or sets the name of this period.
-        /// </summary>
-        String get Name => this.name;
-        set Name(String value) => this.name = value;
+  /// <summary>
+  /// Gets or sets the bias to UTC associated with this period.
+  /// </summary>
+  TimeSpan get Bias => this.bias;
 
-        /// <summary>
-        /// Gets or sets the id of this period.
-        /// </summary>
-        String get Id  => this.id;
-        set Id(String value) => this.id = value;
-    }
+  set Bias(TimeSpan value) => this.bias = value;
+
+  /// <summary>
+  /// Gets or sets the name of this period.
+  /// </summary>
+  String get Name => this.name;
+
+  set Name(String value) => this.name = value;
+
+  /// <summary>
+  /// Gets or sets the id of this period.
+  /// </summary>
+  String get Id => this.id;
+
+  set Id(String value) => this.id = value;
+}

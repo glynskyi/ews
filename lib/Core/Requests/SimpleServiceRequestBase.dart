@@ -124,7 +124,8 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
     Object serviceResponse;
 
     try {
-      this.Service.ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, response);
+      this.Service.ProcessHttpResponseHeaders(
+          TraceFlags.EwsResponseHttpHeaders, response);
 
       // If tracing is enabled, we read the entire response into a MemoryStream so that we
       // can pass it along to the ITraceListener. Then we parse the response from the
@@ -132,7 +133,8 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
       if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse)) {
         final memoryStream = new MemoryStream();
         {
-          Stream serviceResponseStream = ServiceRequestBase.GetResponseStream(response);
+          Stream serviceResponseStream =
+              ServiceRequestBase.GetResponseStream(response);
 
           // Copy response to in-memory stream and reset position to start.
           await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
@@ -142,13 +144,15 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
 
           this.TraceResponseXml(response, memoryStream);
 
-          serviceResponse = this._ReadResponseXml(memoryStream, response.Headers);
+          serviceResponse =
+              this._ReadResponseXml(memoryStream, response.Headers);
         }
         memoryStream.close();
       } else {
         Stream responseStream = ServiceRequestBase.GetResponseStream(response);
 
-        serviceResponse = this._ReadResponseXml(responseStream, response.Headers);
+        serviceResponse =
+            this._ReadResponseXml(responseStream, response.Headers);
 
         // responseStream.Close();
       }
@@ -156,9 +160,8 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
       if (e.Response != null) {
         IEwsHttpWebResponse exceptionResponse =
             this.Service.HttpWebRequestFactory.CreateExceptionResponse(e);
-        this
-            .Service
-            .ProcessHttpResponseHeaders(TraceFlags.EwsResponseHttpHeaders, exceptionResponse);
+        this.Service.ProcessHttpResponseHeaders(
+            TraceFlags.EwsResponseHttpHeaders, exceptionResponse);
       }
 
       throw new ServiceRequestException(
@@ -187,7 +190,8 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
     Object serviceResponse;
     EwsServiceXmlReader ewsXmlReader =
         await EwsServiceXmlReader.Create(responseStream, this.Service);
-    serviceResponse = this.ReadResponseWithHeaders(ewsXmlReader, responseHeaders);
+    serviceResponse =
+        this.ReadResponseWithHeaders(ewsXmlReader, responseHeaders);
     return serviceResponse;
   }
 }

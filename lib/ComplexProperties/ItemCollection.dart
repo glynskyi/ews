@@ -23,14 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-
-
-
-
-
-
-
-    import 'dart:collection';
+import 'dart:collection';
 
 import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
@@ -40,66 +33,60 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
 
 /// <summary>
-    /// Represents a collection of items.
-    /// </summary>
-    /// <typeparam name="TItem">The type of item the collection contains.</typeparam>
- class ItemCollection<TItem extends Item> extends ComplexProperty with IterableMixin<TItem> implements Iterable<TItem>
-    {
-        /* private */ List<TItem> items = new List<TItem>();
+/// Represents a collection of items.
+/// </summary>
+/// <typeparam name="TItem">The type of item the collection contains.</typeparam>
+class ItemCollection<TItem extends Item> extends ComplexProperty
+    with IterableMixin<TItem>
+    implements Iterable<TItem> {
+  /* private */
+  List<TItem> items = new List<TItem>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemCollection&lt;TItem&gt;"/> class.
-        /// </summary>
-        ItemCollection()
-            : super();
+  /// <summary>
+  /// Initializes a new instance of the <see cref="ItemCollection&lt;TItem&gt;"/> class.
+  /// </summary>
+  ItemCollection() : super();
 
-        /// <summary>
-        /// Loads from XML.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="localElementName">Name of the local element.</param>
-@override
-        void LoadFromXml(EwsServiceXmlReader reader, String localElementName)
-        {
-            reader.EnsureCurrentNodeIsStartElementWithNamespace(XmlNamespace.Types, localElementName);
-            if (!reader.IsEmptyElement)
-            {
-                do
-                {
-                    reader.Read();
+  /// <summary>
+  /// Loads from XML.
+  /// </summary>
+  /// <param name="reader">The reader.</param>
+  /// <param name="localElementName">Name of the local element.</param>
+  @override
+  void LoadFromXml(EwsServiceXmlReader reader, String localElementName) {
+    reader.EnsureCurrentNodeIsStartElementWithNamespace(
+        XmlNamespace.Types, localElementName);
+    if (!reader.IsEmptyElement) {
+      do {
+        reader.Read();
 
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        TItem item = EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
-                            reader.Service,
-                            reader.LocalName) as TItem;
+        if (reader.NodeType == XmlNodeType.Element) {
+          TItem item = EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
+              reader.Service, reader.LocalName) as TItem;
 
-                        if (item == null)
-                        {
-                            reader.SkipCurrentElement();
-                        }
-                        else
-                        {
-                            item.LoadFromXml(reader, true /* clearPropertyBag */);
+          if (item == null) {
+            reader.SkipCurrentElement();
+          } else {
+            item.LoadFromXml(reader, true /* clearPropertyBag */);
 
-                            this.items.add(item);
-                        }
-                    }
-                }
-                while (!reader.IsEndElementWithNamespace(XmlNamespace.Types, localElementName));
-            }
+            this.items.add(item);
+          }
         }
+      } while (!reader.IsEndElementWithNamespace(
+          XmlNamespace.Types, localElementName));
+    }
+  }
 
-        /// <summary>
-        /// Gets the total number of items in the collection.
-        /// </summary>
- int get Count => this.items.length;
+  /// <summary>
+  /// Gets the total number of items in the collection.
+  /// </summary>
+  int get Count => this.items.length;
 
-        /// <summary>
-        /// Gets the item at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The item at the specified index.</returns>
+  /// <summary>
+  /// Gets the item at the specified index.
+  /// </summary>
+  /// <param name="index">The zero-based index of the item to get.</param>
+  /// <returns>The item at the specified index.</returns>
 // TItem this[int index]
 //        {
 //            get
@@ -113,27 +100,24 @@ import 'package:ews/Xml/XmlNodeType.dart';
 //            }
 //        }
 
-
-        /// <summary>
-        /// Gets an enumerator that iterates through the elements of the collection.
-        /// </summary>
-        /// <returns>An IEnumerator for the collection.</returns>
-@override
-Iterator<TItem> get iterator => this.items.iterator;
-
+  /// <summary>
+  /// Gets an enumerator that iterates through the elements of the collection.
+  /// </summary>
+  /// <returns>An IEnumerator for the collection.</returns>
+  @override
+  Iterator<TItem> get iterator => this.items.iterator;
 
 // IEnumerator<TItem> GetEnumerator()
 //        {
 //            return this.items.GetEnumerator();
 //        }
 
-
-        /// <summary>
-        /// Gets an enumerator that iterates through the elements of the collection.
-        /// </summary>
-        /// <returns>An IEnumerator for the collection.</returns>
+  /// <summary>
+  /// Gets an enumerator that iterates through the elements of the collection.
+  /// </summary>
+  /// <returns>An IEnumerator for the collection.</returns>
 //        System.Collections.IEnumerator System.Collections.Iterable.GetEnumerator()
 //        {
 //            return this.items.GetEnumerator();
 //        }
-    }
+}

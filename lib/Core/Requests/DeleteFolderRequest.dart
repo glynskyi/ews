@@ -46,7 +46,8 @@ class DeleteFolderRequest extends DeleteRequest<ServiceResponse> {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="errorHandlingMode"> Indicates how errors should be handled.</param>
-  DeleteFolderRequest(ExchangeService service, ServiceErrorHandling errorHandlingMode)
+  DeleteFolderRequest(
+      ExchangeService service, ServiceErrorHandling errorHandlingMode)
       : super(service, errorHandlingMode) {}
 
   /// <summary>
@@ -75,7 +76,8 @@ class DeleteFolderRequest extends DeleteRequest<ServiceResponse> {
   /// <param name="responseIndex">Index of the response.</param>
   /// <returns>Service object.</returns>
   @override
-  ServiceResponse CreateServiceResponse(ExchangeService service, int responseIndex) {
+  ServiceResponse CreateServiceResponse(
+      ExchangeService service, int responseIndex) {
     return new ServiceResponse();
   }
 
@@ -112,7 +114,9 @@ class DeleteFolderRequest extends DeleteRequest<ServiceResponse> {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.FolderIds.WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.FolderIds);
+    this
+        .FolderIds
+        .WriteToXml(writer, XmlNamespace.Messages, XmlElementNames.FolderIds);
   }
 
   /// <summary>

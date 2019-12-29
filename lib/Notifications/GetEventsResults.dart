@@ -96,14 +96,15 @@ class GetEventsResults {
   /// </summary>
   /// <param name="reader">The reader.</param>
   void LoadFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification);
+    reader.ReadStartElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.Notification);
 
-    this._subscriptionId =
-        reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.SubscriptionId);
-    this._previousWatermark =
-        reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.PreviousWatermark);
-    this._moreEventsAvailable =
-        reader.ReadElementValueWithNamespace<bool>(XmlNamespace.Types, XmlElementNames.MoreEvents);
+    this._subscriptionId = reader.ReadElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.SubscriptionId);
+    this._previousWatermark = reader.ReadElementValueWithNamespace(
+        XmlNamespace.Types, XmlElementNames.PreviousWatermark);
+    this._moreEventsAvailable = reader.ReadElementValueWithNamespace<bool>(
+        XmlNamespace.Types, XmlElementNames.MoreEvents);
 
     do {
       reader.Read();
@@ -111,23 +112,27 @@ class GetEventsResults {
       if (reader.IsStartElement()) {
         String eventElementName = reader.LocalName;
 
-        if (_xmlElementNameToEventTypeMap.Member.containsKey(eventElementName)) {
-          EventType eventType = _xmlElementNameToEventTypeMap.Member[eventElementName];
-          this._newWatermark =
-              reader.ReadElementValueWithNamespace(XmlNamespace.Types, XmlElementNames.Watermark);
+        if (_xmlElementNameToEventTypeMap.Member.containsKey(
+            eventElementName)) {
+          EventType eventType =
+              _xmlElementNameToEventTypeMap.Member[eventElementName];
+          this._newWatermark = reader.ReadElementValueWithNamespace(
+              XmlNamespace.Types, XmlElementNames.Watermark);
 
           if (eventType == EventType.Status) {
             // We don't need to return status events
-            reader.ReadEndElementIfNecessary(XmlNamespace.Types, eventElementName);
+            reader.ReadEndElementIfNecessary(
+                XmlNamespace.Types, eventElementName);
           } else {
-            this._LoadNotificationEventFromXml(reader, eventElementName, eventType);
+            this._LoadNotificationEventFromXml(
+                reader, eventElementName, eventType);
           }
         } else {
           reader.SkipCurrentElement();
         }
       }
-    } while (
-        !reader.IsEndElementWithNamespace(XmlNamespace.Messages, XmlElementNames.Notification));
+    } while (!reader.IsEndElementWithNamespace(
+        XmlNamespace.Messages, XmlElementNames.Notification));
   }
 
   /// <summary>
@@ -136,8 +141,8 @@ class GetEventsResults {
   /// <param name="reader">The reader.</param>
   /// <param name="eventElementName">Name of the event XML element.</param>
   /// <param name="eventType">Type of the event.</param>
-  void _LoadNotificationEventFromXml(
-      EwsServiceXmlReader reader, String eventElementName, EventType eventType) {
+  void _LoadNotificationEventFromXml(EwsServiceXmlReader reader,
+      String eventElementName, EventType eventType) {
     DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(
         XmlNamespace.Types, XmlElementNames.TimeStamp);
 
@@ -179,13 +184,15 @@ class GetEventsResults {
   /// Gets the collection of folder events.
   /// </summary>
   /// <value>The folder events.</value>
-  Iterable<FolderEvent> get FolderEvents => this._events.where((event) => event is FolderEvent);
+  Iterable<FolderEvent> get FolderEvents =>
+      this._events.where((event) => event is FolderEvent);
 
   /// <summary>
   /// Gets the collection of item events.
   /// </summary>
   /// <value>The item events.</value>
-  Iterable<ItemEvent> get ItemEvents => this._events.where((event) => event is ItemEvent);
+  Iterable<ItemEvent> get ItemEvents =>
+      this._events.where((event) => event is ItemEvent);
 
   /// <summary>
   /// Gets the collection of all events.

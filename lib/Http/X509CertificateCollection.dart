@@ -1,2 +1,1 @@
-abstract class X509CertificateCollection {
-}
+abstract class X509CertificateCollection {}

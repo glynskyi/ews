@@ -41,7 +41,9 @@ class EmailAddressCollection extends ComplexPropertyCollection<EmailAddress> {
   /// Initializes a new instance of the <see cref="EmailAddressCollection"/> class.
   /// </summary>
   /// <param name="collectionItemXmlElementName">Name of the collection item XML element.</param>
-  EmailAddressCollection([String collectionItemXmlElementName = XmlElementNames.Mailbox]) : super() {
+  EmailAddressCollection(
+      [String collectionItemXmlElementName = XmlElementNames.Mailbox])
+      : super() {
     this.collectionItemXmlElementName = collectionItemXmlElementName;
   }
 
@@ -93,7 +95,8 @@ class EmailAddressCollection extends ComplexPropertyCollection<EmailAddress> {
   /// <param name="smtpAddress">The SMTP address used to initialize the e-mail address.</param>
   /// <returns>An EmailAddress object initialized with the provided SMTP address.</returns>
   EmailAddress AddWithNameAndSmtpAddress(String name, String smtpAddress) {
-    EmailAddress emailAddress = new EmailAddress(name: name, smtpAddress: smtpAddress);
+    EmailAddress emailAddress =
+        new EmailAddress(name: name, smtpAddress: smtpAddress);
 
     this.Add(emailAddress);
 
@@ -113,7 +116,8 @@ class EmailAddressCollection extends ComplexPropertyCollection<EmailAddress> {
   /// <param name="index">The index of the e-mail address to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new RangeError.range(index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
+      throw new RangeError.range(
+          index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
     this.InternalRemoveAt(index);

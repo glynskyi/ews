@@ -30,13 +30,11 @@ import 'package:ews/Exceptions/ServiceLocalException.dart';
 /// </summary>
 //    [Serializable]
 class ServiceValidationException extends ServiceLocalException {
-
   /// <summary>
   /// ServiceValidationException Constructor.
   /// </summary>
   /// <param name="message">Error message text.</param>
-  ServiceValidationException([message = ""])
-      : super(message);
+  ServiceValidationException([message = ""]) : super(message);
 
   /// <summary>
   /// ServiceValidationException Constructor.

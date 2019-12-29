@@ -39,7 +39,8 @@ class TextBody extends MessageBody {
   /// Initializes a new instance of the <see cref="TextBody"/> class.
   /// </summary>
   /// <param name="text">The text of the message body.</param>
-  TextBody.withText(String text) : super.withText(text, enumerations.BodyType.Text) {}
+  TextBody.withText(String text)
+      : super.withText(text, enumerations.BodyType.Text) {}
 
   /// <summary>
   /// Defines an implicit conversation between a String and TextBody.
