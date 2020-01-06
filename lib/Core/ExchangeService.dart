@@ -36,6 +36,7 @@ import 'package:ews/Core/Requests/CreateItemRequest.dart';
 import 'package:ews/Core/Requests/CreateResponseObjectRequest.dart';
 import 'package:ews/Core/Requests/DeleteAttachmentRequest.dart';
 import 'package:ews/Core/Requests/DeleteFolderRequest.dart';
+import 'package:ews/Core/Requests/EmptyFolderRequest.dart';
 import 'package:ews/Core/Requests/FindFolderRequest.dart';
 import 'package:ews/Core/Requests/FindItemRequest.dart';
 import 'package:ews/Core/Requests/GetAttachmentRequest.dart';
@@ -455,21 +456,19 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="folderId">The folder id.</param>
   /// <param name="deleteMode">The delete mode.</param>
   /// <param name="deleteSubFolders">if set to <c>true</c> empty folder should also delete sub folders.</param>
-//        void EmptyFolder(
-//            FolderId folderId,
-//            DeleteMode deleteMode,
-//            bool deleteSubFolders)
-//        {
-//            EwsUtilities.ValidateParam(folderId, "folderId");
-//
-//            EmptyFolderRequest request = new EmptyFolderRequest(this, ServiceErrorHandling.ThrowOnError);
-//
-//            request.FolderIds.Add(folderId);
-//            request.DeleteMode = deleteMode;
-//            request.DeleteSubFolders = deleteSubFolders;
-//
-//            request.Execute();
-//        }
+  Future<void> EmptyFolder(
+      FolderId folderId, DeleteMode deleteMode, bool deleteSubFolders) {
+    EwsUtilities.ValidateParam(folderId, "folderId");
+
+    EmptyFolderRequest request =
+        new EmptyFolderRequest(this, ServiceErrorHandling.ThrowOnError);
+
+    request.FolderIds.AddFolderId(folderId);
+    request.DeleteMode = deleteMode;
+    request.DeleteSubFolders = deleteSubFolders;
+
+    return request.Execute();
+  }
 
   /// <summary>
   /// Marks all items in folder as read/unread. Calling this method results in a call to EWS.
