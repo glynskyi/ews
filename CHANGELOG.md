@@ -1,3 +1,7 @@
+## 1.0.5
+
+* Added the `EmptyFolder` method
+
 ## 1.0.4
 
 * Fixed the `FileAttachment.Load` method

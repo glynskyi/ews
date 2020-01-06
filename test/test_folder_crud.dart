@@ -84,4 +84,14 @@ void main() {
       expect(folder.DisplayName, isNotNull);
     });
   });
+
+  test('empties folder with sub folder', () async {
+    final service = prepareExchangeService(primaryUserCredential);
+    final duplicateName = "test-${Uuid.randomUuid()}";
+    final folder = new Folder(service);
+    folder.DisplayName = duplicateName;
+    await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
+
+    await service.EmptyFolder(folder.Id, DeleteMode.HardDelete, true);
+  });
 }
