@@ -277,7 +277,7 @@ class Item extends ServiceObject {
     // attachment changes, validate them and process now.
     if (this.HasUnprocessedAttachmentChanges()) {
       this.Attachments.Validate();
-      this.Attachments.Save();
+      await this.Attachments.Save();
     }
 
     return returnedItem;
@@ -355,7 +355,7 @@ class Item extends ServiceObject {
   /// </summary>
   /// <param name="conflictResolutionMode">The conflict resolution mode.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
-  Future<void> Update(ConflictResolutionMode conflictResolutionMode,
+  Future<Item> Update(ConflictResolutionMode conflictResolutionMode,
       [bool suppressReadReceipts = false]) {
     return this.InternalUpdate(null /* parentFolder */, conflictResolutionMode,
         MessageDisposition.SaveOnly, null, suppressReadReceipts);

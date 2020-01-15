@@ -1,3 +1,7 @@
+## 1.0.6
+
+* Fixed the `Item.Update` method
+
 ## 1.0.5
 
 * Added the `EmptyFolder` method
