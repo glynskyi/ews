@@ -679,20 +679,16 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets or sets the date and time when the reminder is due for this item.
   /// </summary>
-// DateTime ReminderDueBy
-//        {
-//            get { return (DateTime)this.PropertyBag[ItemSchema.ReminderDueBy]; }
-//            set { this.PropertyBag[ItemSchema.ReminderDueBy] = value; }
-//        }
+  DateTime get ReminderDueBy => this.PropertyBag[ItemSchema.ReminderDueBy];
+
+  set ReminderDueBy(DateTime value) => this.PropertyBag[ItemSchema.ReminderDueBy] = value;
 
   /// <summary>
   /// Gets or sets a value indicating whether a reminder is set for this item.
   /// </summary>
-// bool IsReminderSet
-//        {
-//            get { return (bool)this.PropertyBag[ItemSchema.IsReminderSet]; }
-//            set { this.PropertyBag[ItemSchema.IsReminderSet] = value; }
-//        }
+  bool get IsReminderSet => this.PropertyBag[ItemSchema.IsReminderSet];
+
+  set IsReminderSet(bool value) => this.PropertyBag[ItemSchema.IsReminderSet] = value;
 
   /// <summary>
   /// Gets or sets the number of minutes before the start of this item when the reminder should be triggered.

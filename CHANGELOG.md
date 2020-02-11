@@ -1,3 +1,7 @@
+## 1.0.7
+
+* Added `ReminderDueBy`, `IsReminderSet` to `Item`
+
 ## 1.0.6
 
 * Fixed the `Item.Update` method
