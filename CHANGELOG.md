@@ -1,3 +1,8 @@
+## 1.0.8
+
+* Added 'ContactGroup'
+* Fixed the `Importance` serialization
+
 ## 1.0.7
 
 * Added `ReminderDueBy`, `IsReminderSet` to `Item`
