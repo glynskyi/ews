@@ -35,20 +35,22 @@ main() {
     emailMessage.Subject = Uuid.randomUuid().toString();
     await emailMessage.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
 
-    final updatedEmailMessage = await EmailMessage.Bind(
-        exchangeService, emailMessage.Id, PropertySet.FirstClassProperties);
+    final updatedEmailMessage =
+        await EmailMessage.Bind(exchangeService, emailMessage.Id, PropertySet.FirstClassProperties);
     updatedEmailMessage.Subject = updatedSubject;
     await updatedEmailMessage.Update(ConflictResolutionMode.AlwaysOverwrite);
 
-    final foundEmailMessage = await EmailMessage.Bind(exchangeService,
-        updatedEmailMessage.Id, PropertySet.FirstClassProperties);
+    final foundEmailMessage = await EmailMessage.Bind(
+        exchangeService, updatedEmailMessage.Id, PropertySet.FirstClassProperties);
     expect(foundEmailMessage.Subject, updatedSubject);
   });
 
   test('updates task', () async {
     final updatedSubject = Uuid.randomUuid().toString();
-    final originalDateTime = DateTime.now();
-    final updatedDateTime = originalDateTime.add(Duration(hours: 1));
+    final originalDateTime = DateTime.now().toUtc();
+    DateTime updatedDateTime = originalDateTime.add(Duration(hours: 1));
+    updatedDateTime = updatedDateTime.subtract(Duration(
+        milliseconds: updatedDateTime.millisecond, microseconds: updatedDateTime.microsecond));
     final exchangeService = prepareExchangeService(primaryUserCredential);
     final task = Task(exchangeService);
     task.Subject = Uuid.randomUuid().toString();
@@ -57,16 +59,16 @@ main() {
     task.StartDate = originalDateTime;
     await task.SaveWithWellKnownFolderName(WellKnownFolderName.Tasks);
 
-    final updatedTask = await Task.BindWithPropertySet(
-        exchangeService, task.Id, PropertySet.FirstClassProperties);
+    final updatedTask =
+        await Task.BindWithPropertySet(exchangeService, task.Id, PropertySet.FirstClassProperties);
     updatedTask.Subject = updatedSubject;
     updatedTask.Importance = Importance.High;
     updatedTask.ReminderDueBy = updatedDateTime;
     updatedTask.StartDate = updatedDateTime;
     await updatedTask.Update(ConflictResolutionMode.AlwaysOverwrite);
 
-    final foundTask = await Task.BindWithPropertySet(exchangeService,
-        updatedTask.Id, PropertySet.FirstClassProperties);
+    final foundTask = await Task.BindWithPropertySet(
+        exchangeService, updatedTask.Id, PropertySet.FirstClassProperties);
     expect(foundTask.Subject, updatedSubject);
     expect(foundTask.Importance, Importance.High);
     expect(foundTask.ReminderDueBy, updatedDateTime);
