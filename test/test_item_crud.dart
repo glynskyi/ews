@@ -44,4 +44,32 @@ main() {
         updatedEmailMessage.Id, PropertySet.FirstClassProperties);
     expect(foundEmailMessage.Subject, updatedSubject);
   });
+
+  test('updates task', () async {
+    final updatedSubject = Uuid.randomUuid().toString();
+    final originalDateTime = DateTime.now();
+    final updatedDateTime = originalDateTime.add(Duration(hours: 1));
+    final exchangeService = prepareExchangeService(primaryUserCredential);
+    final task = Task(exchangeService);
+    task.Subject = Uuid.randomUuid().toString();
+    task.Importance = Importance.Normal;
+    task.ReminderDueBy = originalDateTime;
+    task.StartDate = originalDateTime;
+    await task.SaveWithWellKnownFolderName(WellKnownFolderName.Tasks);
+
+    final updatedTask = await Task.BindWithPropertySet(
+        exchangeService, task.Id, PropertySet.FirstClassProperties);
+    updatedTask.Subject = updatedSubject;
+    updatedTask.Importance = Importance.High;
+    updatedTask.ReminderDueBy = updatedDateTime;
+    updatedTask.StartDate = updatedDateTime;
+    await updatedTask.Update(ConflictResolutionMode.AlwaysOverwrite);
+
+    final foundTask = await Task.BindWithPropertySet(exchangeService,
+        updatedTask.Id, PropertySet.FirstClassProperties);
+    expect(foundTask.Subject, updatedSubject);
+    expect(foundTask.Importance, Importance.High);
+    expect(foundTask.ReminderDueBy, updatedDateTime);
+    expect(foundTask.StartDate, updatedDateTime);
+  });
 }
