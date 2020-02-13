@@ -32,6 +32,7 @@ import 'package:ews/Core/ServiceObjects/Folders/SearchFolder.dart';
 import 'package:ews/Core/ServiceObjects/Folders/TasksFolder.dart';
 import 'package:ews/Core/ServiceObjects/Items/Appointment.dart';
 import 'package:ews/Core/ServiceObjects/Items/Contact.dart';
+import 'package:ews/Core/ServiceObjects/Items/ContactGroup.dart';
 import 'package:ews/Core/ServiceObjects/Items/EmailMessage.dart';
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/ServiceObjects/Items/MeetingCancellation.dart';
@@ -43,8 +44,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 
 typedef Object CreateServiceObjectWithServiceParam(ExchangeService srv);
 
-typedef Object CreateServiceObjectWithAttachmentParam(
-    ItemAttachment itemAttachment, bool isNew);
+typedef Object CreateServiceObjectWithAttachmentParam(ItemAttachment itemAttachment, bool isNew);
 
 /// <summary>
 /// ServiceObjectInfo contains metadata on how to map from an element name to a ServiceObject type
@@ -52,10 +52,9 @@ typedef Object CreateServiceObjectWithAttachmentParam(
 /// </summary>
 class ServiceObjectInfo {
   Map<String, Type> _xmlElementNameToServiceObjectClassMap = {};
-  Map<Type, CreateServiceObjectWithServiceParam>
-      _serviceObjectConstructorsWithServiceParam = {};
-  Map<Type, CreateServiceObjectWithAttachmentParam>
-      _serviceObjectConstructorsWithAttachmentParam = {};
+  Map<Type, CreateServiceObjectWithServiceParam> _serviceObjectConstructorsWithServiceParam = {};
+  Map<Type, CreateServiceObjectWithAttachmentParam> _serviceObjectConstructorsWithAttachmentParam =
+      {};
 
   /// <summary>
   /// Default constructor
@@ -74,8 +73,7 @@ class ServiceObjectInfo {
   void _InitializeServiceObjectClassMap() {
     // TODO("restore types for service object infos map")
     // Appointment
-    this.AddServiceObjectType(XmlElementNames.CalendarItem, Appointment,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.CalendarItem, Appointment, (ExchangeService srv) {
       return new Appointment(srv);
     }, (ItemAttachment itemAttachment, bool isNew) {
       return new Appointment.withAttachment(itemAttachment, isNew);
@@ -88,8 +86,7 @@ class ServiceObjectInfo {
     }, null);
 
     // Contact
-    this.AddServiceObjectType(XmlElementNames.Contact, Contact,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.Contact, Contact, (ExchangeService srv) {
       return new Contact(srv);
     }, (ItemAttachment itemAttachment, bool isNew) {
       return new Contact.withAttachment(itemAttachment);
@@ -102,11 +99,12 @@ class ServiceObjectInfo {
     }, null);
 
     // ContactGroup
-//            this.AddServiceObjectType(
-//                XmlElementNames.DistributionList,
-//                typeof(ContactGroup),
-//                delegate(ExchangeService srv) { return new ContactGroup(srv); },
-//                delegate(ItemAttachment itemAttachment, bool isNew) { return new ContactGroup(itemAttachment); });
+    this.AddServiceObjectType(XmlElementNames.DistributionList, ContactGroup,
+        (ExchangeService srv) {
+      return new ContactGroup(srv);
+    }, (ItemAttachment itemAttachment, bool isNew) {
+      return new ContactGroup.withAttachment(itemAttachment);
+    });
 
     // Conversation
 //            this.AddServiceObjectType(
@@ -116,30 +114,26 @@ class ServiceObjectInfo {
 //                null);
 
     // EmailMessage
-    this.AddServiceObjectType(XmlElementNames.Message, EmailMessage,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.Message, EmailMessage, (ExchangeService srv) {
       return new EmailMessage(srv);
     }, (ItemAttachment itemAttachment, bool isNew) {
       return new EmailMessage.withAttachment(itemAttachment);
     });
 
     // Folder
-    this.AddServiceObjectType(XmlElementNames.Folder, Folder,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.Folder, Folder, (ExchangeService srv) {
       return new Folder(srv);
     }, null);
 
     // Item
-    this.AddServiceObjectType(XmlElementNames.Item, Item,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.Item, Item, (ExchangeService srv) {
       return new Item(srv);
     }, (ItemAttachment itemAttachment, bool isNew) {
       return new Item.withAttachment(itemAttachment);
     });
 
     // MeetingCancellation
-    this.AddServiceObjectType(
-        XmlElementNames.MeetingCancellation, MeetingCancellation,
+    this.AddServiceObjectType(XmlElementNames.MeetingCancellation, MeetingCancellation,
         (ExchangeService srv) {
       return new MeetingCancellation(srv);
     }, (ItemAttachment itemAttachment, bool isNew) {
@@ -185,22 +179,19 @@ class ServiceObjectInfo {
 //                delegate(ItemAttachment itemAttachment, bool isNew) { return new PostItem(itemAttachment); });
 
     // SearchFolder
-    this.AddServiceObjectType(XmlElementNames.SearchFolder, SearchFolder,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.SearchFolder, SearchFolder, (ExchangeService srv) {
       return new SearchFolder(srv);
     }, null);
 
     // Task
-    this.AddServiceObjectType(XmlElementNames.Task, Task,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.Task, Task, (ExchangeService srv) {
       return new Task(srv);
     }, (ItemAttachment itemAttachment, bool isNew) {
       return new Task.withAttachment(itemAttachment);
     });
 
     // TasksFolder
-    this.AddServiceObjectType(XmlElementNames.TasksFolder, TasksFolder,
-        (ExchangeService srv) {
+    this.AddServiceObjectType(XmlElementNames.TasksFolder, TasksFolder, (ExchangeService srv) {
       return new TasksFolder(srv);
     }, null);
   }
@@ -217,11 +208,9 @@ class ServiceObjectInfo {
       String xmlElementName,
       Type type,
       CreateServiceObjectWithServiceParam createServiceObjectWithServiceParam,
-      CreateServiceObjectWithAttachmentParam
-          createServiceObjectWithAttachmentParam) {
+      CreateServiceObjectWithAttachmentParam createServiceObjectWithAttachmentParam) {
     this._xmlElementNameToServiceObjectClassMap[xmlElementName] = type;
-    this._serviceObjectConstructorsWithServiceParam[type] =
-        createServiceObjectWithServiceParam;
+    this._serviceObjectConstructorsWithServiceParam[type] = createServiceObjectWithServiceParam;
     if (createServiceObjectWithAttachmentParam != null) {
       this._serviceObjectConstructorsWithAttachmentParam[type] =
           createServiceObjectWithAttachmentParam;
@@ -237,9 +226,8 @@ class ServiceObjectInfo {
   /// <summary>
   /// Return Dictionary that maps from ServiceObject Type to CreateServiceObjectWithServiceParam delegate with ExchangeService parameter.
   /// </summary>
-  Map<Type, CreateServiceObjectWithServiceParam>
-      get ServiceObjectConstructorsWithServiceParam =>
-          this._serviceObjectConstructorsWithServiceParam;
+  Map<Type, CreateServiceObjectWithServiceParam> get ServiceObjectConstructorsWithServiceParam =>
+      this._serviceObjectConstructorsWithServiceParam;
 
   /// <summary>
   /// Return Dictionary that maps from ServiceObject Type to CreateServiceObjectWithAttachmentParam delegate with ItemAttachment parameter.

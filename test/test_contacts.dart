@@ -27,7 +27,7 @@ main() {
     // Retrieve the items in the Contacts folder that have the properties that you selected.
     SearchFilter filter = ContainsSubString.withPropertyAndValue(
         ContactSchema.DisplayName, "qa1");
-    ServiceResponseCollection<FindItemResponse<Contact>> response =
+    ServiceResponseCollection<FindItemResponse<Item>> response =
         await exchangeService.FindItemsGeneric([contactsFolder.Id], null, null,
             view, null, ServiceErrorHandling.ThrowOnError);
 
