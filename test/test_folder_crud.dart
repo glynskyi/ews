@@ -86,7 +86,7 @@ void main() {
   });
 
   test('empties folder with sub folder', () async {
-    final service = prepareExchangeService(primaryUserCredential);
+    final service = prepareExchangeService(primaryUserCredential, ExchangeVersion.Exchange2013);
     final duplicateName = "test-${Uuid.randomUuid()}";
     final folder = new Folder(service);
     folder.DisplayName = duplicateName;
