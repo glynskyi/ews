@@ -957,7 +957,8 @@ class EwsUtilities {
     PhysicalAddressKey,
     ImAddressKey,
     UserSettingName,
-    ExchangeVersion
+    ExchangeVersion,
+    Importance
   ];
 
   /// <summary>
