@@ -35,7 +35,7 @@ main() {
       AppointmentSchema.Start,
       AppointmentSchema.End,
       AppointmentSchema.AppointmentType,
-      AppointmentSchema.Duration
+      AppointmentSchema.Duration,
     ]);
 
     // Retrieve a collection of appointments by using the calendar view.

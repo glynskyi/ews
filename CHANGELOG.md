@@ -1,3 +1,7 @@
+## 1.0.9
+
+* Fixed the properties loading for `Appointment` 
+
 ## 1.0.8
 
 * Added 'ContactGroup'
