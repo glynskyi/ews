@@ -1,3 +1,7 @@
+## 1.0.10
+
+* Fixed the `flutter_test` framework conflicts 
+
 ## 1.0.9
 
 * Fixed the properties loading for `Appointment` 
