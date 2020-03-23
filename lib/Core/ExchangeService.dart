@@ -5599,7 +5599,7 @@ class ExchangeService extends ExchangeServiceBase {
   IEwsHttpWebRequest PrepareHttpWebRequest(String methodName) {
     Uri endpoint = this.Url;
     // todo("fix RegisterCustomBasicAuthModule")
-    print(".. fix RegisterCustomBasicAuthModule");
+    // print(".. fix RegisterCustomBasicAuthModule");
 //    this.RegisterCustomBasicAuthModule();
 //
 //    endpoint = this.AdjustServiceUriFromCredentials(endpoint);

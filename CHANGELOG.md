@@ -1,3 +1,7 @@
+## 1.0.11
+
+* Removed the custom basic auth warning
+
 ## 1.0.10
 
 * Fixed the `flutter_test` framework conflicts 
