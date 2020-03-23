@@ -2815,7 +2815,7 @@ class EwsUtilities {
 
     int seconds = 0;
     if (m != null) {
-      seconds = int.parse(m.group(0).substring(0, m.group(0).indexOf(".")));
+      seconds = int.parse(m.group(0).substring(0, m.group(0).indexOf("S")));
     }
 
     int milliseconds = 0;

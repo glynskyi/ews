@@ -1,3 +1,7 @@
+## 1.0.12
+
+* Fixed the ISO time duration parser
+
 ## 1.0.11
 
 * Removed the custom basic auth warning

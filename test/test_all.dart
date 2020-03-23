@@ -12,6 +12,7 @@ import 'test_auth.dart' as test_auth;
 import 'test_contacts.dart' as test_contacts;
 import 'test_attachments.dart' as test_attachments;
 import 'test_autodiscovery.dart' as test_autodiscovery;
+import 'test_timespan.dart' as test_timespan;
 
 void main() {
   group("folder crud", test_folder_crud.main);
@@ -26,4 +27,5 @@ void main() {
   group("contacts", test_contacts.main);
   group("attachments", test_attachments.main);
   group("autodiscovery", test_autodiscovery.main);
+  group("timespan", test_timespan.main);
 }
