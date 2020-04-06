@@ -1,3 +1,7 @@
+## 1.0.13
+
+* Added `EffectiveRights` to `Item`
+
 ## 1.0.12
 
 * Fixed the ISO time duration parser

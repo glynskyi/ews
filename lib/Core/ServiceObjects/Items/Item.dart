@@ -758,7 +758,7 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets a value indicating the effective rights the current authenticated user has on this item.
   /// </summary>
-// enumerations.EffectiveRights get EffectiveRights => this.PropertyBag[ItemSchema.EffectiveRights];
+ Set<enumerations.EffectiveRights> get EffectiveRights => this.PropertyBag[ItemSchema.EffectiveRights];
 
   /// <summary>
   /// Gets the name of the user who last modified this item.
