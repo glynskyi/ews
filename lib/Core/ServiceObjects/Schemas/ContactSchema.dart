@@ -38,6 +38,7 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/FileAsMapping.dart' as enumerations;
 import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
 import 'package:ews/PropertyDefinitions/BoolPropertyDefinition.dart';
+import 'package:ews/PropertyDefinitions/ByteArrayPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/ComplexPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/ContainedPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/DateTimePropertyDefinition.dart';
@@ -79,12 +80,10 @@ class _ContactSchemaFieldUris {
   static const String Mileage = "contacts:Mileage";
   static const String OfficeLocation = "contacts:OfficeLocation";
   static const String PhysicalAddressCity = "contacts:PhysicalAddress:City";
-  static const String PhysicalAddressCountryOrRegion =
-      "contacts:PhysicalAddress:CountryOrRegion";
+  static const String PhysicalAddressCountryOrRegion = "contacts:PhysicalAddress:CountryOrRegion";
   static const String PhysicalAddressState = "contacts:PhysicalAddress:State";
   static const String PhysicalAddressStreet = "contacts:PhysicalAddress:Street";
-  static const String PhysicalAddressPostalCode =
-      "contacts:PhysicalAddress:PostalCode";
+  static const String PhysicalAddressPostalCode = "contacts:PhysicalAddress:PostalCode";
   static const String PostalAddressIndex = "contacts:PostalAddressIndex";
   static const String Profession = "contacts:Profession";
   static const String SpouseName = "contacts:SpouseName";
@@ -299,17 +298,16 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the Birthday property.
   /// </summary>
-  static PropertyDefinition Birthday =
-      new DateTimePropertyDefinition.withUriAndFlags(
-          XmlElementNames.Birthday,
-          _ContactSchemaFieldUris.Birthday,
-          [
-            PropertyDefinitionFlags.CanSet,
-            PropertyDefinitionFlags.CanUpdate,
-            PropertyDefinitionFlags.CanDelete,
-            PropertyDefinitionFlags.CanFind
-          ],
-          ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition Birthday = new DateTimePropertyDefinition.withUriAndFlags(
+      XmlElementNames.Birthday,
+      _ContactSchemaFieldUris.Birthday,
+      [
+        PropertyDefinitionFlags.CanSet,
+        PropertyDefinitionFlags.CanUpdate,
+        PropertyDefinitionFlags.CanDelete,
+        PropertyDefinitionFlags.CanFind
+      ],
+      ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the BusinessHomePage property.
@@ -331,36 +329,34 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the Children property.
   /// </summary>
-  static PropertyDefinition Children =
-      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-          XmlElementNames.Children,
-          _ContactSchemaFieldUris.Children,
-          [
-            PropertyDefinitionFlags.AutoInstantiateOnRead,
-            PropertyDefinitionFlags.CanSet,
-            PropertyDefinitionFlags.CanUpdate,
-            PropertyDefinitionFlags.CanDelete,
-            PropertyDefinitionFlags.CanFind
-          ],
-          ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Children = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+      XmlElementNames.Children,
+      _ContactSchemaFieldUris.Children,
+      [
+        PropertyDefinitionFlags.AutoInstantiateOnRead,
+        PropertyDefinitionFlags.CanSet,
+        PropertyDefinitionFlags.CanUpdate,
+        PropertyDefinitionFlags.CanDelete,
+        PropertyDefinitionFlags.CanFind
+      ],
+      ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
   /// <summary>
   /// Defines the Companies property.
   /// </summary>
-  static PropertyDefinition Companies =
-      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-          XmlElementNames.Companies,
-          _ContactSchemaFieldUris.Companies,
-          [
-            PropertyDefinitionFlags.AutoInstantiateOnRead,
-            PropertyDefinitionFlags.CanSet,
-            PropertyDefinitionFlags.CanUpdate,
-            PropertyDefinitionFlags.CanDelete,
-            PropertyDefinitionFlags.CanFind
-          ],
-          ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Companies = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+      XmlElementNames.Companies,
+      _ContactSchemaFieldUris.Companies,
+      [
+        PropertyDefinitionFlags.AutoInstantiateOnRead,
+        PropertyDefinitionFlags.CanSet,
+        PropertyDefinitionFlags.CanUpdate,
+        PropertyDefinitionFlags.CanDelete,
+        PropertyDefinitionFlags.CanFind
+      ],
+      ExchangeVersion.Exchange2007_SP1, () {
     return new StringList();
   });
 
@@ -529,27 +525,25 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the WeddingAnniversary property.
   /// </summary>
-  static PropertyDefinition WeddingAnniversary =
-      new DateTimePropertyDefinition.withUriAndFlags(
-          XmlElementNames.WeddingAnniversary,
-          _ContactSchemaFieldUris.WeddingAnniversary,
-          [
-            PropertyDefinitionFlags.CanSet,
-            PropertyDefinitionFlags.CanUpdate,
-            PropertyDefinitionFlags.CanDelete,
-            PropertyDefinitionFlags.CanFind
-          ],
-          ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition WeddingAnniversary = new DateTimePropertyDefinition.withUriAndFlags(
+      XmlElementNames.WeddingAnniversary,
+      _ContactSchemaFieldUris.WeddingAnniversary,
+      [
+        PropertyDefinitionFlags.CanSet,
+        PropertyDefinitionFlags.CanUpdate,
+        PropertyDefinitionFlags.CanDelete,
+        PropertyDefinitionFlags.CanFind
+      ],
+      ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the HasPicture property.
   /// </summary>
-  static PropertyDefinition HasPicture =
-      new BoolPropertyDefinition.withUriAndFlags(
-          XmlElementNames.HasPicture,
-          _ContactSchemaFieldUris.HasPicture,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010);
+  static PropertyDefinition HasPicture = new BoolPropertyDefinition.withUriAndFlags(
+      XmlElementNames.HasPicture,
+      _ContactSchemaFieldUris.HasPicture,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010);
 
   /// <summary>
   /// Defines the PhoneticFullName property.
@@ -599,12 +593,11 @@ class ContactSchema extends ItemSchema {
   /// <summary>
   /// Defines the Photo property.
   /// </summary>
-// static PropertyDefinition Photo =
-//            new ByteArrayPropertyDefinition(
-//                XmlElementNames.Photo,
-//                ContactSchemaFieldUris.Photo,
-//                [PropertyDefinitionFlags.CanFind],
-//                ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition Photo = new ByteArrayPropertyDefinition(
+      XmlElementNames.Photo,
+      _ContactSchemaFieldUris.Photo,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the UserSMIMECertificate property.
@@ -666,264 +659,241 @@ class ContactSchema extends ItemSchema {
   /// Defines the EmailAddress1 property.
   /// </summary>
   static IndexedPropertyDefinition EmailAddress1 =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.EmailAddress, "EmailAddress1");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.EmailAddress, "EmailAddress1");
 
   /// <summary>
   /// Defines the EmailAddress2 property.
   /// </summary>
   static IndexedPropertyDefinition EmailAddress2 =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.EmailAddress, "EmailAddress2");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.EmailAddress, "EmailAddress2");
 
   /// <summary>
   /// Defines the EmailAddress3 property.
   /// </summary>
   static IndexedPropertyDefinition EmailAddress3 =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.EmailAddress, "EmailAddress3");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.EmailAddress, "EmailAddress3");
 
   /// <summary>
   /// Defines the ImAddress1 property.
   /// </summary>
-  static IndexedPropertyDefinition ImAddress1 = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.ImAddress, "ImAddress1");
+  static IndexedPropertyDefinition ImAddress1 =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.ImAddress, "ImAddress1");
 
   /// <summary>
   /// Defines the ImAddress2 property.
   /// </summary>
-  static IndexedPropertyDefinition ImAddress2 = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.ImAddress, "ImAddress2");
+  static IndexedPropertyDefinition ImAddress2 =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.ImAddress, "ImAddress2");
 
   /// <summary>
   /// Defines the ImAddress3 property.
   /// </summary>
-  static IndexedPropertyDefinition ImAddress3 = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.ImAddress, "ImAddress3");
+  static IndexedPropertyDefinition ImAddress3 =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.ImAddress, "ImAddress3");
 
   /// <summary>
   /// Defines the AssistentPhone property.
   /// </summary>
   static IndexedPropertyDefinition AssistantPhone =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhoneNumber, "AssistantPhone");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "AssistantPhone");
 
   /// <summary>
   /// Defines the BusinessFax property.
   /// </summary>
-  static IndexedPropertyDefinition BusinessFax = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "BusinessFax");
+  static IndexedPropertyDefinition BusinessFax =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "BusinessFax");
 
   /// <summary>
   /// Defines the BusinessPhone property.
   /// </summary>
   static IndexedPropertyDefinition BusinessPhone =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhoneNumber, "BusinessPhone");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "BusinessPhone");
 
   /// <summary>
   /// Defines the BusinessPhone2 property.
   /// </summary>
   static IndexedPropertyDefinition BusinessPhone2 =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhoneNumber, "BusinessPhone2");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "BusinessPhone2");
 
   /// <summary>
   /// Defines the Callback property.
   /// </summary>
-  static IndexedPropertyDefinition Callback = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "Callback");
+  static IndexedPropertyDefinition Callback =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "Callback");
 
   /// <summary>
   /// Defines the CarPhone property.
   /// </summary>
-  static IndexedPropertyDefinition CarPhone = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "CarPhone");
+  static IndexedPropertyDefinition CarPhone =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "CarPhone");
 
   /// <summary>
   /// Defines the CompanyMainPhone property.
   /// </summary>
   static IndexedPropertyDefinition CompanyMainPhone =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhoneNumber, "CompanyMainPhone");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "CompanyMainPhone");
 
   /// <summary>
   /// Defines the HomeFax property.
   /// </summary>
-  static IndexedPropertyDefinition HomeFax = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "HomeFax");
+  static IndexedPropertyDefinition HomeFax =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "HomeFax");
 
   /// <summary>
   /// Defines the HomePhone property.
   /// </summary>
-  static IndexedPropertyDefinition HomePhone = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "HomePhone");
+  static IndexedPropertyDefinition HomePhone =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "HomePhone");
 
   /// <summary>
   /// Defines the HomePhone2 property.
   /// </summary>
-  static IndexedPropertyDefinition HomePhone2 = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "HomePhone2");
+  static IndexedPropertyDefinition HomePhone2 =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "HomePhone2");
 
   /// <summary>
   /// Defines the Isdn property.
   /// </summary>
-  static IndexedPropertyDefinition Isdn = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "Isdn");
+  static IndexedPropertyDefinition Isdn =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "Isdn");
 
   /// <summary>
   /// Defines the MobilePhone property.
   /// </summary>
-  static IndexedPropertyDefinition MobilePhone = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "MobilePhone");
+  static IndexedPropertyDefinition MobilePhone =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "MobilePhone");
 
   /// <summary>
   /// Defines the OtherFax property.
   /// </summary>
-  static IndexedPropertyDefinition OtherFax = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "OtherFax");
+  static IndexedPropertyDefinition OtherFax =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "OtherFax");
 
   /// <summary>
   /// Defines the OtherTelephone property.
   /// </summary>
   static IndexedPropertyDefinition OtherTelephone =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhoneNumber, "OtherTelephone");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "OtherTelephone");
 
   /// <summary>
   /// Defines the Pager property.
   /// </summary>
-  static IndexedPropertyDefinition Pager = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "Pager");
+  static IndexedPropertyDefinition Pager =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "Pager");
 
   /// <summary>
   /// Defines the PrimaryPhone property.
   /// </summary>
-  static IndexedPropertyDefinition PrimaryPhone = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "PrimaryPhone");
+  static IndexedPropertyDefinition PrimaryPhone =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "PrimaryPhone");
 
   /// <summary>
   /// Defines the RadioPhone property.
   /// </summary>
-  static IndexedPropertyDefinition RadioPhone = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "RadioPhone");
+  static IndexedPropertyDefinition RadioPhone =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "RadioPhone");
 
   /// <summary>
   /// Defines the Telex property.
   /// </summary>
-  static IndexedPropertyDefinition Telex = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "Telex");
+  static IndexedPropertyDefinition Telex =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "Telex");
 
   /// <summary>
   /// Defines the TtyTddPhone property.
   /// </summary>
-  static IndexedPropertyDefinition TtyTddPhone = new IndexedPropertyDefinition(
-      _ContactSchemaFieldUris.PhoneNumber, "TtyTddPhone");
+  static IndexedPropertyDefinition TtyTddPhone =
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhoneNumber, "TtyTddPhone");
 
   /// <summary>
   /// Defines the BusinessAddressStreet property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressStreet =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressStreet, "Business");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressStreet, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressCity property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressCity =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressCity, "Business");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressCity, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressState property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressState =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressState, "Business");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressState, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressCountryOrRegion property.
   /// </summary>
-  static IndexedPropertyDefinition BusinessAddressCountryOrRegion =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Business");
+  static IndexedPropertyDefinition BusinessAddressCountryOrRegion = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Business");
 
   /// <summary>
   /// Defines the BusinessAddressPostalCode property.
   /// </summary>
   static IndexedPropertyDefinition BusinessAddressPostalCode =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressPostalCode, "Business");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressPostalCode, "Business");
 
   /// <summary>
   /// Defines the HomeAddressStreet property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressStreet =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressStreet, "Home");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressStreet, "Home");
 
   /// <summary>
   /// Defines the HomeAddressCity property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressCity =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressCity, "Home");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressCity, "Home");
 
   /// <summary>
   /// Defines the HomeAddressState property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressState =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressState, "Home");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressState, "Home");
 
   /// <summary>
   /// Defines the HomeAddressCountryOrRegion property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressCountryOrRegion =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Home");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Home");
 
   /// <summary>
   /// Defines the HomeAddressPostalCode property.
   /// </summary>
   static IndexedPropertyDefinition HomeAddressPostalCode =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressPostalCode, "Home");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressPostalCode, "Home");
 
   /// <summary>
   /// Defines the OtherAddressStreet property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressStreet =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressStreet, "Other");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressStreet, "Other");
 
   /// <summary>
   /// Defines the OtherAddressCity property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressCity =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressCity, "Other");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressCity, "Other");
 
   /// <summary>
   /// Defines the OtherAddressState property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressState =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressState, "Other");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressState, "Other");
 
   /// <summary>
   /// Defines the OtherAddressCountryOrRegion property.
   /// </summary>
-  static IndexedPropertyDefinition OtherAddressCountryOrRegion =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Other");
+  static IndexedPropertyDefinition OtherAddressCountryOrRegion = new IndexedPropertyDefinition(
+      _ContactSchemaFieldUris.PhysicalAddressCountryOrRegion, "Other");
 
   /// <summary>
   /// Defines the OtherAddressPostalCode property.
   /// </summary>
   static IndexedPropertyDefinition OtherAddressPostalCode =
-      new IndexedPropertyDefinition(
-          _ContactSchemaFieldUris.PhysicalAddressPostalCode, "Other");
+      new IndexedPropertyDefinition(_ContactSchemaFieldUris.PhysicalAddressPostalCode, "Other");
 
   // This must be declared after the property definitions
   static ContactSchema Instance = new ContactSchema();
@@ -974,7 +944,7 @@ class ContactSchema extends ItemSchema {
     this.RegisterProperty(PhoneticLastName);
     this.RegisterProperty(Alias);
     this.RegisterProperty(Notes);
-//            this.RegisterProperty(Photo);
+    this.RegisterProperty(Photo);
 //            this.RegisterProperty(UserSMIMECertificate);
 //            this.RegisterProperty(MSExchangeCertificate);
     this.RegisterProperty(DirectoryId);

@@ -34,6 +34,7 @@ import 'package:ews/Enumerations/IconIndex.dart' as enumerations;
 import 'package:ews/Enumerations/Importance.dart' as enumerations;
 import 'package:ews/Enumerations/PropertyDefinitionFlags.dart';
 import 'package:ews/PropertyDefinitions/BoolPropertyDefinition.dart';
+import 'package:ews/PropertyDefinitions/ByteArrayPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/ComplexPropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/DateTimePropertyDefinition.dart';
 import 'package:ews/PropertyDefinitions/GenericPropertyDefinition.dart';
@@ -48,23 +49,19 @@ class _ConversationSchemaFieldUris {
   static const String ConversationId = "conversation:ConversationId";
   static const String ConversationTopic = "conversation:ConversationTopic";
   static const String UniqueRecipients = "conversation:UniqueRecipients";
-  static const String GlobalUniqueRecipients =
-      "conversation:GlobalUniqueRecipients";
+  static const String GlobalUniqueRecipients = "conversation:GlobalUniqueRecipients";
   static const String UniqueUnreadSenders = "conversation:UniqueUnreadSenders";
-  static const String GlobalUniqueUnreadSenders =
-      "conversation:GlobalUniqueUnreadSenders";
+  static const String GlobalUniqueUnreadSenders = "conversation:GlobalUniqueUnreadSenders";
   static const String UniqueSenders = "conversation:UniqueSenders";
   static const String GlobalUniqueSenders = "conversation:GlobalUniqueSenders";
   static const String LastDeliveryTime = "conversation:LastDeliveryTime";
-  static const String GlobalLastDeliveryTime =
-      "conversation:GlobalLastDeliveryTime";
+  static const String GlobalLastDeliveryTime = "conversation:GlobalLastDeliveryTime";
   static const String Categories = "conversation:Categories";
   static const String GlobalCategories = "conversation:GlobalCategories";
   static const String FlagStatus = "conversation:FlagStatus";
   static const String GlobalFlagStatus = "conversation:GlobalFlagStatus";
   static const String HasAttachments = "conversation:HasAttachments";
-  static const String GlobalHasAttachments =
-      "conversation:GlobalHasAttachments";
+  static const String GlobalHasAttachments = "conversation:GlobalHasAttachments";
   static const String MessageCount = "conversation:MessageCount";
   static const String GlobalMessageCount = "conversation:GlobalMessageCount";
   static const String UnreadCount = "conversation:UnreadCount";
@@ -95,12 +92,11 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the Id property.
   /// </summary>
-  static PropertyDefinition Id =
-      new ComplexPropertyDefinition<ConversationId>.withUriAndFlags(
-          XmlElementNames.ConversationId,
-          _ConversationSchemaFieldUris.ConversationId,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1, () {
+  static PropertyDefinition Id = new ComplexPropertyDefinition<ConversationId>.withUriAndFlags(
+      XmlElementNames.ConversationId,
+      _ConversationSchemaFieldUris.ConversationId,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1, () {
     return new ConversationId();
   });
 
@@ -188,32 +184,29 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the LastDeliveryTime property.
   /// </summary>
-  static PropertyDefinition LastDeliveryTime =
-      new DateTimePropertyDefinition.withUriAndFlags(
-          XmlElementNames.LastDeliveryTime,
-          _ConversationSchemaFieldUris.LastDeliveryTime,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition LastDeliveryTime = new DateTimePropertyDefinition.withUriAndFlags(
+      XmlElementNames.LastDeliveryTime,
+      _ConversationSchemaFieldUris.LastDeliveryTime,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the GlobalLastDeliveryTime property.
   /// </summary>
-  static PropertyDefinition GlobalLastDeliveryTime =
-      new DateTimePropertyDefinition.withUriAndFlags(
-          XmlElementNames.GlobalLastDeliveryTime,
-          _ConversationSchemaFieldUris.GlobalLastDeliveryTime,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition GlobalLastDeliveryTime = new DateTimePropertyDefinition.withUriAndFlags(
+      XmlElementNames.GlobalLastDeliveryTime,
+      _ConversationSchemaFieldUris.GlobalLastDeliveryTime,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the Categories property.
   /// </summary>
-  static PropertyDefinition Categories =
-      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-          XmlElementNames.Categories,
-          _ConversationSchemaFieldUris.Categories,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1, () {
+  static PropertyDefinition Categories = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+      XmlElementNames.Categories,
+      _ConversationSchemaFieldUris.Categories,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1, () {
     return new StringList();
   });
 
@@ -252,62 +245,56 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the HasAttachments property.
   /// </summary>
-  static PropertyDefinition HasAttachments =
-      new BoolPropertyDefinition.withUriAndFlags(
-          XmlElementNames.HasAttachments,
-          _ConversationSchemaFieldUris.HasAttachments,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition HasAttachments = new BoolPropertyDefinition.withUriAndFlags(
+      XmlElementNames.HasAttachments,
+      _ConversationSchemaFieldUris.HasAttachments,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the GlobalHasAttachments property.
   /// </summary>
-  static PropertyDefinition GlobalHasAttachments =
-      new BoolPropertyDefinition.withUriAndFlags(
-          XmlElementNames.GlobalHasAttachments,
-          _ConversationSchemaFieldUris.GlobalHasAttachments,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition GlobalHasAttachments = new BoolPropertyDefinition.withUriAndFlags(
+      XmlElementNames.GlobalHasAttachments,
+      _ConversationSchemaFieldUris.GlobalHasAttachments,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the MessageCount property.
   /// </summary>
-  static PropertyDefinition MessageCount =
-      new IntPropertyDefinition.withUriAndFlags(
-          XmlElementNames.MessageCount,
-          _ConversationSchemaFieldUris.MessageCount,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition MessageCount = new IntPropertyDefinition.withUriAndFlags(
+      XmlElementNames.MessageCount,
+      _ConversationSchemaFieldUris.MessageCount,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the GlobalMessageCount property.
   /// </summary>
-  static PropertyDefinition GlobalMessageCount =
-      new IntPropertyDefinition.withUriAndFlags(
-          XmlElementNames.GlobalMessageCount,
-          _ConversationSchemaFieldUris.GlobalMessageCount,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition GlobalMessageCount = new IntPropertyDefinition.withUriAndFlags(
+      XmlElementNames.GlobalMessageCount,
+      _ConversationSchemaFieldUris.GlobalMessageCount,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the UnreadCount property.
   /// </summary>
-  static PropertyDefinition UnreadCount =
-      new IntPropertyDefinition.withUriAndFlags(
-          XmlElementNames.UnreadCount,
-          _ConversationSchemaFieldUris.UnreadCount,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition UnreadCount = new IntPropertyDefinition.withUriAndFlags(
+      XmlElementNames.UnreadCount,
+      _ConversationSchemaFieldUris.UnreadCount,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the GlobalUnreadCount property.
   /// </summary>
-  static PropertyDefinition GlobalUnreadCount =
-      new IntPropertyDefinition.withUriAndFlags(
-          XmlElementNames.GlobalUnreadCount,
-          _ConversationSchemaFieldUris.GlobalUnreadCount,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition GlobalUnreadCount = new IntPropertyDefinition.withUriAndFlags(
+      XmlElementNames.GlobalUnreadCount,
+      _ConversationSchemaFieldUris.GlobalUnreadCount,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the Size property.
@@ -321,22 +308,20 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalSize property.
   /// </summary>
-  static PropertyDefinition GlobalSize =
-      new IntPropertyDefinition.withUriAndFlags(
-          XmlElementNames.GlobalSize,
-          _ConversationSchemaFieldUris.GlobalSize,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1);
+  static PropertyDefinition GlobalSize = new IntPropertyDefinition.withUriAndFlags(
+      XmlElementNames.GlobalSize,
+      _ConversationSchemaFieldUris.GlobalSize,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1);
 
   /// <summary>
   /// Defines the ItemClasses property.
   /// </summary>
-  static PropertyDefinition ItemClasses =
-      new ComplexPropertyDefinition<StringList>.withUriAndFlags(
-          XmlElementNames.ItemClasses,
-          _ConversationSchemaFieldUris.ItemClasses,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2010_SP1, () {
+  static PropertyDefinition ItemClasses = new ComplexPropertyDefinition<StringList>.withUriAndFlags(
+      XmlElementNames.ItemClasses,
+      _ConversationSchemaFieldUris.ItemClasses,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2010_SP1, () {
     return new StringList.fromElementName(XmlElementNames.ItemClass);
   });
 
@@ -399,22 +384,20 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the LastModifiedTime property.
   /// </summary>
-  static PropertyDefinition LastModifiedTime =
-      new DateTimePropertyDefinition.withUriAndFlags(
-          XmlElementNames.LastModifiedTime,
-          _ConversationSchemaFieldUris.LastModifiedTime,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2013);
+  static PropertyDefinition LastModifiedTime = new DateTimePropertyDefinition.withUriAndFlags(
+      XmlElementNames.LastModifiedTime,
+      _ConversationSchemaFieldUris.LastModifiedTime,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2013);
 
   /// <summary>
   /// Defines the InstanceKey property.
   /// </summary>
-// static PropertyDefinition InstanceKey =
-//            new ByteArrayPropertyDefinition(
-//                XmlElementNames.InstanceKey,
-//                FieldUris.InstanceKey,
-//                [PropertyDefinitionFlags.CanFind],
-//                ExchangeVersion.Exchange2013);
+  static PropertyDefinition InstanceKey = new ByteArrayPropertyDefinition(
+      XmlElementNames.InstanceKey,
+      _ConversationSchemaFieldUris.InstanceKey,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2013);
 
   /// <summary>
   /// Defines the Preview property.
@@ -469,12 +452,11 @@ class ConversationSchema extends ServiceObjectSchema {
   /// <summary>
   /// Defines the GlobalHasIrm property.
   /// </summary>
-  static PropertyDefinition GlobalHasIrm =
-      new BoolPropertyDefinition.withUriAndFlags(
-          XmlElementNames.GlobalHasIrm,
-          _ConversationSchemaFieldUris.GlobalHasIrm,
-          [PropertyDefinitionFlags.CanFind],
-          ExchangeVersion.Exchange2013);
+  static PropertyDefinition GlobalHasIrm = new BoolPropertyDefinition.withUriAndFlags(
+      XmlElementNames.GlobalHasIrm,
+      _ConversationSchemaFieldUris.GlobalHasIrm,
+      [PropertyDefinitionFlags.CanFind],
+      ExchangeVersion.Exchange2013);
 
   // This must be declared after the property definitions
   static ConversationSchema Instance = new ConversationSchema();
@@ -518,7 +500,7 @@ class ConversationSchema extends ServiceObjectSchema {
     this.RegisterProperty(ItemIds);
     this.RegisterProperty(GlobalItemIds);
     this.RegisterProperty(LastModifiedTime);
-//    this.RegisterProperty(InstanceKey);
+    this.RegisterProperty(InstanceKey);
     this.RegisterProperty(Preview);
     this.RegisterProperty(IconIndex);
     this.RegisterProperty(GlobalIconIndex);

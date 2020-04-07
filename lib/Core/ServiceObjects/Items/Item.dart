@@ -24,6 +24,7 @@
  */
 
 import 'dart:core';
+import 'dart:typed_data';
 
 import 'package:ews/Attributes/ServiceObjectDefinitionAttribute.dart';
 import 'package:ews/ComplexProperties/AttachmentCollection.dart';
@@ -82,10 +83,8 @@ class Item extends ServiceObject {
   /// Initializes a new instance of the <see cref="Item"/> class.
   /// </summary>
   /// <param name="parentAttachment">The parent attachment.</param>
-  Item.withAttachment(ItemAttachment parentAttachment)
-      : super(parentAttachment.Service) {
-    EwsUtilities.Assert(
-        parentAttachment != null, "Item.ctor", "parentAttachment is null");
+  Item.withAttachment(ItemAttachment parentAttachment) : super(parentAttachment.Service) {
+    EwsUtilities.Assert(parentAttachment != null, "Item.ctor", "parentAttachment is null");
 
     this._parentAttachment = parentAttachment;
   }
@@ -111,8 +110,7 @@ class Item extends ServiceObject {
   /// <param name="id">The Id of the item to bind to.</param>
   /// <returns>An Item instance representing the item corresponding to the specified Id.</returns>
   static Future<Item> Bind(ExchangeService service, ItemId id) {
-    return Item.BindWithPropertySet(
-        service, id, PropertySet.FirstClassProperties);
+    return Item.BindWithPropertySet(service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -143,8 +141,7 @@ class Item extends ServiceObject {
   /// </summary>
   void ThrowIfThisIsAttachment() {
     if (this.IsAttachment) {
-      throw new InvalidOperationException(
-          "Strings.OperationDoesNotSupportAttachments");
+      throw new InvalidOperationException("Strings.OperationDoesNotSupportAttachments");
     }
   }
 
@@ -166,8 +163,9 @@ class Item extends ServiceObject {
     this.ThrowIfThisIsNew();
     this.ThrowIfThisIsAttachment();
 
-    return this.Service.InternalLoadPropertiesForItems(
-        [this], propertySet, ServiceErrorHandling.ThrowOnError);
+    return this
+        .Service
+        .InternalLoadPropertiesForItems([this], propertySet, ServiceErrorHandling.ThrowOnError);
   }
 
   /// <summary>
@@ -177,9 +175,7 @@ class Item extends ServiceObject {
   /// <param name="sendCancellationsMode">Indicates whether meeting cancellation messages should be sent.</param>
   /// <param name="affectedTaskOccurrences">Indicate which occurrence of a recurring task should be deleted.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
-  Future<void> InternalDelete(
-      DeleteMode deleteMode,
-      SendCancellationsMode sendCancellationsMode,
+  Future<void> InternalDelete(DeleteMode deleteMode, SendCancellationsMode sendCancellationsMode,
       AffectedTaskOccurrence affectedTaskOccurrences,
       [bool suppressReadReceipts = false]) {
     this.ThrowIfThisIsNew();
@@ -195,8 +191,8 @@ class Item extends ServiceObject {
       affectedTaskOccurrences = this.DefaultAffectedTaskOccurrences;
     }
 
-    return this.Service.DeleteItem(this.Id, deleteMode, sendCancellationsMode,
-        affectedTaskOccurrences, suppressReadReceipts);
+    return this.Service.DeleteItem(
+        this.Id, deleteMode, sendCancellationsMode, affectedTaskOccurrences, suppressReadReceipts);
   }
 
   /// <summary>
@@ -205,21 +201,14 @@ class Item extends ServiceObject {
   /// <param name="parentFolderId">The parent folder id.</param>
   /// <param name="messageDisposition">The message disposition.</param>
   /// <param name="sendInvitationsMode">The send invitations mode.</param>
-  Future<void> InternalCreate(
-      FolderId parentFolderId,
-      MessageDisposition messageDisposition,
+  Future<void> InternalCreate(FolderId parentFolderId, MessageDisposition messageDisposition,
       SendInvitationsMode sendInvitationsMode) async {
     this.ThrowIfThisIsNotNew();
     this.ThrowIfThisIsAttachment();
 
     if (this.IsNew || this.IsDirty) {
-      await this.Service.CreateItem(
-          this,
-          parentFolderId,
-          messageDisposition,
-          sendInvitationsMode != null
-              ? sendInvitationsMode
-              : this.DefaultSendInvitationsMode);
+      await this.Service.CreateItem(this, parentFolderId, messageDisposition,
+          sendInvitationsMode != null ? sendInvitationsMode : this.DefaultSendInvitationsMode);
 
       await this.Attachments.Save();
     }
@@ -268,8 +257,7 @@ class Item extends ServiceObject {
           parentFolderId,
           conflictResolutionMode,
           messageDisposition,
-          sendInvitationsOrCancellationsMode ??
-              this.DefaultSendInvitationsOrCancellationsMode,
+          sendInvitationsOrCancellationsMode ?? this.DefaultSendInvitationsOrCancellationsMode,
           suppressReadReceipts);
     }
 
@@ -311,8 +299,7 @@ class Item extends ServiceObject {
   /// </summary>
   /// <param name="deleteMode">The deletion mode.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
-  Future<void> Delete(DeleteMode deleteMode,
-      [bool suppressReadReceipts = false]) {
+  Future<void> Delete(DeleteMode deleteMode, [bool suppressReadReceipts = false]) {
     return this.InternalDelete(deleteMode, null, null, suppressReadReceipts);
   }
 
@@ -324,8 +311,7 @@ class Item extends ServiceObject {
   Future<void> SaveWithFolderId(FolderId parentFolderId) {
 //            EwsUtilities.ValidateParam(parentFolderId, "parentFolderId");
 
-    return this
-        .InternalCreate(parentFolderId, MessageDisposition.SaveOnly, null);
+    return this.InternalCreate(parentFolderId, MessageDisposition.SaveOnly, null);
   }
 
   /// <summary>
@@ -333,12 +319,9 @@ class Item extends ServiceObject {
   /// Mutliple calls to EWS might be made if attachments have been added.
   /// </summary>
   /// <param name="parentFolderName">The name of the folder in which to save this item.</param>
-  Future<void> SaveWithWellKnownFolderName(
-      WellKnownFolderName parentFolderName) {
+  Future<void> SaveWithWellKnownFolderName(WellKnownFolderName parentFolderName) {
     return this.InternalCreate(
-        new FolderId.fromWellKnownFolder(parentFolderName),
-        MessageDisposition.SaveOnly,
-        null);
+        new FolderId.fromWellKnownFolder(parentFolderName), MessageDisposition.SaveOnly, null);
   }
 
   /// <summary>
@@ -432,11 +415,8 @@ class Item extends ServiceObject {
   /// </summary>
   /// <param name="extendedPropertyDefinition">The extended property definition.</param>
   /// <param name="value">The value.</param>
-  void SetExtendedProperty(
-      ExtendedPropertyDefinition extendedPropertyDefinition, Object value) {
-    this
-        .ExtendedProperties
-        .SetExtendedProperty(extendedPropertyDefinition, value);
+  void SetExtendedProperty(ExtendedPropertyDefinition extendedPropertyDefinition, Object value) {
+    this.ExtendedProperties.SetExtendedProperty(extendedPropertyDefinition, value);
   }
 
   /// <summary>
@@ -444,11 +424,8 @@ class Item extends ServiceObject {
   /// </summary>
   /// <param name="extendedPropertyDefinition">The extended property definition.</param>
   /// <returns>True if property was removed.</returns>
-  bool RemoveExtendedProperty(
-      ExtendedPropertyDefinition extendedPropertyDefinition) {
-    return this
-        .ExtendedProperties
-        .RemoveExtendedProperty(extendedPropertyDefinition);
+  bool RemoveExtendedProperty(ExtendedPropertyDefinition extendedPropertyDefinition) {
+    return this.ExtendedProperties.RemoveExtendedProperty(extendedPropertyDefinition);
   }
 
   /// <summary>
@@ -474,8 +451,7 @@ class Item extends ServiceObject {
     OutParam<Flag> flagOutParam = new OutParam<Flag>();
     if (this.TryGetPropertyGeneric<Flag>(ItemSchema.Flag, flagOutParam) &&
         flagOutParam.param != null) {
-      if (this.Service.RequestedServerVersion.index <
-          ExchangeVersion.Exchange2013.index) {
+      if (this.Service.RequestedServerVersion.index < ExchangeVersion.Exchange2013.index) {
         throw new ServiceVersionException("""string.Format(
                             Strings.ParameterIncompatibleWithRequestVersion,
                             "Flag",
@@ -500,13 +476,10 @@ class Item extends ServiceObject {
     // if the attachment used to require the Timezone header, CreateItem request should do so too.
     //
     if (!isUpdateOperation &&
-        (this.Service.RequestedServerVersion.index >=
-            ExchangeVersion.Exchange2010_SP2.index)) {
-      for (ItemAttachment itemAttachment
-          in this.Attachments.OfType<ItemAttachment>()) {
+        (this.Service.RequestedServerVersion.index >= ExchangeVersion.Exchange2010_SP2.index)) {
+      for (ItemAttachment itemAttachment in this.Attachments.OfType<ItemAttachment>()) {
         if ((itemAttachment.Item != null) &&
-            itemAttachment.Item.GetIsTimeZoneHeaderRequired(
-                false /* isUpdateOperation */)) {
+            itemAttachment.Item.GetIsTimeZoneHeaderRequired(false /* isUpdateOperation */)) {
           return true;
         }
       }
@@ -543,8 +516,7 @@ class Item extends ServiceObject {
   /// <summary>
   /// Get or sets the MIME content of this item.
   /// </summary>
-  complex.MimeContent get MimeContent =>
-      this.PropertyBag[ItemSchema.MimeContent];
+  complex.MimeContent get MimeContent => this.PropertyBag[ItemSchema.MimeContent];
 
   set MimeContent(complex.MimeContent value) {
     this.PropertyBag[ItemSchema.MimeContent] = value;
@@ -567,8 +539,7 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets or sets the sensitivity of this item.
   /// </summary>
-  enumerations.Sensitivity get Sensitivity =>
-      this.PropertyBag[ItemSchema.Sensitivity];
+  enumerations.Sensitivity get Sensitivity => this.PropertyBag[ItemSchema.Sensitivity];
 
   set Sensitivity(enumerations.Sensitivity value) {
     this.PropertyBag[ItemSchema.Sensitivity] = value;
@@ -577,14 +548,12 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets a list of the attachments to this item.
   /// </summary>
-  AttachmentCollection get Attachments =>
-      this.PropertyBag[ItemSchema.Attachments];
+  AttachmentCollection get Attachments => this.PropertyBag[ItemSchema.Attachments];
 
   /// <summary>
   /// Gets the time when this item was received.
   /// </summary>
-  DateTime get DateTimeReceived =>
-      this.PropertyBag[ItemSchema.DateTimeReceived];
+  DateTime get DateTimeReceived => this.PropertyBag[ItemSchema.DateTimeReceived];
 
   /// <summary>
   /// Gets the size of this item.
@@ -596,8 +565,7 @@ class Item extends ServiceObject {
   /// </summary>
   StringList get Categories => this.PropertyBag[ItemSchema.Categories];
 
-  set Categories(StringList value) =>
-      this.PropertyBag[ItemSchema.Culture] = value;
+  set Categories(StringList value) => this.PropertyBag[ItemSchema.Culture] = value;
 
   /// <summary>
   /// Gets or sets the culture associated with this item.
@@ -614,8 +582,7 @@ class Item extends ServiceObject {
 
   complex.Importance get Importance => this.PropertyBag[ItemSchema.Importance];
 
-  set Importance(complex.Importance value) =>
-      this.PropertyBag[ItemSchema.Importance] = value;
+  set Importance(complex.Importance value) => this.PropertyBag[ItemSchema.Importance] = value;
 
   /// <summary>
   /// Gets or sets the In-Reply-To reference of this item.
@@ -758,7 +725,8 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets a value indicating the effective rights the current authenticated user has on this item.
   /// </summary>
- Set<enumerations.EffectiveRights> get EffectiveRights => this.PropertyBag[ItemSchema.EffectiveRights];
+  Set<enumerations.EffectiveRights> get EffectiveRights =>
+      this.PropertyBag[ItemSchema.EffectiveRights];
 
   /// <summary>
   /// Gets the name of the user who last modified this item.
@@ -768,8 +736,7 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets the date and time this item was last modified.
   /// </summary>
-  DateTime get LastModifiedTime =>
-      this.PropertyBag[ItemSchema.LastModifiedTime];
+  DateTime get LastModifiedTime => this.PropertyBag[ItemSchema.LastModifiedTime];
 
   /// <summary>
   /// Gets the Id of the conversation this item is part of.
@@ -784,12 +751,12 @@ class Item extends ServiceObject {
   /// <summary>
   /// Gets the store entry id.
   /// </summary>
-// Uint8List get StoreEntryId => this.PropertyBag[ItemSchema.StoreEntryId];
+  Uint8List get StoreEntryId => this.PropertyBag[ItemSchema.StoreEntryId];
 
   /// <summary>
   /// Gets the item instance key.
   /// </summary>
-// Uint8List get InstanceKey =>  this.PropertyBag[ItemSchema.InstanceKey];
+  Uint8List get InstanceKey => this.PropertyBag[ItemSchema.InstanceKey];
 
   /// <summary>
   /// Get or set the Flag value for this item.
@@ -893,8 +860,7 @@ class Item extends ServiceObject {
   /// Gets the default settings for sending invitations or cancellations on Update.
   /// Subclasses will override this for different default behavior.
   /// </summary>
-  SendInvitationsOrCancellationsMode
-      get DefaultSendInvitationsOrCancellationsMode => null;
+  SendInvitationsOrCancellationsMode get DefaultSendInvitationsOrCancellationsMode => null;
 
   /// <summary>
   /// Sets the subject.

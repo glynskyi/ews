@@ -1,4 +1,5 @@
 import 'package:ews/ComplexProperties/PhysicalAddressEntry.dart';
+import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/Responses/FindItemResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
 import 'package:ews/ews.dart';
@@ -43,11 +44,16 @@ main() {
 
   test('resolves name with contacts', () async {
     final exchangeService = prepareExchangeService(primaryUserCredential);
-    final result = await exchangeService.ResolveName(secondaryUserCredential.user.substring(0, 2), null,
+    await exchangeService.ResolveName(secondaryUserCredential.user.substring(0, 2), null,
         ResolveNameSearchLocation.ContactsThenDirectory, true, null);
-    result.forEach((nameResolution) {
-      print(nameResolution.Contact.Id);
-    });
+  });
+
+  test('resolves name with contact photos', () async {
+    final exchangeService =
+        prepareExchangeService(primaryUserCredential, ExchangeVersion.Exchange2010_SP1);
+    final response = await exchangeService.ResolveName(secondaryUserCredential.user, null,
+        ResolveNameSearchLocation.ContactsThenDirectory, true, PropertySet.FirstClassProperties);
+    expect(response.first.Contact.DirectoryPhoto.length, greaterThan(0));
   });
 
   test('creates contact', () async {

@@ -23,6 +23,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'dart:typed_data';
+
 import 'package:ews/Attributes/ServiceObjectDefinitionAttribute.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/FolderId.dart';
@@ -70,8 +72,7 @@ class EmailMessage extends Item {
   /// <param name="id">The Id of the e-mail message to bind to.</param>
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>An EmailMessage instance representing the e-mail message corresponding to the specified Id.</returns>
-  static Future<EmailMessage> Bind(
-      ExchangeService service, ItemId id, PropertySet propertySet) {
+  static Future<EmailMessage> Bind(ExchangeService service, ItemId id, PropertySet propertySet) {
     return service.BindToItemGeneric<EmailMessage>(id, propertySet);
   }
 
@@ -82,8 +83,7 @@ class EmailMessage extends Item {
   /// <param name="service">The service to use to bind to the e-mail message.</param>
   /// <param name="id">The Id of the e-mail message to bind to.</param>
   /// <returns>An EmailMessage instance representing the e-mail message corresponding to the specified Id.</returns>
-  static Future<EmailMessage> BindWithItemId(
-      ExchangeService service, ItemId id) {
+  static Future<EmailMessage> BindWithItemId(ExchangeService service, ItemId id) {
     return EmailMessage.Bind(service, id, PropertySet.FirstClassProperties);
   }
 
@@ -110,13 +110,11 @@ class EmailMessage extends Item {
   /// </summary>
   /// <param name="parentFolderId">The parent folder id.</param>
   /// <param name="messageDisposition">The message disposition.</param>
-  Future<void> _InternalSend(
-      FolderId parentFolderId, MessageDisposition messageDisposition) async {
+  Future<void> _InternalSend(FolderId parentFolderId, MessageDisposition messageDisposition) async {
     this.ThrowIfThisIsAttachment();
 
     if (this.IsNew) {
-      if ((this.Attachments.Count == 0) ||
-          (messageDisposition == MessageDisposition.SaveOnly)) {
+      if ((this.Attachments.Count == 0) || (messageDisposition == MessageDisposition.SaveOnly)) {
         await this.InternalCreate(parentFolderId, messageDisposition, null);
       } else {
         // If the message has attachments, save as a draft (and add attachments) before sending.
@@ -138,8 +136,8 @@ class EmailMessage extends Item {
       }
 
       if (this.PropertyBag.GetIsUpdateCallNecessary()) {
-        await this.InternalUpdate(parentFolderId,
-            ConflictResolutionMode.AutoResolve, messageDisposition, null);
+        await this.InternalUpdate(
+            parentFolderId, ConflictResolutionMode.AutoResolve, messageDisposition, null);
       } else {
         await this.Service.SendItem(this, parentFolderId);
       }
@@ -154,8 +152,8 @@ class EmailMessage extends Item {
   ResponseMessage CreateReply(bool replyAll) {
     this.ThrowIfThisIsNew();
 
-    return new ResponseMessage(this,
-        replyAll ? ResponseMessageType.ReplyAll : ResponseMessageType.Reply);
+    return new ResponseMessage(
+        this, replyAll ? ResponseMessageType.ReplyAll : ResponseMessageType.Reply);
   }
 
   /// <summary>
@@ -231,8 +229,7 @@ class EmailMessage extends Item {
   /// results in a call to EWS.
   /// </summary>
   /// <param name="destinationFolderName">The name of the folder in which to save the copy.</param>
-  void SendAndSaveCopyWithWellKnownFolder(
-      WellKnownFolderName destinationFolderName) {
+  void SendAndSaveCopyWithWellKnownFolder(WellKnownFolderName destinationFolderName) {
     this._InternalSend(new FolderId.fromWellKnownFolder(destinationFolderName),
         MessageDisposition.SendAndSaveCopy);
   }
@@ -243,8 +240,7 @@ class EmailMessage extends Item {
   /// results in a call to EWS.
   /// </summary>
   Future<void> SendAndSaveCopy() {
-    return this._InternalSend(
-        new FolderId.fromWellKnownFolder(WellKnownFolderName.SentItems),
+    return this._InternalSend(new FolderId.fromWellKnownFolder(WellKnownFolderName.SentItems),
         MessageDisposition.SendAndSaveCopy);
   }
 
@@ -261,14 +257,12 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets the list of To recipients for the e-mail message.
   /// </summary>
-  EmailAddressCollection get ToRecipients =>
-      this.PropertyBag[EmailMessageSchema.ToRecipients];
+  EmailAddressCollection get ToRecipients => this.PropertyBag[EmailMessageSchema.ToRecipients];
 
   /// <summary>
   /// Gets the list of Bcc recipients for the e-mail message.
   /// </summary>
-  EmailAddressCollection get BccRecipients =>
-      this.PropertyBag[EmailMessageSchema.BccRecipients];
+  EmailAddressCollection get BccRecipients => this.PropertyBag[EmailMessageSchema.BccRecipients];
 
   /// <summary>
   /// Gets the Likers associated with the message.
@@ -278,19 +272,17 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets the list of Cc recipients for the e-mail message.
   /// </summary>
-  EmailAddressCollection get CcRecipients =>
-      this.PropertyBag[EmailMessageSchema.CcRecipients];
+  EmailAddressCollection get CcRecipients => this.PropertyBag[EmailMessageSchema.CcRecipients];
 
   /// <summary>
   /// Gets the conversation topic of the e-mail message.
   /// </summary>
-  String get ConversationTopic =>
-      this.PropertyBag[EmailMessageSchema.ConversationTopic];
+  String get ConversationTopic => this.PropertyBag[EmailMessageSchema.ConversationTopic];
 
   /// <summary>
   /// Gets the conversation index of the e-mail message.
   /// </summary>
-//        Uint8List get ConversationIndex => this.PropertyBag[EmailMessageSchema.ConversationIndex];
+  Uint8List get ConversationIndex => this.PropertyBag[EmailMessageSchema.ConversationIndex];
 
   /// <summary>
   /// Gets or sets the "on behalf" sender of the e-mail message.
@@ -328,8 +320,7 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets or sets a value indicating whether a read receipt is requested for the e-mail message.
   /// </summary>
-  bool get IsReadReceiptRequested =>
-      this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested];
+  bool get IsReadReceiptRequested => this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested];
 
   set IsReadReceiptRequested(bool value) =>
       this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested] = value;
@@ -337,8 +328,7 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets or sets a value indicating whether a response is requested for the e-mail message.
   /// </summary>
-  bool get IsResponseRequested =>
-      this.PropertyBag[EmailMessageSchema.IsResponseRequested];
+  bool get IsResponseRequested => this.PropertyBag[EmailMessageSchema.IsResponseRequested];
 
   set IsResponseRequested(bool value) =>
       this.PropertyBag[EmailMessageSchema.IsResponseRequested] = value;
@@ -346,22 +336,19 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets the Internet Message Id of the e-mail message.
   /// </summary>
-  String get InternetMessageId =>
-      this.PropertyBag[EmailMessageSchema.InternetMessageId];
+  String get InternetMessageId => this.PropertyBag[EmailMessageSchema.InternetMessageId];
 
   /// <summary>
   /// Gets or sets the references of the e-mail message.
   /// </summary>
   String get References => this.PropertyBag[EmailMessageSchema.References];
 
-  set References(String value) =>
-      this.PropertyBag[EmailMessageSchema.References] = value;
+  set References(String value) => this.PropertyBag[EmailMessageSchema.References] = value;
 
   /// <summary>
   /// Gets a list of e-mail addresses to which replies should be addressed.
   /// </summary>
-  EmailAddressCollection get ReplyTo =>
-      this.PropertyBag[EmailMessageSchema.ReplyTo];
+  EmailAddressCollection get ReplyTo => this.PropertyBag[EmailMessageSchema.ReplyTo];
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

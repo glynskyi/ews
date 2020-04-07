@@ -1,3 +1,10 @@
+## 1.0.15
+
+* Added `DirectoryPhoto` to `Contact`
+* Added `StoreEntryId`, `InstanceKey` to `Item`
+* Added `ConversationIndex` to `EmailMessage`
+* Added `InstanceKey` to `Conversation`
+
 ## 1.0.14
 
 * Fixed the `ReadElementValue`
