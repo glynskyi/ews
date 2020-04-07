@@ -66,10 +66,10 @@ class OutlookAccount {
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.AccountType:
-            this.AccountType = reader.ReadElementValue();
+            this.AccountType = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Action:
-            String xmlResponseType = reader.ReadElementValue();
+            String xmlResponseType = reader.ReadElementValue<String>();
 
             switch (xmlResponseType) {
               case OutlookAccount._Settings:
@@ -99,7 +99,7 @@ class OutlookAccount {
             break;
           case XmlElementNames.RedirectAddr:
           case XmlElementNames.RedirectUrl:
-            this.RedirectTarget = reader.ReadElementValue();
+            this.RedirectTarget = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.AlternateMailboxes:
             AlternateMailbox alternateMailbox =

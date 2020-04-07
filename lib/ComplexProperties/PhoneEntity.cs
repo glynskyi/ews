@@ -66,15 +66,15 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgOriginalPhoneString:
-                    this.OriginalPhoneString = reader.ReadElementValue();
+                    this.OriginalPhoneString = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgPhoneString:
-                    this.PhoneString = reader.ReadElementValue();
+                    this.PhoneString = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgType:
-                    this.Type = reader.ReadElementValue();
+                    this.Type = reader.ReadElementValue<String>();
                     return true;
 
                 default:

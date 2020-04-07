@@ -244,7 +244,7 @@ class GroupMember extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.Status:
         this.status =
-            EwsUtilities.Parse<MemberStatus>(reader.ReadElementValue());
+            EwsUtilities.Parse<MemberStatus>(reader.ReadElementValue<String>());
         return true;
 
       case XmlElementNames.Mailbox:

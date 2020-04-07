@@ -555,7 +555,7 @@ abstract class AutodiscoverRequest {
             serverInfo.MinorBuildNumber = reader.ReadElementValue<int>();
             break;
           case XmlElementNames.Version:
-            serverInfo.VersionString = reader.ReadElementValue();
+            serverInfo.VersionString = reader.ReadElementValue<String>();
             break;
           default:
             break;

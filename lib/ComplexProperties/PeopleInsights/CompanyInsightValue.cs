@@ -203,31 +203,31 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Name:
-                    this.Name = reader.ReadElementValue();
+                    this.Name = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.SatoriId:
-                    this.SatoriId = reader.ReadElementValue();
+                    this.SatoriId = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Description:
-                    this.Description = reader.ReadElementValue();
+                    this.Description = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.DescriptionAttribution:
-                    this.DescriptionAttribution = reader.ReadElementValue();
+                    this.DescriptionAttribution = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.ImageUrl:
-                    this.ImageUrl = reader.ReadElementValue();
+                    this.ImageUrl = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.ImageUrlAttribution:
-                    this.ImageUrlAttribution = reader.ReadElementValue();
+                    this.ImageUrlAttribution = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.YearFound:
-                    this.YearFound = reader.ReadElementValue();
+                    this.YearFound = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.FinanceSymbol:
-                    this.FinanceSymbol = reader.ReadElementValue();
+                    this.FinanceSymbol = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.WebsiteUrl:
-                    this.WebsiteUrl = reader.ReadElementValue();
+                    this.WebsiteUrl = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

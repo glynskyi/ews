@@ -122,7 +122,7 @@
                     this.delta = TimeSpan.FromMinutes(reader.ReadElementValue<int>());
                     return true;
                 case XmlElementNames.Time:
-                    this.timeOfDay = TimeSpan.Parse(reader.ReadElementValue());
+                    this.timeOfDay = TimeSpan.Parse(reader.ReadElementValue<String>());
                     return true;
                 case XmlElementNames.DayOrder:
                     this.dayOrder = reader.ReadElementValue<int>();

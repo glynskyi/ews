@@ -89,7 +89,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.RedirectTarget:
-            this._redirectTarget = reader.ReadElementValue();
+            this._redirectTarget = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DomainSettingErrors:
             this.LoadDomainSettingErrorsFromXml(reader);
@@ -156,7 +156,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
             name = reader.ReadElementValue<DomainSettingName>();
             break;
           case XmlElementNames.Value:
-            value = reader.ReadElementValue();
+            value = reader.ReadElementValue<String>();
             break;
         }
       }

@@ -81,7 +81,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <returns>Element value.</returns>
   DateTime ReadElementValueAsDateTime() {
-    return this._ConvertStringToDateTime(this.ReadElementValue());
+    return this._ConvertStringToDateTime(this.ReadElementValue<String>());
   }
 
   /// <summary>
@@ -89,7 +89,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <returns>Element value.</returns>
   DateTime ReadElementValueAsUnspecifiedDate() {
-    return this._ConvertStringToUnspecifiedDate(this.ReadElementValue());
+    return this._ConvertStringToUnspecifiedDate(this.ReadElementValue<String>());
   }
 
   /// <summary>
@@ -99,7 +99,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// <returns>The element's value as a DateTime object.</returns>
 // DateTime ReadElementValueAsUnbiasedDateTimeScopedToServiceTimeZone()
 //        {
-//            String elementValue = this.ReadElementValue();
+//            String elementValue = this.ReadElementValue<String>();
 //            return EwsUtilities.ParseAsUnbiasedDatetimescopedToServicetimeZone(elementValue, this.Service);
 //        }
 

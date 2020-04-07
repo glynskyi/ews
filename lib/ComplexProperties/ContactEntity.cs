@@ -86,11 +86,11 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgPersonName:
-                    this.PersonName = reader.ReadElementValue();
+                    this.PersonName = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgBusinessName:
-                    this.BusinessName = reader.ReadElementValue();
+                    this.BusinessName = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgPhoneNumbers:
@@ -114,7 +114,7 @@
                     return true;
 
                 case XmlElementNames.NlgContactString:
-                    this.ContactString = reader.ReadElementValue();
+                    this.ContactString = reader.ReadElementValue<String>();
                     return true;
 
                 default:

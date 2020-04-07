@@ -112,34 +112,34 @@ class CompleteName extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Title:
-        this._title = reader.ReadElementValue();
+        this._title = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.FirstName:
-        this._givenName = reader.ReadElementValue();
+        this._givenName = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.MiddleName:
-        this._middleName = reader.ReadElementValue();
+        this._middleName = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.LastName:
-        this._surname = reader.ReadElementValue();
+        this._surname = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Suffix:
-        this._suffix = reader.ReadElementValue();
+        this._suffix = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Initials:
-        this._initials = reader.ReadElementValue();
+        this._initials = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.FullName:
-        this._fullName = reader.ReadElementValue();
+        this._fullName = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.NickName:
-        this._nickname = reader.ReadElementValue();
+        this._nickname = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.YomiFirstName:
-        this._yomiGivenName = reader.ReadElementValue();
+        this._yomiGivenName = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.YomiLastName:
-        this._yomiSurname = reader.ReadElementValue();
+        this._yomiSurname = reader.ReadElementValue<String>();
         return true;
       default:
         return false;

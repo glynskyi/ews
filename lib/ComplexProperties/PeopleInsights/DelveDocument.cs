@@ -223,31 +223,31 @@
                     this.Rank = reader.ReadElementValue<double>();
                     break;
                 case XmlElementNames.Author:
-                    this.Author = reader.ReadElementValue();
+                    this.Author = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Created:
-                    this.Created = reader.ReadElementValue();
+                    this.Created = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.LastModifiedTime:
-                    this.LastModifiedTime = reader.ReadElementValue();
+                    this.LastModifiedTime = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.DefaultEncodingURL:
-                    this.DefaultEncodingURL = reader.ReadElementValue();
+                    this.DefaultEncodingURL = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.FileType:
-                    this.FileType = reader.ReadElementValue();
+                    this.FileType = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Title:
-                    this.Title = reader.ReadElementValue();
+                    this.Title = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.DocumentId:
-                    this.DocumentId = reader.ReadElementValue();
+                    this.DocumentId = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.PreviewURL:
-                    this.PreviewURL = reader.ReadElementValue();
+                    this.PreviewURL = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.LastEditor:
-                    this.LastEditor = reader.ReadElementValue();
+                    this.LastEditor = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

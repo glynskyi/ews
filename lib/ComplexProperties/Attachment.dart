@@ -264,16 +264,16 @@ abstract class Attachment extends ComplexProperty {
             XmlNamespace.Types, XmlElementNames.AttachmentId);
         return true;
       case XmlElementNames.Name:
-        this._name = reader.ReadElementValue();
+        this._name = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ContentType:
-        this._contentType = reader.ReadElementValue();
+        this._contentType = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ContentId:
-        this._contentId = reader.ReadElementValue();
+        this._contentId = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ContentLocation:
-        this._contentLocation = reader.ReadElementValue();
+        this._contentLocation = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Size:
         this._size = reader.ReadElementValue<int>();

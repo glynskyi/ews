@@ -78,7 +78,7 @@ class MeetingTimeZone extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.BaseOffset:
         this._baseOffset =
-            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
+            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>());
         return true;
       case XmlElementNames.Standard:
         this._standard = new TimeChange();

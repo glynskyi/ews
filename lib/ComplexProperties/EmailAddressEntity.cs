@@ -56,7 +56,7 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgEmailAddress:
-                    this.EmailAddress = reader.ReadElementValue();
+                    this.EmailAddress = reader.ReadElementValue<String>();
                     return true;
 
                 default:

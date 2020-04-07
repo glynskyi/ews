@@ -66,10 +66,10 @@ class HighlightTerm extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.HighlightTermScope:
-        this.scope = reader.ReadElementValue();
+        this.scope = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.HighlightTermValue:
-        this.value = reader.ReadElementValue();
+        this.value = reader.ReadElementValue<String>();
         return true;
       default:
         return false;

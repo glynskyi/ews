@@ -69,7 +69,7 @@
                     switch (reader.LocalName)
                     {
                         case XmlElementNames.MergedFreeBusy:
-                            String mergedFreeBusy = reader.ReadElementValue();
+                            String mergedFreeBusy = reader.ReadElementValue<String>();
 
                             for (int i = 0; i < mergedFreeBusy.Length; i++)
                             {

@@ -309,61 +309,61 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.EmailAddress:
-                    this.EmailAddress = reader.ReadElementValue();
+                    this.EmailAddress = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.FullName:
-                    this.FullName = reader.ReadElementValue();
+                    this.FullName = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.DisplayName:
-                    this.DisplayName = reader.ReadElementValue();
+                    this.DisplayName = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.GivenName:
-                    this.GivenName = reader.ReadElementValue();
+                    this.GivenName = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Surname:
-                    this.Surname = reader.ReadElementValue();
+                    this.Surname = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.PhoneNumber:
-                    this.PhoneNumber = reader.ReadElementValue();
+                    this.PhoneNumber = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.SMSNumber:
-                    this.SMSNumber = reader.ReadElementValue();
+                    this.SMSNumber = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.FacebookProfileLink:
-                    this.FacebookProfileLink = reader.ReadElementValue();
+                    this.FacebookProfileLink = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.LinkedInProfileLink:
-                    this.LinkedInProfileLink = reader.ReadElementValue();
+                    this.LinkedInProfileLink = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.ProfessionalBiography:
-                    this.ProfessionalBiography = reader.ReadElementValue();
+                    this.ProfessionalBiography = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.TeamSize:
-                    this.TeamSize = reader.ReadElementValue();
+                    this.TeamSize = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Birthday:
-                    this.Birthday = reader.ReadElementValue();
+                    this.Birthday = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Hometown:
-                    this.Hometown = reader.ReadElementValue();
+                    this.Hometown = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.CurrentLocation:
-                    this.CurrentLocation = reader.ReadElementValue();
+                    this.CurrentLocation = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Office:
-                    this.Office = reader.ReadElementValue();
+                    this.Office = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Headline:
-                    this.Headline = reader.ReadElementValue();
+                    this.Headline = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Title:
-                    this.Title = reader.ReadElementValue();
+                    this.Title = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Alias:
-                    this.Alias = reader.ReadElementValue();
+                    this.Alias = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Department:
-                    this.Department = reader.ReadElementValue();
+                    this.Department = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.MutualManager:
                     this.MutualManager = new ProfileInsightValue();

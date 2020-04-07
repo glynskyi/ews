@@ -65,10 +65,10 @@ class UserSettingError {
             this.ErrorCode = reader.ReadElementValue<AutodiscoverErrorCode>();
             break;
           case XmlElementNames.ErrorMessage:
-            this.ErrorMessage = reader.ReadElementValue();
+            this.ErrorMessage = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SettingName:
-            this.SettingName = reader.ReadElementValue();
+            this.SettingName = reader.ReadElementValue<String>();
             break;
         }
       }

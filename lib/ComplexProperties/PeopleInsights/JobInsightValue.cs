@@ -203,10 +203,10 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Company:
-                    this.Company = reader.ReadElementValue();
+                    this.Company = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Title:
-                    this.Title = reader.ReadElementValue();
+                    this.Title = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.StartUtcTicks:
                     this.StartUtcTicks = reader.ReadElementValue<long>();

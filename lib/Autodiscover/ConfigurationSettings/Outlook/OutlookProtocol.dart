@@ -387,48 +387,48 @@ class OutlookProtocol {
         switch (reader.LocalName) {
           case XmlElementNames.Type:
             this.ProtocolType =
-                OutlookProtocol.ProtocolNameToType(reader.ReadElementValue());
+                OutlookProtocol.ProtocolNameToType(reader.ReadElementValue<String>());
             break;
           case XmlElementNames.AuthPackage:
-            this.authPackage = reader.ReadElementValue();
+            this.authPackage = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Server:
-            this.server = reader.ReadElementValue();
+            this.server = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerDN:
-            this.serverDN = reader.ReadElementValue();
+            this.serverDN = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerVersion:
             // just read it out
-            reader.ReadElementValue();
+            reader.ReadElementValue<String>();
             break;
           case XmlElementNames.AD:
-            this.activeDirectoryServer = reader.ReadElementValue();
+            this.activeDirectoryServer = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.MdbDN:
-            this.mailboxDN = reader.ReadElementValue();
+            this.mailboxDN = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EWSUrl:
-            this.exchangeWebServicesUrl = reader.ReadElementValue();
+            this.exchangeWebServicesUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EmwsUrl:
-            this.exchangeManagementWebServicesUrl = reader.ReadElementValue();
+            this.exchangeManagementWebServicesUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ASUrl:
-            this.availabilityServiceUrl = reader.ReadElementValue();
+            this.availabilityServiceUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.OOFUrl:
             // just read it out
-            reader.ReadElementValue();
+            reader.ReadElementValue<String>();
             break;
           case XmlElementNames.UMUrl:
-            this.unifiedMessagingUrl = reader.ReadElementValue();
+            this.unifiedMessagingUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.OABUrl:
-            this.offlineAddressBookUrl = reader.ReadElementValue();
+            this.offlineAddressBookUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.PublicFolderServer:
-            this.publicFolderServer = reader.ReadElementValue();
+            this.publicFolderServer = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Internal:
             OutlookProtocol.LoadWebClientUrlsFromXml(
@@ -439,73 +439,73 @@ class OutlookProtocol {
                 reader, this.externalOutlookWebAccessUrls, reader.LocalName);
             break;
           case XmlElementNames.Ssl:
-            String sslStr = reader.ReadElementValue();
+            String sslStr = reader.ReadElementValue<String>();
             this.sslEnabled = sslStr.toLowerCase() == "on";
             break;
           case XmlElementNames.SharingUrl:
-            this.sharingEnabled = reader.ReadElementValue().Length > 0;
+            this.sharingEnabled = reader.ReadElementValue<String>().length > 0;
             break;
           case XmlElementNames.EcpUrl:
-            this.ecpUrl = reader.ReadElementValue();
+            this.ecpUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_um:
-            this.ecpUrlUm = reader.ReadElementValue();
+            this.ecpUrlUm = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_aggr:
-            this.ecpUrlAggr = reader.ReadElementValue();
+            this.ecpUrlAggr = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_sms:
-            this.ecpUrlSms = reader.ReadElementValue();
+            this.ecpUrlSms = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_mt:
-            this.ecpUrlMt = reader.ReadElementValue();
+            this.ecpUrlMt = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_ret:
-            this.ecpUrlRet = reader.ReadElementValue();
+            this.ecpUrlRet = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_publish:
-            this.ecpUrlPublish = reader.ReadElementValue();
+            this.ecpUrlPublish = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_photo:
-            this.ecpUrlPhoto = reader.ReadElementValue();
+            this.ecpUrlPhoto = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ExchangeRpcUrl:
-            this.exchangeRpcUrl = reader.ReadElementValue();
+            this.exchangeRpcUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EwsPartnerUrl:
-            this.exchangeWebServicesPartnerUrl = reader.ReadElementValue();
+            this.exchangeWebServicesPartnerUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_connect:
-            this.ecpUrlConnect = reader.ReadElementValue();
+            this.ecpUrlConnect = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tm:
-            this.ecpUrlTm = reader.ReadElementValue();
+            this.ecpUrlTm = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tmCreating:
-            this.ecpUrlTmCreating = reader.ReadElementValue();
+            this.ecpUrlTmCreating = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tmEditing:
-            this.ecpUrlTmEditing = reader.ReadElementValue();
+            this.ecpUrlTmEditing = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tmHiding:
-            this.ecpUrlTmHiding = reader.ReadElementValue();
+            this.ecpUrlTmHiding = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SiteMailboxCreationURL:
-            this.siteMailboxCreationURL = reader.ReadElementValue();
+            this.siteMailboxCreationURL = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_extinstall:
-            this.ecpUrlExtInstall = reader.ReadElementValue();
+            this.ecpUrlExtInstall = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerExclusiveConnect:
-            String serverExclusiveConnectStr = reader.ReadElementValue();
+            String serverExclusiveConnectStr = reader.ReadElementValue<String>();
             this.serverExclusiveConnect =
                 serverExclusiveConnectStr.toLowerCase() == "on";
             break;
           case XmlElementNames.CertPrincipalName:
-            this.certPrincipalName = reader.ReadElementValue();
+            this.certPrincipalName = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.GroupingInformation:
-            this.groupingInformation = reader.ReadElementValue();
+            this.groupingInformation = reader.ReadElementValue<String>();
             break;
           default:
             reader.SkipCurrentElement();
@@ -547,7 +547,7 @@ class OutlookProtocol {
           case XmlElementNames.OWAUrl:
             String authMethod = reader.ReadAttributeValue(
                 XmlAttributeNames.AuthenticationMethod);
-            String owaUrl = reader.ReadElementValue();
+            String owaUrl = reader.ReadElementValue<String>();
             WebClientUrl webClientUrl = new WebClientUrl(authMethod, owaUrl);
             webClientUrls.Urls.add(webClientUrl);
             break;

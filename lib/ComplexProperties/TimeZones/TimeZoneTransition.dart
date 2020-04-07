@@ -143,7 +143,7 @@ class TimeZoneTransition extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.To:
         String targetKind = reader.ReadAttributeValue(XmlAttributeNames.Kind);
-        String targetId = reader.ReadElementValue();
+        String targetId = reader.ReadElementValue<String>();
 
         switch (targetKind) {
           case TimeZoneTransition.PeriodTarget:

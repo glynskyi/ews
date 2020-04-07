@@ -231,10 +231,10 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.DisplayName:
-                    this.displayName = reader.ReadElementValue();
+                    this.displayName = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.RuleId:
-                    this.ruleId = reader.ReadElementValue();
+                    this.ruleId = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.Priority:
                     this.priority = reader.ReadElementValue<int>();

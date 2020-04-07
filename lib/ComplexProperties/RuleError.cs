@@ -118,10 +118,10 @@
                     this.errorCode = reader.ReadElementValue<RuleErrorCode>();
                     return true;
                 case XmlElementNames.ErrorMessage:
-                    this.errorMessage = reader.ReadElementValue();
+                    this.errorMessage = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.FieldValue:
-                    this.value = reader.ReadElementValue();
+                    this.value = reader.ReadElementValue<String>();
                     return true;
                 default:
                     return false;

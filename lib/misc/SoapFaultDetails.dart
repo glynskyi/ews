@@ -109,15 +109,15 @@ class SoapFaultDetails {
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.SOAPFaultCodeElementName:
-            soapFaultDetails.FaultCode = reader.ReadElementValue();
+            soapFaultDetails.FaultCode = reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SOAPFaultStringElementName:
-            soapFaultDetails.FaultString = reader.ReadElementValue();
+            soapFaultDetails.FaultString = reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SOAPFaultActorElementName:
-            soapFaultDetails.FaultActor = reader.ReadElementValue();
+            soapFaultDetails.FaultActor = reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SOAPDetailElementName:
@@ -155,7 +155,7 @@ class SoapFaultDetails {
             break;
 
           case XmlElementNames.EwsMessageElementName:
-            this.Message = reader.ReadElementValue();
+            this.Message = reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.EwsLineElementName:
@@ -177,7 +177,7 @@ class SoapFaultDetails {
             break;
 
           case XmlElementNames.EwsExceptionTypeElementName:
-            this.ExceptionType = reader.ReadElementValue();
+            this.ExceptionType = reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.MessageXml:
@@ -215,7 +215,7 @@ class SoapFaultDetails {
             case XmlElementNames.Value:
               this.errorDetails[
                       reader.ReadAttributeValue(XmlAttributeNames.Name)] =
-                  reader.ReadElementValue();
+                  reader.ReadElementValue<String>();
               break;
 
             default:

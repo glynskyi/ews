@@ -103,10 +103,10 @@
                     this.endTime = reader.ReadElementValueAsDateTime(XmlNamespace.Types, XmlElementNames.EndTime).Value;
                     break;
                 case XmlElementNames.Culture:
-                    this.culture = reader.ReadElementValue();
+                    this.culture = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Message:
-                    this.message = reader.ReadElementValue();
+                    this.message = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

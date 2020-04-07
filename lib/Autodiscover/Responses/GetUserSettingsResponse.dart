@@ -102,7 +102,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.RedirectTarget:
-            this.RedirectTarget = reader.ReadElementValue();
+            this.RedirectTarget = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.UserSettingErrors:
             this._LoadUserSettingErrorsFromXml(reader);

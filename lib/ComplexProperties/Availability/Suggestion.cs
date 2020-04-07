@@ -59,7 +59,7 @@
             {
                 case XmlElementNames.Date:
                     // The date that is returned by Availability is unscoped.
-                    DateTime tempDate = DateTime.Parse(reader.ReadElementValue(), CultureInfo.InvariantCulture);
+                    DateTime tempDate = DateTime.Parse(reader.ReadElementValue<String>(), CultureInfo.InvariantCulture);
 
                     if (tempDate.Kind != DateTimeKind.Unspecified)
                     {

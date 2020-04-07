@@ -61,7 +61,7 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgTaskString:
-                    this.TaskString = reader.ReadElementValue();
+                    this.TaskString = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgAssignees:

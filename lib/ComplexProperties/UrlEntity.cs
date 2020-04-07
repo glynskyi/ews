@@ -56,7 +56,7 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgUrl:
-                    this.Url = reader.ReadElementValue();
+                    this.Url = reader.ReadElementValue<String>();
                     return true;
 
                 default:

@@ -118,16 +118,16 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Blob:
-                    this.Blob = reader.ReadElementValue();
+                    this.Blob = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.PhotoSize:
-                    this.PhotoSize = reader.ReadElementValue();
+                    this.PhotoSize = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Url:
-                    this.Url = reader.ReadElementValue();
+                    this.Url = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.ImageType:
-                    this.ImageType = reader.ReadElementValue();
+                    this.ImageType = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

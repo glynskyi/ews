@@ -116,7 +116,7 @@
                     this.connectionFailureCause = reader.ReadElementValue<ConnectionFailureCause>();
                     return true;
                 case XmlElementNames.SIPResponseText:
-                    this.sipResponseText = reader.ReadElementValue();
+                    this.sipResponseText = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.SIPResponseCode:
                     this.sipResponseCode = reader.ReadElementValue<int>();

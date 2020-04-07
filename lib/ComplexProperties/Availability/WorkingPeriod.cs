@@ -59,7 +59,7 @@
                 case XmlElementNames.DayOfWeek:
                     EwsUtilities.ParseEnumValueList<DayOfTheWeek>(
                         this.daysOfWeek,
-                        reader.ReadElementValue(),
+                        reader.ReadElementValue<String>(),
                         ' ');
                     return true;
                 case XmlElementNames.StartTimeInMinutes:

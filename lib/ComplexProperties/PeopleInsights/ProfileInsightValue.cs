@@ -146,19 +146,19 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.FullName:
-                    this.fullName = reader.ReadElementValue();
+                    this.fullName = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.FirstName:
-                    this.firstName = reader.ReadElementValue();
+                    this.firstName = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.LastName:
-                    this.lastName = reader.ReadElementValue();
+                    this.lastName = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.EmailAddress:
-                    this.emailAddress = reader.ReadElementValue();
+                    this.emailAddress = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Avatar:
-                    this.avatar = reader.ReadElementValue();
+                    this.avatar = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.JoinedUtcTicks:
                     this.joinedUtcTicks = reader.ReadElementValue<long>();
@@ -169,7 +169,7 @@
                     this.profilePicture = picture;
                     break;
                 case XmlElementNames.Title:
-                    this.title = reader.ReadElementValue();
+                    this.title = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

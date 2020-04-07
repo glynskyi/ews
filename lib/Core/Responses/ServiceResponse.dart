@@ -156,7 +156,7 @@ class ServiceResponse {
           case XmlElementNames.Value:
             this._errorDetails[
                     reader.ReadAttributeValue(XmlAttributeNames.Name)] =
-                reader.ReadElementValue();
+                reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.FieldURI:

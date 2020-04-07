@@ -74,16 +74,16 @@ class OutlookUser {
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.DisplayName:
-            this._displayName = reader.ReadElementValue();
+            this._displayName = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.LegacyDN:
-            this._legacyDN = reader.ReadElementValue();
+            this._legacyDN = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DeploymentId:
-            this._deploymentId = reader.ReadElementValue();
+            this._deploymentId = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.AutoDiscoverSMTPAddress:
-            this._autodiscoverAMTPAddress = reader.ReadElementValue();
+            this._autodiscoverAMTPAddress = reader.ReadElementValue<String>();
             break;
           default:
             reader.SkipCurrentElement();

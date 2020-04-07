@@ -103,7 +103,7 @@ class FolderPermissionCollection
 
         if (reader.IsStartElementWithNamespace(
             XmlNamespace.Types, XmlElementNames.UnknownEntry)) {
-          this.unknownEntries.add(reader.ReadElementValue());
+          this.unknownEntries.add(reader.ReadElementValue<String>());
         }
       } while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Types, XmlElementNames.UnknownEntries));

@@ -96,28 +96,28 @@
                 switch (reader.LocalName)
                 {
                     case XmlElementNames.SmtpAddress:
-                        this.SmtpAddress = reader.ReadElementValue();
+                        this.SmtpAddress = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.LegacyDN:
-                        this.LegacyDN = reader.ReadElementValue();
+                        this.LegacyDN = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.MailboxGuid:
-                        this.MailboxGuid = reader.ReadElementValue();
+                        this.MailboxGuid = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.DisplayName:
-                        this.DisplayName = reader.ReadElementValue();
+                        this.DisplayName = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.IsFavorite:
                         this.IsFavorite = reader.ReadElementValue<bool>();
                         break;
                     case XmlElementNames.LastVisitedTimeUtc:
-                        this.LastVisitedTimeUtc = reader.ReadElementValue();
+                        this.LastVisitedTimeUtc = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.AccessType:
-                        this.AccessType = (UnifiedGroupAccessType)Enum.Parse(typeof(UnifiedGroupAccessType), reader.ReadElementValue(), false);
+                        this.AccessType = (UnifiedGroupAccessType)Enum.Parse(typeof(UnifiedGroupAccessType), reader.ReadElementValue<String>(), false);
                         break;
                     case XmlElementNames.ExternalDirectoryObjectId:
-                        this.ExternalDirectoryObjectId = reader.ReadElementValue();
+                        this.ExternalDirectoryObjectId = reader.ReadElementValue<String>();
                         break;
                     default:
                         break;

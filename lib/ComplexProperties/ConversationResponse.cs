@@ -77,7 +77,7 @@
                     return true;
 
                 case XmlElementNames.SyncState:
-                    this.SyncState = reader.ReadElementValue();
+                    this.SyncState = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.ConversationNodes:

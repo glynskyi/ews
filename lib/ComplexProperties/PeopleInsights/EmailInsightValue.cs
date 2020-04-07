@@ -112,19 +112,19 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Id:
-                    this.Id = reader.ReadElementValue();
+                    this.Id = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.ThreadId:
-                    this.ThreadId = reader.ReadElementValue();
+                    this.ThreadId = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Subject:
-                    this.Subject = reader.ReadElementValue();
+                    this.Subject = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.LastEmailDateUtcTicks:
                     this.LastEmailDateUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Body:
-                    this.Body = reader.ReadElementValue();
+                    this.Body = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.LastEmailSender:
                     this.LastEmailSender = new ProfileInsightValue();

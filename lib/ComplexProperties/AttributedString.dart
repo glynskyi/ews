@@ -101,7 +101,7 @@ class AttributedString extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Value:
-        this.Value = reader.ReadElementValue();
+        this.Value = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Attributions:
         return this.LoadAttributionsFromXml(reader);
@@ -124,7 +124,7 @@ class AttributedString extends ComplexProperty {
         reader.Read();
         if (reader.NodeType == XmlNodeType.Element &&
             reader.LocalName == XmlElementNames.Attribution) {
-          String s = reader.ReadElementValue();
+          String s = reader.ReadElementValue<String>();
           if (!StringUtils.IsNullOrEmpty(s)) {
             this._attributionList.add(s);
           }

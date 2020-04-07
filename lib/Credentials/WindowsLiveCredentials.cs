@@ -433,7 +433,7 @@
             }
 
             // Now that we've found the reqstatus element, get its value.
-            String reqstatus = rstResponse.ReadElementValue();
+            String reqstatus = rstResponse.ReadElementValue<String>();
 
             // Read to body tag in both success and failure cases,
             // since we need to trace the fault response in failure cases

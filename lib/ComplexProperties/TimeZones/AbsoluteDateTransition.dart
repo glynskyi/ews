@@ -70,7 +70,7 @@ class AbsoluteDateTransition extends TimeZoneTransition {
 
     if (!result) {
       if (reader.LocalName == XmlElementNames.DateTime) {
-        this._dateTime = core.DateTime.parse(reader.ReadElementValue());
+        this._dateTime = core.DateTime.parse(reader.ReadElementValue<String>());
 
         result = true;
       }

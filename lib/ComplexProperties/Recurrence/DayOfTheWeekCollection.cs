@@ -77,7 +77,7 @@
 
             EwsUtilities.ParseEnumValueList<DayOfTheWeek>(
                 this.items,
-                reader.ReadElementValue(),
+                reader.ReadElementValue<String>(),
                 ' ');
         }
 

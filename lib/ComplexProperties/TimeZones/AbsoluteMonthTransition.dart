@@ -68,7 +68,7 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
       switch (reader.LocalName) {
         case XmlElementNames.TimeOffset:
           this.timeOffset =
-              EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue());
+              EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>());
           return true;
         case XmlElementNames.Month:
           this.month = reader.ReadElementValue<int>();

@@ -211,13 +211,13 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Name:
-        this.name = reader.ReadElementValue();
+        this.name = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.EmailAddress:
-        this.address = reader.ReadElementValue();
+        this.address = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.RoutingType:
-        this.routingType = reader.ReadElementValue();
+        this.routingType = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.MailboxType:
         this.mailboxType = reader.ReadElementValue<enumerations.MailboxType>();

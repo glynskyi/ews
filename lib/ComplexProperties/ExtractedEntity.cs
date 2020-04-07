@@ -57,7 +57,7 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgEmailPosition:
-                    String positionAsString = reader.ReadElementValue();
+                    String positionAsString = reader.ReadElementValue<String>();
 
                     if (!StringUtils.IsNullOrEmpty(positionAsString))
                     {

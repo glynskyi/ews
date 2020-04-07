@@ -86,15 +86,15 @@
                     return true;
 
                 case XmlElementNames.NlgLocation:
-                    this.Location = reader.ReadElementValue();
+                    this.Location = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgSubject:
-                    this.Subject = reader.ReadElementValue();
+                    this.Subject = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgMeetingString:
-                    this.MeetingString = reader.ReadElementValue();
+                    this.MeetingString = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgStartTime:

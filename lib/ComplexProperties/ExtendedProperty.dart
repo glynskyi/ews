@@ -73,7 +73,7 @@ class ExtendedProperty extends ComplexProperty {
             "ExtendedProperty.TryReadElementFromXml",
             "PropertyDefintion is missing");
 
-        String stringValue = reader.ReadElementValue();
+        String stringValue = reader.ReadElementValue<String>();
         this._value = MapiTypeConverter.ConvertToValueWithStringValue(
             this.PropertyDefinition.MapiType, stringValue);
         return true;

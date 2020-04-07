@@ -59,10 +59,10 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.Key:
-                    this.Key = reader.ReadElementValue();
+                    this.Key = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Value:
-                    this.Value = reader.ReadElementValue();
+                    this.Value = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

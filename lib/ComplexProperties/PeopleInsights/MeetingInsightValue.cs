@@ -121,10 +121,10 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Id:
-                    this.Id = reader.ReadElementValue();
+                    this.Id = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Subject:
-                    this.Subject = reader.ReadElementValue();
+                    this.Subject = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.StartUtcTicks:
                     this.StartUtcTicks = reader.ReadElementValue<long>();
@@ -133,7 +133,7 @@
                     this.EndUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Location:
-                    this.Location = reader.ReadElementValue();
+                    this.Location = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Organizer:
                     this.Organizer = new ProfileInsightValue();

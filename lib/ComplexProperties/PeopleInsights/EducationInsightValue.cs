@@ -118,10 +118,10 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Institute:
-                    this.Institute = reader.ReadElementValue();
+                    this.Institute = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Degree:
-                    this.Degree = reader.ReadElementValue();
+                    this.Degree = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.StartUtcTicks:
                     this.StartUtcTicks = reader.ReadElementValue<long>();

@@ -59,7 +59,7 @@
                     this.hasLocationChanged = reader.ReadElementValue<bool>();
                     return true;
                 case XmlElementNames.Location:
-                    this.location = reader.ReadElementValue();
+                    this.location = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.HasStartTimeChanged:
                     this.hasStartTimeChanged = reader.ReadElementValue<bool>();

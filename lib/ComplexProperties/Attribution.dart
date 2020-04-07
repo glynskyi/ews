@@ -124,14 +124,14 @@ class Attribution extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.Id:
-        this.Id = reader.ReadElementValue();
+        this.Id = reader.ReadElementValue<String>();
         break;
       case XmlElementNames.SourceId:
         this.SourceId = new ItemId();
         this.SourceId.LoadFromXml(reader, reader.LocalName);
         break;
       case XmlElementNames.DisplayName:
-        this.DisplayName = reader.ReadElementValue();
+        this.DisplayName = reader.ReadElementValue<String>();
         break;
       case XmlElementNames.IsWritable:
         this.IsWritable = reader.ReadElementValue<bool>();

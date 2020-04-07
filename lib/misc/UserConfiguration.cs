@@ -561,11 +561,11 @@
                             break;
 
                         case XmlElementNames.XmlData:
-                            this.xmlData = Convert.FromBase64String(reader.ReadElementValue());
+                            this.xmlData = Convert.FromBase64String(reader.ReadElementValue<String>());
                             break;
 
                         case XmlElementNames.BinaryData:
-                            this.binaryData = Convert.FromBase64String(reader.ReadElementValue());
+                            this.binaryData = Convert.FromBase64String(reader.ReadElementValue<String>());
                             break;
 
                         default:

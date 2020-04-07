@@ -70,11 +70,11 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.InternetMessageId:
-                    this.InternetMessageId = reader.ReadElementValue();
+                    this.InternetMessageId = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.ParentInternetMessageId:
-                    this.ParentInternetMessageId = reader.ReadElementValue();
+                    this.ParentInternetMessageId = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.Items:

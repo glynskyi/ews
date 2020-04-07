@@ -62,11 +62,11 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.NlgName:
-                    this.Name = reader.ReadElementValue();
+                    this.Name = reader.ReadElementValue<String>();
                     return true;
 
                 case XmlElementNames.NlgUserId:
-                    this.UserId = reader.ReadElementValue();
+                    this.UserId = reader.ReadElementValue<String>();
                     return true;
 
                 default:

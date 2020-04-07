@@ -67,7 +67,7 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Data:
-                    this.Data = reader.ReadElementValue();
+                    this.Data = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

@@ -1,3 +1,7 @@
+## 1.0.14
+
+* Fixed the `ReadElementValue`
+
 ## 1.0.13
 
 * Added `EffectiveRights` to `Item`

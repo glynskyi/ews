@@ -560,7 +560,7 @@
                 }
                 else
                 {
-                    value = reader.ReadElementValue();
+                    value = reader.ReadElementValue<String>();
                 }
 
                 values.Add(value);
@@ -586,7 +586,7 @@
 
             reader.ReadStartElement(this.Namespace, XmlElementNames.Type);
 
-            String type = reader.ReadElementValue();
+            String type = reader.ReadElementValue<String>();
 
             return GetObjectType(type);
         }

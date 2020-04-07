@@ -136,7 +136,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   @override
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     if (_PhysicalAddressSchema.XmlElementNames.contains(reader.LocalName)) {
-      this._propertyBag[reader.LocalName] = reader.ReadElementValue();
+      this._propertyBag[reader.LocalName] = reader.ReadElementValue<String>();
 
       return true;
     } else {

@@ -100,27 +100,27 @@ class ReferenceAttachment extends Attachment {
 
     if (!result) {
       if (reader.LocalName == XmlElementNames.AttachLongPathName) {
-        this._attachLongPathName = reader.ReadElementValue();
+        this._attachLongPathName = reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.ProviderType) {
-        this._providerType = reader.ReadElementValue();
+        this._providerType = reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.ProviderEndpointUrl) {
-        this._providerEndpointUrl = reader.ReadElementValue();
+        this._providerEndpointUrl = reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.AttachmentThumbnailUrl) {
-        this._attachmentThumbnailUrl = reader.ReadElementValue();
+        this._attachmentThumbnailUrl = reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.AttachmentPreviewUrl) {
-        this._attachmentPreviewUrl = reader.ReadElementValue();
+        this._attachmentPreviewUrl = reader.ReadElementValue<String>();
         return true;
       }
 

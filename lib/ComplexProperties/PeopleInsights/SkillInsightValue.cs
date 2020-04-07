@@ -84,10 +84,10 @@
                     this.UpdatedUtcTicks = reader.ReadElementValue<long>();
                     break;
                 case XmlElementNames.Name:
-                    this.Name = reader.ReadElementValue();
+                    this.Name = reader.ReadElementValue<String>();
                     break;
                 case XmlElementNames.Strength:
-                    this.Strength = reader.ReadElementValue();
+                    this.Strength = reader.ReadElementValue<String>();
                     break;
                 default:
                     return false;

@@ -83,7 +83,7 @@
                  switch (reader.LocalName)
                  {
                      case XmlElementNames.FilterType:
-                         this.FilterType = (UnifiedGroupsFilterType)Enum.Parse(typeof(UnifiedGroupsFilterType), reader.ReadElementValue(), false);
+                         this.FilterType = (UnifiedGroupsFilterType)Enum.Parse(typeof(UnifiedGroupsFilterType), reader.ReadElementValue<String>(), false);
                          break;
                      case XmlElementNames.TotalGroups:
                          this.TotalGroups = reader.ReadElementValue<int>();

@@ -88,10 +88,10 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.EmailAddress:
-        this.Address = reader.ReadElementValue();
+        this.Address = reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.RoutingType:
-        this.RoutingType = reader.ReadElementValue();
+        this.RoutingType = reader.ReadElementValue<String>();
         return true;
       default:
         return false;

@@ -175,10 +175,10 @@
                 switch (reader.LocalName)
                 {
                     case XmlElementNames.Name:
-                        this.Name = reader.ReadElementValue();
+                        this.Name = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.EmailAddress:
-                        this.Address = reader.ReadElementValue();
+                        this.Address = reader.ReadElementValue<String>();
 
                         // Process the next node before returning. Otherwise, the current </EmailAddress> node
                         // makes ComplexProperty.InternalLoadFromXml think that this ends the outer <EmailAddress>
@@ -190,7 +190,7 @@
                         }
                         break;
                     case XmlElementNames.RoutingType:
-                        this.RoutingType = reader.ReadElementValue();
+                        this.RoutingType = reader.ReadElementValue<String>();
                         break;
                     case XmlElementNames.MailboxType:
                         this.MailboxType = reader.ReadElementValue<MailboxType>();
@@ -200,7 +200,7 @@
                         this.Id.LoadFromXml(reader, reader.LocalName);
                         break;
                     case XmlElementNames.OriginalDisplayName:
-                        this.OriginalDisplayName = reader.ReadElementValue();
+                        this.OriginalDisplayName = reader.ReadElementValue<String>();
                         break;
                     default:
                         return false;

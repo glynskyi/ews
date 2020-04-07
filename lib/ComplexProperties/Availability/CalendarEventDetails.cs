@@ -61,13 +61,13 @@
             switch (reader.LocalName)
             {
                 case XmlElementNames.ID:
-                    this.storeId = reader.ReadElementValue();
+                    this.storeId = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.Subject:
-                    this.subject = reader.ReadElementValue();
+                    this.subject = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.Location:
-                    this.location = reader.ReadElementValue();
+                    this.location = reader.ReadElementValue<String>();
                     return true;
                 case XmlElementNames.IsMeeting:
                     this.isMeeting = reader.ReadElementValue<bool>();

@@ -65,10 +65,10 @@ class AutodiscoverError {
             error._errorCode = reader.ReadElementValue<int>();
             break;
           case XmlElementNames.Message:
-            error._message = reader.ReadElementValue();
+            error._message = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DebugData:
-            error._debugData = reader.ReadElementValue();
+            error._debugData = reader.ReadElementValue<String>();
             break;
           default:
             reader.SkipCurrentElement();

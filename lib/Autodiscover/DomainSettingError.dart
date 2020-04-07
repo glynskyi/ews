@@ -58,10 +58,10 @@ class DomainSettingError {
             this._errorCode = reader.ReadElementValue<AutodiscoverErrorCode>();
             break;
           case XmlElementNames.ErrorMessage:
-            this._errorMessage = reader.ReadElementValue();
+            this._errorMessage = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SettingName:
-            this._settingName = reader.ReadElementValue();
+            this._settingName = reader.ReadElementValue<String>();
             break;
         }
       }

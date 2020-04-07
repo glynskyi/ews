@@ -95,7 +95,7 @@
             reader.Read();
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.ClientExtensionRawMasterTableXml))
             {
-                this.rawMasterTableXml = reader.ReadElementValue();
+                this.rawMasterTableXml = reader.ReadElementValue<String>();
             }
         }
     }

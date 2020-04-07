@@ -901,6 +901,8 @@ class EwsUtilities {
         EnumToString.fromString(UserSettingName.values, stringValue),
     LegacyFreeBusyStatus: (stringValue) =>
         EnumToString.fromString(LegacyFreeBusyStatus.values, stringValue),
+    ContactSource: (stringValue) =>
+        EnumToString.fromString(ContactSource.values, stringValue),
   };
 
   static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
