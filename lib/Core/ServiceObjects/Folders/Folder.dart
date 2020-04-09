@@ -288,7 +288,7 @@ class Folder extends ServiceObject {
   Future<void> Update() async {
     if (this.IsDirty) {
       if (this.PropertyBag.GetIsUpdateCallNecessary()) {
-        this.Service.UpdateFolder(this);
+        await this.Service.UpdateFolder(this);
       }
     }
   }

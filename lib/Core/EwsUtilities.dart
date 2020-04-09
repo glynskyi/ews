@@ -962,7 +962,10 @@ class EwsUtilities {
     ImAddressKey,
     UserSettingName,
     ExchangeVersion,
-    Importance
+    Importance,
+    PermissionScope,
+    FolderPermissionReadAccess,
+    StandardUser
   ];
 
   /// <summary>

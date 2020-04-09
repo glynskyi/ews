@@ -1,3 +1,15 @@
+## 1.0.18
+
+* Fixed the standard user parsing
+
+## 1.0.17
+
+* Fixed the permission parsing
+
+## 1.0.16
+
+* Make `FolderPermission` modifiable
+
 ## 1.0.15
 
 * Added `DirectoryPhoto` to `Contact`
