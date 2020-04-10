@@ -679,13 +679,13 @@ class EwsXmlReader {
   /// Gets the namespace prefix.
   /// </summary>
   /// <value>The namespace prefix.</value>
-  String get NamespacePrefix => this._xmlReader.Prefix;
+  String get NamespacePrefix => this._xmlReader.Prefix ?? "";
 
   /// <summary>
   /// Gets the namespace URI.
   /// </summary>
   /// <value>The namespace URI.</value>
-  String get NamespaceUri => this._xmlReader.NamespaceURI;
+  String get NamespaceUri => this._xmlReader.NamespaceURI ?? "";
 
   /// <summary>
   /// Gets the type of the node.

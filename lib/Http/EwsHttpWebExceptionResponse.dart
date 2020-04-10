@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
@@ -14,10 +16,11 @@ class EwsHttpWebExceptionResponse implements IEwsHttpWebResponse {
   }
 
   @override
-  String get ContentEncoding => throw NotImplementedException();
+  String get ContentEncoding =>
+      this._webException.Response.headers[HttpHeaders.contentEncodingHeader]?.first ?? "";
 
   @override
-  String get ContentType => throw NotImplementedException();
+  String get ContentType => this._webException.Response.headers.contentType?.value ?? "";
 
   @override
   Dispose() {
@@ -26,7 +29,7 @@ class EwsHttpWebExceptionResponse implements IEwsHttpWebResponse {
 
   @override
   Stream<List<int>> GetResponseStream() {
-    throw NotImplementedException();
+    return this._webException.Response;
   }
 
   @override

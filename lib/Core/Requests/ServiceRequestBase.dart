@@ -24,6 +24,7 @@
  */
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:ews/Core/EwsServiceXmlReader.dart';
@@ -753,9 +754,7 @@ abstract class ServiceRequestBase {
     } on WebException catch (ex) {
       if (ex.Status == WebExceptionStatus.ProtocolError &&
           ex.Response != null) {
-//                    // todo("implement ProcessWebException");
-//                    print("implement ProcessWebException");
-//                    this.ProcessWebException(ex);
+        await this._ProcessWebException(ex);
       }
 
       // Wrap exception if the above code block didn't throw

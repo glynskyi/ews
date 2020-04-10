@@ -29,26 +29,21 @@ import 'package:ews/Exceptions/ServiceResponseException.dart';
 /// <summary>
 /// Represents a server busy exception found in a service response.
 /// </summary>
-//    [Serializable]
-// todo("refactor this class")
 class ServerBusyException extends ServiceResponseException {
-  static const String _BackOffMillisecondsKey = "BackOffMilliseconds";
-  final int _backOffMilliseconds = 30000;
-
-  ServerBusyException(ServiceResponse response) : super(response);
+  static const String BackOffMillisecondsKey = "BackOffMilliseconds";
+  int _backOffMilliseconds;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServerBusyException"/> class.
   /// </summary>
   /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
-// ServerBusyException(ServiceResponse response)
-//            : super(response)
-//        {
-//            if (response.ErrorDetails != null && response.ErrorDetails.ContainsKey(ServerBusyException.BackOffMillisecondsKey))
-//            {
-//                Int32.TryParse(response.ErrorDetails[ServerBusyException.BackOffMillisecondsKey], out this.backOffMilliseconds);
-//            }
-//		}
+  ServerBusyException(ServiceResponse response) : super(response) {
+    if (response.ErrorDetails != null &&
+        response.ErrorDetails.containsKey(ServerBusyException.BackOffMillisecondsKey)) {
+      _backOffMilliseconds =
+          int.tryParse(response.ErrorDetails[ServerBusyException.BackOffMillisecondsKey]);
+    }
+  }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServerBusyException"/> class with serialized data.

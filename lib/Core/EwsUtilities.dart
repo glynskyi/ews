@@ -694,7 +694,7 @@ class EwsUtilities {
   static String FormatLogMessageWithXmlContent(
       String entryKind, MemoryStream memoryStream) {
     // todo("improve FormatLogMessageWithXmlContent")
-    print(".. improve FormatLogMessageWithXmlContent");
+//    print(".. improve FormatLogMessageWithXmlContent");
     return utf8.decode(memoryStream.AllElements);
 //            StringBuffer sb = new StringBuffer();
 //            XmlReaderSettings settings = new XmlReaderSettings();

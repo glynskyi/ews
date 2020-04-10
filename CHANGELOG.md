@@ -1,3 +1,7 @@
+## 1.0.19
+
+* Improved the server exceptions processing 
+
 ## 1.0.18
 
 * Fixed the standard user parsing
