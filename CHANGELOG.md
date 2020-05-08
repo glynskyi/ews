@@ -1,3 +1,7 @@
+## 1.0.21
+
+* Added `MemberStatus` to `Contact`
+
 ## 1.0.20
 
 * Added the conversation of enums to schema 
