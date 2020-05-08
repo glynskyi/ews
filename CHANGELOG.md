@@ -1,3 +1,8 @@
+## 1.0.20
+
+* Added the conversation of enums to schema 
+* Added the validation of exchange version
+
 ## 1.0.19
 
 * Improved the server exceptions processing 
