@@ -26,6 +26,7 @@
 import 'package:ews/ComplexProperties/Mailbox.dart' as complexProperties;
 import 'package:ews/ComplexProperties/ServiceId.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
@@ -94,8 +95,8 @@ class FolderId extends ServiceId {
   @override
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     if (this.FolderName != null) {
-      writer.WriteAttributeValue(XmlAttributeNames.Id,
-          EnumToString.parse(this.FolderName).toLowerCase());
+      writer.WriteAttributeValue(
+          XmlAttributeNames.Id, EnumToString.parse(this.FolderName).toLowerCase());
 
       if (this.Mailbox != null) {
         this.Mailbox.WriteToXml(writer, XmlElementNames.Mailbox);
@@ -113,8 +114,7 @@ class FolderId extends ServiceId {
     // The FolderName property is a WellKnownFolderName, an enumeration type. If the property
     // is set, make sure that the value is valid for the request version.
     if (this.FolderName != null) {
-      // todo("Implement ValidateEnumVersionValue")
-//                EwsUtilities.ValidateEnumVersionValue(this.FolderName, version);
+      EwsUtilities.ValidateEnumVersionValue(this.FolderName, version);
     }
   }
 

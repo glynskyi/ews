@@ -100,8 +100,7 @@ class EwsUtilities {
   /// <summary>
   /// Map from XML element names to ServiceObject type and constructors.
   /// </summary>
-  static LazyMember<ServiceObjectInfo> serviceObjectInfo =
-      new LazyMember<ServiceObjectInfo>(() {
+  static LazyMember<ServiceObjectInfo> serviceObjectInfo = new LazyMember<ServiceObjectInfo>(() {
     return new ServiceObjectInfo();
   });
 
@@ -119,8 +118,8 @@ class EwsUtilities {
   static final RegExp PATTERN_SECONDS = RegExp("(\\d+)S");
   static final RegExp PATTERN_MILLISECONDS = RegExp("(\\d+)S");
 
-  static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>>
-      _requiredServerVersion = new LazyMember(() => {
+  static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>> _requiredServerVersion =
+      new LazyMember(() => {
             ViewFilter: {
               ViewFilter.All: ExchangeVersion.Exchange2013,
               ViewFilter.Flagged: ExchangeVersion.Exchange2013,
@@ -139,49 +138,33 @@ class EwsUtilities {
               MailboxSearchLocation.ArchiveOnly: ExchangeVersion.Exchange2013,
               MailboxSearchLocation.All: ExchangeVersion.Exchange2013,
             },
-            EventType: {
-              EventType.FreeBusyChanged: ExchangeVersion.Exchange2010_SP1
-            },
+            EventType: {EventType.FreeBusyChanged: ExchangeVersion.Exchange2010_SP1},
             MeetingRequestsDeliveryScope: {
-              MeetingRequestsDeliveryScope.NoForward:
-                  ExchangeVersion.Exchange2010_SP1
+              MeetingRequestsDeliveryScope.NoForward: ExchangeVersion.Exchange2010_SP1
             },
             FileAsMapping: {
               FileAsMapping.DisplayName: ExchangeVersion.Exchange2010,
               FileAsMapping.GivenName: ExchangeVersion.Exchange2010,
-              FileAsMapping.SurnameGivenNameMiddleSuffix:
-                  ExchangeVersion.Exchange2010,
+              FileAsMapping.SurnameGivenNameMiddleSuffix: ExchangeVersion.Exchange2010,
               FileAsMapping.Surname: ExchangeVersion.Exchange2010,
               FileAsMapping.Empty: ExchangeVersion.Exchange2010,
             },
             WellKnownFolderName: {
-              WellKnownFolderName.PublicFoldersRoot:
-                  ExchangeVersion.Exchange2007_SP1,
-              WellKnownFolderName.RecoverableItemsRoot:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.RecoverableItemsDeletions:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.RecoverableItemsVersions:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.RecoverableItemsPurges:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.RecoverableItemsDiscoveryHolds:
-                  ExchangeVersion.Exchange2013_SP1,
+              WellKnownFolderName.PublicFoldersRoot: ExchangeVersion.Exchange2007_SP1,
+              WellKnownFolderName.RecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsDeletions: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.RecoverableItemsDiscoveryHolds: ExchangeVersion.Exchange2013_SP1,
               WellKnownFolderName.ArchiveRoot: ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.ArchiveInbox:
-                  ExchangeVersion.Exchange2013_SP1,
-              WellKnownFolderName.ArchiveMsgFolderRoot:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.ArchiveDeletedItems:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.ArchiveRecoverableItemsRoot:
-                  ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveInbox: ExchangeVersion.Exchange2013_SP1,
+              WellKnownFolderName.ArchiveMsgFolderRoot: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveDeletedItems: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsRoot: ExchangeVersion.Exchange2010_SP1,
               WellKnownFolderName.ArchiveRecoverableItemsDeletions:
                   ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.ArchiveRecoverableItemsVersions:
-                  ExchangeVersion.Exchange2010_SP1,
-              WellKnownFolderName.ArchiveRecoverableItemsPurges:
-                  ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsVersions: ExchangeVersion.Exchange2010_SP1,
+              WellKnownFolderName.ArchiveRecoverableItemsPurges: ExchangeVersion.Exchange2010_SP1,
               WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds:
                   ExchangeVersion.Exchange2013_SP1,
               WellKnownFolderName.SyncIssues: ExchangeVersion.Exchange2013,
@@ -190,8 +173,7 @@ class EwsUtilities {
               WellKnownFolderName.ServerFailures: ExchangeVersion.Exchange2013,
               WellKnownFolderName.RecipientCache: ExchangeVersion.Exchange2013,
               WellKnownFolderName.QuickContacts: ExchangeVersion.Exchange2013,
-              WellKnownFolderName.ConversationHistory:
-                  ExchangeVersion.Exchange2013,
+              WellKnownFolderName.ConversationHistory: ExchangeVersion.Exchange2013,
               WellKnownFolderName.AdminAuditLogs: ExchangeVersion.Exchange2013,
               WellKnownFolderName.ToDoSearch: ExchangeVersion.Exchange2013,
               WellKnownFolderName.MyContacts: ExchangeVersion.Exchange2013,
@@ -203,6 +185,9 @@ class EwsUtilities {
             ConversationQueryTraversal: {
               ConversationQueryTraversal.Shallow: ExchangeVersion.Exchange2013,
               ConversationQueryTraversal.Deep: ExchangeVersion.Exchange2013,
+            },
+            ItemTraversal: {
+              ItemTraversal.Associated: ExchangeVersion.Exchange2010,
             }
           });
 
@@ -221,33 +206,35 @@ class EwsUtilities {
 //                    return "0.0";
 //                }
 //            });
-//
-//        /// <summary>
-//        /// Dictionary of enum type to ExchangeVersion maps.
-//        /// </summary>
-//        private static LazyMember<Dictionary<Type, Dictionary<Enum, ExchangeVersion>>> enumVersionDictionaries = new LazyMember<Dictionary<Type, Dictionary<Enum, ExchangeVersion>>>(
-//            () => new Dictionary<Type, Dictionary<Enum, ExchangeVersion>>()
-//            {
-//                { typeof(WellKnownFolderName), BuildEnumDict(typeof(WellKnownFolderName)) },
-//                { typeof(ItemTraversal), BuildEnumDict(typeof(ItemTraversal)) },
-//                { typeof(ConversationQueryTraversal), BuildEnumDict(typeof(ConversationQueryTraversal)) },
-//                { typeof(FileAsMapping), BuildEnumDict(typeof(FileAsMapping)) },
-//                { typeof(EventType), BuildEnumDict(typeof(EventType)) },
-//                { typeof(MeetingRequestsDeliveryScope), BuildEnumDict(typeof(MeetingRequestsDeliveryScope)) },
-//                { typeof(ViewFilter), BuildEnumDict(typeof(ViewFilter)) },
-//            });
-//
-        /// <summary>
-        /// Dictionary of enum type to schema-name-to-enum-value maps.
-        /// </summary>
-        static LazyMember<Map<Type, Map<String, dynamic>>> schemaToEnumDictionaries = new LazyMember<Map<Type, Map<String, dynamic>>>(
-            () => {
-                EventType: BuildSchemaToEnumDict(EventType),
-                MailboxType: BuildSchemaToEnumDict(MailboxType),
-                FileAsMapping: BuildSchemaToEnumDict(FileAsMapping),
-                RuleProperty: BuildSchemaToEnumDict(RuleProperty),
-                WellKnownFolderName: BuildSchemaToEnumDict(WellKnownFolderName),
-            });
+
+  /// <summary>
+  /// Dictionary of enum type to ExchangeVersion maps.
+  /// </summary>
+  static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>> enumVersionDictionaries =
+      new LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>>(() => {
+            WellKnownFolderName: _BuildEnumDict(WellKnownFolderName, WellKnownFolderName.values),
+            ItemTraversal: _BuildEnumDict(ItemTraversal, ItemTraversal.values),
+            ConversationQueryTraversal:
+                _BuildEnumDict(ConversationQueryTraversal, ConversationQueryTraversal.values),
+            FileAsMapping: _BuildEnumDict(FileAsMapping, FileAsMapping.values),
+            EventType: _BuildEnumDict(EventType, EventType.values),
+            MeetingRequestsDeliveryScope:
+                _BuildEnumDict(MeetingRequestsDeliveryScope, MeetingRequestsDeliveryScope.values),
+            ViewFilter: _BuildEnumDict(ViewFilter, ViewFilter.values),
+          });
+
+  /// <summary>
+  /// Dictionary of enum type to schema-name-to-enum-value maps.
+  /// </summary>
+  static LazyMember<Map<Type, Map<String, dynamic>>> schemaToEnumDictionaries =
+      new LazyMember<Map<Type, Map<String, dynamic>>>(() => {
+            EventType: BuildSchemaToEnumDict(EventType),
+            MailboxType: BuildSchemaToEnumDict(MailboxType),
+            FileAsMapping: BuildSchemaToEnumDict(FileAsMapping),
+            RuleProperty: BuildSchemaToEnumDict(RuleProperty),
+            WellKnownFolderName: BuildSchemaToEnumDict(WellKnownFolderName),
+          });
+
 //
 //        /// <summary>
 //        /// Dictionary of enum type to enum-value-to-schema-name maps.
@@ -298,16 +285,12 @@ class EwsUtilities {
       "http://schemas.microsoft.com/exchange/services/2006/messages";
   static const String EwsErrorsNamespace =
       "http://schemas.microsoft.com/exchange/services/2006/errors";
-  static const String EwsSoapNamespace =
-      "http://schemas.xmlsoap.org/soap/envelope/";
-  static const String EwsSoap12Namespace =
-      "http://www.w3.org/2003/05/soap-envelope";
-  static const String EwsXmlSchemaInstanceNamespace =
-      "http://www.w3.org/2001/XMLSchema-instance";
+  static const String EwsSoapNamespace = "http://schemas.xmlsoap.org/soap/envelope/";
+  static const String EwsSoap12Namespace = "http://www.w3.org/2003/05/soap-envelope";
+  static const String EwsXmlSchemaInstanceNamespace = "http://www.w3.org/2001/XMLSchema-instance";
   static const String PassportSoapFaultNamespace =
       "http://schemas.microsoft.com/Passport/SoapServices/SOAPFault";
-  static const String WSTrustFebruary2005Namespace =
-      "http://schemas.xmlsoap.org/ws/2005/02/trust";
+  static const String WSTrustFebruary2005Namespace = "http://schemas.xmlsoap.org/ws/2005/02/trust";
   static const String WSAddressingNamespace =
       "http://www.w3.org/2005/08/addressing"; // "http://schemas.xmlsoap.org/ws/2004/08/addressing";
   static const String AutodiscoverSoapNamespace =
@@ -690,8 +673,7 @@ class EwsUtilities {
   /// <param name="entryKind">Kind of the entry.</param>
   /// <param name="memoryStream">The memory stream.</param>
   /// <returns>XML log entry as a string.</returns>
-  static String FormatLogMessageWithXmlContent(
-      String entryKind, MemoryStream memoryStream) {
+  static String FormatLogMessageWithXmlContent(String entryKind, MemoryStream memoryStream) {
     // todo("improve FormatLogMessageWithXmlContent")
 //    print(".. improve FormatLogMessageWithXmlContent");
     return utf8.decode(memoryStream.AllElements);
@@ -756,8 +738,7 @@ class EwsUtilities {
   /// </summary>
   /// <param name="source">The source.</param>
   /// <param name="target">The target.</param>
-  static Future<void> CopyStream(
-      Stream<List<int>> source, StreamConsumer<List<int>> target) async {
+  static Future<void> CopyStream(Stream<List<int>> source, StreamConsumer<List<int>> target) async {
     await source.pipe(target);
 //            // See if this is a MemoryStream -- we can use WriteTo.
 //            MemoryStream memContentStream = source as MemoryStream;
@@ -856,52 +837,36 @@ class EwsUtilities {
 //
 
   static Map<Type, Converter<String, Object>> possibleEnumsConverter = {
-    ServiceResult: (stringValue) =>
-        EnumToString.fromString(ServiceResult.values, stringValue),
-    ServiceError: (stringValue) =>
-        EnumToString.fromString(ServiceError.values, stringValue),
+    ServiceResult: (stringValue) => EnumToString.fromString(ServiceResult.values, stringValue),
+    ServiceError: (stringValue) => EnumToString.fromString(ServiceError.values, stringValue),
     MapiPropertyType: (stringValue) =>
         EnumToString.fromString(MapiPropertyType.values, stringValue),
-    Sensitivity: (stringValue) =>
-        EnumToString.fromString(Sensitivity.values, stringValue),
-    Importance: (stringValue) =>
-        EnumToString.fromString(Importance.values, stringValue),
-    ItemFlagStatus: (stringValue) =>
-        EnumToString.fromString(ItemFlagStatus.values, stringValue),
+    Sensitivity: (stringValue) => EnumToString.fromString(Sensitivity.values, stringValue),
+    Importance: (stringValue) => EnumToString.fromString(Importance.values, stringValue),
+    ItemFlagStatus: (stringValue) => EnumToString.fromString(ItemFlagStatus.values, stringValue),
     MeetingResponseType: (stringValue) =>
         EnumToString.fromString(MeetingResponseType.values, stringValue),
-    AppointmentType: (stringValue) =>
-        EnumToString.fromString(AppointmentType.values, stringValue),
-    MailboxType: (stringValue) =>
-        EnumToString.fromString(MailboxType.values, stringValue),
-    TaskStatus: (stringValue) =>
-        EnumToString.fromString(TaskStatus.values, stringValue),
-    BodyType: (stringValue) =>
-        EnumToString.fromString(BodyType.values, stringValue),
-    StandardUser: (stringValue) =>
-        EnumToString.fromString(StandardUser.values, stringValue),
-    PermissionScope: (stringValue) =>
-        EnumToString.fromString(PermissionScope.values, stringValue),
+    AppointmentType: (stringValue) => EnumToString.fromString(AppointmentType.values, stringValue),
+    MailboxType: (stringValue) => EnumToString.fromString(MailboxType.values, stringValue),
+    TaskStatus: (stringValue) => EnumToString.fromString(TaskStatus.values, stringValue),
+    BodyType: (stringValue) => EnumToString.fromString(BodyType.values, stringValue),
+    StandardUser: (stringValue) => EnumToString.fromString(StandardUser.values, stringValue),
+    PermissionScope: (stringValue) => EnumToString.fromString(PermissionScope.values, stringValue),
     FolderPermissionReadAccess: (stringValue) =>
         EnumToString.fromString(FolderPermissionReadAccess.values, stringValue),
     FolderPermissionLevel: (stringValue) =>
         EnumToString.fromString(FolderPermissionLevel.values, stringValue),
-    EmailAddressKey: (stringValue) =>
-        EnumToString.fromString(EmailAddressKey.values, stringValue),
-    PhoneNumberKey: (stringValue) =>
-        EnumToString.fromString(PhoneNumberKey.values, stringValue),
+    EmailAddressKey: (stringValue) => EnumToString.fromString(EmailAddressKey.values, stringValue),
+    PhoneNumberKey: (stringValue) => EnumToString.fromString(PhoneNumberKey.values, stringValue),
     PhysicalAddressKey: (stringValue) =>
         EnumToString.fromString(PhysicalAddressKey.values, stringValue),
-    ImAddressKey: (stringValue) =>
-        EnumToString.fromString(ImAddressKey.values, stringValue),
+    ImAddressKey: (stringValue) => EnumToString.fromString(ImAddressKey.values, stringValue),
     AutodiscoverErrorCode: (stringValue) =>
         EnumToString.fromString(AutodiscoverErrorCode.values, stringValue),
-    UserSettingName: (stringValue) =>
-        EnumToString.fromString(UserSettingName.values, stringValue),
+    UserSettingName: (stringValue) => EnumToString.fromString(UserSettingName.values, stringValue),
     LegacyFreeBusyStatus: (stringValue) =>
         EnumToString.fromString(LegacyFreeBusyStatus.values, stringValue),
-    ContactSource: (stringValue) =>
-        EnumToString.fromString(ContactSource.values, stringValue),
+    ContactSource: (stringValue) => EnumToString.fromString(ContactSource.values, stringValue),
   };
 
   static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
@@ -1068,7 +1033,8 @@ class EwsUtilities {
       WellKnownFolderName.ArchiveRecoverableItemsDeletions: "archiverecoverableitemsdeletions",
       WellKnownFolderName.ArchiveRecoverableItemsVersions: "archiverecoverableitemsversions",
       WellKnownFolderName.ArchiveRecoverableItemsPurges: "archiverecoverableitemspurges",
-      WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds: "archiverecoverableitemsdiscoveryholds",
+      WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds:
+          "archiverecoverableitemsdiscoveryholds",
       WellKnownFolderName.SyncIssues: "syncissues",
       WellKnownFolderName.Conflicts: "conflicts",
       WellKnownFolderName.LocalFailures: "localfailures",
@@ -1656,60 +1622,50 @@ class EwsUtilities {
     }
   }
 
-//
-//        /// <summary>
-//        /// Validates string parameter to be non-empty string (null value allowed).
-//        /// </summary>
-//        /// <param name="param">The string parameter.</param>
-//        /// <param name="paramName">Name of the parameter.</param>
-//        internal static void ValidateNonBlankStringParamAllowNull(string param, string paramName)
-//        {
-//            if (param != null)
-//            {
-//                // Non-empty string has at least one character which is *not* a whitespace character
-//                if (param.Length == param.CountMatchingChars((c) => Char.IsWhiteSpace(c)))
-//                {
-//                    throw new ArgumentError(Strings.ArgumentIsBlankString, paramName);
-//                }
-//            }
-//        }
-//
-//        /// <summary>
-//        /// Validates string parameter to be non-empty string (null value not allowed).
-//        /// </summary>
-//        /// <param name="param">The string parameter.</param>
-//        /// <param name="paramName">Name of the parameter.</param>
-//        internal static void ValidateNonBlankStringParam(string param, string paramName)
-//        {
-//            if (param == null)
-//            {
-//                throw new ArgumentNullException(paramName);
-//            }
-//
-//            ValidateNonBlankStringParamAllowNull(param, paramName);
-//        }
-//
-//        /// <summary>
-//        /// Validates the enum value against the request version.
-//        /// </summary>
-//        /// <param name="enumValue">The enum value.</param>
-//        /// <param name="requestVersion">The request version.</param>
-//        /// <exception cref="ServiceVersionException">Raised if this enum value requires a later version of Exchange.</exception>
-//        internal static void ValidateEnumVersionValue(Enum enumValue, ExchangeVersion requestVersion)
-//        {
-//            Type enumType = enumValue.GetType();
-//            Dictionary<Enum, ExchangeVersion> enumVersionDict = enumVersionDictionaries.Member[enumType];
-//            ExchangeVersion enumVersion = enumVersionDict[enumValue];
-//            if (requestVersion < enumVersion)
-//            {
-//                throw new ServiceVersionException(
-//                    string.Format(
-//                                  Strings.EnumValueIncompatibleWithRequestVersion,
-//                                  enumValue.ToString(),
-//                                  enumType.Name,
-//                                  enumVersion));
-//            }
-//        }
+  /// <summary>
+  /// Validates string parameter to be non-empty string (null value allowed).
+  /// </summary>
+  /// <param name="param">The string parameter.</param>
+  /// <param name="paramName">Name of the parameter.</param>
+  static void ValidateNonBlankStringParamAllowNull(String param, String paramName) {
+    if (param != null) {
+      // Non-empty string has at least one character which is *not* a whitespace character
+      if (param.length == param.allMatches(" ").length) {
+        throw new ArgumentError("Strings.ArgumentIsBlankString $paramName");
+      }
+    }
+  }
+
+  /// <summary>
+  /// Validates String parameter to be non-empty String (null value not allowed).
+  /// </summary>
+  /// <param name="param">The String parameter.</param>
+  /// <param name="paramName">Name of the parameter.</param>
+  static void ValidateNonBlankStringParam(String param, String paramName) {
+    if (param == null) {
+      throw ArgumentError.notNull(paramName);
+    }
+
+    ValidateNonBlankStringParamAllowNull(param, paramName);
+  }
+
+  /// <summary>
+  /// Validates the enum value against the request version.
+  /// </summary>
+  /// <param name="enumValue">The enum value.</param>
+  /// <param name="requestVersion">The request version.</param>
+  /// <exception cref="ServiceVersionException">Raised if this enum value requires a later version of Exchange.</exception>
+  static void ValidateEnumVersionValue(dynamic enumValue, ExchangeVersion requestVersion) {
+    Type enumType = enumValue.runtimeType;
+    Map<dynamic, ExchangeVersion> enumVersionDict = enumVersionDictionaries.Member[enumType];
+    ExchangeVersion enumVersion = enumVersionDict[enumValue];
+    if (requestVersion.index < enumVersion.index) {
+      throw new ServiceVersionException("""Strings.EnumValueIncompatibleWithRequestVersion,
+                                  $enumValue,
+                                  $enumType,
+                                  $enumVersion""");
+    }
+  }
 
   /// <summary>
   /// Validates service object version against the request version.
@@ -1719,8 +1675,7 @@ class EwsUtilities {
   /// <exception cref="ServiceVersionException">Raised if this service object type requires a later version of Exchange.</exception>
   static void ValidateServiceObjectVersion(
       ServiceObject serviceObject, ExchangeVersion requestVersion) {
-    ExchangeVersion minimumRequiredServerVersion =
-        serviceObject.GetMinimumRequiredServerVersion();
+    ExchangeVersion minimumRequiredServerVersion = serviceObject.GetMinimumRequiredServerVersion();
 
     if (requestVersion.index < minimumRequiredServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
@@ -1769,15 +1724,25 @@ class EwsUtilities {
 //                }
 //            }
 //        }
-//
-//        /// <summary>
-//        /// Gets version for enum member.
-//        /// </summary>
-//        /// <param name="enumType">Type of the enum.</param>
-//        /// <param name="enumName">The enum name.</param>
-//        /// <returns>Exchange version in which the enum value was first defined.</returns>
-//        private static ExchangeVersion GetEnumVersion(Type enumType, string enumName)
-//        {
+
+  /// <summary>
+  /// Gets version for enum member.
+  /// </summary>
+  /// <param name="enumType">Type of the enum.</param>
+  /// <param name="enumName">The enum name.</param>
+  /// <returns>Exchange version in which the enum value was first defined.</returns>
+  static ExchangeVersion GetEnumVersion(Type enumType, dynamic enumValue) {
+    Map<dynamic, ExchangeVersion> exchangeVersions = _requiredServerVersion.Member[enumType];
+
+    EwsUtilities.Assert(exchangeVersions != null && exchangeVersions.isNotEmpty,
+        "EwsUtilities.GetEnumVersion", "Enum member $enumValue not found in $enumType");
+
+    if (exchangeVersions.containsKey(enumValue)) {
+      return exchangeVersions[enumValue];
+    } else {
+      return ExchangeVersion.Exchange2007_SP1;
+    }
+
 //            MemberInfo[] memberInfo = enumType.GetMember(enumName);
 //            EwsUtilities.Assert(
 //                                (memberInfo != null) && (memberInfo.Length > 0),
@@ -1793,8 +1758,8 @@ class EwsUtilities {
 //            {
 //                return ExchangeVersion.Exchange2007_SP1;
 //            }
-//        }
-//
+  }
+
 //        /// <summary>
 //        /// Builds the enum to version mapping dictionary.
 //        /// </summary>
@@ -1820,7 +1785,6 @@ class EwsUtilities {
   /// <param name="enumName">The enum name.</param>
   /// <returns>The name for the enum used in the protocol, or null if it is the same as the enum's toString().</returns>
   static String GetEnumSchemaName(Type enumType, Object enumValue) {
-
     final ewsEnumAttribute = {
       MailboxType: {MailboxType.PublicGroup: EwsEnumAttribute("PublicDL")},
       MailboxType: {MailboxType.ContactGroup: EwsEnumAttribute("PrivateDL")}
@@ -1850,17 +1814,14 @@ class EwsUtilities {
 //            }
   }
 
-
-        /// <summary>
-        /// Builds the schema to enum mapping dictionary.BuildSchemaToEnumDict
-        /// </summary>
-        /// <param name="enumType">Type of the enum.</param>
-        /// <returns>The mapping from enum to schema name</returns>
-        static Map<String, Object> BuildSchemaToEnumDict(Type enumType)
-        {
-          print(enumType);
-          return ewsEnumDictionaries[enumType].map((k, v) => MapEntry(v, k));
-        }
+  /// <summary>
+  /// Builds the schema to enum mapping dictionary.BuildSchemaToEnumDict
+  /// </summary>
+  /// <param name="enumType">Type of the enum.</param>
+  /// <returns>The mapping from enum to schema name</returns>
+  static Map<String, Object> BuildSchemaToEnumDict(Type enumType) {
+    return ewsEnumDictionaries[enumType].map((k, v) => MapEntry(v, k));
+  }
 
 //        /// <summary>
 //        /// Builds the enum to schema mapping dictionary.
@@ -2069,12 +2030,10 @@ class EwsUtilities {
       new LazyMember<Map<Type, Map<Object, String>>>(() => {
             EventType: _BuildEnumToSchemaDict(EventType, EventType.values),
             MailboxType: _BuildEnumToSchemaDict(MailboxType, MailboxType.values),
-            FileAsMapping:
-                _BuildEnumToSchemaDict(FileAsMapping, FileAsMapping.values),
-            RuleProperty:
-                _BuildEnumToSchemaDict(RuleProperty, RuleProperty.values),
-            WellKnownFolderName: _BuildEnumToSchemaDict(
-                WellKnownFolderName, WellKnownFolderName.values),
+            FileAsMapping: _BuildEnumToSchemaDict(FileAsMapping, FileAsMapping.values),
+            RuleProperty: _BuildEnumToSchemaDict(RuleProperty, RuleProperty.values),
+            WellKnownFolderName:
+                _BuildEnumToSchemaDict(WellKnownFolderName, WellKnownFolderName.values),
           });
 
 //        /// <summary>
@@ -2242,25 +2201,20 @@ class EwsUtilities {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Service object.</returns>
-  static TServiceObject
-      CreateEwsObjectFromXmlElementName<TServiceObject extends ServiceObject>(
-          ExchangeService service, String xmlElementName) {
+  static TServiceObject CreateEwsObjectFromXmlElementName<TServiceObject extends ServiceObject>(
+      ExchangeService service, String xmlElementName) {
     // todo("implement CreateEwsObjectFromXmlElementName");
 //          print("CreateEwsObjectFromXmlElementName($xmlElementName);");
 
-    if (EwsUtilities
-        .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
+    if (EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
         .containsKey(xmlElementName)) {
-      Type itemClass = EwsUtilities.serviceObjectInfo.Member
-          .XmlElementNameToServiceObjectClassMap[xmlElementName];
+      Type itemClass = EwsUtilities
+          .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
 
-      if (EwsUtilities
-          .serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam
+      if (EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam
           .containsKey(itemClass)) {
         CreateServiceObjectWithServiceParam creationDelegate = EwsUtilities
-            .serviceObjectInfo
-            .Member
-            .ServiceObjectConstructorsWithServiceParam[itemClass];
+            .serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam[itemClass];
         return creationDelegate(service);
       } else {
         throw new ArgumentError("Strings.NoAppropriateConstructorForItemClass");
@@ -2278,15 +2232,11 @@ class EwsUtilities {
   /// <param name="itemClass">The item class.</param>
   /// <param name="isNew">If true, item attachment is new.</param>
   /// <returns>New Item.</returns>
-  static Item CreateItemFromItemClass(
-      ItemAttachment itemAttachment, Type itemClass, bool isNew) {
-    if (EwsUtilities
-        .serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam
+  static Item CreateItemFromItemClass(ItemAttachment itemAttachment, Type itemClass, bool isNew) {
+    if (EwsUtilities.serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam
         .containsKey(itemClass)) {
       CreateServiceObjectWithAttachmentParam creationDelegate = EwsUtilities
-          .serviceObjectInfo
-          .Member
-          .ServiceObjectConstructorsWithAttachmentParam[itemClass];
+          .serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam[itemClass];
       return creationDelegate(itemAttachment, isNew);
     } else {
       throw new ArgumentError("Strings.NoAppropriateConstructorForItemClass");
@@ -2299,13 +2249,11 @@ class EwsUtilities {
   /// <param name="itemAttachment">The item attachment.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>New Item.</returns>
-  static Item CreateItemFromXmlElementName(
-      ItemAttachment itemAttachment, String xmlElementName) {
-    if (EwsUtilities
-        .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
+  static Item CreateItemFromXmlElementName(ItemAttachment itemAttachment, String xmlElementName) {
+    if (EwsUtilities.serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
         .containsKey(xmlElementName)) {
-      Type itemClass = EwsUtilities.serviceObjectInfo.Member
-          .XmlElementNameToServiceObjectClassMap[xmlElementName];
+      Type itemClass = EwsUtilities
+          .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
       return CreateItemFromItemClass(itemAttachment, itemClass, false);
     } else {
       return null;
@@ -2318,8 +2266,8 @@ class EwsUtilities {
   /// <param name="xmlElementName"></param>
   /// <returns></returns>
   static Type GetItemTypeFromXmlElementName(String xmlElementName) {
-    return EwsUtilities.serviceObjectInfo.Member
-        .XmlElementNameToServiceObjectClassMap[xmlElementName];
+    return EwsUtilities
+        .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap[xmlElementName];
   }
 
   /// <summary>
@@ -2349,18 +2297,15 @@ class EwsUtilities {
   /// <param name="includeVersion">If true, include build version attribute.</param>
 //        [System.Diagnostics.CodeAnalysis.SuppressMessage("Exchange.Usage", "EX0009:DoNotUseDateTimeNowOrFromFileTime", Justification = "Client API")]
   /* private */
-  static void WriteTraceStartElement(
-      XmlWriter writer, String traceTag, bool includeVersion) {
+  static void WriteTraceStartElement(XmlWriter writer, String traceTag, bool includeVersion) {
     writer.WriteStartElement(localName: "Trace");
     writer.WriteAttributeString(localName: "Tag", value: traceTag);
     // todo("add the Thread Id info")
 //            writer.WriteAttributeString(localName: "Tid", value: Thread.CurrentThread.ManagedThreadId.ToString());
-    writer.WriteAttributeString(
-        localName: "Time", value: DateTime.now().toIso8601String());
+    writer.WriteAttributeString(localName: "Time", value: DateTime.now().toIso8601String());
 
     if (includeVersion) {
-      writer.WriteAttributeString(
-          localName: "Version", value: EwsUtilities.BuildVersion);
+      writer.WriteAttributeString(localName: "Version", value: EwsUtilities.BuildVersion);
     }
   }
 
@@ -2399,8 +2344,7 @@ class EwsUtilities {
 //        /// <param name="sb">StringBuilder.</param>
 //        /// <param name="headers">The HTTP headers.</param>
   /* private */
-  static void FormatHttpHeadersWithBuffer(
-      StringBuffer sb, WebHeaderCollection headers) {
+  static void FormatHttpHeadersWithBuffer(StringBuffer sb, WebHeaderCollection headers) {
     for (String key in headers.AllKeys) {
       sb.write("$key: ${headers[key]}\n");
     }
@@ -2621,8 +2565,7 @@ class EwsUtilities {
   /// </summary>
   /// <param name="value">The enum value to be serialized</param>
   /// <returns>String representation of enum to be used in the protocol</returns>
-  static bool TrySerializeEnum(
-      Object enumValue, OutParam<String> resultOutParam) {
+  static bool TrySerializeEnum(Object enumValue, OutParam<String> resultOutParam) {
 //            Map<Object, String> enumToStringDict;
 //            String strValue;
 //            if (enumToSchemaDictionaries.Member.containsKey(enumValue.runtimeType))
@@ -2634,8 +2577,7 @@ class EwsUtilities {
 //            else
 //            {
     if (ewsEnumDictionaries.containsKey(enumValue.runtimeType)) {
-      resultOutParam.param =
-          ewsEnumDictionaries[enumValue.runtimeType][enumValue];
+      resultOutParam.param = ewsEnumDictionaries[enumValue.runtimeType][enumValue];
       return true;
     } else if (serializedEnumDictionaries.contains(enumValue.runtimeType)) {
       resultOutParam.param = EnumToString.parse(enumValue);
@@ -2706,8 +2648,8 @@ class EwsUtilities {
   /// <param name="sourceTimeZone">The source time zone.</param>
   /// <param name="destinationTimeZone">The destination time zone.</param>
   /// <returns>A DateTime that holds the converted</returns>
-  static DateTime ConvertTime(DateTime dateTime, TimeZone sourceTimeZone,
-      TimeZone destinationTimeZone) {
+  static DateTime ConvertTime(
+      DateTime dateTime, TimeZone sourceTimeZone, TimeZone destinationTimeZone) {
     // todo : fix timezones
     print("!!! using unsafe ConvertTime");
     return dateTime;
@@ -2902,11 +2844,9 @@ class EwsUtilities {
   /// <param name="xsDuration">xs:duration String to convert</param>
   /// <returns>System.TimeSpan structure</returns>
   static TimeSpan XSDurationToTimeSpan(String xsDuration) {
-    String xsDateDuration =
-        xsDuration.contains("T") ? xsDuration.split("T").first : xsDuration;
+    String xsDateDuration = xsDuration.contains("T") ? xsDuration.split("T").first : xsDuration;
 
-    String xsTimeDuration =
-        xsDuration.split("T").length > 1 ? xsDuration.split("T")[1] : "";
+    String xsTimeDuration = xsDuration.split("T").length > 1 ? xsDuration.split("T")[1] : "";
 
     RegExpMatch m = PATTERN_TIME_SPAN.firstMatch(xsDateDuration);
     bool negative = false;
@@ -2982,9 +2922,7 @@ class EwsUtilities {
     day = day + (year * 365) + (month * 30);
     // TimeSpan retval = new TimeSpan(day, hour, minute, seconds,
     // milliseconds);
-    int retval =
-        (((((((day * 24) + hour) * 60) + minute) * 60) + seconds) * 1000) +
-            milliseconds;
+    int retval = (((((((day * 24) + hour) * 60) + minute) * 60) + seconds) * 1000) + milliseconds;
     if (negative) {
       retval = -retval;
     }
@@ -3167,8 +3105,7 @@ class EwsUtilities {
   static String DomainFromEmailAddress(String emailAddress) {
     List<String> emailAddressParts = emailAddress.split('@');
 
-    if (emailAddressParts.length != 2 ||
-        StringUtils.IsNullOrEmpty(emailAddressParts[1])) {
+    if (emailAddressParts.length != 2 || StringUtils.IsNullOrEmpty(emailAddressParts[1])) {
       throw new FormatException("Strings.InvalidEmailAddress");
     }
 
@@ -3268,77 +3205,6 @@ class EwsUtilities {
 //                throw new ArgumentError(""""Strings.CollectionIsEmpty", paramName""");
 //            }
 //        }
-
-//        /// <summary>
-//        /// Validates String parameter to be non-empty String (null value allowed).
-//        /// </summary>
-//        /// <param name="param">The String parameter.</param>
-//        /// <param name="paramName">Name of the parameter.</param>
-  static void ValidateNonBlankStringParamAllowNull(
-      String param, String paramName) {
-    if (param != null) {
-      if (param.trim().isEmpty) {
-        throw new ArgumentError("Strings.ArgumentIsBlankString, paramName");
-      }
-//                // Non-empty String has at least one character which is *not* a whitespace character
-//                if (param.length == param.contains((c) => Char.IsWhiteSpace(c)))
-//                {
-//                    throw new ArgumentError(Strings.ArgumentIsBlankString, paramName);
-//                }
-    }
-  }
-
-  /// <summary>
-  /// Validates String parameter to be non-empty String (null value not allowed).
-  /// </summary>
-  /// <param name="param">The String parameter.</param>
-  /// <param name="paramName">Name of the parameter.</param>
-  static void ValidateNonBlankStringParam(String param, String paramName) {
-    if (param == null) {
-      throw ArgumentError.notNull(paramName);
-    }
-
-    ValidateNonBlankStringParamAllowNull(param, paramName);
-  }
-
-  /// <summary>
-  /// Validates the enum value against the request version.
-  /// </summary>
-  /// <param name="enumValue">The enum value.</param>
-  /// <param name="requestVersion">The request version.</param>
-  /// <exception cref="ServiceVersionException">Raised if this enum value requires a later version of Exchange.</exception>
-  static void ValidateEnumVersionValue(
-      Object enumValue, ExchangeVersion requestVersion) {
-    if (enumValue is FileAsMapping) {
-      final requiredServerVersion =
-          FileAsMappingRequiredServerVersion[enumValue];
-      if (requiredServerVersion != null &&
-          requestVersion.index < requiredServerVersion.index) {
-        throw new ServiceVersionException("""string.Format(
-                                  Strings.EnumValueIncompatibleWithRequestVersion,
-                                  $enumValue,
-                                  enumType.Name,
-                                  enumVersion)""");
-      }
-      return;
-    }
-
-    // todo : implement ValidateEnumVersionValue
-    print("!! unsafe ValidateEnumVersionValue");
-//            Type enumType = enumValue.GetType();
-//            Map<Enum, ExchangeVersion> enumVersionDict = enumVersionDictionaries.Member[enumType];
-//            ExchangeVersion enumVersion = enumVersionDict[enumValue];
-//            if (requestVersion < enumVersion)
-//            {
-//                throw new ServiceVersionException(
-//                    string.Format(
-//                                  Strings.EnumValueIncompatibleWithRequestVersion,
-//                                  enumValue.ToString(),
-//                                  enumType.Name,
-//                                  enumVersion));
-//            }
-  }
-
 //        /// <summary>
 //        /// Validates service object version against the request version.
 //        /// </summary>
@@ -3365,8 +3231,8 @@ class EwsUtilities {
   /// <param name="service">The Exchange service.</param>
   /// <param name="minimumServerVersion">The minimum server version that supports the property.</param>
   /// <param name="propertyName">Name of the property.</param>
-  static void ValidatePropertyVersion(ExchangeService service,
-      ExchangeVersion minimumServerVersion, String propertyName) {
+  static void ValidatePropertyVersion(
+      ExchangeService service, ExchangeVersion minimumServerVersion, String propertyName) {
     if (service.RequestedServerVersion.index < minimumServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
                     Strings.PropertyIncompatibleWithRequestVersion,
@@ -3381,8 +3247,8 @@ class EwsUtilities {
   /// <param name="service">The Exchange service.</param>
   /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
   /// <param name="methodName">Name of the method.</param>
-  static void ValidateMethodVersion(ExchangeService service,
-      ExchangeVersion minimumServerVersion, String methodName) {
+  static void ValidateMethodVersion(
+      ExchangeService service, ExchangeVersion minimumServerVersion, String methodName) {
     if (service.RequestedServerVersion.index < minimumServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
                     Strings.MethodIncompatibleWithRequestVersion,
@@ -3397,8 +3263,8 @@ class EwsUtilities {
   /// <param name="service">The Exchange service.</param>
   /// <param name="minimumServerVersion">The minimum server version that supports the method.</param>
   /// <param name="className">Name of the class.</param>
-  static void ValidateClassVersion(ExchangeService service,
-      ExchangeVersion minimumServerVersion, String className) {
+  static void ValidateClassVersion(
+      ExchangeService service, ExchangeVersion minimumServerVersion, String className) {
     if (service.RequestedServerVersion.index < minimumServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
                     Strings.ClassIncompatibleWithRequestVersion,
@@ -3417,8 +3283,8 @@ class EwsUtilities {
       RegExp regex = new RegExp(DomainRegex);
 
       if (!regex.hasMatch(domainName)) {
-        throw new ArgumentError.value(domainName, paramName,
-            "string.Format(Strings.InvalidDomainName, $domainName)");
+        throw new ArgumentError.value(
+            domainName, paramName, "string.Format(Strings.InvalidDomainName, $domainName)");
       }
     }
   }
@@ -3447,25 +3313,21 @@ class EwsUtilities {
 //                return ExchangeVersion.Exchange2007_SP1;
 //            }
 //        }
-//
-//        /// <summary>
-//        /// Builds the enum to version mapping dictionary.
-//        /// </summary>
-//        /// <param name="enumType">Type of the enum.</param>
-//        /// <returns>Dictionary of enum values to versions.</returns>
-//        /* private */ static Map<Enum, ExchangeVersion> BuildEnumDict(Type enumType)
-//        {
-//            Map<Enum, ExchangeVersion> dict = new Map<Enum, ExchangeVersion>();
-//            string[] names = Enum.GetNames(enumType);
-//            for (String name in names)
-//            {
-//                Enum value = (Enum)Enum.Parse(enumType, name, false);
-//                ExchangeVersion version = GetEnumVersion(enumType, name);
-//                dict.Add(value, version);
-//            }
-//            return dict;
-//        }
-//
+
+  /// <summary>
+  /// Builds the enum to version mapping dictionary.
+  /// </summary>
+  /// <param name="enumType">Type of the enum.</param>
+  /// <returns>Dictionary of enum values to versions.</returns>
+  static Map<dynamic, ExchangeVersion> _BuildEnumDict(Type enumType, List<dynamic> enumValues) {
+    Map<dynamic, ExchangeVersion> dict = {};
+    for (dynamic enumValue in enumValues) {
+      ExchangeVersion version = GetEnumVersion(enumType, enumValue);
+      dict[enumValue] = version;
+    }
+    return dict;
+  }
+
 //        /// <summary>
 //        /// Gets the schema name for enum member.
 //        /// </summary>
@@ -3518,8 +3380,7 @@ class EwsUtilities {
   /// </summary>
   /// <param name="enumType">Type of the enum.</param>
   /// <returns>The mapping from enum to schema name</returns>
-  static Map<Object, String> _BuildEnumToSchemaDict(
-      Type enumType, List<Object> enumValues) {
+  static Map<Object, String> _BuildEnumToSchemaDict(Type enumType, List<Object> enumValues) {
     final Map<Object, String> dict = {};
     enumValues.forEach((enumValue) {
       dict[enumValue] = GetEnumSchemaName(enumType, enumValue);
@@ -3574,8 +3435,8 @@ class EwsUtilities {
       count++;
     }
 
-    throw new RangeError.range(index, 0, count, "index",
-        "Strings.IterableDoesNotContainThatManyObject");
+    throw new RangeError.range(
+        index, 0, count, "index", "Strings.IterableDoesNotContainThatManyObject");
   }
 //
 //        #endregion

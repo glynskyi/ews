@@ -39,7 +39,7 @@ import 'package:ews/Search/PagedView.dart';
 /// Represents the view settings in a folder search operation.
 /// </summary>
 class ItemView extends PagedView {
-  ItemTraversal _traversal;
+  ItemTraversal _traversal = ItemTraversal.Shallow;
 
   OrderByCollection _orderBy = new OrderByCollection();
 

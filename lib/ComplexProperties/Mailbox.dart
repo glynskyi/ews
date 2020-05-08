@@ -26,6 +26,7 @@
 import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
+import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 import 'package:ews/Interfaces/ISearchStringProvider.dart';
@@ -126,8 +127,8 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
   void InternalValidate() {
     super.InternalValidate();
 
-//            EwsUtilities.ValidateNonBlankStringParamAllowNull(this.Address, "address");
-//            EwsUtilities.ValidateNonBlankStringParamAllowNull(this.RoutingType, "routingType");
+    EwsUtilities.ValidateNonBlankStringParamAllowNull(this.Address, "address");
+    EwsUtilities.ValidateNonBlankStringParamAllowNull(this.RoutingType, "routingType");
   }
 
   /// <summary>
@@ -150,8 +151,7 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
       } else if (((this.Address == null) && (other.Address == null)) ||
           ((this.Address != null) && this.Address == other.Address)) {
         return ((this.RoutingType == null) && (other.RoutingType == null)) ||
-            ((this.RoutingType != null) &&
-                this.RoutingType == other.RoutingType);
+            ((this.RoutingType != null) && this.RoutingType == other.RoutingType);
       } else {
         return false;
       }
