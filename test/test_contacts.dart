@@ -2,8 +2,10 @@ import 'package:ews/ComplexProperties/PhysicalAddressEntry.dart';
 import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/Responses/FindItemResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
+import 'package:ews/Enumerations/Enumerations.dart';
 import 'package:ews/ews.dart';
 import 'package:test/test.dart';
+import 'package:uuid_enhanced/uuid.dart';
 
 import '_shared.dart';
 
@@ -58,6 +60,12 @@ main() {
 
   test('creates contact', () async {
     final exchangeService = prepareExchangeService(primaryUserCredential);
+
+    final folder = Folder(exchangeService);
+    folder.DisplayName = "${Uuid.randomUuid()}";
+    folder.FolderClass = "IPF.Contact";
+    await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Contacts);
+
     final contact = Contact(exchangeService);
     contact.GivenName = "GivenName";
     contact.Surname = "Surname";
@@ -70,8 +78,34 @@ main() {
       ..City = "Kharkiv"
       ..Street = "Hrushevsky 23";
     contact.ImAddresses[ImAddressKey.ImAddress1] = "1234566";
-    contact.FileAsMapping = FileAsMapping.SurnameCommaGivenName;
-    await contact.Save();
-    await contact.Delete(DeleteMode.HardDelete);
+    contact.FileAsMapping = FileAsMapping.Company;
+    await contact.SaveWithFolderId(folder.Id);
+
+    await exchangeService.SyncFolderItems(
+        folder.Id,
+        PropertySet.fromPropertyDefinitions([
+          ContactSchema.FileAsMapping,
+          ContactSchema.GivenName,
+          ContactSchema.Surname,
+        ]),
+        [],
+        100,
+        SyncFolderItemsScope.NormalItems,
+        null);
+
+    final savedContact = await Contact.BindWithItemIdAndPropertySet(
+        exchangeService,
+        contact.Id,
+        PropertySet.fromPropertyDefinitions([
+          ContactSchema.FileAsMapping,
+          ContactSchema.GivenName,
+          ContactSchema.Surname,
+        ]));
+
+    expect(savedContact.GivenName, contact.GivenName);
+    expect(savedContact.Surname, contact.Surname);
+    expect(savedContact.FileAsMapping, contact.FileAsMapping);
+
+    await folder.Delete(DeleteMode.HardDelete);
   });
 }

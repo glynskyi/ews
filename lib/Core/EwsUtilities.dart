@@ -237,18 +237,17 @@ class EwsUtilities {
 //                { typeof(ViewFilter), BuildEnumDict(typeof(ViewFilter)) },
 //            });
 //
-//        /// <summary>
-//        /// Dictionary of enum type to schema-name-to-enum-value maps.
-//        /// </summary>
-//        private static LazyMember<Dictionary<Type, Dictionary<string, Enum>>> schemaToEnumDictionaries = new LazyMember<Dictionary<Type, Dictionary<string, Enum>>>(
-//            () => new Dictionary<Type, Dictionary<string, Enum>>
-//            {
-//                { typeof(EventType), BuildSchemaToEnumDict(typeof(EventType)) },
-//                { typeof(MailboxType), BuildSchemaToEnumDict(typeof(MailboxType)) },
-//                { typeof(FileAsMapping), BuildSchemaToEnumDict(typeof(FileAsMapping)) },
-//                { typeof(RuleProperty), BuildSchemaToEnumDict(typeof(RuleProperty)) },
-//                { typeof(WellKnownFolderName), BuildSchemaToEnumDict(typeof(WellKnownFolderName)) },
-//            });
+        /// <summary>
+        /// Dictionary of enum type to schema-name-to-enum-value maps.
+        /// </summary>
+        static LazyMember<Map<Type, Map<String, dynamic>>> schemaToEnumDictionaries = new LazyMember<Map<Type, Map<String, dynamic>>>(
+            () => {
+                EventType: BuildSchemaToEnumDict(EventType),
+                MailboxType: BuildSchemaToEnumDict(MailboxType),
+                FileAsMapping: BuildSchemaToEnumDict(FileAsMapping),
+                RuleProperty: BuildSchemaToEnumDict(RuleProperty),
+                WellKnownFolderName: BuildSchemaToEnumDict(WellKnownFolderName),
+            });
 //
 //        /// <summary>
 //        /// Dictionary of enum type to enum-value-to-schema-name maps.
@@ -906,6 +905,109 @@ class EwsUtilities {
   };
 
   static const Map<Type, Map<Object, String>> ewsEnumDictionaries = {
+    RuleProperty: {
+      RuleProperty.RuleId: "RuleId",
+      RuleProperty.DisplayName: "DisplayName",
+      RuleProperty.Priority: "Priority",
+      RuleProperty.IsNotSupported: "IsNotSupported",
+      RuleProperty.Actions: "Actions",
+      RuleProperty.ConditionCategories: "Condition:Categories",
+      RuleProperty.ConditionContainsBodyStrings: "Condition:ContainsBodyStrings",
+      RuleProperty.ConditionContainsHeaderStrings: "Condition:ContainsHeaderStrings",
+      RuleProperty.ConditionContainsRecipientStrings: "Condition:ContainsRecipientStrings",
+      RuleProperty.ConditionContainsSenderStrings: "Condition:ContainsSenderStrings",
+      RuleProperty.ConditionContainsSubjectOrBodyStrings: "Condition:ContainsSubjectOrBodyStrings",
+      RuleProperty.ConditionContainsSubjectStrings: "Condition:ContainsSubjectStrings",
+      RuleProperty.ConditionFlaggedForAction: "Condition:FlaggedForAction",
+      RuleProperty.ConditionFromAddresses: "Condition:FromAddresses",
+      RuleProperty.ConditionFromConnectedAccounts: "Condition:FromConnectedAccounts",
+      RuleProperty.ConditionHasAttachments: "Condition:HasAttachments",
+      RuleProperty.ConditionImportance: "Condition:Importance",
+      RuleProperty.ConditionIsApprovalRequest: "Condition:IsApprovalRequest",
+      RuleProperty.ConditionIsAutomaticForward: "Condition:IsAutomaticForward",
+      RuleProperty.ConditionIsAutomaticReply: "Condition:IsAutomaticReply",
+      RuleProperty.ConditionIsEncrypted: "Condition:IsEncrypted",
+      RuleProperty.ConditionIsMeetingRequest: "Condition:IsMeetingRequest",
+      RuleProperty.ConditionIsMeetingResponse: "Condition:IsMeetingResponse",
+      RuleProperty.ConditionIsNonDeliveryReport: "Condition:IsNDR",
+      RuleProperty.ConditionIsPermissionControlled: "Condition:IsPermissionControlled",
+      RuleProperty.ConditionIsRead: "Condition:IsRead",
+      RuleProperty.ConditionIsSigned: "Condition:IsSigned",
+      RuleProperty.ConditionIsVoicemail: "Condition:IsVoicemail",
+      RuleProperty.ConditionIsReadReceipt: "Condition:IsReadReceipt",
+      RuleProperty.ConditionItemClasses: "Condition:ItemClasses",
+      RuleProperty.ConditionMessageClassifications: "Condition:MessageClassifications",
+      RuleProperty.ConditionNotSentToMe: "Condition:NotSentToMe",
+      RuleProperty.ConditionSentCcMe: "Condition:SentCcMe",
+      RuleProperty.ConditionSentOnlyToMe: "Condition:SentOnlyToMe",
+      RuleProperty.ConditionSentToAddresses: "Condition:SentToAddresses",
+      RuleProperty.ConditionSentToMe: "Condition:SentToMe",
+      RuleProperty.ConditionSentToOrCcMe: "Condition:SentToOrCcMe",
+      RuleProperty.ConditionSensitivity: "Condition:Sensitivity",
+      RuleProperty.ConditionWithinDateRange: "Condition:WithinDateRange",
+      RuleProperty.ConditionWithinSizeRange: "Condition:WithinSizeRange",
+      RuleProperty.ExceptionCategories: "Exception:Categories",
+      RuleProperty.ExceptionContainsBodyStrings: "Exception:ContainsBodyStrings",
+      RuleProperty.ExceptionContainsHeaderStrings: "Exception:ContainsHeaderStrings",
+      RuleProperty.ExceptionContainsRecipientStrings: "Exception:ContainsRecipientStrings",
+      RuleProperty.ExceptionContainsSenderStrings: "Exception:ContainsSenderStrings",
+      RuleProperty.ExceptionContainsSubjectOrBodyStrings: "Exception:ContainsSubjectOrBodyStrings",
+      RuleProperty.ExceptionContainsSubjectStrings: "Exception:ContainsSubjectStrings",
+      RuleProperty.ExceptionFlaggedForAction: "Exception:FlaggedForAction",
+      RuleProperty.ExceptionFromAddresses: "Exception:FromAddresses",
+      RuleProperty.ExceptionFromConnectedAccounts: "Exception:FromConnectedAccounts",
+      RuleProperty.ExceptionHasAttachments: "Exception:HasAttachments",
+      RuleProperty.ExceptionImportance: "Exception:Importance",
+      RuleProperty.ExceptionIsApprovalRequest: "Exception:IsApprovalRequest",
+      RuleProperty.ExceptionIsAutomaticForward: "Exception:IsAutomaticForward",
+      RuleProperty.ExceptionIsAutomaticReply: "Exception:IsAutomaticReply",
+      RuleProperty.ExceptionIsEncrypted: "Exception:IsEncrypted",
+      RuleProperty.ExceptionIsMeetingRequest: "Exception:IsMeetingRequest",
+      RuleProperty.ExceptionIsMeetingResponse: "Exception:IsMeetingResponse",
+      RuleProperty.ExceptionIsNonDeliveryReport: "Exception:IsNDR",
+      RuleProperty.ExceptionIsPermissionControlled: "Exception:IsPermissionControlled",
+      RuleProperty.ExceptionIsRead: "Exception:IsRead",
+      RuleProperty.ExceptionIsSigned: "Exception:IsSigned",
+      RuleProperty.ExceptionIsVoicemail: "Exception:IsVoicemail",
+      RuleProperty.ExceptionItemClasses: "Exception:ItemClasses",
+      RuleProperty.ExceptionMessageClassifications: "Exception:MessageClassifications",
+      RuleProperty.ExceptionNotSentToMe: "Exception:NotSentToMe",
+      RuleProperty.ExceptionSentCcMe: "Exception:SentCcMe",
+      RuleProperty.ExceptionSentOnlyToMe: "Exception:SentOnlyToMe",
+      RuleProperty.ExceptionSentToAddresses: "Exception:SentToAddresses",
+      RuleProperty.ExceptionSentToMe: "Exception:SentToMe",
+      RuleProperty.ExceptionSentToOrCcMe: "Exception:SentToOrCcMe",
+      RuleProperty.ExceptionSensitivity: "Exception:Sensitivity",
+      RuleProperty.ExceptionWithinDateRange: "Exception:WithinDateRange",
+      RuleProperty.ExceptionWithinSizeRange: "Exception:WithinSizeRange",
+      RuleProperty.ActionCategories: "Action:Categories",
+      RuleProperty.ActionCopyToFolder: "Action:CopyToFolder",
+      RuleProperty.ActionDelete: "Action:Delete",
+      RuleProperty.ActionForwardAsAttachmentToRecipients: "Action:ForwardAsAttachmentToRecipients",
+      RuleProperty.ActionForwardToRecipients: "Action:ForwardToRecipients",
+      RuleProperty.ActionImportance: "Action:Importance",
+      RuleProperty.ActionMarkAsRead: "Action:MarkAsRead",
+      RuleProperty.ActionMoveToFolder: "Action:MoveToFolder",
+      RuleProperty.ActionPermanentDelete: "Action:PermanentDelete",
+      RuleProperty.ActionRedirectToRecipients: "Action:RedirectToRecipients",
+      RuleProperty.ActionSendSMSAlertToRecipients: "Action:SendSMSAlertToRecipients",
+      RuleProperty.ActionServerReplyWithMessage: "Action:ServerReplyWithMessage",
+      RuleProperty.ActionStopProcessingRules: "Action:StopProcessingRules",
+      RuleProperty.IsEnabled: "IsEnabled",
+      RuleProperty.IsInError: "IsInError",
+      RuleProperty.Conditions: "Conditions",
+      RuleProperty.Exceptions: "Exceptions",
+    },
+    MailboxType: {
+      MailboxType.Unknown: "Unknown",
+      MailboxType.OneOff: "OneOff",
+      MailboxType.Mailbox: "Mailbox",
+      MailboxType.PublicFolder: "PublicFolder",
+      MailboxType.PublicGroup: "PublicDL",
+      MailboxType.ContactGroup: "PrivateDL",
+      MailboxType.Contact: "Contact",
+      MailboxType.GroupMailbox: "GroupMailbox",
+    },
     EventType: {
       EventType.Status: "StatusEvent",
       EventType.NewMail: "NewMailEvent",
@@ -935,6 +1037,52 @@ class EwsUtilities {
       FileAsMapping.SurnameGivenNameMiddleSuffix: "LastFirstMiddleSuffix",
       FileAsMapping.Surname: "LastName",
       FileAsMapping.Empty: "Empty",
+    },
+    WellKnownFolderName: {
+      WellKnownFolderName.Calendar: "calendar",
+      WellKnownFolderName.Contacts: "contacts",
+      WellKnownFolderName.DeletedItems: "deleteditems",
+      WellKnownFolderName.Drafts: "drafts",
+      WellKnownFolderName.Inbox: "inbox",
+      WellKnownFolderName.Journal: "journal",
+      WellKnownFolderName.Notes: "notes",
+      WellKnownFolderName.Outbox: "outbox",
+      WellKnownFolderName.SentItems: "sentitems",
+      WellKnownFolderName.Tasks: "tasks",
+      WellKnownFolderName.MsgFolderRoot: "msgfolderroot",
+      WellKnownFolderName.PublicFoldersRoot: "publicfoldersroot",
+      WellKnownFolderName.Root: "root",
+      WellKnownFolderName.JunkEmail: "junkemail",
+      WellKnownFolderName.SearchFolders: "searchfolders",
+      WellKnownFolderName.VoiceMail: "voicemail",
+      WellKnownFolderName.RecoverableItemsRoot: "recoverableitemsroot",
+      WellKnownFolderName.RecoverableItemsDeletions: "recoverableitemsdeletions",
+      WellKnownFolderName.RecoverableItemsVersions: "recoverableitemsversions",
+      WellKnownFolderName.RecoverableItemsPurges: "recoverableitemspurges",
+      WellKnownFolderName.RecoverableItemsDiscoveryHolds: "recoverableitemsdiscoveryholds",
+      WellKnownFolderName.ArchiveRoot: "archiveroot",
+      WellKnownFolderName.ArchiveInbox: "archiveinbox",
+      WellKnownFolderName.ArchiveMsgFolderRoot: "archivemsgfolderroot",
+      WellKnownFolderName.ArchiveDeletedItems: "archivedeleteditems",
+      WellKnownFolderName.ArchiveRecoverableItemsRoot: "archiverecoverableitemsroot",
+      WellKnownFolderName.ArchiveRecoverableItemsDeletions: "archiverecoverableitemsdeletions",
+      WellKnownFolderName.ArchiveRecoverableItemsVersions: "archiverecoverableitemsversions",
+      WellKnownFolderName.ArchiveRecoverableItemsPurges: "archiverecoverableitemspurges",
+      WellKnownFolderName.ArchiveRecoverableItemsDiscoveryHolds: "archiverecoverableitemsdiscoveryholds",
+      WellKnownFolderName.SyncIssues: "syncissues",
+      WellKnownFolderName.Conflicts: "conflicts",
+      WellKnownFolderName.LocalFailures: "localfailures",
+      WellKnownFolderName.ServerFailures: "serverfailures",
+      WellKnownFolderName.RecipientCache: "recipientcache",
+      WellKnownFolderName.QuickContacts: "quickcontacts",
+      WellKnownFolderName.ConversationHistory: "conversationhistory",
+      WellKnownFolderName.AdminAuditLogs: "adminauditlogs",
+      WellKnownFolderName.ToDoSearch: "todosearch",
+      WellKnownFolderName.MyContacts: "mycontacts",
+      WellKnownFolderName.Directory: "directory",
+      WellKnownFolderName.IMContactList: "imcontactlist",
+      WellKnownFolderName.PeopleConnect: "peopleconnect",
+      WellKnownFolderName.Favorites: "favorites",
     }
   };
 
@@ -977,6 +1125,8 @@ class EwsUtilities {
   static T Parse<T>(String value) {
     if (possibleEnumsConverter.containsKey(T)) {
       return possibleEnumsConverter[T](value) as T;
+    } else if (schemaToEnumDictionaries.Member.containsKey(T)) {
+      return schemaToEnumDictionaries.Member[T][value] as T;
     } else if (T == int) {
       return int.parse(value) as T;
     } else if (T == double) {
@@ -1670,6 +1820,7 @@ class EwsUtilities {
   /// <param name="enumName">The enum name.</param>
   /// <returns>The name for the enum used in the protocol, or null if it is the same as the enum's toString().</returns>
   static String GetEnumSchemaName(Type enumType, Object enumValue) {
+
     final ewsEnumAttribute = {
       MailboxType: {MailboxType.PublicGroup: EwsEnumAttribute("PublicDL")},
       MailboxType: {MailboxType.ContactGroup: EwsEnumAttribute("PrivateDL")}
@@ -1699,29 +1850,18 @@ class EwsUtilities {
 //            }
   }
 
-//
-//        /// <summary>
-//        /// Builds the schema to enum mapping dictionary.
-//        /// </summary>
-//        /// <param name="enumType">Type of the enum.</param>
-//        /// <returns>The mapping from enum to schema name</returns>
-//        private static Dictionary<string, Enum> BuildSchemaToEnumDict(Type enumType)
-//        {
-//            Dictionary<string, Enum> dict = new Dictionary<string, Enum>();
-//            string[] names = Enum.GetNames(enumType);
-//            for (string name in names)
-//            {
-//                Enum value = (Enum)Enum.Parse(enumType, name, false);
-//                string schemaName = EwsUtilities.GetEnumSchemaName(enumType, name);
-//
-//                if (!StringUtils.IsNullOrEmpty(schemaName))
-//                {
-//                    dict.Add(schemaName, value);
-//                }
-//            }
-//            return dict;
-//        }
-//
+
+        /// <summary>
+        /// Builds the schema to enum mapping dictionary.BuildSchemaToEnumDict
+        /// </summary>
+        /// <param name="enumType">Type of the enum.</param>
+        /// <returns>The mapping from enum to schema name</returns>
+        static Map<String, Object> BuildSchemaToEnumDict(Type enumType)
+        {
+          print(enumType);
+          return ewsEnumDictionaries[enumType].map((k, v) => MapEntry(v, k));
+        }
+
 //        /// <summary>
 //        /// Builds the enum to schema mapping dictionary.
 //        /// </summary>
@@ -1927,13 +2067,13 @@ class EwsUtilities {
   /* private */
   static LazyMember<Map<Type, Map<Object, String>>> enumToSchemaDictionaries =
       new LazyMember<Map<Type, Map<Object, String>>>(() => {
-            EventType: BuildEnumToSchemaDict(EventType, EventType.values),
-            MailboxType: BuildEnumToSchemaDict(MailboxType, MailboxType.values),
+            EventType: _BuildEnumToSchemaDict(EventType, EventType.values),
+            MailboxType: _BuildEnumToSchemaDict(MailboxType, MailboxType.values),
             FileAsMapping:
-                BuildEnumToSchemaDict(FileAsMapping, FileAsMapping.values),
+                _BuildEnumToSchemaDict(FileAsMapping, FileAsMapping.values),
             RuleProperty:
-                BuildEnumToSchemaDict(RuleProperty, RuleProperty.values),
-            WellKnownFolderName: BuildEnumToSchemaDict(
+                _BuildEnumToSchemaDict(RuleProperty, RuleProperty.values),
+            WellKnownFolderName: _BuildEnumToSchemaDict(
                 WellKnownFolderName, WellKnownFolderName.values),
           });
 
@@ -3378,10 +3518,9 @@ class EwsUtilities {
   /// </summary>
   /// <param name="enumType">Type of the enum.</param>
   /// <returns>The mapping from enum to schema name</returns>
-  /* private */
-  static Map<Object, String> BuildEnumToSchemaDict(
+  static Map<Object, String> _BuildEnumToSchemaDict(
       Type enumType, List<Object> enumValues) {
-    Map<Object, String> dict = new Map<Object, String>();
+    final Map<Object, String> dict = {};
     enumValues.forEach((enumValue) {
       dict[enumValue] = GetEnumSchemaName(enumType, enumValue);
     });
