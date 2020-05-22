@@ -356,7 +356,7 @@ abstract class ServiceObject {
         this.GetExtendedProperties();
 
     if ((propertyCollection != null) &&
-        propertyCollection.TryGetValueGeneric<T>(
+        propertyCollection.TryGetValue<T>(
             propertyDefinition, propertyValueOutParam)) {
       return true;
     } else {

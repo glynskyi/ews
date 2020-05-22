@@ -93,13 +93,12 @@ class ExtendedPropertyCollection
   /// </summary>
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>ExtendedProperty.</returns>
-  /* private */
-  ExtendedProperty GetOrAddExtendedProperty(
+  ExtendedProperty _GetOrAddExtendedProperty(
       ExtendedPropertyDefinition propertyDefinition) {
     ExtendedProperty extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =
         new OutParam<ExtendedProperty>();
-    if (!this.TryGetProperty(propertyDefinition, extendedPropertyOut)) {
+    if (!this._TryGetProperty(propertyDefinition, extendedPropertyOut)) {
       extendedProperty =
           new ExtendedProperty.withDefinition(propertyDefinition);
       this.InternalAdd(extendedProperty);
@@ -117,7 +116,7 @@ class ExtendedPropertyCollection
   void SetExtendedProperty(
       ExtendedPropertyDefinition propertyDefinition, Object value) {
     ExtendedProperty extendedProperty =
-        this.GetOrAddExtendedProperty(propertyDefinition);
+        this._GetOrAddExtendedProperty(propertyDefinition);
     extendedProperty.Value = value;
   }
 
@@ -132,7 +131,7 @@ class ExtendedPropertyCollection
     ExtendedProperty extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =
         new OutParam<ExtendedProperty>();
-    if (this.TryGetProperty(propertyDefinition, extendedPropertyOut)) {
+    if (this._TryGetProperty(propertyDefinition, extendedPropertyOut)) {
       extendedProperty = extendedPropertyOut.param;
       return this.InternalRemove(extendedProperty);
     } else {
@@ -146,8 +145,7 @@ class ExtendedPropertyCollection
   /// <param name="propertyDefinition">The property definition.</param>
   /// <param name="extendedProperty">The extended property.</param>
   /// <returns>True of property exists in collection.</returns>
-  /* private */
-  bool TryGetProperty(ExtendedPropertyDefinition propertyDefinition,
+  bool _TryGetProperty(ExtendedPropertyDefinition propertyDefinition,
       OutParam<ExtendedProperty> extendedPropertyOut) {
     bool found = false;
     extendedPropertyOut.param = null;
@@ -168,12 +166,12 @@ class ExtendedPropertyCollection
   /// <param name="propertyValue">The property value.</param>
   /// <typeparam name="T">Type of expected property value.</typeparam>
   /// <returns>True if property exists in collection.</returns>
-  bool TryGetValueGeneric<T>(ExtendedPropertyDefinition propertyDefinition,
+  bool TryGetValue<T>(ExtendedPropertyDefinition propertyDefinition,
       OutParam<T> propertyValueOut) {
     ExtendedProperty extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =
         new OutParam<ExtendedProperty>();
-    if (this.TryGetProperty(propertyDefinition, extendedPropertyOut)) {
+    if (this._TryGetProperty(propertyDefinition, extendedPropertyOut)) {
       extendedProperty = extendedPropertyOut.param;
       // todo ("implement runtimeType check")
 //      if (T.runtimeType is propertyDefinition.Type) {

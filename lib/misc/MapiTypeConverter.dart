@@ -56,6 +56,11 @@ class MapiTypeConverter {
     byteConverter.Parse = (o) => base64.decode(o);
     byteConverter.ConvertToString = (s) => base64.encode(s);
     map[MapiPropertyType.Binary] = byteConverter;
+
+    var intConverter = new misc.MapiTypeConverterMapEntry(int);
+    intConverter.Parse = (o) => int.parse(o);
+    intConverter.ConvertToString = (s) => s.toString();
+    map[MapiPropertyType.Integer] = intConverter;
 //
 //                var byteArrayConverter = new misc.MapiTypeConverterMapEntry(typeof(Uint8List))
 //                    {
@@ -277,7 +282,7 @@ class MapiTypeConverter {
   static Object ChangeType(MapiPropertyType mapiType, Object value) {
     EwsUtilities.ValidateParam(value, "value");
 
-    return MapiTypeConverterMap.Member[mapiType].ConvertToValue(value);
+    return MapiTypeConverterMap.Member[mapiType].ChangeType(value);
   }
 
   /// <summary>

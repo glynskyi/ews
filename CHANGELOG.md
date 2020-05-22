@@ -1,3 +1,7 @@
+## 1.0.22
+
+* Added extended properties with `bool` and `int` types
+
 ## 1.0.21
 
 * Added `MemberStatus` to `Contact`
