@@ -1,3 +1,7 @@
+## 1.0.23
+
+* Fixed the pulling of empty file attachments
+
 ## 1.0.22
 
 * Added extended properties with `bool` and `int` types

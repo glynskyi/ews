@@ -148,10 +148,15 @@ class XmlReader {
       Read();
       return value;
     } else {
-      Read();
-      final value = (events.current as XmlTextEvent).text;
-      Read();
-      return value;
+      if (events.current is XmlStartElementEvent &&
+          (events.current as XmlStartElementEvent).isSelfClosing) {
+        return "";
+      } else {
+        Read();
+        final value = (events.current as XmlTextEvent).text;
+        Read();
+        return value;
+      }
     }
   }
 
