@@ -65,14 +65,12 @@ class ImAddressDictionary
     if (value == null) {
       this.InternalRemove(key);
     } else {
-      ImAddressEntry entry;
-
       if (this.Entries.containsKey(key)) {
-        entry = this.Entries[key];
+        ImAddressEntry entry = this.Entries[key];
         entry.ImAddress = value;
         this.Changed();
       } else {
-        entry = new ImAddressEntry.withKey(key, value);
+        ImAddressEntry entry = new ImAddressEntry.withKey(key, value);
         this.InternalAdd(entry);
       }
     }

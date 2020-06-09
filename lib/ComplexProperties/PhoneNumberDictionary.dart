@@ -64,13 +64,13 @@ class PhoneNumberDictionary
     if (value == null) {
       this.InternalRemove(key);
     } else {
-      PhoneNumberEntry entry;
 
       if (this.Entries.containsKey(key)) {
+        PhoneNumberEntry entry = this.Entries[key];
         entry.PhoneNumber = value;
         this.Changed();
       } else {
-        entry = new PhoneNumberEntry.withKey(key, value);
+        PhoneNumberEntry entry = new PhoneNumberEntry.withKey(key, value);
         this.InternalAdd(entry);
       }
     }

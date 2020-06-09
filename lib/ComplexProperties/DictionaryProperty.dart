@@ -84,7 +84,7 @@ abstract class DictionaryProperty<TKey,
   /// <param name="key">The key.</param>
   /// <returns>Key index.</returns>
   String GetFieldIndex(TKey key) {
-    return key.toString();
+    return key.toString().split(".").last;
   }
 
   /// <summary>

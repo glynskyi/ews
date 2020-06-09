@@ -22,14 +22,13 @@ main() {
     ItemView view = new ItemView.withPageSize(numItems);
 
     // To keep the request smaller, request only the display name property.
-    view.PropertySet = new PropertySet(
-        BasePropertySet.IdOnly, [ContactSchema.DisplayName, ContactSchema.EmailAddress1]);
+    view.PropertySet =
+        new PropertySet(BasePropertySet.IdOnly, [ContactSchema.DisplayName, ContactSchema.EmailAddress1]);
 
     // Retrieve the items in the Contacts folder that have the properties that you selected.
     SearchFilter filter = ContainsSubString.withPropertyAndValue(ContactSchema.DisplayName, "qa1");
-    ServiceResponseCollection<FindItemResponse<Item>> response =
-        await exchangeService.FindItemsGeneric(
-            [contactsFolder.Id], null, null, view, null, ServiceErrorHandling.ThrowOnError);
+    ServiceResponseCollection<FindItemResponse<Item>> response = await exchangeService.FindItemsGeneric(
+        [contactsFolder.Id], null, null, view, null, ServiceErrorHandling.ThrowOnError);
 
     response.first.Results.Items.forEach((contact) {
       expect(contact.Id, isNotNull);
@@ -51,8 +50,7 @@ main() {
   });
 
   test('resolves name with contact photos', () async {
-    final exchangeService =
-        prepareExchangeService(primaryUserCredential, ExchangeVersion.Exchange2010_SP1);
+    final exchangeService = prepareExchangeService(primaryUserCredential, ExchangeVersion.Exchange2010_SP1);
     final response = await exchangeService.ResolveName(secondaryUserCredential.user, null,
         ResolveNameSearchLocation.ContactsThenDirectory, true, PropertySet.FirstClassProperties);
     expect(response.first.Contact.DirectoryPhoto.length, greaterThan(0));
@@ -69,8 +67,7 @@ main() {
     final contact = Contact(exchangeService);
     contact.GivenName = "GivenName";
     contact.Surname = "Surname";
-    contact.EmailAddresses[EmailAddressKey.EmailAddress1] =
-        EmailAddress(smtpAddress: "test@gmail.com");
+    contact.EmailAddresses[EmailAddressKey.EmailAddress1] = EmailAddress(smtpAddress: "test@gmail.com");
     contact.PhoneNumbers[PhoneNumberKey.BusinessPhone] = "093 76-71-0111";
     contact.PhoneNumbers[PhoneNumberKey.MobilePhone] = "093 76-71-0222";
     contact.PhysicalAddresses[PhysicalAddressKey.Home] = PhysicalAddressEntry()
@@ -100,12 +97,47 @@ main() {
           ContactSchema.FileAsMapping,
           ContactSchema.GivenName,
           ContactSchema.Surname,
+          ContactSchema.BusinessPhone,
+          ContactSchema.MobilePhone,
         ]));
 
     expect(savedContact.GivenName, contact.GivenName);
     expect(savedContact.Surname, contact.Surname);
     expect(savedContact.FileAsMapping, contact.FileAsMapping);
+    expect(savedContact.PhoneNumbers[PhoneNumberKey.BusinessPhone], "093 76-71-0111");
+    expect(savedContact.PhoneNumbers[PhoneNumberKey.MobilePhone], "093 76-71-0222");
 
     await folder.Delete(DeleteMode.HardDelete);
+  });
+
+  test('updates contact', () async {
+    final exchangeService = prepareExchangeService(primaryUserCredential);
+
+    final sourceContact = Contact(exchangeService);
+    sourceContact.GivenName = "GivenName";
+    sourceContact.Surname = "Surname";
+    sourceContact.EmailAddresses[EmailAddressKey.EmailAddress1] = EmailAddress(smtpAddress: "test@gmail.com");
+    sourceContact.PhoneNumbers[PhoneNumberKey.BusinessPhone] = "093 76-71-0111";
+    sourceContact.PhoneNumbers[PhoneNumberKey.MobilePhone] = "093 76-71-0222";
+    sourceContact.PhysicalAddresses[PhysicalAddressKey.Home] = PhysicalAddressEntry()
+      ..CountryOrRegion = "Ukraine"
+      ..City = "Kharkiv"
+      ..Street = "Hrushevsky 23";
+    sourceContact.ImAddresses[ImAddressKey.ImAddress1] = "1234566";
+    sourceContact.FileAsMapping = FileAsMapping.Company;
+    await sourceContact.SaveWithFolderId(FolderId.fromWellKnownFolder(WellKnownFolderName.Contacts));
+
+    final updatedContact = await Contact.BindWithItemId(exchangeService, sourceContact.Id);
+    updatedContact.GivenName = "GivenName 2";
+    updatedContact.PhysicalAddresses[PhysicalAddressKey.Home] = PhysicalAddressEntry()
+      ..CountryOrRegion = "USA"
+      ..City = "Ostin"
+      ..State = "Texas"
+      ..Street = "W Martin Luther King Jr Blvd";
+    updatedContact.PhoneNumbers[PhoneNumberKey.BusinessPhone] = "093 76-71-0333";
+    await updatedContact.Update(ConflictResolutionMode.AlwaysOverwrite);
+
+    final contact = await Contact.BindWithItemId(exchangeService, updatedContact.Id);
+    expect(contact.PhoneNumbers[PhoneNumberKey.BusinessPhone], "093 76-71-0333");
   });
 }
