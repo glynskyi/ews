@@ -213,7 +213,7 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertyTag);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this._tag = int.parse(attributeValue, radix: 16);
+      this._tag = int.parse(attributeValue);
     }
 
     this._name = reader.ReadAttributeValue(XmlAttributeNames.PropertyName);

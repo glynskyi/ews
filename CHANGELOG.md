@@ -1,3 +1,7 @@
+## 1.0.25
+
+* Fixed the parsing of extended property tag
+
 ## 1.0.24
 
 * Fixed the dictionary properties updating
