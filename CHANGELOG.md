@@ -1,3 +1,8 @@
+## 1.0.24
+
+* Fixed the dictionary properties updating
+* Removed unsafe date conversion warnings
+
 ## 1.0.23
 
 * Fixed the pulling of empty file attachments
