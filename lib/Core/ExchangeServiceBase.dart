@@ -357,8 +357,7 @@ abstract class ExchangeServiceBase {
   /// <param name="value">The value.</param>
   /// <returns>DateTime</returns>
   DateTime ConvertUniversalDateTimeStringToLocalDateTime(String value) {
-//          throw NotImplementedException("ConvertUniversalDateTimeStringToLocalDateTime($value)");
-    print(".. unsafe ConvertUniversalDateTimeStringToLocalDateTime($value)");
+//          throw NotImplementedException("ConvertUniversalDateTimeStringToLocalDateTime($value)")
     if (StringUtils.IsNullOrEmpty(value)) {
       return null;
     } else {
@@ -438,8 +437,10 @@ abstract class ExchangeServiceBase {
     // todo : repair ConvertDateTimeToUniversalDateTimeString
     final dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'", null);
     final formatted = dateFormat.format(value);
-    print(
-        "!! .. unsafe ConvertDateTimeToUniversalDateTimeString($value) => $formatted");
+    if (!value.isUtc) {
+      print(
+          "!! .. unsafe ConvertDateTimeToUniversalDateTimeString($value) => $formatted");
+    }
     return formatted;
 //            DateTime dateTime;
 //
