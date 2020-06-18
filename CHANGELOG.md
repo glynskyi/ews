@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Updated the `xml` package to 4.2.0
+
 ## 1.0.25
 
 * Fixed the parsing of extended property tag

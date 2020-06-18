@@ -15,7 +15,12 @@ import 'package:xml/src/xml/utils/attribute_type.dart';
 import 'package:xml/src/xml/utils/name.dart';
 import 'package:xml/src/xml/visitors/transformer.dart';
 
+const String xml = 'xml';
+const String xmlUri = 'http://www.w3.org/XML/1998/namespace';
+const String xmlns = 'xmlns';
+
 class XmlWriter {
+
   final builder = XmlBuilder();
   final StreamConsumer<List<int>> _output;
 

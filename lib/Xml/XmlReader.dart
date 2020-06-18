@@ -49,6 +49,8 @@ class XmlReader {
       case XmlNodeType.DOCUMENT_TYPE:
         // TODO: Handle this case.
         break;
+      case XmlNodeType.DECLARATION:
+        return xml.XmlNodeType.XmlDeclaration;
     }
     throw NotImplementedException(
         "Can't convert NodeType of ${events.current}");
