@@ -731,13 +731,13 @@ abstract class ServiceRequestBase {
       // Wrap exception if the above code block didn't throw
       throw new ServiceRequestException(
           "string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
-    } on IOException catch (e) {
+    } on IOException catch (e, stacktrace) {
       if (request != null) {
         request.Abort();
       }
       // Wrap exception.
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+          "string.Format(Strings.ServiceRequestFailed, $e)", e, stacktrace);
     }
   }
 

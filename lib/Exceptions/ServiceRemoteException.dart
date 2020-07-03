@@ -30,6 +30,7 @@
 class ServiceRemoteException implements Exception {
   final String message;
   final Exception innerException;
+  final StackTrace innerStackTrace;
 
   /// <summary>
   /// ServiceRemoteException Constructor.
@@ -37,7 +38,7 @@ class ServiceRemoteException implements Exception {
   /// <param name="message">Error message text.</param>
   /// <param name="innerException">Inner exception.</param>
   // ignore: avoid_init_to_null
-  ServiceRemoteException([this.message = "", this.innerException = null]);
+  ServiceRemoteException([this.message = "", this.innerException = null, this.innerStackTrace = null]);
 
   /// <summary>
   /// ServiceRemoteException Constructor.

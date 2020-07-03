@@ -35,8 +35,8 @@ class ServiceRequestException extends ServiceRemoteException {
   /// </summary>
   /// <param name="message">Error message text.</param>
   /// <param name="innerException">Inner exception.</param>
-  ServiceRequestException([String message = "", Exception innerException])
-      : super(message, innerException);
+  ServiceRequestException([String message = "", Exception innerException, StackTrace stackTrace])
+      : super(message, innerException, stackTrace);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceRequestException"/> class with serialized data.

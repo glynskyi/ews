@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Added the inner stack trace to the ServiceRemoteException
+
 ## 1.1.0
 
 * Updated the `xml` package to 4.2.0
