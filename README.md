@@ -72,13 +72,13 @@ Starting July 19th 2018, Exchange Web Services (EWS) will no longer receive feat
 ## Additional resources
 
 See the following articles to help you get started:
-- [Get started with EWS Managed API client applications](http://msdn.microsoft.com/en-us/library/office/dn567668(v=exchg.150).aspx)
-- [How to: Reference the EWS Managed API assembly](http://msdn.microsoft.com/en-us/library/office/dn528373(v=exchg.150).aspx)
-- [How to: Set the EWS service URL by using the EWS Managed API](http://msdn.microsoft.com/en-us/library/office/dn509511(v=exchg.150).aspx)
-- [How to: Communicate with EWS by using the EWS Managed API](http://msdn.microsoft.com/en-us/library/office/dn467891(v=exchg.150).aspx)
-- [How to: Trace requests and responses to troubleshoot EWS Managed API applications](http://msdn.microsoft.com/en-us/library/office/dn495632(v=exchg.150).aspx)
+- [Get started with EWS Managed API client applications](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/get-started-with-ews-managed-api-client-applications)
+- [How to: Reference the EWS Managed API assembly](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-reference-the-ews-managed-api-assembly)
+- [How to: Set the EWS service URL by using the EWS Managed API](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-set-the-ews-service-url-by-using-the-ews-managed-api)
+- [How to: Communicate with EWS by using the EWS Managed API](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-communicate-with-ews-by-using-the-ews-managed-api)
+- [How to: Trace requests and responses to troubleshoot EWS Managed API applications](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-trace-requests-responses-to-troubleshoot-ews-managed-api-applications)
 
 ## Documentation
 
-Documentation for the EWS Managed API is available in the [Web services](http://msdn.microsoft.com/en-us/library/office/dd877012(v=exchg.150).aspx) node of the [MSDN Library](http://msdn.microsoft.com/en-us/library/ms123401.aspx).
-In addition to the getting started links provided, you can find how to topics and code samples for the most frequently used EWS Managed API objects in the [Develop](http://msdn.microsoft.com/en-us/library/office/jj900166(v=exchg.150).aspx) node. All the latest information about the EWS Managed API, EWS, and related web services can be found under the [Explore the EWS Managed API, EWS, and web services in Exchange](http://msdn.microsoft.com/en-us/library/office/jj536567(v=exchg.150).aspx) topic on MSDN.
+Documentation for the EWS Managed API is available in the [Web services](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/explore-the-ews-managed-api-ews-and-web-services-in-exchange) node of the [MSDN Library](https://docs.microsoft.com/en-us/).
+In addition to the getting started links provided, you can find how to topics and code samples for the most frequently used EWS Managed API objects in the [Develop](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/develop-web-service-clients-for-exchange) node. All the latest information about the EWS Managed API, EWS, and related web services can be found under the [Explore the EWS Managed API, EWS, and web services in Exchange](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/explore-the-ews-managed-api-ews-and-web-services-in-exchange) topic on MSDN.
