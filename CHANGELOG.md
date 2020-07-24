@@ -1,3 +1,7 @@
+## 1.1.2
+
+* Fixed the properties loading for `Appointment`
+
 ## 1.1.1
 
 * Added the inner stack trace to the ServiceRemoteException

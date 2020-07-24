@@ -1068,6 +1068,7 @@ class EwsUtilities {
     ConflictResolutionMode,
     FolderPermissionLevel,
     SendInvitationsMode,
+    SendInvitationsOrCancellationsMode,
     SendCancellationsMode,
     ContainmentMode,
     ComparisonMode,
