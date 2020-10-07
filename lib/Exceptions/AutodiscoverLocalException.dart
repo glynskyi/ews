@@ -44,6 +44,11 @@ class AutodiscoverLocalException extends ServiceLocalException {
   /// <param name="message">The message.</param>
   AutodiscoverLocalException([String message = ""]) : super(message) {}
 
+  @override
+  String toString() {
+    return 'AutodiscoverLocalException{message: $message}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverLocalException"/> class.
   /// </summary>

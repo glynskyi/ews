@@ -31,6 +31,11 @@ import 'package:ews/Exceptions/ServiceRemoteException.dart';
 //	[Serializable]
 class AccountIsLockedException extends ServiceRemoteException {
   /// <summary>
+  /// Gets the URL of a web page where the user can navigate to unlock his or her account.
+  /// </summary>
+  Uri AccountUnlockUrl;
+
+  /// <summary>
   /// Initializes a new instance of the <see cref="AccountIsLockedException"/> class.
   /// </summary>
   /// <param name="message">Error message text.</param>
@@ -40,6 +45,11 @@ class AccountIsLockedException extends ServiceRemoteException {
       String message, Uri accountUnlockUrl, Exception innerException)
       : super(message, innerException) {
     this.AccountUnlockUrl = accountUnlockUrl;
+  }
+
+  @override
+  String toString() {
+    return 'AccountIsLockedException{AccountUnlockUrl: $AccountUnlockUrl, message: $message, innerException: $innerException}';
   }
 
   /// <summary>
@@ -66,9 +76,4 @@ class AccountIsLockedException extends ServiceRemoteException {
 //
 //			info.AddValue("AccountUnlockUrl", this.AccountUnlockUrl, typeof(Uri));
 //		}
-
-  /// <summary>
-  /// Gets the URL of a web page where the user can navigate to unlock his or her account.
-  /// </summary>
-  Uri AccountUnlockUrl;
 }

@@ -52,6 +52,11 @@ class AutodiscoverRemoteException extends ServiceRemoteException {
       : this.error = error,
         super(message);
 
+  @override
+  String toString() {
+    return 'AutodiscoverRemoteException{error: $error, message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverRemoteException"/> class.
   /// </summary>

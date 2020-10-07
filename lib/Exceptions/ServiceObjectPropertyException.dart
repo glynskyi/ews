@@ -57,6 +57,11 @@ class ServiceObjectPropertyException extends PropertyException {
     this.propertyDefinition = propertyDefinition;
   }
 
+  @override
+  String toString() {
+    return 'ServiceObjectPropertyException{propertyDefinition: $propertyDefinition, message: $message}';
+  }
+
   /// <summary>
   /// ServiceObjectPropertyException Constructor.
   /// </summary>

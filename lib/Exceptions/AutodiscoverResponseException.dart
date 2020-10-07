@@ -44,6 +44,11 @@ class AutodiscoverResponseException extends ServiceRemoteException {
   AutodiscoverResponseException(this.errorCode, String message)
       : super(message);
 
+  @override
+  String toString() {
+    return 'AutodiscoverResponseException{errorCode: $errorCode, message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.AutodiscoverResponseException"/> class with serialized data.
   /// </summary>

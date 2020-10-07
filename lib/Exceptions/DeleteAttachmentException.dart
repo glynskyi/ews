@@ -57,6 +57,11 @@ class DeleteAttachmentException
       [Exception innerException])
       : super(serviceResponses, message, innerException);
 
+  @override
+  String toString() {
+    return 'DeleteAttachmentException{responses: $responses, message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.DeleteAttachmentException"/> class with serialized data.
   /// </summary>

@@ -40,6 +40,11 @@ class ServiceRemoteException implements Exception {
   // ignore: avoid_init_to_null
   ServiceRemoteException([this.message = "", this.innerException = null, this.innerStackTrace = null]);
 
+  @override
+  String toString() {
+    return 'ServiceRemoteException{message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// ServiceRemoteException Constructor.
   /// </summary>

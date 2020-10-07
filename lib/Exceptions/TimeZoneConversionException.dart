@@ -1,1 +1,6 @@
-class TimeZoneConversionException implements Exception {}
+class TimeZoneConversionException implements Exception {
+  @override
+  String toString() {
+    return 'TimeZoneConversionException{}';
+  }
+}

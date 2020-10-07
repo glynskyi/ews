@@ -52,6 +52,11 @@ class ServiceResponseException extends ServiceRemoteException {
   /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
   ServiceResponseException(this._response);
 
+  @override
+  String toString() {
+    return 'ServiceResponseException{_response: $_response}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceResponseException"/> class with serialized data.
   /// </summary>

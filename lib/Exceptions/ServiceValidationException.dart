@@ -36,6 +36,11 @@ class ServiceValidationException extends ServiceLocalException {
   /// <param name="message">Error message text.</param>
   ServiceValidationException([message = ""]) : super(message);
 
+  @override
+  String toString() {
+    return 'ServiceValidationException{message: $message}';
+  }
+
   /// <summary>
   /// ServiceValidationException Constructor.
   /// </summary>

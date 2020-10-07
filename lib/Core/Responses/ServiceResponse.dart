@@ -294,4 +294,9 @@ class ServiceResponse {
   /// </summary>
   /// <value>The error properties list.</value>
   List<PropertyDefinitionBase> get ErrorProperties => this._errorProperties;
+
+  @override
+  String toString() {
+    return 'ServiceResponse{_result: $_result, _errorCode: $_errorCode, _errorMessage: $_errorMessage, _errorDetails: $_errorDetails, _errorProperties: $_errorProperties}';
+  }
 }

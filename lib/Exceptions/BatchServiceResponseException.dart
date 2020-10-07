@@ -40,6 +40,11 @@ abstract class BatchServiceResponseException<TResponse extends ServiceResponse>
   /// </summary>
   /* private */ ServiceResponseCollection<TResponse> responses;
 
+  @override
+  String toString() {
+    return 'BatchServiceResponseException{responses: $responses, message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// Initializes a new instance of MultiServiceResponseException.
   /// </summary>

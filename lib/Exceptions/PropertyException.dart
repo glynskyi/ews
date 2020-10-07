@@ -42,6 +42,11 @@ class PropertyException extends ServiceLocalException {
   /// <param name="name">The name of the property that is at the origin of the exception.</param>
   PropertyException([String message, this.name]) : super(message);
 
+  @override
+  String toString() {
+    return 'PropertyException{name: $name, message: $message}';
+  }
+
   /// <summary>
   /// PropertyException Constructor.
   /// </summary>

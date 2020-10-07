@@ -38,6 +38,11 @@ class ServiceRequestException extends ServiceRemoteException {
   ServiceRequestException([String message = "", Exception innerException, StackTrace stackTrace])
       : super(message, innerException, stackTrace);
 
+  @override
+  String toString() {
+    return 'ServiceRequestException{message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.ServiceRequestException"/> class with serialized data.
   /// </summary>

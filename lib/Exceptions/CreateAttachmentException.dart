@@ -55,6 +55,11 @@ class CreateAttachmentException
       [Exception innerException])
       : super(serviceResponses, message, innerException);
 
+  @override
+  String toString() {
+    return 'CreateAttachmentException{responses: $responses, message: $message, innerException: $innerException}';
+  }
+
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.CreateAttachmentException"/> class with serialized data.
   /// </summary>

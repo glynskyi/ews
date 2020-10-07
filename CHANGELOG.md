@@ -1,3 +1,7 @@
+## 1.1.3
+
+* Fixed the `toString` methods for all exceptions
+
 ## 1.1.2
 
 * Fixed the properties loading for `Appointment`

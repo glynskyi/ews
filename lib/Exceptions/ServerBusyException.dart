@@ -39,10 +39,16 @@ class ServerBusyException extends ServiceResponseException {
   /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
   ServerBusyException(ServiceResponse response) : super(response) {
     if (response.ErrorDetails != null &&
-        response.ErrorDetails.containsKey(ServerBusyException.BackOffMillisecondsKey)) {
-      _backOffMilliseconds =
-          int.tryParse(response.ErrorDetails[ServerBusyException.BackOffMillisecondsKey]);
+        response.ErrorDetails.containsKey(
+            ServerBusyException.BackOffMillisecondsKey)) {
+      _backOffMilliseconds = int.tryParse(
+          response.ErrorDetails[ServerBusyException.BackOffMillisecondsKey]);
     }
+  }
+
+  @override
+  String toString() {
+    return 'ServerBusyException{_backOffMilliseconds: $_backOffMilliseconds, message: $message}';
   }
 
   /// <summary>
