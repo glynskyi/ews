@@ -179,7 +179,7 @@ class ExtendedPropertyCollection
 //            "Property definition type '%s' and type parameter '%s' aren't compatible.",
 //            propertyDefinition.getType().getSimpleName(),
 //            cls.getSimpleName());
-//        throw new ArgumentError(errorMessage, "propertyDefinition");
+//        throw new ArgumentException(errorMessage, "propertyDefinition");
 //      }
       propertyValueOut.param = extendedProperty.Value;
       return true;
@@ -197,7 +197,7 @@ class ExtendedPropertyCollection
 //  Strings.PropertyDefinitionTypeMismatch,
 //  EwsUtilities.GetPrintableTypeName(propertyDefinition.Type),
 //  EwsUtilities.GetPrintableTypeName(typeof(T)));
-//  throw new ArgumentError(errorMessage, "propertyDefinition");
+//  throw new ArgumentException(errorMessage, "propertyDefinition");
 //  }
 //
 //  propertyValue = (T)extendedProperty.Value;

@@ -212,7 +212,7 @@ class PropertyBag {
 //                    Strings.PropertyDefinitionTypeMismatch,
 //                    EwsUtilities.GetPrintableTypeName(propertyDefinition.Type),
 //                    EwsUtilities.GetPrintableTypeName(typeof(T)));
-//                throw new ArgumentError(errorMessage, "propertyDefinition");
+//                throw new ArgumentException(errorMessage, "propertyDefinition");
 //            }
 
     OutParam<Object> value = new OutParam<Object>();

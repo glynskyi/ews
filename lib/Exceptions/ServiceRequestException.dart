@@ -35,12 +35,13 @@ class ServiceRequestException extends ServiceRemoteException {
   /// </summary>
   /// <param name="message">Error message text.</param>
   /// <param name="innerException">Inner exception.</param>
-  ServiceRequestException([String message = "", Exception innerException, StackTrace stackTrace])
-      : super(message, innerException, stackTrace);
+  ServiceRequestException(
+      String message, Exception innerException, StackTrace innerStackTrace)
+      : super(message, innerException, innerStackTrace);
 
   @override
   String toString() {
-    return 'ServiceRequestException{message: $message, innerException: $innerException}';
+    return 'ServiceRequestException{message: $message, innerException: $innerException, innerStackTrace: $innerStackTrace}';
   }
 
   /// <summary>

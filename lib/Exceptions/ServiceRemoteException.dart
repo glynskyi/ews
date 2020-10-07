@@ -38,7 +38,10 @@ class ServiceRemoteException implements Exception {
   /// <param name="message">Error message text.</param>
   /// <param name="innerException">Inner exception.</param>
   // ignore: avoid_init_to_null
-  ServiceRemoteException([this.message = "", this.innerException = null, this.innerStackTrace = null]);
+  ServiceRemoteException(
+      [this.message = "",
+      this.innerException = null,
+      this.innerStackTrace = null]);
 
   @override
   String toString() {

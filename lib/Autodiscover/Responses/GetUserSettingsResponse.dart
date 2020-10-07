@@ -196,12 +196,12 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
       UserSettingName userSettingName =
           EwsUtilities.Parse<UserSettingName>(name);
       this.Settings[userSettingName] = value;
-    } catch (ArgumentError) {
+    } catch (ArgumentException) {
       // ignore unexpected UserSettingName in the response (due to the server-side bugs).
       // it'd be better if this is hooked into ITraceListener, but that is unavailable here.
       //
       // in case "name" is null, EwsUtilities.Parse throws ArgumentNullException
-      // (which derives from ArgumentError).
+      // (which derives from ArgumentException).
       //
       EwsUtilities.Assert(false, "GetUserSettingsResponse.ReadSettingFromXml",
           "Unexpected or empty name element in user setting");

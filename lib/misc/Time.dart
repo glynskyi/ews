@@ -23,6 +23,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:ews/Exceptions/ArgumentException.dart';
+
 /// <summary>
 /// Represents a time.
 /// </summary>
@@ -46,7 +48,7 @@ class Time {
   /// <param name="minutes">The number of minutes since 12:00AM.</param>
   Time.fromMinutes(int minutes) {
     if (minutes < 0 || minutes >= 1440) {
-      throw new ArgumentError("Strings.MinutesMustBeBetween0And1439");
+      throw new ArgumentException("Strings.MinutesMustBeBetween0And1439");
     }
 
     this.Hours = minutes ~/ 60;
@@ -105,7 +107,7 @@ class Time {
     if (value >= 0 && value < 24) {
       this.hours = value;
     } else {
-      throw new ArgumentError("Strings.HourMustBeBetween0And23");
+      throw new ArgumentException("HourMustBeBetween0And23");
     }
   }
 
@@ -118,7 +120,7 @@ class Time {
     if (value >= 0 && value < 60) {
       this.minutes = value;
     } else {
-      throw new ArgumentError("Strings.MinuteMustBeBetween0And59");
+      throw new ArgumentException("Strings.MinuteMustBeBetween0And59");
     }
   }
 
@@ -131,7 +133,7 @@ class Time {
     if (value >= 0 && value < 60) {
       this.seconds = value;
     } else {
-      throw new ArgumentError("Strings.SecondMustBeBetween0And59");
+      throw new ArgumentException("Strings.SecondMustBeBetween0And59");
     }
   }
 }

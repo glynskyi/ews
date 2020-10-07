@@ -147,7 +147,7 @@ class SoapFaultDetails {
           case XmlElementNames.EwsResponseCodeElementName:
             try {
               this.ResponseCode = reader.ReadElementValue<ServiceError>();
-            } catch (ArgumentError) {
+            } catch (ArgumentException) {
               // ServiceError couldn't be mapped to enum value, treat as an ISE
               this.ResponseCode = ServiceError.ErrorInternalServerError;
             }
@@ -169,7 +169,7 @@ class SoapFaultDetails {
           case XmlElementNames.EwsErrorCodeElementName:
             try {
               this.ErrorCode = reader.ReadElementValue<ServiceError>();
-            } catch (ArgumentError) {
+            } catch (ArgumentException) {
               // ServiceError couldn't be mapped to enum value, treat as an ISE
               this.ErrorCode = ServiceError.ErrorInternalServerError;
             }

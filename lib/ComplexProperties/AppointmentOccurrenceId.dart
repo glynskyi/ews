@@ -27,6 +27,7 @@ import 'package:ews/ComplexProperties/ItemId.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
 import 'package:ews/Core/XmlElementNames.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 
 /// <summary>
 /// Represents the Id of an occurrence of a recurring appointment.
@@ -56,7 +57,7 @@ class AppointmentOccurrenceId extends ItemId {
   set OccurrenceIndex(int value) {
     // The occurrence index has to be positive integer.
     if (value < 1) {
-      throw new ArgumentError("Strings.OccurrenceIndexMustBeGreaterThanZero");
+      throw new ArgumentException("OccurrenceIndexMustBeGreaterThanZero");
     }
 
     this.occurrenceIndex = value;

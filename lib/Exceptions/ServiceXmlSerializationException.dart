@@ -34,11 +34,13 @@ class ServiceXmlSerializationException extends ServiceLocalException {
   /// ServiceXmlSerializationException Constructor.
   /// </summary>
   /// <param name="message">Error message text.</param>
-  ServiceXmlSerializationException([String message = ""]) : super(message);
+  ServiceXmlSerializationException(message,
+      [Exception innerException, StackTrace stackTrace])
+      : super(message, innerException, stackTrace);
 
   @override
   String toString() {
-    return 'ServiceXmlSerializationException{message: $message}';
+    return 'ServiceXmlSerializationException{message: $message, innerException: $innerException, innerStackTrace: $innerStackTrace}';
   }
 
   /// <summary>

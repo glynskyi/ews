@@ -40,7 +40,9 @@ class PropertyException extends ServiceLocalException {
   /// </summary>
   /// <param name="message">Error message text.</param>
   /// <param name="name">The name of the property that is at the origin of the exception.</param>
-  PropertyException([String message, this.name]) : super(message);
+  PropertyException(String message,
+      [this.name, Exception innerException, StackTrace innerStackTrace])
+      : super(message, innerException, innerStackTrace);
 
   @override
   String toString() {

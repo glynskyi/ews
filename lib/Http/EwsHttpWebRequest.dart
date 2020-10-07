@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Http/CookieContainer.dart' as http;
 import 'package:ews/Http/EwsHttpWebResponse.dart';
 import 'package:ews/Http/ICredentials.dart';
@@ -83,7 +84,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
       } else if (Method == "GET") {
         _request = await client.getUrl(RequestUri);
       } else {
-        throw ArgumentError.value(Method, "Method", "Unknown HTTP method");
+        throw ArgumentException("Method: $Method, Unknown HTTP method");
       }
       _request.followRedirects = AllowAutoRedirect;
 

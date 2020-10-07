@@ -162,7 +162,7 @@ class ItemAttachment extends Attachment {
   void ValidateWithIndex(int attachmentIndex) {
     if (StringUtils.IsNullOrEmpty(this.Name)) {
       throw new ServiceValidationException(
-          "string.Format(Strings.ItemAttachmentMustBeNamed, attachmentIndex)");
+          "ItemAttachmentMustBeNamed($attachmentIndex)");
     }
 
     // Recurse through any items attached to item attachment.

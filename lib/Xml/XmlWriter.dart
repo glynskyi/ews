@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:xml/src/xml/nodes/attribute.dart';
 import 'package:xml/src/xml/nodes/cdata.dart';
 import 'package:xml/src/xml/nodes/comment.dart';
@@ -20,7 +21,6 @@ const String xmlUri = 'http://www.w3.org/XML/1998/namespace';
 const String xmlns = 'xmlns';
 
 class XmlWriter {
-
   final builder = XmlBuilder();
   final StreamConsumer<List<int>> _output;
 
@@ -216,11 +216,11 @@ class XmlBuilder {
   }
 
   /// Binds a namespace [prefix] to the provided [uri]. The [prefix] can be
-  /// omitted to declare a default namespace. Throws an [ArgumentError] if
+  /// omitted to declare a default namespace. Throws an [ArgumentException] if
   /// the [prefix] is invalid or conflicts with an existing declaration.
   void namespace(String uri, [String prefix]) {
     if (prefix == xmlns || prefix == xml) {
-      throw ArgumentError('The "$prefix" prefix cannot be bound.');
+      throw ArgumentException('The "$prefix" prefix cannot be bound.');
     }
     if (optimizeNamespaces &&
         _stack.any((builder) =>
@@ -230,7 +230,7 @@ class XmlBuilder {
       return;
     }
     if (_stack.last.namespaces.values.any((meta) => meta.prefix == prefix)) {
-      throw ArgumentError(
+      throw ArgumentException(
           'The "$prefix" prefix conflicts with existing binding.');
     }
     final meta = NamespaceData(prefix, false);
@@ -257,7 +257,7 @@ class XmlBuilder {
   NamespaceData _lookup(String uri) {
     final builder = _stack.lastWhere(
         (builder) => builder.namespaces.containsKey(uri),
-        orElse: () => throw ArgumentError('Undefined namespace: $uri'));
+        orElse: () => throw ArgumentException('Undefined namespace: $uri'));
     return builder.namespaces[uri];
   }
 
@@ -281,7 +281,8 @@ class XmlBuilder {
         // All other valid nodes must be copied and added to the children list.
         _stack.last.children.add(XmlTransformer.defaultInstance.visit(value));
       } else {
-        throw ArgumentError('Unable to add element of type ${value.nodeType}');
+        throw ArgumentException(
+            'Unable to add element of type ${value.nodeType}');
       }
     } else {
       text(value.toString());
@@ -316,7 +317,8 @@ class XmlDocumentBuilder extends XmlNodeBuilder {
 
   @override
   List<XmlAttribute> get attributes {
-    throw ArgumentError('Unable to define attributes at the document level.');
+    throw ArgumentException(
+        'Unable to define attributes at the document level.');
   }
 
   @override

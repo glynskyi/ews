@@ -39,6 +39,7 @@ import 'package:ews/Enumerations/SendInvitationsOrCancellationsMode.dart'
     as enumerations;
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/ServiceVersionException.dart';
 
 /// <summary>
@@ -98,8 +99,7 @@ class UpdateItemRequest
     EwsUtilities.ValidateParamCollection(this.Items, "Items");
     for (int i = 0; i < this.Items.length; i++) {
       if ((this.Items[i] == null) || this.Items[i].IsNew) {
-        throw new ArgumentError(
-            "string.Format(Strings.ItemToUpdateCannotBeNullOrNew, i)");
+        throw new ArgumentException("ItemToUpdateCannotBeNullOrNew($i)");
       }
     }
 

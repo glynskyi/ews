@@ -31,6 +31,8 @@ import 'package:ews/Enumerations/ItemTraversal.dart';
 import 'package:ews/Enumerations/OffsetBasePoint.dart' as enumerations;
 import 'package:ews/Enumerations/ServiceObjectType.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
+import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:ews/Search/Filters/SearchFilter.dart';
 import 'package:ews/Search/Grouping.dart';
 import 'package:ews/Search/OrderByCollection.dart';
@@ -207,7 +209,7 @@ class SeekToConditionItemView extends ViewBase {
 
   set PageSize(int value) {
     if (value <= 0) {
-      throw new ArgumentError("Strings.ValueMustBeGreaterThanZero");
+      throw new ArgumentException("ValueMustBeGreaterThanZero");
     }
 
     this.pageSize = value;
@@ -230,7 +232,7 @@ class SeekToConditionItemView extends ViewBase {
 
   set Condition(SearchFilter value) {
     if (value == null) {
-      throw new ArgumentError.notNull("Condition");
+      throw new ArgumentNullException("Condition");
     }
 
     this.condition = value;

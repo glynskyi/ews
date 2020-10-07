@@ -140,7 +140,7 @@ abstract class IEwsHttpWebRequest {
   /// Gets or sets the method for the request.
   /// </summary>
   /// <returns>The request method to use to contact the Internet resource. The default value is GET.</returns>
-  /// <exception cref="T:System.ArgumentError">No method is supplied.-or- The method String contains invalid characters. </exception>
+  /// <exception cref="T:System.ArgumentException">No method is supplied.-or- The method String contains invalid characters. </exception>
   String Method;
 
   /// <summary>

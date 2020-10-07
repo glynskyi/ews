@@ -199,7 +199,7 @@ class AutodiscoverService extends ExchangeServiceBase {
   bool DefaultAutodiscoverRedirectionUrlValidationCallback(
       String redirectionUrl) {
     throw new AutodiscoverLocalException(
-        "string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
+        "AutodiscoverRedirectBlocked($redirectionUrl)");
   }
 
   /// <summary>

@@ -29,16 +29,20 @@
 //    [Serializable]
 class ServiceLocalException implements Exception {
   final String message;
+  final Exception innerException;
+  final StackTrace innerStackTrace;
 
   /// <summary>
   /// ServiceLocalException Constructor.
   /// </summary>
   /// <param name="message">Error message text.</param>
-  ServiceLocalException([this.message = ""]) : super();
+  ServiceLocalException(this.message,
+      [this.innerException, this.innerStackTrace])
+      : super();
 
   @override
   String toString() {
-    return 'ServiceLocalException{message: $message}';
+    return 'ServiceLocalException{message: $message, innerException: $innerException, innerStackTrace: $innerStackTrace}';
   }
 
   /// <summary>

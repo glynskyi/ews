@@ -60,7 +60,7 @@ class OrderByCollection
       PropertyDefinitionBase propertyDefinition, SortDirection sortDirection) {
     if (this.Contains(propertyDefinition)) {
       throw new ServiceLocalException(
-          "string.Format(Strings.PropertyAlreadyExistsInOrderByCollection, propertyDefinition.GetPrintableName())");
+          "PropertyAlreadyExistsInOrderByCollection(${propertyDefinition.GetPrintableName()})");
     }
 
     this._propDefSortOrderPairList.add(

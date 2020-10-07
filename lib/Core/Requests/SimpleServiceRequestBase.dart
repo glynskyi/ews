@@ -156,20 +156,20 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
 
         // responseStream.Close();
       }
-    } on WebException catch (e) {
-      if (e.Response != null) {
+    } on WebException catch (ex, stacktrace) {
+      if (ex.Response != null) {
         IEwsHttpWebResponse exceptionResponse =
-            this.Service.HttpWebRequestFactory.CreateExceptionResponse(e);
+            this.Service.HttpWebRequestFactory.CreateExceptionResponse(ex);
         this.Service.ProcessHttpResponseHeaders(
             TraceFlags.EwsResponseHttpHeaders, exceptionResponse);
       }
 
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
-    } on IOException catch (e) {
+          "ServiceRequestFailed(${ex.message})", ex, stacktrace);
+    } on IOException catch (ex, stacktrace) {
       // Wrap exception.
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+          "ServiceRequestFailed($ex)", ex, stacktrace);
     } finally {
       if (response != null) {
         response.Close();

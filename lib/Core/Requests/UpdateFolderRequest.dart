@@ -34,6 +34,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 
 /// <summary>
 /// Represents an UpdateFolder request.
@@ -61,8 +62,7 @@ class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
       Folder folder = this.Folders[i];
 
       if ((folder == null) || folder.IsNew) {
-        throw new ArgumentError(
-            "string.Format(Strings.FolderToUpdateCannotBeNullOrNew, i)");
+        throw new ArgumentException("FolderToUpdateCannotBeNullOrNew($i)");
       }
 
       folder.Validate();

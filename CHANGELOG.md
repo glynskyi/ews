@@ -1,3 +1,7 @@
+## 1.1.4
+
+* Added a stacktrace for most exceptions
+
 ## 1.1.3
 
 * Fixed the `toString` methods for all exceptions

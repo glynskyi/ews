@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Xml/XmlNodeType.dart' as xml;
 import 'package:xml/xml.dart';
@@ -27,7 +28,7 @@ class XmlReader {
         } else if (events.current is XmlEndElementEvent) {
           return xml.XmlNodeType.EndElement;
         } else {
-          throw StateError("Unexpected ${events.current} element");
+          throw ArgumentException("Unexpected ${events.current} element");
         }
         break;
       case XmlNodeType.ATTRIBUTE:
@@ -63,7 +64,7 @@ class XmlReader {
     } else if (event is XmlEndElementEvent) {
       return event.name;
     } else {
-      throw StateError("Can't retrieve Name for $event");
+      throw ArgumentException("Can't retrieve Name for $event");
     }
   }
 
@@ -76,7 +77,7 @@ class XmlReader {
     } else if (event is XmlEndElementEvent) {
       return event.namespacePrefix;
     } else {
-      throw StateError("Can't retrieve Prefix for $event");
+      throw ArgumentException("Can't retrieve Prefix for $event");
     }
   }
 
@@ -89,7 +90,7 @@ class XmlReader {
     } else if (event is XmlTextEvent) {
       return "#text";
     } else {
-      throw StateError("Can't retrieve LocalName for $event");
+      throw ArgumentException("Can't retrieve LocalName for $event");
     }
   }
 

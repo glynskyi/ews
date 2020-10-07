@@ -83,7 +83,7 @@ class FileAttachment extends Attachment {
         (this._content == null) &&
         (this._contentStream == null)) {
       throw new ServiceValidationException(
-          "string.Format(Strings.FileAttachmentContentIsNotSet, attachmentIndex)");
+          "FileAttachmentContentIsNotSet($attachmentIndex)");
     }
   }
 

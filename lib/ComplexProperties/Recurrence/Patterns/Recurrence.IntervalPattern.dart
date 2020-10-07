@@ -33,6 +33,7 @@ import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:timezone/standalone.dart';
 
 /// <summary>
@@ -100,7 +101,7 @@ abstract class IntervalPattern extends Recurrence {
 
   set Interval(int value) {
     if (value < 1) {
-      throw new ArgumentError("Strings.IntervalMustBeGreaterOrEqualToOne");
+      throw new ArgumentException("IntervalMustBeGreaterOrEqualToOne");
     }
     if (this.CanSetFieldValue(this._interval, value)) {
       this._interval = value;

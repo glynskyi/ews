@@ -1,7 +1,7 @@
-class ArgumentNullException implements Exception {
-  final String message;
+import 'package:ews/Exceptions/ArgumentException.dart';
 
-  ArgumentNullException(this.message);
+class ArgumentNullException extends ArgumentException {
+  ArgumentNullException(String message) : super(message);
 
   @override
   String toString() {

@@ -30,6 +30,7 @@ import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ServiceObjects/Schemas/ContactGroupSchema.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/misc/StringUtils.dart';
 
@@ -227,8 +228,7 @@ class GroupMemberCollection
   /// <param name="index">The index of the member to remove.</param>
   void RemoveAt(int index) {
     if (index < 0 || index >= this.Count) {
-      throw new ArgumentError.value(
-          index, "index", "Strings.IndexIsOutOfRange");
+      throw new ArgumentException("index: $index, IndexIsOutOfRange");
     }
 
     this.InternalRemoveAt(index);

@@ -28,6 +28,7 @@ import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
 import 'package:ews/misc/StringUtils.dart';
 
@@ -72,7 +73,7 @@ class AttributedString extends ComplexProperty {
     this.Value = value;
 
     if (attributions == null) {
-      throw new ArgumentError.notNull("attributions");
+      throw new ArgumentNullException("$attributions");
     }
 
     for (String s in attributions) {

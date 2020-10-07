@@ -131,11 +131,9 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
 //
 //                        // This is necessary to stamp the date/time with the Local kind.
 //                        return new DateTime(convertedDateTime.Ticks, DateTimeKind.Utc);
-        } on TimeZoneConversionException catch (e) {
+        } on TimeZoneConversionException catch (ex, stacktrace) {
           throw new PropertyException(
-              """string.Format(Strings.InvalidDateTime, dateTime),
-                            this.Name,
-                            $e""");
+              "InvalidDateTime($dateTime)", Name, ex, stacktrace);
         }
       } else {
         if (isUpdateOperation) {

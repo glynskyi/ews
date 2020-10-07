@@ -149,7 +149,7 @@ class ContainsSubString extends PropertyBasedFilter {
       this.comparisonMode =
           reader.ReadAttributeValue<enumerations.ComparisonMode>(
               XmlAttributeNames.ContainmentComparison);
-    } catch (ArgumentError) {
+    } catch (ArgumentException) {
       // This will happen if we receive a value that is defined in the EWS schema but that is not defined
       // in the API (see the comments in ComparisonMode.cs). We map that value to IgnoreCaseAndNonSpacingCharacters.
       this.comparisonMode =

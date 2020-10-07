@@ -24,7 +24,6 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:ews/Core/EwsServiceXmlReader.dart';
@@ -722,7 +721,7 @@ abstract class ServiceRequestBase {
       }
 
       return request;
-    } on WebException catch (ex) {
+    } on WebException catch (ex, stacktrace) {
       if (ex.Status == WebExceptionStatus.ProtocolError &&
           ex.Response != null) {
         await this._ProcessWebException(ex);
@@ -730,14 +729,14 @@ abstract class ServiceRequestBase {
 
       // Wrap exception if the above code block didn't throw
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
-    } on IOException catch (e, stacktrace) {
+          "ServiceRequestFailed(${ex.message})", ex, stacktrace);
+    } on IOException catch (ex, stacktrace) {
       if (request != null) {
         request.Abort();
       }
       // Wrap exception.
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, $e)", e, stacktrace);
+          "ServiceRequestFailed($ex)", ex, stacktrace);
     }
   }
 
@@ -751,7 +750,7 @@ abstract class ServiceRequestBase {
     try {
       IEwsHttpWebResponse response = await request.GetResponse();
       return response;
-    } on WebException catch (ex) {
+    } on WebException catch (ex, stacktrace) {
       if (ex.Status == WebExceptionStatus.ProtocolError &&
           ex.Response != null) {
         await this._ProcessWebException(ex);
@@ -759,11 +758,11 @@ abstract class ServiceRequestBase {
 
       // Wrap exception if the above code block didn't throw
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, ex.Message)", ex);
-    } on IOException catch (e) {
+          "Strings.ServiceRequestFailed($ex)", ex, stacktrace);
+    } on IOException catch (ex, stacktrace) {
       // Wrap exception.
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, e.Message)", e);
+          "ServiceRequestFailed($ex)", ex, stacktrace);
     }
   }
 
@@ -777,7 +776,7 @@ abstract class ServiceRequestBase {
 //        {
 //            try
 //            {
-//                // Note that this call may throw ArgumentError if the HttpWebRequest instance is not the original one,
+//                // Note that this call may throw ArgumentException if the HttpWebRequest instance is not the original one,
 //                // and we just let it out
 //                return request.EndGetResponse(asyncResult);
 //            }
@@ -924,12 +923,12 @@ abstract class ServiceRequestBase {
   void _ReadXmlDeclaration(EwsServiceXmlReader reader) {
     try {
       reader.Read(nodeType: XmlNodeType.XmlDeclaration);
-    } on XmlException catch (ex) {
+    } on XmlException catch (ex, stacktrace) {
       throw new ServiceRequestException(
-          "Strings.ServiceResponseDoesNotContainXml", ex);
-    } on ServiceXmlDeserializationException catch (ex) {
+          "ServiceResponseDoesNotContainXml", ex, stacktrace);
+    } on ServiceXmlDeserializationException catch (ex, stacktrace) {
       throw new ServiceRequestException(
-          "Strings.ServiceResponseDoesNotContainXml", ex);
+          "ServiceResponseDoesNotContainXml", ex, stacktrace);
     }
   }
 }

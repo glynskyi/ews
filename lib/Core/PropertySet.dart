@@ -431,8 +431,7 @@ class PropertySet
   void InternalValidate() {
     for (int i = 0; i < this._additionalProperties.length; i++) {
       if (this._additionalProperties[i] == null) {
-        throw new ServiceValidationException(
-            "string.Format(Strings.AdditionalPropertyIsNull, i)");
+        throw new ServiceValidationException("AdditionalPropertyIsNull($i)");
       }
     }
   }

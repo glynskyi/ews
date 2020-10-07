@@ -197,7 +197,7 @@ abstract class AutodiscoverRequest {
       await memoryStream2.close();
 //                        await responseStream.close();
       await webResponse.Close();
-    } on WebException catch (ex) {
+    } on WebException catch (ex, stacktrace) {
       if (ex.Status == WebExceptionStatus.ProtocolError &&
           ex.Response != null) {
         IEwsHttpWebResponse httpWebResponse =
@@ -219,8 +219,8 @@ abstract class AutodiscoverRequest {
 
       // Wrap exception if the above code block didn't throw
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, ex.Message), ex");
-    } on XmlException catch (ex) {
+          "ServiceRequestFailed(${ex.message})", ex, stacktrace);
+    } on XmlException catch (ex, stacktrace) {
       this.Service.TraceMessage(
             TraceFlags.AutodiscoverConfiguration,
             "XML parsing error: $ex",
@@ -228,15 +228,15 @@ abstract class AutodiscoverRequest {
 
       // Wrap exception
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, ex.Message), ex");
-    } on IOException catch (ex) {
+          "ServiceRequestFailed($ex)", ex, stacktrace);
+    } on IOException catch (ex, stacktrace) {
       this
           .Service
           .TraceMessage(TraceFlags.AutodiscoverConfiguration, "I/O error: $ex");
 
       // Wrap exception
       throw new ServiceRequestException(
-          "string.Format(Strings.ServiceRequestFailed, ex.Message), ex");
+          "ServiceRequestFailed($ex)", ex, stacktrace);
     }
   }
 

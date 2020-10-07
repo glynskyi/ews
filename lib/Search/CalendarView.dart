@@ -29,6 +29,7 @@ import 'package:ews/Core/XmlAttributeNames.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/ItemTraversal.dart';
 import 'package:ews/Enumerations/ServiceObjectType.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:ews/Search/Grouping.dart';
 import 'package:ews/Search/ViewBase.dart';
@@ -175,7 +176,7 @@ class CalendarView extends ViewBase {
   set MaxItemsReturned(int value) {
     if (value != null) {
       if (value <= 0) {
-        throw new ArgumentError("Strings.ValueMustBeGreaterThanZero");
+        throw new ArgumentException("Strings.ValueMustBeGreaterThanZero");
       }
     }
 

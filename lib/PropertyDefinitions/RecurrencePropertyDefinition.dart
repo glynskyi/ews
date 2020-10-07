@@ -110,7 +110,7 @@ class RecurrencePropertyDefinition extends PropertyDefinition {
         break;
       default:
         throw new ServiceXmlDeserializationException(
-            "string.Format(Strings.InvalidRecurrenceRange, recurrenceRangeString)");
+            "InvalidRecurrenceRange($recurrenceRangeString)");
     }
     return range;
   }

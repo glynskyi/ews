@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import 'package:ews/Exceptions/ArgumentException.dart';
+
 /// The Class TimeSpan.
 class TimeSpan
     implements Comparable<TimeSpan> //{, java.io.Serializable, Cloneable {
@@ -379,7 +381,7 @@ class TimeSpan
         millis = value * units;
         break;
       default:
-        throw new ArgumentError("Unrecognized units: $units");
+        throw new ArgumentException("Unrecognized units: $units");
     }
     return millis;
   }

@@ -83,6 +83,7 @@ import 'package:ews/Enumerations/TraceFlags.dart' as enumerations;
 import 'package:ews/Enumerations/UserSettingName.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
 import 'package:ews/Exceptions/AccountIsLockedException.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/AutodiscoverLocalException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Exceptions/ServiceRemoteException.dart';
@@ -4920,7 +4921,7 @@ class ExchangeService extends ExchangeServiceBase {
   bool DefaultAutodiscoverRedirectionUrlValidationCallback(
       String redirectionUrl) {
     throw new AutodiscoverLocalException(
-        "string.Format(Strings.AutodiscoverRedirectBlocked, $redirectionUrl)");
+        "AutodiscoverRedirectBlocked($redirectionUrl)");
   }
 
   /// <summary>
@@ -5017,12 +5018,11 @@ class ExchangeService extends ExchangeServiceBase {
             response, autodiscoverService.IsExternal ?? true);
 
       case AutodiscoverErrorCode.InvalidUser:
-        throw new ServiceRemoteException(
-            "string.Format(Strings.InvalidUser, $emailAddress)");
+        throw new ServiceRemoteException("InvalidUser($emailAddress)");
 
       case AutodiscoverErrorCode.InvalidRequest:
         throw new ServiceRemoteException(
-            "Strings.InvalidAutodiscoverRequest, ${response.ErrorMessage}");
+            "InvalidAutodiscoverRequest(${response.ErrorMessage}");
 
       default:
         this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
@@ -5448,7 +5448,7 @@ class ExchangeService extends ExchangeServiceBase {
     const String ParameterName = "minimum";
 
     if (StringUtils.IsNullOrEmpty(version)) {
-      throw new ArgumentError("Target version must not be empty.");
+      throw new ArgumentException("Target version must not be empty.");
     }
 
     List<String> parts = version.trim().split(ParameterSeparator);
@@ -5461,7 +5461,7 @@ class ExchangeService extends ExchangeServiceBase {
         } else if (ExchangeService.IsMajorMinor(part1)) {
           // Also close enough; misses corner cases like ".5".
         } else {
-          throw new ArgumentError(
+          throw new ArgumentException(
               "Target version must match X.Y or Exchange20XX.");
         }
 
@@ -5480,18 +5480,18 @@ class ExchangeService extends ExchangeServiceBase {
           } else if (ExchangeService.IsMajorMinor(part1)) {
             // Also close enough; misses corner cases like ".5".
           } else {
-            throw new ArgumentError(
+            throw new ArgumentException(
                 "Target version must match X.Y or Exchange20XX.");
           }
 
           break;
         }
 
-        throw new ArgumentError(
+        throw new ArgumentException(
             "Target version must match X.Y or Exchange20XX.");
 
       default:
-        throw new ArgumentError("Target version should have the form.");
+        throw new ArgumentException("Target version should have the form.");
     }
   }
 

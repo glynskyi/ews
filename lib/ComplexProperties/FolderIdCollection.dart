@@ -27,6 +27,7 @@ import 'package:ews/ComplexProperties/ComplexPropertyCollection.dart';
 import 'package:ews/ComplexProperties/FolderId.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Enumerations/WellKnownFolderName.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 
 /// <summary>
 /// Represents a collection of folder Ids.
@@ -75,7 +76,7 @@ class FolderIdCollection extends ComplexPropertyCollection<FolderId> {
     EwsUtilities.ValidateParam(folderId, "folderId");
 
     if (this.Contains(folderId)) {
-      throw new ArgumentError("""Strings.IdAlreadyInList, "folderId""" "");
+      throw new ArgumentException("""Strings.IdAlreadyInList, "folderId""" "");
     }
 
     this.InternalAdd(folderId);
@@ -88,7 +89,7 @@ class FolderIdCollection extends ComplexPropertyCollection<FolderId> {
   /// <returns>A FolderId encapsulating the specified Id.</returns>
   FolderId AddWithWellKnownFolder(WellKnownFolderName folderName) {
     if (this.contains(folderName)) {
-      throw new ArgumentError("""Strings.IdAlreadyInList, "folderName""" "");
+      throw new ArgumentException("IdAlreadyInList($folderName");
     }
 
     FolderId folderId = new FolderId.fromWellKnownFolder(folderName);

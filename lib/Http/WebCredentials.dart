@@ -1,4 +1,5 @@
 import 'package:ews/Credentials/ExchangeCredentials.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 
 class WebCredentials extends ExchangeCredentials {
   String domain;
@@ -14,7 +15,7 @@ class WebCredentials extends ExchangeCredentials {
   /// <param name="domain">Account domain.</param>
   WebCredentials(String userName, String password, String domain) {
     if (userName == null || password == null) {
-      throw new ArgumentError("User name or password can not be null");
+      throw new ArgumentException("User name or password can not be null");
     }
 
     this.domain = domain;

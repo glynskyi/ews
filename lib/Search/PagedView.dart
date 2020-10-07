@@ -27,6 +27,7 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/Requests/ServiceRequestBase.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
 import 'package:ews/Enumerations/OffsetBasePoint.dart' as enumerations;
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Search/Grouping.dart';
 import 'package:ews/Search/ViewBase.dart';
 
@@ -132,7 +133,7 @@ abstract class PagedView extends ViewBase {
 
   set PageSize(int value) {
     if (value <= 0) {
-      throw new ArgumentError("Strings.ValueMustBeGreaterThanZero");
+      throw new ArgumentException("Strings.ValueMustBeGreaterThanZero");
     }
 
     this._pageSize = value;
@@ -155,7 +156,7 @@ abstract class PagedView extends ViewBase {
     if (value >= 0) {
       this._offset = value;
     } else {
-      throw new ArgumentError("Strings.OffsetMustBeGreaterThanZero");
+      throw new ArgumentException("OffsetMustBeGreaterThanZero");
     }
   }
 }

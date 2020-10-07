@@ -29,6 +29,7 @@ import 'package:ews/Core/Requests/SubscribeRequest.dart';
 import 'package:ews/Core/Responses/SubscribeResponse.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Notifications/StreamingSubscription.dart';
 import 'package:ews/misc/StringUtils.dart';
 
@@ -52,7 +53,7 @@ class SubscribeToStreamingNotificationsRequest
     super.Validate();
 
     if (!StringUtils.IsNullOrEmpty(this.Watermark)) {
-      throw new ArgumentError(
+      throw new ArgumentException(
           "Watermarks cannot be used with StreamingSubscriptions., Watermark");
     }
   }

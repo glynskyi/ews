@@ -289,7 +289,7 @@ class StreamingSubscriptionConnection // extends IDisposable
 //
 //            if (gseResponse == null)
 //            {
-//                throw new ArgumentError();
+//                throw new ArgumentException();
 //            }
 //            else
 //            {

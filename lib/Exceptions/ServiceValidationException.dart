@@ -34,11 +34,13 @@ class ServiceValidationException extends ServiceLocalException {
   /// ServiceValidationException Constructor.
   /// </summary>
   /// <param name="message">Error message text.</param>
-  ServiceValidationException([message = ""]) : super(message);
+  ServiceValidationException(String message,
+      [Exception innerException, StackTrace innerStackTrace])
+      : super(message, innerException, innerStackTrace);
 
   @override
   String toString() {
-    return 'ServiceValidationException{message: $message}';
+    return 'ServiceValidationException{message: $message, innerException: $innerException, innerStackTrace: $innerStackTrace}';
   }
 
   /// <summary>

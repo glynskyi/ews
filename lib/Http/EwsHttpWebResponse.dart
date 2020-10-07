@@ -31,7 +31,6 @@ class EwsHttpWebResponse implements IEwsHttpWebResponse {
   @override
   Dispose() {
     throw NotImplementedException("Dispose");
-    return null;
   }
 
   @override

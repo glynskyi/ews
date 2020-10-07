@@ -29,6 +29,8 @@ import 'dart:typed_data';
 
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/LazyMember.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
+import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:uuid_enhanced/uuid.dart';
 
 typedef R Func<T, R>(T arg);
@@ -122,7 +124,7 @@ class MapiTypeConverterMapEntry {
         }
         return null;
       } on Exception {
-        throw ArgumentError(
+        throw ArgumentException(
             "The value '$value' of type ${value?.runtimeType} can't be converted to a value of type ${this.Type}.");
       }
     }
@@ -159,7 +161,7 @@ class MapiTypeConverterMapEntry {
 //                }
 //                catch (InvalidCastException ex)
 //                {
-//                    throw new ArgumentError(
+//                    throw new ArgumentException(
 //                        string.Format(
 //                            Strings.ValueOfTypeCannotBeConverted,
 //                            value,
@@ -226,15 +228,15 @@ class MapiTypeConverterMapEntry {
   /// <param name="value">The value.</param>
   void ValidateValueAsArray(Object value) {
     if (value == null) {
-      throw new ArgumentError.notNull("value");
+      throw new ArgumentNullException("value");
     }
 
     if (value is List) {
       if (value.isEmpty) {
-        ArgumentError("The Array value must have at least one element.");
+        ArgumentException("The Array value must have at least one element.");
       }
       if (value.first.runtimeType != this.Type) {
-        throw new ArgumentError(
+        throw new ArgumentException(
             "Type ${value.runtimeType} can't be used as an array of type ${this.Type}.");
       }
     }
@@ -245,7 +247,7 @@ class MapiTypeConverterMapEntry {
 //            Array array = value as Array;
 //            if (array == null)
 //            {
-//                throw new ArgumentError(
+//                throw new ArgumentException(
 //                    string.Format(
 //                        Strings.IncompatibleTypeForArray,
 //                        value.GetType(),
@@ -253,15 +255,15 @@ class MapiTypeConverterMapEntry {
 //            }
 //            else if (array.Rank != 1)
 //            {
-//                throw new ArgumentError(Strings.ArrayMustHaveSingleDimension);
+//                throw new ArgumentException(Strings.ArrayMustHaveSingleDimension);
 //            }
 //            else if (array.Length == 0)
 //            {
-//                throw new ArgumentError(Strings.ArrayMustHaveAtLeastOneElement);
+//                throw new ArgumentException(Strings.ArrayMustHaveAtLeastOneElement);
 //            }
 //            else if (array.GetType().GetElementType() != this.Type)
 //            {
-//                throw new ArgumentError(
+//                throw new ArgumentException(
 //                    string.Format(
 //                        Strings.IncompatibleTypeForArray,
 //                        value.GetType(),

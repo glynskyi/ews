@@ -90,9 +90,9 @@ class SearchFilterCollection extends SearchFilter
     for (int i = 0; i < this.length; i++) {
       try {
         this[i].InternalValidate();
-      } on ServiceValidationException catch (e) {
+      } on ServiceValidationException catch (ex, stacktrace) {
         throw new ServiceValidationException(
-            "string.Format(Strings.SearchFilterAtIndexIsInvalid, i), $e");
+            "SearchFilterAtIndexIsInvalid($i)", ex, stacktrace);
       }
     }
   }

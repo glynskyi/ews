@@ -31,6 +31,7 @@ import 'package:ews/Core/ExchangeServerInfo.dart';
 import 'package:ews/Credentials/ExchangeCredentials.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/TraceFlags.dart' as enumerations;
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Http/CookieContainer.dart' as http;
 import 'package:ews/Http/EwsHttpWebRequestFactory.dart';
@@ -131,8 +132,7 @@ abstract class ExchangeServiceBase {
     // Verify that the protocol is something that we can handle
     // todo("add service local exception")
     if ((url.scheme != "http") && (url.scheme != "https")) {
-      throw new ServiceLocalException(
-          "string.Format(Strings.UnsupportedWebProtocol, url.Scheme)");
+      throw new ServiceLocalException("UnsupportedWebProtocol(${url.scheme})");
     }
 
     IEwsHttpWebRequest request = this
@@ -674,7 +674,7 @@ abstract class ExchangeServiceBase {
 
   set Timeout(int value) {
     if (value < 1) {
-      throw new ArgumentError("Strings.TimeoutMustBeGreaterThanZero");
+      throw new ArgumentException("Strings.TimeoutMustBeGreaterThanZero");
     }
 
     this._timeout = value;

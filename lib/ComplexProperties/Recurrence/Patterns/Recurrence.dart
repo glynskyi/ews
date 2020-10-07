@@ -31,6 +31,7 @@ import 'package:ews/ComplexProperties/Recurrence/Ranges/RecurrenceRange.dart'
     as complex;
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/ServiceValidationException.dart';
 import 'package:timezone/standalone.dart';
 
@@ -111,8 +112,8 @@ class Recurrence extends ComplexProperty {
     if (value != null) {
       return value;
     } else {
-      throw new ServiceValidationException("""
-                                string.Format(Strings.PropertyValueMustBeSpecifiedForRecurrencePattern, name)""");
+      throw new ServiceValidationException(
+          "PropertyValueMustBeSpecifiedForRecurrencePattern($name)");
     }
   }
 
@@ -158,8 +159,8 @@ class Recurrence extends ComplexProperty {
 
   set NumberOfOccurrences(int value) {
     if (value < 1) {
-      throw new ArgumentError.value(value, "NumberOfOccurrences",
-          "Strings.NumberOfOccurrencesMustBeGreaterThanZero");
+      throw new ArgumentException(
+          "NumberOfOccurrences: $value, NumberOfOccurrencesMustBeGreaterThanZero");
     }
     if (this.CanSetFieldValue(this._numberOfOccurrences, value)) {
       this._numberOfOccurrences = value;

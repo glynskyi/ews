@@ -30,6 +30,7 @@ import 'dart:typed_data';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeServiceBase.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Exceptions/ServiceXmlSerializationException.dart';
 import 'package:ews/Xml/XmlNode.dart';
@@ -255,7 +256,7 @@ class EwsServiceXmlWriter implements IDisposable {
       }
     } else {
       throw new ServiceXmlSerializationException(
-          "string.Format(Strings.AttributeValueCannotBeSerialized, value.GetType().Name, localName)");
+          "AttributeValueCannotBeSerialized(${value.runtimeType}, $localName)");
     }
   }
 
@@ -275,7 +276,7 @@ class EwsServiceXmlWriter implements IDisposable {
       }
     } else {
       throw new ServiceXmlSerializationException(
-          "string.Format(Strings.AttributeValueCannotBeSerialized, value.GetType().Name, localName)");
+          "AttributeValueCannotBeSerialized(${value.runtimeType}, $localName)");
     }
   }
 
@@ -288,11 +289,10 @@ class EwsServiceXmlWriter implements IDisposable {
   void WriteAttributeString(String localName, String stringValue) {
     try {
       this._xmlWriter.WriteAttributeStringJust(localName, stringValue);
-    } on ArgumentError catch (ex) {
-      // XmlTextWriter will throw ArgumentError if String includes invalid characters.
+    } on ArgumentException catch (ex, stacktrace) {
+      // XmlTextWriter will throw ArgumentException if String includes invalid characters.
       throw new ServiceXmlSerializationException(
-          """string.Format(Strings.InvalidAttributeValue, stringValue, localName),
-                            $ex""");
+          "InvalidAttributeValue($stringValue, $localName)", ex, stacktrace);
     }
   }
 
@@ -311,11 +311,10 @@ class EwsServiceXmlWriter implements IDisposable {
           localName: localName,
           ns: null,
           value: stringValue);
-    } on ArgumentError catch (ex) {
-      // XmlTextWriter will throw ArgumentError if String includes invalid characters.
-      throw new ServiceXmlSerializationException("""
-                            string.Format(Strings.InvalidAttributeValue, stringValue, localName),
-                            $ex""");
+    } on ArgumentException catch (ex, stacktrace) {
+      // XmlTextWriter will throw ArgumentException if String includes invalid characters.
+      throw new ServiceXmlSerializationException(
+          "InvalidAttributeValue($stringValue, $localName)", ex, stacktrace);
     }
   }
 
@@ -328,11 +327,10 @@ class EwsServiceXmlWriter implements IDisposable {
   void WriteValue(String value, String name) {
     try {
       this._xmlWriter.WriteValue(value);
-    } on ArgumentError catch (ex) {
-      // XmlTextWriter will throw ArgumentError if String includes invalid characters.
+    } on ArgumentException catch (ex, stacktrace) {
+      // XmlTextWriter will throw ArgumentException if String includes invalid characters.
       throw new ServiceXmlSerializationException(
-          """String.Format(Strings.InvalidElementStringValue, value, name)
-                            ex""");
+          "InvalidElementStringValue($value, $name)", ex, stacktrace);
     }
   }
 
@@ -365,7 +363,7 @@ class EwsServiceXmlWriter implements IDisposable {
       }
     } else {
       throw new ServiceXmlSerializationException(
-          "string.Format(Strings.ElementValueCannotBeSerialized, value.GetType().Name, localName)");
+          "ElementValueCannotBeSerialized(${value.runtimeType}, $localName)");
     }
   }
 

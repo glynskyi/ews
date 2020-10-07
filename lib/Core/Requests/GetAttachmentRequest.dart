@@ -36,6 +36,7 @@ import 'package:ews/Enumerations/BodyType.dart' as enumerations;
 import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 
 /// <summary>
@@ -76,8 +77,8 @@ class GetAttachmentRequest
     }
 
     if (this.AttachmentIds.length == 0 && this.Attachments.length == 0) {
-      throw new ArgumentError(
-          "Strings.CollectionIsEmpty, Attachments/AttachmentIds");
+      throw new ArgumentException(
+          "CollectionIsEmpty, Attachments/AttachmentIds");
     }
     for (int i = 0; i < this.AdditionalProperties.length; i++) {
       EwsUtilities.ValidateParam(
