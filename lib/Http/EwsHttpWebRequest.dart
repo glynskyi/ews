@@ -69,7 +69,11 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     // TODO: implement Abort
   }
 
+  HttpClient _httpClient;
+
   HttpClientRequest _request;
+
+  EwsHttpWebRequest(this._httpClient);
 
   @override
   Future<StreamConsumer<List<int>>> GetRequestStream() async {
@@ -78,11 +82,18 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
 
   Future<HttpClientRequest> _InternalGetRequest() async {
     if (_request == null) {
-      final client = HttpClient();
+      if (this.Timeout != null) {
+        _httpClient.connectionTimeout = Duration(milliseconds: this.Timeout);
+      }
+
+      if (this.UserAgent != null) {
+        _httpClient.userAgent = this.UserAgent;
+      }
+
       if (Method == "POST") {
-        _request = await client.postUrl(RequestUri);
+        _request = await _httpClient.postUrl(RequestUri);
       } else if (Method == "GET") {
-        _request = await client.getUrl(RequestUri);
+        _request = await _httpClient.getUrl(RequestUri);
       } else {
         throw ArgumentException("Method: $Method, Unknown HTTP method");
       }
@@ -98,8 +109,14 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
       if (this.Accept != null) {
         _request.headers.add("Accept", this.Accept);
       }
+
       if (this.ContentType != null) {
         _request.headers.add("Content-Type", this.ContentType);
+      }
+
+      if (this.KeepAlive == true) {
+        _request.headers.add("Connection", "Keep-Alive");
+        _request.headers.add("Keep-Alive", "300");
       }
     }
     return _request;
@@ -111,8 +128,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(
-          WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ews/Core/ExchangeServiceBase.dart';
 import 'package:ews/Http/EwsHttpWebExceptionResponse.dart';
 import 'package:ews/Http/EwsHttpWebRequest.dart';
@@ -8,21 +10,20 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 
 class EwsHttpWebRequestFactory implements IEwsHttpWebRequestFactory {
   @override
-  IEwsHttpWebRequest CreateRequest() {
-    return EwsHttpWebRequest();
+  IEwsHttpWebRequest CreateRequest(HttpClient httpClient) {
+    return EwsHttpWebRequest(httpClient);
   }
 
   @override
-  IEwsHttpWebRequest CreateRequestWithExchangeServiceAndUrl(
-      ExchangeServiceBase exchangeService, Uri url) {
-    return EwsHttpWebRequest()
+  IEwsHttpWebRequest CreateRequestWithExchangeServiceAndUrl(ExchangeServiceBase exchangeService, Uri url) {
+    return EwsHttpWebRequest(exchangeService.httpClient)
       ..Credentials = exchangeService.Credentials
       ..RequestUri = url;
   }
 
   @override
-  IEwsHttpWebRequest CreateRequestWithUrl(Uri url) {
-    return EwsHttpWebRequest()..RequestUri = url;
+  IEwsHttpWebRequest CreateRequestWithUrl(HttpClient httpClient, Uri url) {
+    return EwsHttpWebRequest(httpClient)..RequestUri = url;
   }
 
   @override
