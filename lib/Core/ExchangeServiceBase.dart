@@ -80,10 +80,6 @@ abstract class ExchangeServiceBase {
   static String _defaultUserAgent =
       "ExchangeServicesClient/" + EwsUtilities.BuildVersion;
 
-  ExchangeServiceBase() {
-    _initializeHttpClient();
-  }
-
   _initializeHttpClient() {
     httpClient = HttpClient();
   }
@@ -522,6 +518,7 @@ abstract class ExchangeServiceBase {
   //: this(requestedServerVersion, TimeZoneInfo.Local)
   {
     this._requestedServerVersion = requestedServerVersion;
+    _initializeHttpClient();
   }
 
   /// <summary>
@@ -560,6 +557,7 @@ abstract class ExchangeServiceBase {
     this._httpHeaders = service._httpHeaders;
     this._ewsHttpWebRequestFactory = service._ewsHttpWebRequestFactory;
     this._webProxy = service._webProxy;
+    _initializeHttpClient();
   }
 
   /// <summary>
