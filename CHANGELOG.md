@@ -1,3 +1,8 @@
+## 1.1.5
+
+* Fixed the `Attachment.ContentId` property
+* Improved HTTP client lifecycle
+
 ## 1.1.4
 
 * Added a stacktrace for most exceptions
