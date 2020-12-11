@@ -142,7 +142,7 @@ abstract class Attachment extends ComplexProperty {
 
   set ContentId(String value) {
     if (CanSetFieldValue(this._contentId, value)) {
-      this._contentType = value;
+      this._contentId = value;
       Changed();
     }
   }
