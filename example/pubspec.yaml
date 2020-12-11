@@ -4,4 +4,4 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  ews: ^1.0.0
+  ews: ^1.1.4
