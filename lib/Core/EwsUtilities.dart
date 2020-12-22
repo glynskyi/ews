@@ -2859,9 +2859,14 @@ class EwsUtilities {
     // TODO : fix DateTimeToXSDateTime
     print(".. used incorret DateTimeToXSDateTime");
 
-    String format = "yyyy-MM-ddTHH:mm:ss.000";
+    String format = "yyyy-MM-ddTHH:mm:ss";
     var formatter = new DateFormat(format);
-    return formatter.format(dateTime);
+    final value = formatter.format(dateTime);
+    if (dateTime.isUtc) {
+      return "${value}Z";
+    } else {
+      return value;
+    }
 
 //            switch (dateTime.Kind)
 //            {

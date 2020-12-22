@@ -184,8 +184,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
           XmlNamespace.Types, XmlElementNames.IndexedFieldURI);
       writer.WriteAttributeValue(
           XmlAttributeNames.FieldURI, _GetFieldUri(xmlElementName));
-      writer.WriteAttributeValue(
-          XmlAttributeNames.FieldIndex, this.Key.toString());
+      writer.WriteAttributeValue(XmlAttributeNames.FieldIndex, this.Key);
       writer.WriteEndElement(); // IndexedFieldURI
 
       writer.WriteStartElement(

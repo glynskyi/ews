@@ -1,3 +1,7 @@
+## 1.1.6
+
+* Fixed serialization of `PhysicalAddressEntry`
+
 ## 1.1.5
 
 * Fixed the `Attachment.ContentId` property
