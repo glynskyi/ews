@@ -61,6 +61,8 @@ class MapiTypeConverter {
     intConverter.Parse = (o) => int.parse(o);
     intConverter.ConvertToString = (s) => s.toString();
     map[MapiPropertyType.Integer] = intConverter;
+    map[MapiPropertyType.Long] = intConverter;
+
 //
 //                var byteArrayConverter = new misc.MapiTypeConverterMapEntry(typeof(Uint8List))
 //                    {

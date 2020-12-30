@@ -1,3 +1,7 @@
+## 1.1.7
+
+* Added the MAPI converter for Long type
+
 ## 1.1.6
 
 * Fixed serialization of `PhysicalAddressEntry`

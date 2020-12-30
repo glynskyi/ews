@@ -26,6 +26,13 @@ ExtendedPropertyDefinition AssigneeAge =
   MapiPropertyType.Integer,
 );
 
+ExtendedPropertyDefinition CustomDateTime =
+    ExtendedPropertyDefinition.withDefaultPropertySetAndName(
+  DefaultExtendedPropertySet.Common,
+  "item:meetings:CustomDateTime",
+  MapiPropertyType.Long,
+);
+
 void main() {
   test('creates task with extended properties', () async {
     final service = prepareExchangeService(primaryUserCredential);
@@ -72,5 +79,24 @@ void main() {
     await updatedTask.Update(ConflictResolutionMode.AlwaysOverwrite);
 
     await updatedTask.Delete(DeleteMode.HardDelete);
+  });
+
+  test('create task with custom date', () async {
+    final service = prepareExchangeService(primaryUserCredential);
+    var customDateTime = DateTime.now().toUtc();
+    customDateTime = customDateTime
+        .subtract(Duration(microseconds: customDateTime.microsecond));
+    Task task = Task(service);
+    task.Subject = "New Task #0";
+    task.Status = TaskStatus.NotStarted;
+    task.SetExtendedProperty(
+        CustomDateTime, customDateTime.millisecondsSinceEpoch);
+    await task.Save();
+
+    final propertySet = PropertySet.fromPropertyDefinitions([CustomDateTime]);
+    task = await Task.BindWithPropertySet(service, task.Id, propertySet);
+    final outParam = OutParam<int>();
+    task.TryGetExtendedProperty(CustomDateTime, outParam);
+    expect(outParam.param, equals(customDateTime.millisecondsSinceEpoch));
   });
 }
