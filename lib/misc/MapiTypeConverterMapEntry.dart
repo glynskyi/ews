@@ -31,7 +31,7 @@ import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/LazyMember.dart';
 import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/ArgumentNullException.dart';
-import 'package:uuid_enhanced/uuid.dart';
+import 'package:ews/misc/Uuid.dart';
 
 typedef R Func<T, R>(T arg);
 
@@ -58,7 +58,7 @@ class MapiTypeConverterMapEntry {
 //                map[double], (float)0.0);
 //                map.Add(typeof(double), (double)0.0);
 //                map.Add(typeof(DateTime), DateTime.MinValue);
-    map[Uuid] = Uuid.empty();
+    map[Uuid] = null;
     map[String] = null;
 
     return map;

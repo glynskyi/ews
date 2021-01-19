@@ -1,6 +1,5 @@
 import 'package:ews/ews.dart';
 import 'package:test/test.dart';
-import 'package:uuid_enhanced/uuid.dart';
 
 import '_shared.dart';
 
@@ -15,7 +14,7 @@ main() {
         secondaryUserCredential.user, FolderPermissionLevel.Reviewer);
 
     final primaryFolder = Folder(primaryExchangeService);
-    primaryFolder.DisplayName = Uuid.randomUuid().toString();
+    primaryFolder.DisplayName = randomString().toString();
     primaryFolder.Permissions.Add(reviewerPermission);
     await primaryFolder.Save(
         FolderId.fromWellKnownFolder(WellKnownFolderName.Notes));
@@ -32,7 +31,7 @@ main() {
         prepareExchangeService(secondaryUserCredential);
 
     final primaryFolder = Folder(primaryExchangeService);
-    primaryFolder.DisplayName = Uuid.randomUuid().toString();
+    primaryFolder.DisplayName = randomString().toString();
     await primaryFolder.Save(
         FolderId.fromWellKnownFolder(WellKnownFolderName.Notes));
 

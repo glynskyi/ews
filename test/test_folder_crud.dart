@@ -1,6 +1,5 @@
 import 'package:ews/ews.dart';
 import 'package:test/test.dart';
-import 'package:uuid_enhanced/uuid.dart';
 
 import '_shared.dart';
 
@@ -19,7 +18,7 @@ void main() {
   test('creates a folder with unique name', () async {
     final service = prepareExchangeService(primaryUserCredential);
     final folder = new Folder(service);
-    folder.DisplayName = "test-${Uuid.randomUuid()}";
+    folder.DisplayName = "test-${randomString()}";
     await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
 
     await folder.Delete(DeleteMode.HardDelete);
@@ -27,7 +26,7 @@ void main() {
 
   test('creates a folder with duplicate name', () async {
     final service = prepareExchangeService(primaryUserCredential);
-    final duplicateName = "test-${Uuid.randomUuid()}";
+    final duplicateName = "test-${randomString()}";
     final firstFolder = new Folder(service);
     firstFolder.DisplayName = duplicateName;
     await firstFolder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
@@ -86,8 +85,9 @@ void main() {
   });
 
   test('empties folder with sub folder', () async {
-    final service = prepareExchangeService(primaryUserCredential, ExchangeVersion.Exchange2013);
-    final duplicateName = "test-${Uuid.randomUuid()}";
+    final service = prepareExchangeService(
+        primaryUserCredential, ExchangeVersion.Exchange2013);
+    final duplicateName = "test-${randomString()}";
     final folder = new Folder(service);
     folder.DisplayName = duplicateName;
     await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);

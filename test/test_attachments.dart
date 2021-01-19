@@ -3,15 +3,14 @@ import 'dart:typed_data';
 
 import 'package:ews/ews.dart';
 import 'package:test/test.dart';
-import 'package:uuid_enhanced/uuid.dart';
 
 import '_shared.dart';
 
 void main() {
   test('gets the attachment list', () async {
     final service = prepareExchangeService(primaryUserCredential);
-    final messageSubject = "test-${Uuid.randomUuid()}";
-    final attachmentSpan = "<span>${Uuid.randomUuid()}</span>";
+    final messageSubject = "test-${randomString()}";
+    final attachmentSpan = "<span>${randomString()}</span>";
     final attachmentContent = "<html><body>$attachmentSpan</body></html>";
 
     final message = EmailMessage(service);
@@ -38,7 +37,7 @@ void main() {
 
   test('reads the empty attachments', () async {
     final service = prepareExchangeService(primaryUserCredential);
-    final messageSubject = "test-${Uuid.randomUuid()}";
+    final messageSubject = "test-${randomString()}";
 
     final message = EmailMessage(service);
     message.Subject = messageSubject;
@@ -60,6 +59,5 @@ void main() {
     expect(testContent, isEmpty);
 
     await message.Delete(DeleteMode.HardDelete);
-
   });
 }

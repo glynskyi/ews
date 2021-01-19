@@ -25,7 +25,7 @@
 
 import 'package:ews/ComplexProperties/RetentionTagBase.dart';
 import 'package:ews/Core/XmlElementNames.dart';
-import 'package:uuid_enhanced/uuid.dart';
+import 'package:ews/misc/Uuid.dart';
 
 /// <summary>
 /// Represents the archive tag of an item or folder.

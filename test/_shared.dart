@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
@@ -30,4 +32,10 @@ ExchangeService prepareExchangeService(WebCredentials credentials,
     ..Credentials = credentials
     ..TraceFlags = [TraceFlags.EwsRequest, TraceFlags.EwsResponse]
     ..TraceEnabled = true;
+}
+
+String randomString({int len = 8}) {
+  var random = Random.secure();
+  var values = List<int>.generate(len, (i) => random.nextInt(255));
+  return base64UrlEncode(values);
 }

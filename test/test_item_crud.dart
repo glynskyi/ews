@@ -2,7 +2,6 @@ import 'package:ews/ComplexProperties/MessageBody.dart';
 import 'package:ews/ews.dart';
 import 'package:test/test.dart';
 import 'package:timezone/standalone.dart';
-import 'package:uuid_enhanced/uuid.dart';
 
 import '_shared.dart';
 
@@ -29,38 +28,39 @@ main() {
   });
 
   test('updates email message', () async {
-    final updatedSubject = Uuid.randomUuid().toString();
+    final updatedSubject = randomString().toString();
     final exchangeService = prepareExchangeService(primaryUserCredential);
     final emailMessage = EmailMessage(exchangeService);
-    emailMessage.Subject = Uuid.randomUuid().toString();
+    emailMessage.Subject = randomString().toString();
     await emailMessage.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
 
-    final updatedEmailMessage =
-        await EmailMessage.Bind(exchangeService, emailMessage.Id, PropertySet.FirstClassProperties);
+    final updatedEmailMessage = await EmailMessage.Bind(
+        exchangeService, emailMessage.Id, PropertySet.FirstClassProperties);
     updatedEmailMessage.Subject = updatedSubject;
     await updatedEmailMessage.Update(ConflictResolutionMode.AlwaysOverwrite);
 
-    final foundEmailMessage = await EmailMessage.Bind(
-        exchangeService, updatedEmailMessage.Id, PropertySet.FirstClassProperties);
+    final foundEmailMessage = await EmailMessage.Bind(exchangeService,
+        updatedEmailMessage.Id, PropertySet.FirstClassProperties);
     expect(foundEmailMessage.Subject, updatedSubject);
   });
 
   test('updates task', () async {
-    final updatedSubject = Uuid.randomUuid().toString();
+    final updatedSubject = randomString().toString();
     final originalDateTime = DateTime.now().toUtc();
     DateTime updatedDateTime = originalDateTime.add(Duration(hours: 1));
     updatedDateTime = updatedDateTime.subtract(Duration(
-        milliseconds: updatedDateTime.millisecond, microseconds: updatedDateTime.microsecond));
+        milliseconds: updatedDateTime.millisecond,
+        microseconds: updatedDateTime.microsecond));
     final exchangeService = prepareExchangeService(primaryUserCredential);
     final task = Task(exchangeService);
-    task.Subject = Uuid.randomUuid().toString();
+    task.Subject = randomString().toString();
     task.Importance = Importance.Normal;
     task.ReminderDueBy = originalDateTime;
     task.StartDate = originalDateTime;
     await task.SaveWithWellKnownFolderName(WellKnownFolderName.Tasks);
 
-    final updatedTask =
-        await Task.BindWithPropertySet(exchangeService, task.Id, PropertySet.FirstClassProperties);
+    final updatedTask = await Task.BindWithPropertySet(
+        exchangeService, task.Id, PropertySet.FirstClassProperties);
     updatedTask.Subject = updatedSubject;
     updatedTask.Importance = Importance.High;
     updatedTask.ReminderDueBy = updatedDateTime;

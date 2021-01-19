@@ -27,7 +27,7 @@ import 'package:ews/ComplexProperties/ComplexProperty.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
 import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/XmlAttributeNames.dart';
-import 'package:uuid_enhanced/uuid.dart';
+import 'package:ews/misc/Uuid.dart';
 
 /// <summary>
 /// Represents the retention tag of an item.
@@ -94,7 +94,7 @@ class RetentionTagBase extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this._retentionId = new Uuid.fromString(reader.ReadValue());
+    this._retentionId = new Uuid(reader.ReadValue());
   }
 
   /// <summary>
@@ -112,7 +112,7 @@ class RetentionTagBase extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    if (this._retentionId.isNotEmpty) {
+    if (this._retentionId != null) {
       writer.WriteValue(this._retentionId.toString(), this._xmlElementName);
     }
   }
@@ -125,7 +125,7 @@ class RetentionTagBase extends ComplexProperty {
   /// </returns>
   @override
   String toString() {
-    if (this._retentionId.isEmpty) {
+    if (this._retentionId == null) {
       return "";
     } else {
       return this._retentionId.toString();

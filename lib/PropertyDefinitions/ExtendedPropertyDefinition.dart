@@ -38,7 +38,7 @@ import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 import 'package:ews/misc/MapiTypeConverter.dart';
 import 'package:ews/misc/Std/EnumToString.dart';
 import 'package:ews/misc/StringUtils.dart';
-import 'package:uuid_enhanced/uuid.dart';
+import 'package:ews/misc/Uuid.dart';
 
 /// <summary>
 /// Represents the definition of an extended property.
@@ -208,7 +208,7 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertySetId);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this._propertySetId = Uuid.fromString(attributeValue);
+      this._propertySetId = Uuid(attributeValue);
     }
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertyTag);

@@ -5,7 +5,6 @@ import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
 import 'package:ews/Enumerations/Enumerations.dart';
 import 'package:ews/ews.dart';
 import 'package:test/test.dart';
-import 'package:uuid_enhanced/uuid.dart';
 
 import '_shared.dart';
 
@@ -73,7 +72,7 @@ main() {
     final exchangeService = prepareExchangeService(primaryUserCredential);
 
     final folder = Folder(exchangeService);
-    folder.DisplayName = "${Uuid.randomUuid()}";
+    folder.DisplayName = "${randomString()}";
     folder.FolderClass = "IPF.Contact";
     await folder.SaveWithWellKnownFolderName(WellKnownFolderName.Contacts);
 
