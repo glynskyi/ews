@@ -2,12 +2,12 @@ language: dart
 dart: dev
 jobs:
   include:
-    - stage: test_variables
-      script: echo $TEST_VARI
     - stage: analyze
       script: dartanalyzer --fatal-warnings .
     - stage: unit_test
-      script: pub run test test/test_all.dart --platform vm
+      script:
+        - echo $TEST_VARI
+        - pub run test test/test_all.dart --platform vm
     - stage: coverage
       script:
         - pub global activate dart_coveralls
