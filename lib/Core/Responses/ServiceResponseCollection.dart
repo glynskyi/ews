@@ -37,7 +37,7 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 class ServiceResponseCollection<TResponse extends ServiceResponse>
     with IterableMixin<TResponse>
     implements Iterable<TResponse> {
-  List<TResponse> _responses = new List<TResponse>();
+  List<TResponse> _responses = <TResponse>[];
 
   ServiceResult _overallResult = ServiceResult.Success;
 

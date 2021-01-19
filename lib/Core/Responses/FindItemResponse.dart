@@ -108,7 +108,7 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
             String groupIndex = reader.ReadElementValueWithNamespace(
                 XmlNamespace.Types, XmlElementNames.GroupIndex);
 
-            List<TItem> itemList = new List<TItem>();
+            List<TItem> itemList = <TItem>[];
             _InternalReadItemsFromXml(reader, this._propertySet, itemList);
 
             reader.ReadEndElementWithNamespace(

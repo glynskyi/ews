@@ -41,7 +41,7 @@ class NameResolutionCollection
     implements Iterable<NameResolution> {
   ExchangeService _service;
   bool _includesAllResolutions;
-  List<NameResolution> _items = new List<NameResolution>();
+  List<NameResolution> _items = <NameResolution>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NameResolutionCollection"/> class.

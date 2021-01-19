@@ -38,7 +38,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 class StringList extends ComplexProperty
     with IterableMixin<String>
     implements Iterable<String> {
-  List<String> _items = new List<String>();
+  List<String> _items = <String>[];
 
   String _itemXmlElementName = XmlElementNames.String;
 

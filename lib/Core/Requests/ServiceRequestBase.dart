@@ -92,7 +92,7 @@ abstract class ServiceRequestBase {
   /// <summary>
   /// Maintains the collection of client side statistics for requests already completed
   /// </summary>
-  static List<String> _clientStatisticsCache = new List<String>();
+  static List<String> _clientStatisticsCache = <String>[];
 
   ExchangeService _service;
 

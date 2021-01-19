@@ -51,7 +51,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   GetDomainSettingsResponse() : super() {
     this._domain = "";
     this._settings = new Map<DomainSettingName, Object>();
-    this._domainSettingErrors = new List<DomainSettingError>();
+    this._domainSettingErrors = <DomainSettingError>[];
   }
 
   /// <summary>

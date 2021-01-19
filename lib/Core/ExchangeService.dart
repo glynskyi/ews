@@ -3569,7 +3569,7 @@ class ExchangeService extends ExchangeServiceBase {
 //                                                Iterable<FolderId> foldersToIgnore,
 //                                                ConversationSortOrder? sortOrder)
 //        {
-//            List<ConversationRequest> conversations = new List<ConversationRequest>();
+//            List<ConversationRequest> conversations = <ConversationRequest> [];
 //            conversations.Add(new ConversationRequest(conversationId, syncState));
 //
 //            return this.InternalGetConversationItems(
@@ -3607,7 +3607,7 @@ class ExchangeService extends ExchangeServiceBase {
 //        {
 //            EwsUtilities.ValidateParam(anchorMailbox, "anchorMailbox");
 //
-//            List<ConversationRequest> conversations = new List<ConversationRequest>();
+//            List<ConversationRequest> conversations = <ConversationRequest> [];
 //            conversations.Add(new ConversationRequest(conversationId, syncState));
 //
 //            return this.InternalGetConversationItems(
@@ -5070,7 +5070,7 @@ class ExchangeService extends ExchangeServiceBase {
 //ServiceResponseCollection<GetClientAccessTokenResponse> GetClientAccessToken(Iterable<MapEntry<string, ClientAccessTokenType>> idAndTypes)
 //        {
 //            GetClientAccessTokenRequest request = new GetClientAccessTokenRequest(this, ServiceErrorHandling.ReturnErrors);
-//            List<ClientAccessTokenRequest> requestList = new List<ClientAccessTokenRequest>();
+//            List<ClientAccessTokenRequest> requestList = <ClientAccessTokenRequest> [];
 //            for (MapEntry<string, ClientAccessTokenType> idAndType in idAndTypes)
 //            {
 //                ClientAccessTokenRequest clientAccessTokenRequest = new ClientAccessTokenRequest(idAndType.Key, idAndType.Value);

@@ -240,7 +240,7 @@ class OutlookProtocol {
   /* private */
   static LazyMember<List<UserSettingName>> availableUserSettings =
       new LazyMember<List<UserSettingName>>(() {
-    var results = new List<UserSettingName>();
+    var results = <UserSettingName>[];
     results.addAll(commonProtocolSettings.Member.keys);
     results.addAll(internalProtocolSettings.Member.keys);
     results.addAll(externalProtocolSettings.Member.keys);
@@ -386,8 +386,8 @@ class OutlookProtocol {
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.Type:
-            this.ProtocolType =
-                OutlookProtocol.ProtocolNameToType(reader.ReadElementValue<String>());
+            this.ProtocolType = OutlookProtocol.ProtocolNameToType(
+                reader.ReadElementValue<String>());
             break;
           case XmlElementNames.AuthPackage:
             this.authPackage = reader.ReadElementValue<String>();
@@ -412,7 +412,8 @@ class OutlookProtocol {
             this.exchangeWebServicesUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EmwsUrl:
-            this.exchangeManagementWebServicesUrl = reader.ReadElementValue<String>();
+            this.exchangeManagementWebServicesUrl =
+                reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ASUrl:
             this.availabilityServiceUrl = reader.ReadElementValue<String>();
@@ -473,7 +474,8 @@ class OutlookProtocol {
             this.exchangeRpcUrl = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EwsPartnerUrl:
-            this.exchangeWebServicesPartnerUrl = reader.ReadElementValue<String>();
+            this.exchangeWebServicesPartnerUrl =
+                reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_connect:
             this.ecpUrlConnect = reader.ReadElementValue<String>();
@@ -497,7 +499,8 @@ class OutlookProtocol {
             this.ecpUrlExtInstall = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerExclusiveConnect:
-            String serverExclusiveConnectStr = reader.ReadElementValue<String>();
+            String serverExclusiveConnectStr =
+                reader.ReadElementValue<String>();
             this.serverExclusiveConnect =
                 serverExclusiveConnectStr.toLowerCase() == "on";
             break;

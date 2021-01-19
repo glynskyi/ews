@@ -48,7 +48,7 @@ import 'package:ews/misc/Std/EnumToString.dart';
 class SearchFilterCollection extends SearchFilter
     with IterableMixin<SearchFilter>
     implements Iterable<SearchFilter> {
-  List<SearchFilter> _searchFilters = new List<SearchFilter>();
+  List<SearchFilter> _searchFilters = <SearchFilter>[];
 
   enumerations.LogicalOperator _logicalOperator =
       enumerations.LogicalOperator.And;

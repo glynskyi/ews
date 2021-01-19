@@ -41,9 +41,9 @@ class SimplePropertyBag<TKey>
     with IterableMixin<MapEntry<TKey, Object>>
     implements Iterable<MapEntry<TKey, Object>> {
   Map<TKey, Object> _items = new Map<TKey, Object>();
-  List<TKey> _removedItems = new List<TKey>();
-  List<TKey> _addedItems = new List<TKey>();
-  List<TKey> _modifiedItems = new List<TKey>();
+  List<TKey> _removedItems = <TKey>[];
+  List<TKey> _addedItems = <TKey>[];
+  List<TKey> _modifiedItems = <TKey>[];
 
   /// <summary>
   /// Add item to change list.

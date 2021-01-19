@@ -411,7 +411,7 @@ abstract class ServiceObject {
   /// </summary>
   /// <returns>Collection of property definitions.</returns>
   List<PropertyDefinitionBase> GetLoadedPropertyDefinitions() {
-    List<PropertyDefinitionBase> propDefs = new List<PropertyDefinitionBase>();
+    List<PropertyDefinitionBase> propDefs = <PropertyDefinitionBase>[];
     for (PropertyDefinition propDef in this.PropertyBag.Properties.keys) {
       propDefs.add(propDef);
     }
@@ -485,6 +485,6 @@ abstract class ServiceObject {
   /// Defines an event that is triggered when the service object changes.
   /// </summary>
   List<IServiceObjectChangedDelegate> onChange =
-      new List<IServiceObjectChangedDelegate>();
+      <IServiceObjectChangedDelegate>[];
 //        event ServiceObjectChangedDelegate OnChange;
 }

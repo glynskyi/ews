@@ -49,7 +49,7 @@ class _PhysicalAddressSchema {
   /// </summary>
   static LazyMember<List<String>> _xmlElementNames =
       new LazyMember<List<String>>(() {
-    List<String> result = new List<String>();
+    List<String> result = <String>[];
     result.add(Street);
     result.add(City);
     result.add(State);
@@ -166,7 +166,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   @override
   bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
       String ownerDictionaryXmlElementName) {
-    List<String> fieldsToSet = new List<String>();
+    List<String> fieldsToSet = <String>[];
 
     for (String xmlElementName in this._propertyBag.AddedItems) {
       fieldsToSet.add(xmlElementName);

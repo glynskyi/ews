@@ -48,7 +48,7 @@ class OrderByCollection
   /// </summary>
   OrderByCollection() {
     this._propDefSortOrderPairList =
-        new List<MapEntry<PropertyDefinitionBase, SortDirection>>();
+        <MapEntry<PropertyDefinitionBase, SortDirection>>[];
   }
 
   /// <summary>

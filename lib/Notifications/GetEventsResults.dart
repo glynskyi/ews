@@ -84,7 +84,7 @@ class GetEventsResults {
   /// <summary>
   /// Collection of notification events.
   /// </summary>
-  List<NotificationEvent> _events = new List<NotificationEvent>();
+  List<NotificationEvent> _events = <NotificationEvent>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetEventsResults"/> class.

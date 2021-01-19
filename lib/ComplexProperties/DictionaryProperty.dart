@@ -46,9 +46,9 @@ abstract class DictionaryProperty<TKey,
 
   Map<TKey, TEntry> _removedEntries = new Map<TKey, TEntry>();
 
-  List<TKey> _addedEntries = new List<TKey>();
+  List<TKey> _addedEntries = <TKey>[];
 
-  List<TKey> _modifiedEntries = new List<TKey>();
+  List<TKey> _modifiedEntries = <TKey>[];
 
   /// <summary>
   /// Entry was changed.
@@ -279,7 +279,7 @@ abstract class DictionaryProperty<TKey,
   /// </returns>
   bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
       PropertyDefinition propertyDefinition) {
-    List<TEntry> tempEntries = new List<TEntry>();
+    List<TEntry> tempEntries = <TEntry>[];
 
     for (TKey key in this._addedEntries) {
       tempEntries.add(this._entries[key]);

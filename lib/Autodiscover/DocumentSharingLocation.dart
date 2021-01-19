@@ -184,7 +184,7 @@ class DocumentSharingLocation {
             break;
 
           case XmlElementNames.SupportedFileExtensions:
-            List<String> fileExtensions = new List<String>();
+            List<String> fileExtensions = <String>[];
             reader.Read();
             while (reader.IsStartElementWithNamespace(
                 XmlNamespace.Autodiscover, XmlElementNames.FileExtension)) {

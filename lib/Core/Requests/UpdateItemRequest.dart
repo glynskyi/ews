@@ -47,7 +47,7 @@ import 'package:ews/Exceptions/ServiceVersionException.dart';
 /// </summary>
 class UpdateItemRequest
     extends MultiResponseServiceRequest<UpdateItemResponse> {
-  List<Item> _items = new List<Item>();
+  List<Item> _items = <Item>[];
 
   FolderId _savedItemsDestinationFolder;
 

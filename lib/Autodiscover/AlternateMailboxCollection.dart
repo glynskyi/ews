@@ -37,7 +37,7 @@ class AlternateMailboxCollection {
   /// Initializes a new instance of the <see cref="AlternateMailboxCollection"/> class.
   /// </summary>
   AlternateMailboxCollection() {
-    this.Entries = new List<AlternateMailbox>();
+    this.Entries = <AlternateMailbox>[];
   }
 
   /// <summary>

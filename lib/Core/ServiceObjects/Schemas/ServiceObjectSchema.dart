@@ -241,16 +241,15 @@ abstract class ServiceObjectSchema
   Map<String, PropertyDefinition> _properties =
       new Map<String, PropertyDefinition>();
 
-  List<PropertyDefinition> _visibleProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _visibleProperties = <PropertyDefinition>[];
 
-  List<PropertyDefinition> _firstClassProperties =
-      new List<PropertyDefinition>();
+  List<PropertyDefinition> _firstClassProperties = <PropertyDefinition>[];
 
   List<PropertyDefinition> _firstClassSummaryProperties =
-      new List<PropertyDefinition>();
+      <PropertyDefinition>[];
 
   List<IndexedPropertyDefinition> _indexedProperties =
-      new List<IndexedPropertyDefinition>();
+      <IndexedPropertyDefinition>[];
 
   /// <summary>
   /// Registers a schema property.

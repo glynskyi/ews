@@ -136,7 +136,7 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// Getting the current subscriptions in this connection.
   /// </summary>
   Iterable<StreamingSubscription> get CurrentSubscriptions {
-    List<StreamingSubscription> result = new List<StreamingSubscription>();
+    List<StreamingSubscription> result = <StreamingSubscription>[];
 
     result.addAll(this._subscriptions.values);
 

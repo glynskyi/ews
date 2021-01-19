@@ -59,7 +59,7 @@ class TimeZoneDefinition extends ComplexProperty {
   Map<String, TimeZoneTransitionGroup> _transitionGroups =
       new Map<String, TimeZoneTransitionGroup>();
 
-  List<TimeZoneTransition> _transitions = new List<TimeZoneTransition>();
+  List<TimeZoneTransition> _transitions = <TimeZoneTransition>[];
 
   /// <summary>
   /// Compares the transitions.
@@ -438,7 +438,7 @@ class TimeZoneDefinition extends ComplexProperty {
 //            TimeZoneTransitionGroup.CustomTimeZoneCreateParams creationParams =
 //                this.transitions[this.transitions.Count - 1].TargetGroup.GetCustomTimeZoneCreationParams();
 //
-//            List<TimeZoneInfo.AdjustmentRule> adjustmentRules = new List<TimeZoneInfo.AdjustmentRule>();
+//            List<TimeZoneInfo.AdjustmentRule> adjustmentRules = <TimeZoneInfo.AdjustmentRule> [];
 //
 //            DateTime startDate = DateTime.MinValue;
 //            DateTime endDate;

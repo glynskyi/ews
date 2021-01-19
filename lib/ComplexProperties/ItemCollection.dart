@@ -40,7 +40,7 @@ class ItemCollection<TItem extends Item> extends ComplexProperty
     with IterableMixin<TItem>
     implements Iterable<TItem> {
   /* private */
-  List<TItem> items = new List<TItem>();
+  List<TItem> items = <TItem>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ItemCollection&lt;TItem&gt;"/> class.

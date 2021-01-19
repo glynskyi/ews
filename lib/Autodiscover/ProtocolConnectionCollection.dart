@@ -40,7 +40,7 @@ class ProtocolConnectionCollection {
   /// Initializes a new instance of the <see cref="ProtocolConnectionCollection"/> class.
   /// </summary>
   ProtocolConnectionCollection() {
-    this._connections = new List<ProtocolConnection>();
+    this._connections = <ProtocolConnection>[];
   }
 
   /// <summary>

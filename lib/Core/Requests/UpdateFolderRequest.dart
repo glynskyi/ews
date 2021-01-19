@@ -40,7 +40,7 @@ import 'package:ews/Exceptions/ArgumentException.dart';
 /// Represents an UpdateFolder request.
 /// </summary>
 class UpdateFolderRequest extends MultiResponseServiceRequest<ServiceResponse> {
-  List<Folder> _folders = new List<Folder>();
+  List<Folder> _folders = <Folder>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UpdateFolderRequest"/> class.

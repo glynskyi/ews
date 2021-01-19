@@ -37,7 +37,7 @@ class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
 
   bool _moreAvailable = false;
 
-  List<Folder> _folders = new List<Folder>();
+  List<Folder> _folders = <Folder>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindFoldersResults"/> class.

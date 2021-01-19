@@ -44,12 +44,12 @@ import 'package:ews/PropertyDefinitions/PropertyDefinitionBase.dart';
 /// </summary>
 class GetAttachmentRequest
     extends MultiResponseServiceRequest<GetAttachmentResponse> {
-  List<Attachment> _attachments = new List<Attachment>();
+  List<Attachment> _attachments = <Attachment>[];
 
-  List<String> _attachmentIds = new List<String>();
+  List<String> _attachmentIds = <String>[];
 
   List<PropertyDefinitionBase> _additionalProperties =
-      new List<PropertyDefinitionBase>();
+      <PropertyDefinitionBase>[];
 
   enumerations.BodyType _bodyType;
 

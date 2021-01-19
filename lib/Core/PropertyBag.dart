@@ -55,13 +55,13 @@ class PropertyBag {
   bool _isDirty = false;
   bool _loading = false;
   bool _onlySummaryPropertiesRequested;
-  List<PropertyDefinition> _loadedProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _loadedProperties = <PropertyDefinition>[];
   Map<PropertyDefinition, Object> _properties =
       new Map<PropertyDefinition, Object>();
   Map<PropertyDefinition, Object> _deletedProperties =
       new Map<PropertyDefinition, Object>();
-  List<PropertyDefinition> _modifiedProperties = new List<PropertyDefinition>();
-  List<PropertyDefinition> _addedProperties = new List<PropertyDefinition>();
+  List<PropertyDefinition> _modifiedProperties = <PropertyDefinition>[];
+  List<PropertyDefinition> _addedProperties = <PropertyDefinition>[];
   PropertySet _requestedPropertySet;
 
   /// <summary>
@@ -616,8 +616,7 @@ class PropertyBag {
   /// </summary>
   /// <returns>True if an UpdateItem/UpdateFolder call is necessary, false otherwise.</returns>
   bool GetIsUpdateCallNecessary() {
-    List<PropertyDefinition> propertyDefinitions =
-        new List<PropertyDefinition>();
+    List<PropertyDefinition> propertyDefinitions = <PropertyDefinition>[];
 
     propertyDefinitions.addAll(this._addedProperties);
     propertyDefinitions.addAll(this._modifiedProperties);

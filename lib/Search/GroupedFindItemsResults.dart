@@ -44,8 +44,7 @@ class GroupedFindItemsResults<TItem extends Item>
   /// <summary>
   /// List of ItemGroups.
   /// </summary>
-  List<search.ItemGroup<TItem>> _itemGroups =
-      new List<search.ItemGroup<TItem>>();
+  List<search.ItemGroup<TItem>> _itemGroups = <search.ItemGroup<TItem>>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GroupedFindItemsResults&lt;TItem&gt;"/> class.

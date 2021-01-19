@@ -36,7 +36,7 @@ class ChangeCollection<TChange extends Change>
     with IterableMixin<TChange>
     implements Iterable<TChange> {
   /* private */
-  List<TChange> changes = new List<TChange>();
+  List<TChange> changes = <TChange>[];
 
   /* private */
   String syncState;

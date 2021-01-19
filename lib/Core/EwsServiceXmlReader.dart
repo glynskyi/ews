@@ -89,7 +89,8 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <returns>Element value.</returns>
   DateTime ReadElementValueAsUnspecifiedDate() {
-    return this._ConvertStringToUnspecifiedDate(this.ReadElementValue<String>());
+    return this
+        ._ConvertStringToUnspecifiedDate(this.ReadElementValue<String>());
   }
 
   /// <summary>
@@ -133,7 +134,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
       bool clearPropertyBag,
       PropertySet requestedPropertySet,
       bool summaryPropertiesOnly) {
-    List<TServiceObject> serviceObjects = new List<TServiceObject>();
+    List<TServiceObject> serviceObjects = <TServiceObject>[];
     TServiceObject serviceObject = null;
 
     if (!this.IsStartElementWithNamespace(

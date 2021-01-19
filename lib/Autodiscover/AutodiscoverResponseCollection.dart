@@ -43,7 +43,7 @@ abstract class AutodiscoverResponseCollection<
   /// Initializes a new instance of the <see cref="AutodiscoverResponseCollection&lt;TResponse&gt;"/> class.
   /// </summary>
   AutodiscoverResponseCollection() {
-    this._responses = new List<TResponse>();
+    this._responses = <TResponse>[];
   }
 
   /// <summary>

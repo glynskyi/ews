@@ -42,7 +42,7 @@ class CreateAttachmentRequest
     extends MultiResponseServiceRequest<CreateAttachmentResponse> {
   String _parentItemId;
 
-  List<Attachment> _attachments = new List<Attachment>();
+  List<Attachment> _attachments = <Attachment>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateAttachmentRequest"/> class.

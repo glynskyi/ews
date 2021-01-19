@@ -48,7 +48,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   GetUserSettingsResponse() : super() {
     this.SmtpAddress = "";
     this.Settings = new Map<UserSettingName, Object>();
-    this.UserSettingErrors = new List<UserSettingError>();
+    this.UserSettingErrors = <UserSettingError>[];
   }
 
   /// <summary>

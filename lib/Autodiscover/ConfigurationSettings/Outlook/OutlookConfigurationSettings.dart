@@ -46,7 +46,7 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
   /// </summary>
   static LazyMember<List<UserSettingName>> _allOutlookProviderSettings =
       new LazyMember<List<UserSettingName>>(() {
-    List<UserSettingName> results = new List<UserSettingName>();
+    List<UserSettingName> results = <UserSettingName>[];
     results.addAll(OutlookUser.AvailableUserSettings);
     results.addAll(OutlookProtocol.AvailableUserSettings);
     results.add(UserSettingName.AlternateMailboxes);

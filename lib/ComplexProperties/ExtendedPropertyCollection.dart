@@ -221,7 +221,7 @@ class ExtendedPropertyCollection
   /// </returns>
   bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
       PropertyDefinition propertyDefinition) {
-    List<ExtendedProperty> propertiesToSet = new List<ExtendedProperty>();
+    List<ExtendedProperty> propertiesToSet = <ExtendedProperty>[];
 
     propertiesToSet.addAll(this.AddedItems);
     propertiesToSet.addAll(this.ModifiedItems);

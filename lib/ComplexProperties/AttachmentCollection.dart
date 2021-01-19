@@ -248,7 +248,7 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// Saves this collection by creating new attachment and deleting removed ones.
   /// </summary>
   Future<void> Save() async {
-    List<Attachment> attachments = new List<Attachment>();
+    List<Attachment> attachments = <Attachment>[];
 
     // Retrieve a list of attachments that have to be deleted.
     for (Attachment attachment in this.RemovedItems) {

@@ -40,7 +40,7 @@ class WebClientUrlCollection {
   /// Initializes a new instance of the <see cref="WebClientUrlCollection"/> class.
   /// </summary>
   WebClientUrlCollection() {
-    this._urls = new List<WebClientUrl>();
+    this._urls = <WebClientUrl>[];
   }
 
   /// <summary>

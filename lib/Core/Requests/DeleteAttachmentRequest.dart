@@ -40,7 +40,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// </summary>
 class DeleteAttachmentRequest
     extends MultiResponseServiceRequest<DeleteAttachmentResponse> {
-  List<Attachment> _attachments = new List<Attachment>();
+  List<Attachment> _attachments = <Attachment>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteAttachmentRequest"/> class.

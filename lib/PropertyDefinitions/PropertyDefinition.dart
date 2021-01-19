@@ -125,7 +125,7 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// register the MeetingTimeZone property definition that is internal.
   /// </remarks>
   List<PropertyDefinition> GetAssociatedInternalProperties() {
-    List<PropertyDefinition> properties = new List<PropertyDefinition>();
+    List<PropertyDefinition> properties = <PropertyDefinition>[];
 
     this.RegisterAssociatedInternalProperties(properties);
 

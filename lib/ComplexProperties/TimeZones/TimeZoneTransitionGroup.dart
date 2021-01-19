@@ -90,7 +90,7 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   String id;
 
   /* private */
-  List<TimeZoneTransition> transitions = new List<TimeZoneTransition>();
+  List<TimeZoneTransition> transitions = <TimeZoneTransition>[];
 
   /* private */
   TimeZoneTransition transitionToStandard;

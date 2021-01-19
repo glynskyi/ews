@@ -86,7 +86,7 @@ class PropertySet
   /// The list of additional properties included in this property set.
   /// </summary>
   List<PropertyDefinitionBase> _additionalProperties =
-      new List<PropertyDefinitionBase>();
+      <PropertyDefinitionBase>[];
 
   /// <summary>
   /// The requested body type for get and find operations. If null, the "best body" is returned.

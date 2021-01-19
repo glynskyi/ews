@@ -55,7 +55,7 @@ class GetStreamingEventsResults {
   /// Collection of notification events.
   /// </summary>
   /* private */
-  List<NotificationGroup> events = new List<NotificationGroup>();
+  List<NotificationGroup> events = <NotificationGroup>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetStreamingEventsResults"/> class.
@@ -74,7 +74,7 @@ class GetStreamingEventsResults {
       NotificationGroup notifications = new NotificationGroup();
       notifications.SubscriptionId = reader.ReadElementValueWithNamespace(
           XmlNamespace.Types, XmlElementNames.SubscriptionId);
-      notifications.Events = new List<NotificationEvent>();
+      notifications.Events = <NotificationEvent>[];
 
       this.events.add(notifications);
 

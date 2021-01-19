@@ -119,7 +119,7 @@ class AttributedString extends ComplexProperty {
   bool LoadAttributionsFromXml(EwsServiceXmlReader reader) {
     if (!reader.IsEmptyElement) {
       String localName = reader.LocalName;
-      this._attributionList = new List<String>();
+      this._attributionList = <String>[];
 
       do {
         reader.Read();

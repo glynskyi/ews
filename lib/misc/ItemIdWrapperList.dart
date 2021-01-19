@@ -43,7 +43,7 @@ class ItemIdWrapperList
   /// List of <see cref="Microsoft.Exchange.WebServices.Data.Item"/>.
   /// </summary>
   /* private */
-  List<AbstractItemIdWrapper> itemIds = new List<AbstractItemIdWrapper>();
+  List<AbstractItemIdWrapper> itemIds = <AbstractItemIdWrapper>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ItemIdWrapperList"/> class.

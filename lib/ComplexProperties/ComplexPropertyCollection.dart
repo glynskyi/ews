@@ -40,10 +40,10 @@ abstract class ComplexPropertyCollection<
     with IterableMixin<TComplexProperty>
     implements Iterable<TComplexProperty> //, ICustomUpdateSerializer
 {
-  List<TComplexProperty> _items = new List<TComplexProperty>();
-  List<TComplexProperty> _addedItems = new List<TComplexProperty>();
-  List<TComplexProperty> _modifiedItems = new List<TComplexProperty>();
-  List<TComplexProperty> _removedItems = new List<TComplexProperty>();
+  List<TComplexProperty> _items = <TComplexProperty>[];
+  List<TComplexProperty> _addedItems = <TComplexProperty>[];
+  List<TComplexProperty> _modifiedItems = <TComplexProperty>[];
+  List<TComplexProperty> _removedItems = <TComplexProperty>[];
 
   /// <summary>
   /// Creates the complex property.

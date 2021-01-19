@@ -37,7 +37,7 @@ class DocumentSharingLocationCollection {
   /// Initializes a new instance of the <see cref="DocumentSharingLocationCollection"/> class.
   /// </summary>
   DocumentSharingLocationCollection() {
-    this.Entries = new List<DocumentSharingLocation>();
+    this.Entries = <DocumentSharingLocation>[];
   }
 
   /// <summary>

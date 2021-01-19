@@ -61,7 +61,7 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// </summary>
   /// <param name="request">Request to disconnect when we get a close message.</param>
   GetStreamingEventsResponse(HangingServiceRequestBase request) : super() {
-    this.ErrorSubscriptionIds = new List<String>();
+    this.ErrorSubscriptionIds = <String>[];
     this._request = request;
   }
 

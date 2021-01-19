@@ -45,10 +45,10 @@ class FindItemsResults<TItem extends Item>
   bool moreAvailable = false;
 
   /* private */
-  List<TItem> items = new List<TItem>();
+  List<TItem> items = <TItem>[];
 
   /* private */
-  List<HighlightTerm> highlightTerms = new List<HighlightTerm>();
+  List<HighlightTerm> highlightTerms = <HighlightTerm>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindItemsResults&lt;T&gt;"/> class.

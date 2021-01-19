@@ -163,7 +163,7 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
   SubscribeRequest(ExchangeService service)
       : super(service, ServiceErrorHandling.ThrowOnError) {
     this.FolderIds = new FolderIdWrapperList();
-    this.EventTypes = new List<EventType>();
+    this.EventTypes = <EventType>[];
   }
 
   /// <summary>

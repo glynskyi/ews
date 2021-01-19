@@ -43,7 +43,7 @@ class FolderIdWrapperList
   /// <summary>
   /// List of <see cref="Microsoft.Exchange.WebServices.Data.AbstractFolderIdWrapper"/>.
   /// </summary>
-  List<AbstractFolderIdWrapper> _ids = new List<AbstractFolderIdWrapper>();
+  List<AbstractFolderIdWrapper> _ids = <AbstractFolderIdWrapper>[];
 
   /// <summary>
   /// Adds the specified folder.
