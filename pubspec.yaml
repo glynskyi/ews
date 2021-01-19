@@ -8,11 +8,10 @@ environment:
   sdk: ">=2.10.0 <3.0.0"
 
 dependencies:
-  xml: ^4.5.1
-  synchronized: ^2.2.0+2
-  uuid_enhanced: ^3.0.2
-  intl: ^0.16.1
-  timezone: ^0.6.1
+  xml: ^5.0.0-nullsafety
+  synchronized: ^3.0.0-nullsafety
+  intl: ^0.17.0-nullsafety
+  timezone: ^0.7.0-nullsafety
 
 dev_dependencies:
-  test: ^1.15.7
+  test: ^1.16.0-nullsafety
