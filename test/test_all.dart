@@ -1,4 +1,5 @@
-import 'package:dotenv/dotenv.dart' show env;
+import 'dart:io';
+
 import 'package:test/test.dart';
 
 import 'test_appointment_crud.dart' as test_appointment_crud;
@@ -18,7 +19,7 @@ import 'test_trace_logs.dart' as test_trace_logs;
 
 void main() {
   print("TEST_VARI");
-  print("TEST_VARI = ${env["TEST_VARI"]}");
+  print("TEST_VARI = ${Platform.environment["TEST_VARI"]}");
   group("folder crud", test_folder_crud.main);
   group("folder hierarhy", test_folder_hierarhy.main);
   group("calendar folder", test_calendar_folder.main);
