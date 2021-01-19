@@ -1,3 +1,8 @@
+## 1.1.8
+
+* Upgraded the Dart SDK to 2.10
+* Removed the "dotenv" package from dependencies
+
 ## 1.1.7
 
 * Added the MAPI converter for Long type

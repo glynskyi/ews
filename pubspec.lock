@@ -336,7 +336,7 @@ packages:
       name: timezone
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.9"
+    version: "0.6.1"
   typed_data:
     dependency: transitive
     description:
@@ -394,4 +394,4 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.9.0 <3.0.0"
+  dart: ">=2.10.0 <3.0.0"
