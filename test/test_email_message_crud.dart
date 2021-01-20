@@ -23,7 +23,7 @@ void main() {
     final propertySet = PropertySet.fromPropertyDefinitions([ItemSchema.Body]);
     for (final emailMessage in results) {
       await emailMessage.LoadWithPropertySet(propertySet);
-      print(emailMessage.Body.Text);
+      print(emailMessage.Body!.Text);
     }
   });
 }

@@ -100,53 +100,58 @@ class MeetingMessage extends EmailMessage {
   /// <summary>
   /// Gets the Id of the appointment associated with the meeting message.
   /// </summary>
-  ItemId get AssociatedAppointmentId =>
-      this.PropertyBag[MeetingMessageSchema.AssociatedAppointmentId];
+  ItemId? get AssociatedAppointmentId =>
+      this.PropertyBag[MeetingMessageSchema.AssociatedAppointmentId] as ItemId?;
 
   /// <summary>
   /// Gets a value indicating whether the meeting message is delegated.
   /// </summary>
-  bool get IsDelegated => this.PropertyBag[MeetingMessageSchema.IsDelegated];
+  bool? get IsDelegated =>
+      this.PropertyBag[MeetingMessageSchema.IsDelegated] as bool?;
 
   /// <summary>
   /// Gets a value indicating whether the meeting message is out of date.
   /// </summary>
-  bool get IsOutOfDate => this.PropertyBag[MeetingMessageSchema.IsOutOfDate];
+  bool? get IsOutOfDate =>
+      this.PropertyBag[MeetingMessageSchema.IsOutOfDate] as bool?;
 
   /// <summary>
   ///  Gets a value indicating whether the meeting message has been processed by Exchange (i.e. Exchange has noted
   ///  the arrival of a meeting request and has created the associated meeting item in the calendar).
   /// </summary>
-  bool get HasBeenProcessed =>
-      this.PropertyBag[MeetingMessageSchema.HasBeenProcessed];
+  bool? get HasBeenProcessed =>
+      this.PropertyBag[MeetingMessageSchema.HasBeenProcessed] as bool?;
 
   /// <summary>
   /// Gets the isorganizer property for this meeting
   /// </summary>
-  bool get IsOrganizer => this.PropertyBag[MeetingMessageSchema.IsOrganizer];
+  bool? get IsOrganizer =>
+      this.PropertyBag[MeetingMessageSchema.IsOrganizer] as bool?;
 
   /// <summary>
   /// Gets the type of response the meeting message represents.
   /// </summary>
-  MeetingResponseType get ResponseType =>
-      this.PropertyBag[MeetingMessageSchema.ResponseType];
+  MeetingResponseType? get ResponseType =>
+      this.PropertyBag[MeetingMessageSchema.ResponseType]
+          as MeetingResponseType?;
 
   /// <summary>
   /// Gets the ICalendar Uid.
   /// </summary>
-  String get ICalUid => this.PropertyBag[MeetingMessageSchema.ICalUid];
+  String? get ICalUid =>
+      this.PropertyBag[MeetingMessageSchema.ICalUid] as String?;
 
   /// <summary>
   /// Gets the ICalendar RecurrenceId.
   /// </summary>
-  DateTime get ICalRecurrenceId =>
-      this.PropertyBag[MeetingMessageSchema.ICalRecurrenceId];
+  DateTime? get ICalRecurrenceId =>
+      this.PropertyBag[MeetingMessageSchema.ICalRecurrenceId] as DateTime?;
 
   /// <summary>
   /// Gets the ICalendar DateTimeStamp.
   /// </summary>
-  DateTime get ICalDateTimeStamp =>
-      this.PropertyBag[MeetingMessageSchema.ICalDateTimeStamp];
+  DateTime? get ICalDateTimeStamp =>
+      this.PropertyBag[MeetingMessageSchema.ICalDateTimeStamp] as DateTime?;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

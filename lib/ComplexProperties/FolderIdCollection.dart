@@ -43,9 +43,7 @@ class FolderIdCollection extends ComplexPropertyCollection<FolderId> {
   /// </summary>
   /// <param name="folderIds">The folder ids to include.</param>
   FolderIdCollection.withFolderIds(Iterable<FolderId> folderIds) {
-    if (folderIds != null) {
-      folderIds.forEach((folderId) => this.InternalAdd(folderId));
-    }
+    folderIds.forEach(this.InternalAdd);
   }
 
   /// <summary>

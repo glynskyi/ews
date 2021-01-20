@@ -40,7 +40,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// </summary>
 class DeleteAttachmentRequest
     extends MultiResponseServiceRequest<DeleteAttachmentResponse> {
-  List<Attachment> _attachments = <Attachment>[];
+  List<Attachment?> _attachments = <Attachment?>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteAttachmentRequest"/> class.
@@ -59,7 +59,7 @@ class DeleteAttachmentRequest
     super.Validate();
     EwsUtilities.ValidateParamCollection(this.Attachments, "Attachments");
     for (int i = 0; i < this.Attachments.length; i++) {
-      EwsUtilities.ValidateParam(this.Attachments[i].Id, "Attachment[$i].Id");
+      EwsUtilities.ValidateParam(this.Attachments[i]!.Id, "Attachment[$i].Id");
     }
   }
 
@@ -120,10 +120,10 @@ class DeleteAttachmentRequest
     writer.WriteStartElement(
         XmlNamespace.Messages, XmlElementNames.AttachmentIds);
 
-    for (Attachment attachment in this.Attachments) {
+    for (Attachment? attachment in this.Attachments) {
       writer.WriteStartElement(
           XmlNamespace.Types, XmlElementNames.AttachmentId);
-      writer.WriteAttributeValue(XmlAttributeNames.Id, attachment.Id);
+      writer.WriteAttributeValue(XmlAttributeNames.Id, attachment!.Id);
       writer.WriteEndElement();
     }
 
@@ -143,5 +143,5 @@ class DeleteAttachmentRequest
   /// Gets the attachments.
   /// </summary>
   /// <value>The attachments.</value>
-  List<Attachment> get Attachments => this._attachments;
+  List<Attachment?> get Attachments => this._attachments;
 }

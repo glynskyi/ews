@@ -202,8 +202,8 @@ class Folder extends ServiceObject {
   @override
   Future<void> InternalDelete(
       DeleteMode deleteMode,
-      SendCancellationsMode sendCancellationsMode,
-      AffectedTaskOccurrence affectedTaskOccurrences) {
+      SendCancellationsMode? sendCancellationsMode,
+      AffectedTaskOccurrence? affectedTaskOccurrences) {
     this.ThrowIfThisIsNew();
 
     return this.Service.DeleteFolder(this.Id, deleteMode);
@@ -351,7 +351,7 @@ class Folder extends ServiceObject {
   /// <returns>FindItems response collection.</returns>
   Future<ServiceResponseCollection<FindItemResponse<TItem>>>
       InternalFindItems<TItem extends Item>(
-          String queryString, ViewBase view, Grouping groupBy) {
+          String? queryString, ViewBase view, Grouping? groupBy) {
     this.ThrowIfThisIsNew();
 
     return this.Service.FindItemsGeneric<TItem>(
@@ -376,7 +376,7 @@ class Folder extends ServiceObject {
   /// <returns>FindItems response collection.</returns>
   Future<ServiceResponseCollection<FindItemResponse<TItem>>>
       InternalFindItemsGeneric<TItem extends Item>(
-          SearchFilter searchFilter, ViewBase view, Grouping groupBy) {
+          SearchFilter searchFilter, ViewBase view, Grouping? groupBy) {
     this.ThrowIfThisIsNew();
 
     return this.Service.FindItemsGeneric<TItem>(
@@ -397,7 +397,7 @@ class Folder extends ServiceObject {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItems(
+  Future<FindItemsResults<Item>?> FindItems(
       SearchFilter searchFilter, ItemView view) async {
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
@@ -556,51 +556,57 @@ class Folder extends ServiceObject {
   /// </summary>
   /// <returns>Extended properties collection.</returns>
   @override
-  ExtendedPropertyCollection GetExtendedProperties() {
+  ExtendedPropertyCollection? GetExtendedProperties() {
     return this.ExtendedProperties;
   }
 
   /// <summary>
   /// Gets the Id of the folder.
   /// </summary>
-  FolderId get Id => this.PropertyBag[this.GetIdPropertyDefinition()];
+  FolderId? get Id =>
+      this.PropertyBag[this.GetIdPropertyDefinition()] as FolderId?;
 
   /// <summary>
   /// Gets the Id of this folder's parent folder.
   /// </summary>
-  FolderId get ParentFolderId => this.PropertyBag[FolderSchema.ParentFolderId];
+  FolderId? get ParentFolderId =>
+      this.PropertyBag[FolderSchema.ParentFolderId] as FolderId?;
 
   /// <summary>
   /// Gets the number of child folders this folder has.
   /// </summary>
-  int get ChildFolderCount => this.PropertyBag[FolderSchema.ChildFolderCount];
+  int? get ChildFolderCount =>
+      this.PropertyBag[FolderSchema.ChildFolderCount] as int?;
 
   /// <summary>
   /// Gets or sets the display name of the folder.
   /// </summary>
-  String get DisplayName => this.PropertyBag[FolderSchema.DisplayName];
+  String? get DisplayName =>
+      this.PropertyBag[FolderSchema.DisplayName] as String?;
 
-  set DisplayName(String value) =>
+  set DisplayName(String? value) =>
       this.PropertyBag[FolderSchema.DisplayName] = value;
 
   /// <summary>
   /// Gets or sets the custom class name of this folder.
   /// </summary>
-  String get FolderClass => this.PropertyBag[FolderSchema.FolderClass];
+  String? get FolderClass =>
+      this.PropertyBag[FolderSchema.FolderClass] as String?;
 
-  set FolderClass(String value) =>
+  set FolderClass(String? value) =>
       this.PropertyBag[FolderSchema.FolderClass] = value;
 
   /// <summary>
   /// Gets the total number of items contained in the folder.
   /// </summary>
-  int get TotalCount => this.PropertyBag[FolderSchema.TotalCount];
+  int? get TotalCount => this.PropertyBag[FolderSchema.TotalCount] as int?;
 
   /// <summary>
   /// Gets a list of extended properties associated with the folder.
   /// </summary>
   ExtendedPropertyCollection get ExtendedProperties =>
-      this.PropertyBag[ServiceObjectSchema.ExtendedProperties];
+      this.PropertyBag[ServiceObjectSchema.ExtendedProperties]
+          as ExtendedPropertyCollection;
 
   /// <summary>
   /// Gets the Email Lifecycle Management (ELC) information associated with the folder.
@@ -610,19 +616,20 @@ class Folder extends ServiceObject {
   /// <summary>
   /// Gets a value indicating the effective rights the current authenticated user has on the folder.
   /// </summary>
-  enumerations.EffectiveRights get EffectiveRights =>
-      this.PropertyBag[FolderSchema.EffectiveRights];
+  enumerations.EffectiveRights? get EffectiveRights =>
+      this.PropertyBag[FolderSchema.EffectiveRights]
+          as enumerations.EffectiveRights?;
 
   /// <summary>
   /// Gets a list of permissions for the folder.
   /// </summary>
   FolderPermissionCollection get Permissions =>
-      this.PropertyBag[FolderSchema.Permissions];
+      this.PropertyBag[FolderSchema.Permissions] as FolderPermissionCollection;
 
   /// <summary>
   /// Gets the number of unread items in the folder.
   /// </summary>
-  int get UnreadCount => this.PropertyBag[FolderSchema.UnreadCount];
+  int? get UnreadCount => this.PropertyBag[FolderSchema.UnreadCount] as int?;
 
   /// <summary>
   /// Gets or sets the policy tag.
@@ -645,15 +652,15 @@ class Folder extends ServiceObject {
   /// Gets the well known name of this folder, if any, as a string.
   /// </summary>
   /// <value>The well known name of this folder as a string, or null if this folder isn't a well known folder.</value>
-  String get WellKnownFolderNameAsString =>
-      this.PropertyBag[FolderSchema.WellKnownFolderName];
+  String? get WellKnownFolderNameAsString =>
+      this.PropertyBag[FolderSchema.WellKnownFolderName] as String?;
 
   /// <summary>
   /// Gets the well known name of this folder, if any.
   /// </summary>
   /// <value>The well known name of this folder, or null if this folder isn't a well known folder.</value>
-  enumerations.WellKnownFolderName get WellKnownFolderName {
-    OutParam<enumerations.WellKnownFolderName> resultOutParam;
+  enumerations.WellKnownFolderName? get WellKnownFolderName {
+    OutParam<enumerations.WellKnownFolderName> resultOutParam = OutParam();
 
     if (EwsUtilities.TryParse<enumerations.WellKnownFolderName>(
         this.WellKnownFolderNameAsString, resultOutParam)) {

@@ -33,75 +33,75 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the complete name of a contact.
 /// </summary>
 class CompleteName extends ComplexProperty {
-  String _title;
+  String? _title;
 
-  String _givenName;
+  String? _givenName;
 
-  String _middleName;
+  String? _middleName;
 
-  String _surname;
+  String? _surname;
 
-  String _suffix;
+  String? _suffix;
 
-  String _initials;
+  String? _initials;
 
-  String _fullName;
+  String? _fullName;
 
-  String _nickname;
+  String? _nickname;
 
-  String _yomiGivenName;
+  String? _yomiGivenName;
 
-  String _yomiSurname;
+  String? _yomiSurname;
 
   /// <summary>
   /// Gets the contact's title.
   /// </summary>
-  String get Title => this._title;
+  String? get Title => this._title;
 
   /// <summary>
   /// Gets the given name (first name) of the contact.
   /// </summary>
-  String get GivenName => this._givenName;
+  String? get GivenName => this._givenName;
 
   /// <summary>
   /// Gets the middle name of the contact.
   /// </summary>
-  String get MiddleName => this._middleName;
+  String? get MiddleName => this._middleName;
 
   /// <summary>
   /// Gets the surname (last name) of the contact.
   /// </summary>
-  String get Surname => this._surname;
+  String? get Surname => this._surname;
 
   /// <summary>
   /// Gets the suffix of the contact.
   /// </summary>
-  String get Suffix => this._suffix;
+  String? get Suffix => this._suffix;
 
   /// <summary>
   /// Gets the initials of the contact.
   /// </summary>
-  String get Initials => this._initials;
+  String? get Initials => this._initials;
 
   /// <summary>
   /// Gets the full name of the contact.
   /// </summary>
-  String get FullName => this._fullName;
+  String? get FullName => this._fullName;
 
   /// <summary>
   /// Gets the nickname of the contact.
   /// </summary>
-  String get NickName => this._nickname;
+  String? get NickName => this._nickname;
 
   /// <summary>
   /// Gets the Yomi given name (first name) of the contact.
   /// </summary>
-  String get YomiGivenName => this._yomiGivenName;
+  String? get YomiGivenName => this._yomiGivenName;
 
   /// <summary>
   /// Gets the Yomi surname (last name) of the contact.
   /// </summary>
-  String get YomiSurname => this._yomiSurname;
+  String? get YomiSurname => this._yomiSurname;
 
   /// <summary>
   /// Tries to read element from XML.

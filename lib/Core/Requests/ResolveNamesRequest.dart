@@ -57,10 +57,10 @@ class ResolveNamesRequest
     };
   });
 
-  String _nameToResolve;
-  bool _returnFullContactData;
-  ResolveNameSearchLocation _searchLocation;
-  PropertySet _contactDataPropertySet;
+  String? _nameToResolve;
+  bool? _returnFullContactData;
+  ResolveNameSearchLocation? _searchLocation;
+  PropertySet? _contactDataPropertySet;
   FolderIdWrapperList _parentFolderIds = new FolderIdWrapperList();
 
   /// <summary>
@@ -137,19 +137,19 @@ class ResolveNamesRequest
     writer.WriteAttributeValue(
         XmlAttributeNames.ReturnFullContactData, this.ReturnFullContactData);
 
-    String searchScope = null;
+    String? searchScope = null;
 
-    searchScope = _searchScopeMap.Member[this.SearchLocation];
+    searchScope = _searchScopeMap.Member![this.SearchLocation!];
 
     EwsUtilities.Assert(
         !StringUtils.IsNullOrEmpty(searchScope),
         "ResolveNameRequest.WriteAttributesToXml",
         "The specified search location cannot be mapped to an EWS search scope.");
 
-    String propertySet = null;
+    String? propertySet = null;
     if (this._contactDataPropertySet != null) {
       propertySet = PropertySet.DefaultPropertySetMap
-          .Member[this._contactDataPropertySet.BasePropertySet];
+          .Member![this._contactDataPropertySet!.BasePropertySet!];
     }
 
     if (!this.Service.Exchange2007CompatibilityMode) {
@@ -187,9 +187,9 @@ class ResolveNamesRequest
   /// Gets or sets the name to resolve.
   /// </summary>
   /// <value>The name to resolve.</value>
-  String get NameToResolve => this._nameToResolve;
+  String? get NameToResolve => this._nameToResolve;
 
-  set NameToResolve(String value) => this._nameToResolve = value;
+  set NameToResolve(String? value) => this._nameToResolve = value;
 
   /// <summary>
   /// Gets or sets a value indicating whether to return full contact data or not.
@@ -197,26 +197,26 @@ class ResolveNamesRequest
   /// <value>
   ///     <c>true</c> if should return full contact data; otherwise, <c>false</c>.
   /// </value>
-  bool get ReturnFullContactData => this._returnFullContactData;
+  bool? get ReturnFullContactData => this._returnFullContactData;
 
-  set ReturnFullContactData(bool value) => this._returnFullContactData = value;
+  set ReturnFullContactData(bool? value) => this._returnFullContactData = value;
 
   /// <summary>
   /// Gets or sets the search location.
   /// </summary>
   /// <value>The search scope.</value>
-  ResolveNameSearchLocation get SearchLocation => this._searchLocation;
+  ResolveNameSearchLocation? get SearchLocation => this._searchLocation;
 
-  set SearchLocation(ResolveNameSearchLocation value) =>
+  set SearchLocation(ResolveNameSearchLocation? value) =>
       this._searchLocation = value;
 
   /// <summary>
   /// Gets or sets the PropertySet for Contact Data
   /// </summary>
   /// <value>The PropertySet</value>
-  PropertySet get ContactDataPropertySet => this._contactDataPropertySet;
+  PropertySet? get ContactDataPropertySet => this._contactDataPropertySet;
 
-  set ContactDataPropertySet(PropertySet value) =>
+  set ContactDataPropertySet(PropertySet? value) =>
       this._contactDataPropertySet = value;
 
   /// <summary>

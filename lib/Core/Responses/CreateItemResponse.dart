@@ -32,7 +32,7 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 /// Represents the response to an individual item creation operation.
 /// </summary>
 class CreateItemResponse extends CreateItemResponseBase {
-  /* private */ Item item;
+  /* private */ Item? item;
 
   /// <summary>
   /// Gets Item instance.
@@ -41,8 +41,8 @@ class CreateItemResponse extends CreateItemResponseBase {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
   @override
-  Item GetObjectInstance(ExchangeService service, String xmlElementName) {
-    return this.item;
+  Item GetObjectInstance(ExchangeService? service, String xmlElementName) {
+    return this.item!;
   }
 
   /// <summary>
@@ -59,7 +59,7 @@ class CreateItemResponse extends CreateItemResponseBase {
   @override
   void Loaded() {
     if (this.Result == ServiceResult.Success) {
-      this.item.ClearChangeLog();
+      this.item!.ClearChangeLog();
     }
   }
 }

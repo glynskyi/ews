@@ -64,5 +64,5 @@ class AlternateMailboxCollection {
   /// <summary>
   /// Gets the collection of alternate mailboxes.
   /// </summary>
-  List<AlternateMailbox> Entries;
+  late List<AlternateMailbox> Entries;
 }

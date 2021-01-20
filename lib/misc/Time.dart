@@ -29,13 +29,13 @@ import 'package:ews/Exceptions/ArgumentException.dart';
 /// Represents a time.
 /// </summary>
 class Time {
-  /* private */ int hours;
+  /* private */ late int hours;
 
   /* private */
-  int minutes;
+  late int minutes;
 
   /* private */
-  int seconds;
+  late int seconds;
 
   /// <summary>
   /// Initializes a new instance of Time.

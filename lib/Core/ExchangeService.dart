@@ -62,6 +62,9 @@ import 'package:ews/Core/Responses/GetFolderResponse.dart';
 import 'package:ews/Core/Responses/GetItemResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
+import 'package:ews/Core/Responses/SubscribeResponse.dart';
+import 'package:ews/Core/Responses/SyncFolderHierarchyResponse.dart';
+import 'package:ews/Core/Responses/SyncFolderItemsResponse.dart';
 import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 import 'package:ews/Core/ServiceObjects/ServiceObject.dart';
@@ -118,19 +121,19 @@ import 'Responses/UpdateItemResponse.dart';
 class ExchangeService extends ExchangeServiceBase {
   static const TargetServerVersionHeaderName = "X-EWS-TargetVersion";
 
-  Uri _url;
+  Uri? _url;
 
 //        CultureInfo preferredCulture;
 //        DateTimePrecision dateTimePrecision = DateTimePrecision.Default;
 //        ImpersonatedUserId impersonatedUserId;
 //        PrivilegedUserId privilegedUserId;
 //        ManagementRoles managementRoles;
-  IFileAttachmentContentHandler _fileAttachmentContentHandler;
+  IFileAttachmentContentHandler? _fileAttachmentContentHandler;
 
 //        UnifiedMessaging unifiedMessaging;
   bool _enableScpLookup = true;
   bool _traceEnablePrettyPrinting = true;
-  String _targetServerVersion = null;
+  String? _targetServerVersion = null;
 
   /// <summary>
   /// Create response object.
@@ -140,7 +143,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="messageDisposition">The message disposition.</param>
   /// <returns>The list of items created or modified as a result of the "creation" of the response object.</returns>
   Future<List<Item>> InternalCreateResponseObject(ServiceObject responseObject,
-      FolderId parentFolderId, MessageDisposition messageDisposition) async {
+      FolderId? parentFolderId, MessageDisposition messageDisposition) async {
     CreateResponseObjectRequest request = new CreateResponseObjectRequest(
         this, ServiceErrorHandling.ThrowOnError);
 
@@ -234,7 +237,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>Collection of service responses.</returns>
   Future<ServiceResponseCollection<FindFolderResponse>> InternalFindFolders(
       Iterable<FolderId> parentFolderIds,
-      SearchFilter searchFilter,
+      SearchFilter? searchFilter,
       FolderView view,
       ServiceErrorHandling errorHandlingMode) {
     FindFolderRequest request = new FindFolderRequest(this, errorHandlingMode);
@@ -256,7 +259,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of folders returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
   Future<FindFoldersResults> FindFoldersWithFolderId(FolderId parentFolderId,
-      SearchFilter searchFilter, FolderView view) async {
+      SearchFilter? searchFilter, FolderView view) async {
     EwsUtilities.ValidateParam(parentFolderId, "parentFolderId");
     EwsUtilities.ValidateParam(view, "view");
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
@@ -321,7 +324,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>An object representing the results of the search operation.</returns>
   Future<FindFoldersResults> FindFoldersWithWellKnownFolder(
       WellKnownFolderName parentFolderName,
-      SearchFilter searchFilter,
+      SearchFilter? searchFilter,
       FolderView view) {
     return this.FindFoldersWithFolderId(
         new FolderId.fromWellKnownFolder(parentFolderName), searchFilter, view);
@@ -383,7 +386,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>Folder</returns>
   Future<TFolder> BindToFolderGeneric<TFolder extends Folder>(
       FolderId folderId, PropertySet propertySet) async {
-    Folder result = await this.BindToFolder(folderId, propertySet);
+    Folder? result = await this.BindToFolder(folderId, propertySet);
 
     if (result is TFolder) {
       return result;
@@ -423,7 +426,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified folder Ids.</returns>
   Future<ServiceResponseCollection<GetFolderResponse>> InternalBindToFolders(
-      Iterable<FolderId> folderIds,
+      Iterable<FolderId?> folderIds,
       PropertySet propertySet,
       ServiceErrorHandling errorHandling) async {
     GetFolderRequest request = new GetFolderRequest(this, errorHandling);
@@ -439,7 +442,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="folderId">The folder id.</param>
   /// <param name="deleteMode">The delete mode.</param>
-  Future<void> DeleteFolder(FolderId folderId, DeleteMode deleteMode) {
+  Future<void> DeleteFolder(FolderId? folderId, DeleteMode deleteMode) {
     EwsUtilities.ValidateParam(folderId, "folderId");
 
     DeleteFolderRequest request =
@@ -458,7 +461,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="deleteMode">The delete mode.</param>
   /// <param name="deleteSubFolders">if set to <c>true</c> empty folder should also delete sub folders.</param>
   Future<void> EmptyFolder(
-      FolderId folderId, DeleteMode deleteMode, bool deleteSubFolders) {
+      FolderId? folderId, DeleteMode deleteMode, bool deleteSubFolders) {
     EwsUtilities.ValidateParam(folderId, "folderId");
 
     EmptyFolderRequest request =
@@ -506,9 +509,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>A ServiceResponseCollection providing creation results for each of the specified items.</returns>
   Future<ServiceResponseCollection<ServiceResponse>> InternalCreateItems(
       Iterable<Item> items,
-      FolderId parentFolderId,
-      MessageDisposition messageDisposition,
-      SendInvitationsMode sendInvitationsMode,
+      FolderId? parentFolderId,
+      MessageDisposition? messageDisposition,
+      SendInvitationsMode? sendInvitationsMode,
       ServiceErrorHandling errorHandling) {
     CreateItemRequest request = new CreateItemRequest(this, errorHandling);
 
@@ -564,9 +567,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="sendInvitationsMode">Indicates if and how invitations should be sent for item of type Appointment. Required if item is an Appointment instance.</param>
   Future<void> CreateItem(
       Item item,
-      FolderId parentFolderId,
-      MessageDisposition messageDisposition,
-      SendInvitationsMode sendInvitationsMode) {
+      FolderId? parentFolderId,
+      MessageDisposition? messageDisposition,
+      SendInvitationsMode? sendInvitationsMode) {
     return this.InternalCreateItems([item], parentFolderId, messageDisposition,
         sendInvitationsMode, ServiceErrorHandling.ThrowOnError);
   }
@@ -584,10 +587,10 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>A ServiceResponseCollection providing update results for each of the specified items.</returns>
   Future<ServiceResponseCollection<UpdateItemResponse>> InternalUpdateItems(
       Iterable<Item> items,
-      FolderId savedItemsDestinationFolderId,
+      FolderId? savedItemsDestinationFolderId,
       ConflictResolutionMode conflictResolution,
       MessageDisposition messageDisposition,
-      SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
+      SendInvitationsOrCancellationsMode? sendInvitationsOrCancellationsMode,
       ServiceErrorHandling errorHandling,
       bool suppressReadReceipt) {
     UpdateItemRequest request = new UpdateItemRequest(this, errorHandling);
@@ -690,12 +693,12 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="sendInvitationsOrCancellationsMode">Indicates if and how invitations and/or cancellations should be sent for ian tem of type Appointment. Required if item is an Appointment instance.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
   /// <returns>Updated item.</returns>
-  Future<Item> UpdateItem(
+  Future<Item?> UpdateItem(
       Item item,
-      FolderId savedItemsDestinationFolderId,
+      FolderId? savedItemsDestinationFolderId,
       ConflictResolutionMode conflictResolution,
       MessageDisposition messageDisposition,
-      SendInvitationsOrCancellationsMode sendInvitationsOrCancellationsMode,
+      SendInvitationsOrCancellationsMode? sendInvitationsOrCancellationsMode,
       [bool suppressReadReceipts = false]) async {
     ServiceResponseCollection<UpdateItemResponse> responses = await this
         .InternalUpdateItems(
@@ -715,7 +718,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="item">The item.</param>
   /// <param name="savedCopyDestinationFolderId">The saved copy destination folder id.</param>
-  Future<void> SendItem(Item item, FolderId savedCopyDestinationFolderId) {
+  Future<void> SendItem(Item item, FolderId? savedCopyDestinationFolderId) {
     SendItemRequest request =
         new SendItemRequest(this, ServiceErrorHandling.ThrowOnError);
 
@@ -919,11 +922,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>Service response collection.</returns>
   Future<ServiceResponseCollection<FindItemResponse<TItem>>>
       FindItemsGeneric<TItem extends Item>(
-          Iterable<FolderId> parentFolderIds,
-          SearchFilter searchFilter,
-          String queryString,
+          Iterable<FolderId?> parentFolderIds,
+          SearchFilter? searchFilter,
+          String? queryString,
           ViewBase view,
-          Grouping groupBy,
+          Grouping? groupBy,
           ServiceErrorHandling errorHandlingMode) async {
     EwsUtilities.ValidateParamCollection(parentFolderIds, "parentFolderIds");
     EwsUtilities.ValidateParam(view, "view");
@@ -950,7 +953,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="queryString">the search string to be used for indexed search, if any.</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithFolderIdAndQueryAndView(
+  Future<FindItemsResults<Item>?> FindItemsWithFolderIdAndQueryAndView(
       FolderId parentFolderId, String queryString, ViewBase view) async {
     EwsUtilities.ValidateParamAllowNull(queryString, "queryString");
 
@@ -978,7 +981,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="returnHighlightTerms">Flag indicating if highlight terms should be returned in the response</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>>
+  Future<FindItemsResults<Item>?>
       FindItemsWithFolderIdAndQueryAndHighlightAndView(FolderId parentFolderId,
           String queryString, bool returnHighlightTerms, ViewBase view) async {
     List<FolderId> parentFolderIds = [parentFolderId];
@@ -1015,7 +1018,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<GroupedFindItemsResults<Item>>
+  Future<GroupedFindItemsResults<Item>?>
       FindItemsWithFolderIdAndQueryAndHighlightAndViewAndGrouping(
           FolderId parentFolderId,
           String queryString,
@@ -1057,7 +1060,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
   Future<FindItemsResults<Item>> FindItemsWithFolderIdAndFilterAndView(
-      FolderId parentFolderId, SearchFilter searchFilter, ViewBase view) async {
+      FolderId parentFolderId,
+      SearchFilter? searchFilter,
+      ViewBase view) async {
     EwsUtilities.ValidateParamAllowNull(searchFilter, "searchFilter");
 
     ServiceResponseCollection<FindItemResponse<Item>> responses =
@@ -1086,9 +1091,7 @@ class ExchangeService extends ExchangeServiceBase {
         await this.FindItemsGeneric<Item>(
             [parentFolderId],
             null,
-            /* searchFilter */
             null,
-            /* queryString */
             view,
             null,
             /* groupBy */
@@ -1104,7 +1107,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="queryString">query string to be used for indexed search</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndQueryAndView(
+  Future<FindItemsResults<Item>?> FindItemsWithWellKnownFolderAndQueryAndView(
       WellKnownFolderName parentFolderName, String queryString, ViewBase view) {
     return this.FindItemsWithFolderIdAndQueryAndView(
         new FolderId.fromWellKnownFolder(parentFolderName), queryString, view);
@@ -1119,7 +1122,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// SearchFilter.SearchFilterCollection</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndFilterAndView(
+  Future<FindItemsResults<Item>?> FindItemsWithWellKnownFolderAndFilterAndView(
       WellKnownFolderName parentFolderName,
       SearchFilter searchFilter,
       ViewBase view) {
@@ -1133,7 +1136,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="parentFolderName">The name of the folder in which to search for items.</param>
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <returns>An object representing the results of the search operation.</returns>
-  Future<FindItemsResults<Item>> FindItemsWithWellKnownFolderAndView(
+  Future<FindItemsResults<Item>?> FindItemsWithWellKnownFolderAndView(
       WellKnownFolderName parentFolderName, ViewBase view) {
     return this.FindItemsWithFolderIdAndFilterAndView(
         new FolderId.fromWellKnownFolder(parentFolderName), null, view);
@@ -1147,7 +1150,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
-  Future<GroupedFindItemsResults<Item>>
+  Future<GroupedFindItemsResults<Item>?>
       FindItemsWithFolderIdAndQueryAndViewAndGrouping(FolderId parentFolderId,
           String queryString, ViewBase view, Grouping groupBy) async {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
@@ -1176,7 +1179,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
-  Future<GroupedFindItemsResults<Item>>
+  Future<GroupedFindItemsResults<Item>?>
       FindItemsWithFolderIdAndFilterAndViewAndGrouping(FolderId parentFolderId,
           SearchFilter searchFilter, ViewBase view, Grouping groupBy) async {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
@@ -1202,8 +1205,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A list of items containing the contents of the specified folder.</returns>
-  Future<GroupedFindItemsResults<Item>> FindItemsWithFolderIdAndViewAndGrouping(
-      FolderId parentFolderId, ViewBase view, Grouping groupBy) async {
+  Future<GroupedFindItemsResults<Item>?>
+      FindItemsWithFolderIdAndViewAndGrouping(
+          FolderId parentFolderId, ViewBase view, Grouping groupBy) async {
     EwsUtilities.ValidateParam(groupBy, "groupBy");
 
     ServiceResponseCollection<FindItemResponse<Item>> responses =
@@ -1255,7 +1259,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A collection of grouped items representing the contents of the specified.</returns>
-  Future<GroupedFindItemsResults<Item>> FindItems(
+  Future<GroupedFindItemsResults<Item>?> FindItems(
       WellKnownFolderName parentFolderName,
       String queryString,
       ViewBase view,
@@ -1279,7 +1283,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="view">The view controlling the number of items returned.</param>
   /// <param name="groupBy">The group by clause.</param>
   /// <returns>A collection of grouped items representing the contents of the specified.</returns>
-  Future<GroupedFindItemsResults<Item>>
+  Future<GroupedFindItemsResults<Item>?>
       FindItemsWithWellKnownFolderAndFilterAndViewAndGrouping(
           WellKnownFolderName parentFolderName,
           SearchFilter searchFilter,
@@ -1365,9 +1369,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="errorHandling">Type of error handling to perform.</param>
   /// <returns>A ServiceResponseCollection providing results for each of the specified item Ids.</returns>
   Future<ServiceResponseCollection<GetItemResponse>> InternalBindToItems(
-      Iterable<ItemId> itemIds,
+      Iterable<ItemId?> itemIds,
       PropertySet propertySet,
-      String anchorMailbox,
+      String? anchorMailbox,
       ServiceErrorHandling errorHandling) {
     GetItemRequest request = new GetItemRequest(this, errorHandling);
 
@@ -1430,7 +1434,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="itemId">The item id.</param>
   /// <param name="propertySet">The property set.</param>
   /// <returns>Item.</returns>
-  Future<Item> BindToItem(ItemId itemId, PropertySet propertySet) async {
+  Future<Item?> BindToItem(ItemId? itemId, PropertySet propertySet) async {
     EwsUtilities.ValidateParam(itemId, "itemId");
     EwsUtilities.ValidateParam(propertySet, "propertySet");
 
@@ -1453,8 +1457,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="propertySet">The property set.</param>
   /// <returns>Item</returns>
   Future<TItem> BindToItemGeneric<TItem extends Item>(
-      ItemId itemId, PropertySet propertySet) async {
-    Item result = await this.BindToItem(itemId, propertySet);
+      ItemId? itemId, PropertySet propertySet) async {
+    Item? result = await this.BindToItem(itemId, propertySet);
 
     if (result is TItem) {
       return result;
@@ -1477,10 +1481,10 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
   /// <returns>A ServiceResponseCollection providing deletion results for each of the specified item Ids.</returns>
   Future<ServiceResponseCollection<ServiceResponse>> InternalDeleteItems(
-      Iterable<ItemId> itemIds,
+      Iterable<ItemId?> itemIds,
       DeleteMode deleteMode,
-      SendCancellationsMode sendCancellationsMode,
-      AffectedTaskOccurrence affectedTaskOccurrences,
+      SendCancellationsMode? sendCancellationsMode,
+      AffectedTaskOccurrence? affectedTaskOccurrences,
       ServiceErrorHandling errorHandling,
       bool suppressReadReceipts) {
     DeleteItemRequest request = new DeleteItemRequest(this, errorHandling);
@@ -1562,10 +1566,10 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="affectedTaskOccurrences">Indicates which instance of a recurring task should be deleted. Required if item Id represents a Task.</param>
   /// <param name="suppressReadReceipts">Whether to suppress read receipts</param>
   Future<void> DeleteItem(
-      ItemId itemId,
+      ItemId? itemId,
       DeleteMode deleteMode,
-      SendCancellationsMode sendCancellationsMode,
-      AffectedTaskOccurrence affectedTaskOccurrences,
+      SendCancellationsMode? sendCancellationsMode,
+      AffectedTaskOccurrence? affectedTaskOccurrences,
       bool suppressReadReceipts) {
     EwsUtilities.ValidateParam(itemId, "itemId");
 
@@ -1866,8 +1870,8 @@ class ExchangeService extends ExchangeServiceBase {
   Future<ServiceResponseCollection<GetAttachmentResponse>>
       InternalGetAttachments(
           Iterable<Attachment> attachments,
-          BodyType bodyType,
-          Iterable<PropertyDefinitionBase> additionalProperties,
+          BodyType? bodyType,
+          Iterable<PropertyDefinitionBase>? additionalProperties,
           ServiceErrorHandling errorHandling) {
     GetAttachmentRequest request =
         new GetAttachmentRequest(this, errorHandling);
@@ -1932,8 +1936,8 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="attachment">The attachment.</param>
   /// <param name="bodyType">Type of the body.</param>
   /// <param name="additionalProperties">The additional properties.</param>
-  Future<void> GetAttachment(Attachment attachment, BodyType bodyType,
-      Iterable<PropertyDefinitionBase> additionalProperties) {
+  Future<void> GetAttachment(Attachment attachment, BodyType? bodyType,
+      Iterable<PropertyDefinitionBase>? additionalProperties) {
     return this.InternalGetAttachments([attachment], bodyType,
         additionalProperties, ServiceErrorHandling.ThrowOnError);
   }
@@ -1945,7 +1949,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="attachments">The attachments.</param>
   /// <returns>Service response collection.</returns>
   Future<ServiceResponseCollection<CreateAttachmentResponse>> CreateAttachments(
-      String parentItemId, Iterable<Attachment> attachments) {
+      String? parentItemId, Iterable<Attachment?> attachments) {
     CreateAttachmentRequest request =
         new CreateAttachmentRequest(this, ServiceErrorHandling.ReturnErrors);
 
@@ -1961,7 +1965,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="attachments">The attachments.</param>
   /// <returns>Service response collection.</returns>
   Future<ServiceResponseCollection<DeleteAttachmentResponse>> DeleteAttachments(
-      Iterable<Attachment> attachments) {
+      Iterable<Attachment?> attachments) {
     DeleteAttachmentRequest request =
         new DeleteAttachmentRequest(this, ServiceErrorHandling.ReturnErrors);
 
@@ -1993,7 +1997,7 @@ class ExchangeService extends ExchangeServiceBase {
   Future<NameResolutionCollection>
       ResolveNameWithFolderIdsAndSearchScopeAndDetails(
           String nameToResolve,
-          Iterable<FolderId> parentFolderIds,
+          Iterable<FolderId>? parentFolderIds,
           ResolveNameSearchLocation searchScope,
           bool returnContactDetails) {
     return ResolveName(nameToResolve, parentFolderIds, searchScope,
@@ -2011,11 +2015,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="contactDataPropertySet">The property set for the contct details</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
   Future<NameResolutionCollection> ResolveName(
-      String nameToResolve,
-      Iterable<FolderId> parentFolderIds,
+      String? nameToResolve,
+      Iterable<FolderId>? parentFolderIds,
       ResolveNameSearchLocation searchScope,
       bool returnContactDetails,
-      PropertySet contactDataPropertySet) async {
+      PropertySet? contactDataPropertySet) async {
     if (contactDataPropertySet != null) {
       EwsUtilities.ValidateMethodVersion(
           this, ExchangeVersion.Exchange2010_SP1, "ResolveName");
@@ -2046,7 +2050,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="returnContactDetails">Indicates whether full contact information should be returned for each of the found contacts.</param>
   /// <param name="contactDataPropertySet">Propety set for contact details</param>
   /// <returns>A collection of name resolutions whose names match the one passed as a parameter.</returns>
-  Future<NameResolutionCollection>
+  Future<NameResolutionCollection?>
       ResolveNameWithSearchScopeAndDetailsAndPropertySet(
           String nameToResolve,
           ResolveNameSearchLocation searchScope,
@@ -2298,7 +2302,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// Unsubscribes from a subscription. Calling this method results in a call to EWS.
   /// </summary>
   /// <param name="subscriptionId">The Id of the pull subscription to unsubscribe from.</param>
-  void Unsubscribe(String subscriptionId) {
+  void Unsubscribe(String? subscriptionId) {
     this.BuildUnsubscribeRequest(subscriptionId).Execute();
   }
 
@@ -2333,7 +2337,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// </summary>
   /// <param name="subscriptionId">The Id of the subscription for which to get the events.</param>
   /// <returns>A request to unsubscribe from a subscription.</returns>
-  UnsubscribeRequest BuildUnsubscribeRequest(String subscriptionId) {
+  UnsubscribeRequest BuildUnsubscribeRequest(String? subscriptionId) {
     EwsUtilities.ValidateParam(subscriptionId, "subscriptionId");
 
     UnsubscribeRequest request = new UnsubscribeRequest(this);
@@ -2841,9 +2845,11 @@ class ExchangeService extends ExchangeServiceBase {
         "SubscribeToStreamingNotifications");
 
     EwsUtilities.ValidateParamCollection(folderIds, "folderIds");
-    final response = await this
-        .BuildSubscribeToStreamingNotificationsRequest(folderIds, eventTypes)
-        .Execute();
+    final ServiceResponseCollection<SubscribeResponse<StreamingSubscription>>
+        response = await this
+            .BuildSubscribeToStreamingNotificationsRequest(
+                folderIds, eventTypes)
+            .Execute();
     return response[0].Subscription;
   }
 
@@ -2939,7 +2945,7 @@ class ExchangeService extends ExchangeServiceBase {
         new SubscribeToStreamingNotificationsRequest(this);
 
     if (folderIds != null) {
-      request.FolderIds.AddRangeFolderIds(folderIds);
+      request.FolderIds!.AddRangeFolderIds(folderIds);
     }
 
     request.EventTypes.addAll(eventTypes);
@@ -2958,12 +2964,12 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
   Future<ChangeCollection<ItemChange>> SyncFolderItems(
-      FolderId syncFolderId,
+      FolderId? syncFolderId,
       PropertySet propertySet,
-      Iterable<ItemId> ignoredItemIds,
+      Iterable<ItemId>? ignoredItemIds,
       int maxChangesReturned,
       SyncFolderItemsScope syncScope,
-      String syncState) {
+      String? syncState) {
     return this.SyncFolderItemsWithNumberOfDays(
         syncFolderId,
         propertySet,
@@ -2987,16 +2993,17 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
   Future<ChangeCollection<ItemChange>> SyncFolderItemsWithNumberOfDays(
-      FolderId syncFolderId,
+      FolderId? syncFolderId,
       PropertySet propertySet,
-      Iterable<ItemId> ignoredItemIds,
+      Iterable<ItemId>? ignoredItemIds,
       int maxChangesReturned,
       int numberOfDays,
       SyncFolderItemsScope syncScope,
-      String syncState) async {
+      String? syncState) async {
     final request = this.BuildSyncFolderItemsRequest(syncFolderId, propertySet,
         ignoredItemIds, maxChangesReturned, numberOfDays, syncScope, syncState);
-    final response = await request.Execute();
+    final ServiceResponseCollection<SyncFolderItemsResponse> response =
+        await request.Execute();
     return response[0].Changes;
   }
 
@@ -3092,13 +3099,13 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A request to synchronize the items of a specific folder.</returns>
   SyncFolderItemsRequest BuildSyncFolderItemsRequest(
-      FolderId syncFolderId,
+      FolderId? syncFolderId,
       PropertySet propertySet,
-      Iterable<ItemId> ignoredItemIds,
+      Iterable<ItemId>? ignoredItemIds,
       int maxChangesReturned,
       int numberOfDays,
       SyncFolderItemsScope syncScope,
-      String syncState) {
+      String? syncState) {
     EwsUtilities.ValidateParam(syncFolderId, "syncFolderId");
     EwsUtilities.ValidateParam(propertySet, "propertySet");
 
@@ -3125,10 +3132,11 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A ChangeCollection containing a list of changes that occurred in the specified folder.</returns>
   Future<ChangeCollection<FolderChange>> SyncFolderHierarchy(
-      FolderId syncFolderId, PropertySet propertySet, String syncState) async {
+      FolderId syncFolderId, PropertySet propertySet, String? syncState) async {
     final request = await this
         .BuildSyncFolderHierarchyRequest(syncFolderId, propertySet, syncState);
-    final response = await request.Execute();
+    final ServiceResponseCollection<SyncFolderHierarchyResponse> response =
+        await request.Execute();
     return response[0].Changes;
   }
 
@@ -3210,7 +3218,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="syncState">The optional sync state representing the point in time when to start the synchronization.</param>
   /// <returns>A request to synchronize the specified folder hierarchy of the mailbox this Service is connected to.</returns>
   Future<SyncFolderHierarchyRequest> BuildSyncFolderHierarchyRequest(
-      FolderId syncFolderId, PropertySet propertySet, String syncState) async {
+      FolderId syncFolderId, PropertySet propertySet, String? syncState) async {
     EwsUtilities.ValidateParamAllowNull(
         syncFolderId, "syncFolderId"); // Null syncFolderId is allowed
     EwsUtilities.ValidateParam(propertySet, "propertySet");
@@ -4987,7 +4995,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <param name="uri">The URI.</param>
   /// <returns>Adjusted URL.</returns>
   Uri AdjustServiceUriFromCredentials(Uri uri) {
-    return (this.Credentials != null) ? this.Credentials.AdjustUrl(uri) : uri;
+    return (this.Credentials != null) ? this.Credentials!.AdjustUrl(uri) : uri;
   }
 
   /// <summary>
@@ -5014,8 +5022,8 @@ class ExchangeService extends ExchangeServiceBase {
 
     switch (response.ErrorCode) {
       case AutodiscoverErrorCode.NoError:
-        return this.GetEwsUrlFromResponse(
-            response, autodiscoverService.IsExternal ?? true);
+        return this
+            .GetEwsUrlFromResponse(response, autodiscoverService.IsExternal);
 
       case AutodiscoverErrorCode.InvalidUser:
         throw new ServiceRemoteException("InvalidUser($emailAddress)");
@@ -5028,7 +5036,7 @@ class ExchangeService extends ExchangeServiceBase {
         this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
             "No EWS Url returned for user $emailAddress, error code is ${response.ErrorCode}");
 
-        throw new ServiceRemoteException(response.ErrorMessage);
+        throw new ServiceRemoteException(response.ErrorMessage!);
     }
   }
 
@@ -5048,13 +5056,13 @@ class ExchangeService extends ExchangeServiceBase {
             response.TryGetSettingValue<String>(
                 UserSettingName.ExternalEwsUrl, uriStringOutParam)) &&
         !StringUtils.IsNullOrEmpty(uriStringOutParam.param)) {
-      return Uri.parse(uriStringOutParam.param);
+      return Uri.parse(uriStringOutParam.param!);
     } else if ((response.TryGetSettingValue<String>(
                 UserSettingName.InternalEwsUrl, uriStringOutParam) ||
             response.TryGetSettingValue<String>(
                 UserSettingName.ExternalEwsUrl, uriStringOutParam)) &&
         !StringUtils.IsNullOrEmpty(uriStringOutParam.param)) {
-      return Uri.parse(uriStringOutParam.param);
+      return Uri.parse(uriStringOutParam.param!);
     }
 
     // If Autodiscover doesn't return an or external EWS URL, throw an exception.
@@ -5441,7 +5449,7 @@ class ExchangeService extends ExchangeServiceBase {
   ///   X-EWS-TargetVersion: 2.4
   ///   X-EWS_TargetVersion: 2.9; minimum=2.4
   /// </remarks>
-  static void ValidateTargetVersion(String version) {
+  static void ValidateTargetVersion(String? version) {
     const String ParameterSeparator = ';';
     const String LegacyVersionPrefix = "Exchange20";
     const String ParameterValueSeparator = '=';
@@ -5451,7 +5459,7 @@ class ExchangeService extends ExchangeServiceBase {
       throw new ArgumentException("Target version must not be empty.");
     }
 
-    List<String> parts = version.trim().split(ParameterSeparator);
+    List<String> parts = version!.trim().split(ParameterSeparator);
     switch (parts.length) {
       case 1:
         // Validate the header value. We allow X.Y or Exchange20XX.
@@ -5597,7 +5605,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// An initialized instance of HttpWebRequest.
   /// </returns>
   IEwsHttpWebRequest PrepareHttpWebRequest(String methodName) {
-    Uri endpoint = this.Url;
+    Uri endpoint = this.Url!;
     // todo("fix RegisterCustomBasicAuthModule")
     // print(".. fix RegisterCustomBasicAuthModule");
 //    this.RegisterCustomBasicAuthModule();
@@ -5608,7 +5616,7 @@ class ExchangeService extends ExchangeServiceBase {
         .PrepareHttpWebRequestForUrl(endpoint, this.AcceptGzipEncoding, true);
 
     if (!StringUtils.IsNullOrEmpty(this.TargetServerVersion)) {
-      request.Headers.Set(ExchangeService.TargetServerVersionHeaderName,
+      request.Headers!.Set(ExchangeService.TargetServerVersionHeaderName,
           this.TargetServerVersion);
     }
 
@@ -5643,9 +5651,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <summary>
   /// Gets or sets the URL of the Exchange Web Services.
   /// </summary>
-  Uri get Url => this._url;
+  Uri? get Url => this._url;
 
-  set Url(Uri value) {
+  set Url(Uri? value) {
     this._url = value;
   }
 
@@ -5697,10 +5705,10 @@ class ExchangeService extends ExchangeServiceBase {
   /// <summary>
   /// Gets or sets a file attachment content handler.
   /// </summary>
-  IFileAttachmentContentHandler get FileAttachmentContentHandler =>
+  IFileAttachmentContentHandler? get FileAttachmentContentHandler =>
       this._fileAttachmentContentHandler;
 
-  set FileAttachmentContentHandler(IFileAttachmentContentHandler value) =>
+  set FileAttachmentContentHandler(IFileAttachmentContentHandler? value) =>
       this._fileAttachmentContentHandler = value;
 
   /// <summary>
@@ -5766,9 +5774,9 @@ class ExchangeService extends ExchangeServiceBase {
   /// <summary>
   /// Gets or sets the target server version string (newer than Exchange2013).
   /// </summary>
-  String get TargetServerVersion => this._targetServerVersion;
+  String? get TargetServerVersion => this._targetServerVersion;
 
-  set TargetServerVersion(String value) {
+  set TargetServerVersion(String? value) {
     ExchangeService.ValidateTargetVersion(value);
     this._targetServerVersion = value;
   }

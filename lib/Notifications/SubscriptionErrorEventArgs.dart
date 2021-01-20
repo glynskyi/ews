@@ -45,10 +45,10 @@ class SubscriptionErrorEventArgs // extends EventArgs
   /// <summary>
   /// Gets the subscription for which an error occurred. If Subscription is null, the error applies to the entire connection.
   /// </summary>
-  StreamingSubscription Subscription;
+  StreamingSubscription? Subscription;
 
   /// <summary>
   /// Gets the exception representing the error. If Exception is null, the connection was cleanly closed by the server.
   /// </summary>
-  Error Exception;
+  Error? Exception;
 }

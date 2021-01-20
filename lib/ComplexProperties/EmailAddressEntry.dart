@@ -43,14 +43,14 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   /// <summary>
   /// The email address.
   /// </summary>
-  /* private */ complex.EmailAddress emailAddress;
+  /* private */ complex.EmailAddress? emailAddress;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="EmailAddressEntry"/> class.
   /// </summary>
   EmailAddressEntry() : super() {
     this.emailAddress = new complex.EmailAddress();
-    this.emailAddress.addOnChangeEvent(this.EmailAddressChanged);
+    this.emailAddress!.addOnChangeEvent(this.EmailAddressChanged);
   }
 
   /// <summary>
@@ -64,7 +64,7 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
     this.emailAddress = emailAddress;
 
     if (this.emailAddress != null) {
-      this.emailAddress.addOnChangeEvent(this.EmailAddressChanged);
+      this.emailAddress!.addOnChangeEvent(this.EmailAddressChanged);
     }
   }
 
@@ -76,18 +76,18 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
     super.ReadAttributesFromXml(reader);
 
-    this.EmailAddress.Name =
+    this.EmailAddress!.Name =
         reader.ReadAttributeValue<String>(XmlAttributeNames.Name);
-    this.EmailAddress.RoutingType =
+    this.EmailAddress!.RoutingType =
         reader.ReadAttributeValue<String>(XmlAttributeNames.RoutingType);
 
-    String mailboxTypeString =
+    String? mailboxTypeString =
         reader.ReadAttributeValue(XmlAttributeNames.MailboxType);
     if (!StringUtils.IsNullOrEmpty(mailboxTypeString)) {
-      this.EmailAddress.MailboxType =
+      this.EmailAddress!.MailboxType =
           EwsUtilities.Parse<MailboxType>(mailboxTypeString);
     } else {
-      this.EmailAddress.MailboxType = null;
+      this.EmailAddress!.MailboxType = null;
     }
   }
 
@@ -97,7 +97,7 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   /// <param name="reader">The reader.</param>
   @override
   void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this.EmailAddress.Address = reader.ReadValue();
+    this.EmailAddress!.Address = reader.ReadValue();
   }
 
   /// <summary>
@@ -111,12 +111,12 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
     if (writer.Service.RequestedServerVersion.index >
         ExchangeVersion.Exchange2007_SP1.index) {
       writer.WriteAttributeValue(
-          XmlAttributeNames.Name, this.EmailAddress.Name);
+          XmlAttributeNames.Name, this.EmailAddress!.Name);
       writer.WriteAttributeValue(
-          XmlAttributeNames.RoutingType, this.EmailAddress.RoutingType);
-      if (this.EmailAddress.MailboxType != MailboxType.Unknown) {
+          XmlAttributeNames.RoutingType, this.EmailAddress!.RoutingType);
+      if (this.EmailAddress!.MailboxType != MailboxType.Unknown) {
         writer.WriteAttributeValue(
-            XmlAttributeNames.MailboxType, this.EmailAddress.MailboxType);
+            XmlAttributeNames.MailboxType, this.EmailAddress!.MailboxType);
       }
     }
   }
@@ -127,21 +127,21 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    writer.WriteValue(this.EmailAddress.Address, XmlElementNames.EmailAddress);
+    writer.WriteValue(this.EmailAddress!.Address, XmlElementNames.EmailAddress);
   }
 
   /// <summary>
   /// Gets or sets the e-mail address of the entry.
   /// </summary>
-  complex.EmailAddress get EmailAddress => this.emailAddress;
+  complex.EmailAddress? get EmailAddress => this.emailAddress;
 
-  set EmailAddress(complex.EmailAddress value) {
+  set EmailAddress(complex.EmailAddress? value) {
     if (this.CanSetFieldValue(this.emailAddress, value)) {
       this.emailAddress = value;
     }
 
     if (this.emailAddress != null) {
-      this.emailAddress.addOnChangeEvent(this.EmailAddressChanged);
+      this.emailAddress!.addOnChangeEvent(this.EmailAddressChanged);
     }
   }
 

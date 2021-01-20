@@ -31,7 +31,7 @@ import 'package:ews/Exceptions/ServiceRemoteException.dart';
 /// </summary>
 //    [Serializable]
 class AutodiscoverRemoteException extends ServiceRemoteException {
-  /* private */ final AutodiscoverError error;
+  /* private */ final AutodiscoverError? error;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverRemoteException"/> class.
@@ -48,7 +48,7 @@ class AutodiscoverRemoteException extends ServiceRemoteException {
   /// </summary>
   /// <param name="message">The message.</param>
   /// <param name="error">The error.</param>
-  AutodiscoverRemoteException(String message, AutodiscoverError error)
+  AutodiscoverRemoteException(String message, AutodiscoverError? error)
       : this.error = error,
         super(message);
 
@@ -101,5 +101,5 @@ class AutodiscoverRemoteException extends ServiceRemoteException {
   /// Gets the error.
   /// </summary>
   /// <value>The error.</value>
-  AutodiscoverError get Error => this.error;
+  AutodiscoverError? get Error => this.error;
 }

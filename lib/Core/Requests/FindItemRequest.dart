@@ -38,7 +38,7 @@ import 'package:ews/Search/Grouping.dart';
 /// <typeparam name="TItem">The type of the item.</typeparam>
 class FindItemRequest<TItem extends Item>
     extends FindRequest<FindItemResponse<TItem>> {
-  Grouping _groupBy;
+  Grouping? _groupBy;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindItemRequest&lt;TItem&gt;"/> class.
@@ -54,7 +54,7 @@ class FindItemRequest<TItem extends Item>
   /// </summary>
   /// <returns>The group by clause, null if the request does not have or support grouping.</returns>
   @override
-  Grouping GetGroupBy() {
+  Grouping? GetGroupBy() {
     return this.GroupBy;
   }
 
@@ -68,7 +68,7 @@ class FindItemRequest<TItem extends Item>
   FindItemResponse<TItem> CreateServiceResponse(
       ExchangeService service, int responseIndex) {
     return new FindItemResponse<TItem>(
-        this.GroupBy != null, this.View.GetPropertySetOrDefault());
+        this.GroupBy != null, this.View!.GetPropertySetOrDefault());
   }
 
   /// <summary>
@@ -111,7 +111,7 @@ class FindItemRequest<TItem extends Item>
   /// Gets or sets the group by.
   /// </summary>
   /// <value>The group by.</value>
-  Grouping get GroupBy => this._groupBy;
+  Grouping? get GroupBy => this._groupBy;
 
-  set GroupBy(Grouping value) => this._groupBy = value;
+  set GroupBy(Grouping? value) => this._groupBy = value;
 }

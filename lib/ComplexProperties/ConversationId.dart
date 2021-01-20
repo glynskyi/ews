@@ -90,6 +90,6 @@ class ConversationId extends ServiceId {
   @override
   String toString() {
     // We have ignored the change key portion
-    return this.UniqueId;
+    return this.UniqueId!;
   }
 }

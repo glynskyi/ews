@@ -39,11 +39,11 @@ import 'package:timezone/standalone.dart';
 /// Represents a recurrence pattern, as used by Appointment and Task items.
 /// </summary>
 class Recurrence extends ComplexProperty {
-  TZDateTime _startDate;
+  TZDateTime? _startDate;
 
-  int _numberOfOccurrences;
+  int? _numberOfOccurrences;
 
-  TZDateTime _endDate;
+  TZDateTime? _endDate;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Recurrence"/> class.
@@ -60,7 +60,7 @@ class Recurrence extends ComplexProperty {
   /// Gets the name of the XML element.
   /// </summary>
   /// <value>The name of the XML element.</value>
-  String XmlElementName;
+  String? XmlElementName;
 
   /// <summary>
   /// Gets a value indicating whether this instance is regeneration pattern.
@@ -120,10 +120,10 @@ class Recurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the date and time when the recurrence start.
   /// </summary>
-  TZDateTime get StartDate =>
-      this.GetFieldValueOrThrowIfNull<DateTime>(this._startDate, "StartDate");
+  TZDateTime? get StartDate =>
+      this.GetFieldValueOrThrowIfNull<DateTime?>(this._startDate, "StartDate") as TZDateTime?;
 
-  set StartDate(TZDateTime value) => this._startDate = value;
+  set StartDate(TZDateTime? value) => this._startDate = value;
 
   /// <summary>
   /// Gets a value indicating whether the pattern has a fixed number of occurrences or an end date.
@@ -155,7 +155,7 @@ class Recurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the number of occurrences after which the recurrence ends. Setting NumberOfOccurrences resets EndDate.
   /// </summary>
-  int get NumberOfOccurrences => this._numberOfOccurrences;
+  int get NumberOfOccurrences => this._numberOfOccurrences!;
 
   set NumberOfOccurrences(int value) {
     if (value < 1) {
@@ -172,9 +172,9 @@ class Recurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the date after which the recurrence ends. Setting EndDate resets NumberOfOccurrences.
   /// </summary>
-  TZDateTime get EndDate => this._endDate;
+  TZDateTime? get EndDate => this._endDate;
 
-  set EndDate(TZDateTime value) {
+  set EndDate(TZDateTime? value) {
     if (this.CanSetFieldValue(this._endDate, value)) {
       this._endDate = value;
       this._numberOfOccurrences = null;

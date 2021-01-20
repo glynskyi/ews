@@ -35,9 +35,9 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents Enhanced Location.
 /// </summary>
 class EnhancedLocation extends ComplexProperty {
-  String _displayName;
-  String _annotation;
-  complex.PersonaPostalAddress _personaPostalAddress;
+  String? _displayName;
+  String? _annotation;
+  complex.PersonaPostalAddress? _personaPostalAddress;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="EnhancedLocation"/> class.
@@ -96,9 +96,9 @@ class EnhancedLocation extends ComplexProperty {
         return true;
       case XmlElementNames.PersonaPostalAddress:
         this._personaPostalAddress = new complex.PersonaPostalAddress();
-        this._personaPostalAddress.LoadFromXmlElementName(reader);
+        this._personaPostalAddress!.LoadFromXmlElementName(reader);
         this
-            ._personaPostalAddress
+            ._personaPostalAddress!
             .addOnChangeEvent(_PersonaPostalAddress_OnChange);
         return true;
       default:
@@ -109,9 +109,9 @@ class EnhancedLocation extends ComplexProperty {
   /// <summary>
   /// Gets or sets the Location DisplayName.
   /// </summary>
-  String get DisplayName => this._displayName;
+  String? get DisplayName => this._displayName;
 
-  set DisplayName(String value) {
+  set DisplayName(String? value) {
     if (this.CanSetFieldValue(this._displayName, value)) {
       this._displayName = value;
       this.Changed();
@@ -121,9 +121,9 @@ class EnhancedLocation extends ComplexProperty {
   /// <summary>
   /// Gets or sets the Location Annotation.
   /// </summary>
-  String get Annotation => this._annotation;
+  String? get Annotation => this._annotation;
 
-  set Annotation(String value) {
+  set Annotation(String? value) {
     if (this.CanSetFieldValue(this._annotation, value)) {
       this._annotation = value;
       this.Changed();
@@ -162,7 +162,7 @@ class EnhancedLocation extends ComplexProperty {
         XmlElementNames.LocationDisplayName, this._displayName);
     writer.WriteElementValueWithNamespace(XmlNamespace.Types,
         XmlElementNames.LocationAnnotation, this._annotation);
-    this._personaPostalAddress.WriteToXmlElementName(writer);
+    this._personaPostalAddress!.WriteToXmlElementName(writer);
   }
 
   /// <summary>

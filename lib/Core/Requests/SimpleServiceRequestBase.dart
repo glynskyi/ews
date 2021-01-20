@@ -137,7 +137,8 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
               ServiceRequestBase.GetResponseStream(response);
 
           // Copy response to in-memory stream and reset position to start.
-          await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
+          await EwsUtilities.CopyStream(
+              serviceResponseStream as Stream<List<int>>, memoryStream);
           memoryStream.Position = 0;
 
           //serviceResponseStream.Close();
@@ -151,8 +152,8 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
       } else {
         Stream responseStream = ServiceRequestBase.GetResponseStream(response);
 
-        serviceResponse =
-            this._ReadResponseXml(responseStream, response.Headers);
+        serviceResponse = this._ReadResponseXml(
+            responseStream as Stream<List<int>>, response.Headers);
 
         // responseStream.Close();
       }
@@ -186,7 +187,7 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
   /// <param name="responseHeaders">The HTTP response headers</param>
   /// <returns></returns>
   Future<Object> _ReadResponseXml(Stream<List<int>> responseStream,
-      [WebHeaderCollection responseHeaders = null]) async {
+      [WebHeaderCollection? responseHeaders = null]) async {
     Object serviceResponse;
     EwsServiceXmlReader ewsXmlReader =
         await EwsServiceXmlReader.Create(responseStream, this.Service);

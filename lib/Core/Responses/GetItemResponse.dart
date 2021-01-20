@@ -35,16 +35,17 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// Represents a response to an individual item retrieval operation.
 /// </summary>
 class GetItemResponse extends ServiceResponse {
-  serviceObjects.Item _item;
+  serviceObjects.Item? _item;
 
-  PropertySet _propertySet;
+  PropertySet? _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetItemResponse"/> class.
   /// </summary>
   /// <param name="item">The item.</param>
   /// <param name="propertySet">The property set.</param>
-  GetItemResponse(serviceObjects.Item item, PropertySet propertySet) : super() {
+  GetItemResponse(serviceObjects.Item? item, PropertySet? propertySet)
+      : super() {
     this._item = item;
     this._propertySet = propertySet;
 
@@ -80,9 +81,9 @@ class GetItemResponse extends ServiceResponse {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
   serviceObjects.Item _GetObjectInstance(
-      ExchangeService service, String xmlElementName) {
+      ExchangeService? service, String xmlElementName) {
     if (this.Item != null) {
-      return this.Item;
+      return this.Item!;
     } else {
       return EwsUtilities.CreateEwsObjectFromXmlElementName<
           serviceObjects.Item>(service, xmlElementName);
@@ -92,5 +93,5 @@ class GetItemResponse extends ServiceResponse {
   /// <summary>
   /// Gets the item that was retrieved.
   /// </summary>
-  serviceObjects.Item get Item => this._item;
+  serviceObjects.Item? get Item => this._item;
 }

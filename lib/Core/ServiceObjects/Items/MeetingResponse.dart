@@ -113,13 +113,14 @@ class MeetingResponse extends MeetingMessage {
   /// <summary>
   /// Gets the location of this appointment.
   /// </summary>
-  String get Location => this.PropertyBag[MeetingResponseSchema.Location];
+  String? get Location =>
+      this.PropertyBag[MeetingResponseSchema.Location] as String?;
 
   /// <summary>
   /// Gets the recurrence pattern for this meeting request.
   /// </summary>
-  complex.Recurrence get Recurrence =>
-      this.PropertyBag[AppointmentSchema.Recurrence];
+  complex.Recurrence? get Recurrence =>
+      this.PropertyBag[AppointmentSchema.Recurrence] as complex.Recurrence?;
 
   /// <summary>
   /// Gets the proposed start time of the appointment.
@@ -134,8 +135,9 @@ class MeetingResponse extends MeetingMessage {
   /// <summary>
   /// Gets the Enhanced location object.
   /// </summary>
-  complex.EnhancedLocation get EnhancedLocation =>
-      this.PropertyBag[MeetingResponseSchema.EnhancedLocation];
+  complex.EnhancedLocation? get EnhancedLocation =>
+      this.PropertyBag[MeetingResponseSchema.EnhancedLocation]
+          as complex.EnhancedLocation?;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

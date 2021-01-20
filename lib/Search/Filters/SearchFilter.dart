@@ -55,12 +55,12 @@ abstract class SearchFilter extends ComplexProperty {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>SearchFilter.</returns>
-  static SearchFilter LoadFromXmlWithReader(EwsServiceXmlReader reader) {
+  static SearchFilter? LoadFromXmlWithReader(EwsServiceXmlReader reader) {
     reader.EnsureCurrentNodeIsStartElement();
 
     String localName = reader.LocalName;
 
-    SearchFilter searchFilter = GetSearchFilterInstance(localName);
+    SearchFilter? searchFilter = GetSearchFilterInstance(localName);
 
     if (searchFilter != null) {
       searchFilter.LoadFromXml(reader, reader.LocalName);
@@ -75,8 +75,8 @@ abstract class SearchFilter extends ComplexProperty {
   /// <param name="localName">Name of the local.</param>
   /// <returns></returns>
   /* private */
-  static SearchFilter GetSearchFilterInstance(String localName) {
-    SearchFilter searchFilter;
+  static SearchFilter? GetSearchFilterInstance(String localName) {
+    SearchFilter? searchFilter;
     switch (localName) {
       case XmlElementNames.Exists:
         searchFilter = new Exists();
@@ -127,7 +127,7 @@ abstract class SearchFilter extends ComplexProperty {
   /// Gets the name of the XML element.
   /// </summary>
   /// <returns>XML element name.</returns>
-  String GetXmlElementName();
+  String? GetXmlElementName();
 
   /// <summary>
   /// Writes to XML.

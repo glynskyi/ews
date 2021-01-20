@@ -62,18 +62,18 @@ class ContactGroup extends Item {
   /// Gets the name under which this contact group is filed as.
   /// </summary>
 //        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
-  String get FileAs {
-    return this.PropertyBag[ContactSchema.FileAs] as String;
+  String? get FileAs {
+    return this.PropertyBag[ContactSchema.FileAs] as String?;
   }
 
   /// <summary>
   /// Gets or sets the display name of the contact group.
   /// </summary>
-  String get DisplayName {
-    return this.PropertyBag[ContactSchema.DisplayName] as String;
+  String? get DisplayName {
+    return this.PropertyBag[ContactSchema.DisplayName] as String?;
   }
 
-  set DisplayName(String value) {
+  set DisplayName(String? value) {
     this.PropertyBag[ContactSchema.DisplayName] = value;
   }
 
@@ -82,7 +82,8 @@ class ContactGroup extends Item {
   /// </summary>
 //        [RequiredServerVersion(ExchangeVersion.Exchange2010)]
   GroupMemberCollection get Members {
-    return this.PropertyBag[ContactGroupSchema.Members] as GroupMemberCollection;
+    return this.PropertyBag[ContactGroupSchema.Members]
+        as GroupMemberCollection;
   }
 
 //        #endregion
@@ -108,7 +109,8 @@ class ContactGroup extends Item {
   /// <param name="id">The Id of the contact group to bind to.</param>
   /// <returns>A ContactGroup instance representing the contact group corresponding to the specified Id.</returns>
   static Future<ContactGroup> Bind(ExchangeService service, ItemId id) {
-    return ContactGroup.BindWithPropertySet(service, id, PropertySet.FirstClassProperties);
+    return ContactGroup.BindWithPropertySet(
+        service, id, PropertySet.FirstClassProperties);
   }
 
   /// <summary>
@@ -134,7 +136,7 @@ class ContactGroup extends Item {
   /// </summary>
   /// <param name="subject">The subject.</param>
   @override
-  void SetSubject(String subject) {
+  void SetSubject(String? subject) {
     // Set is disabled in client API even though it is implemented in protocol for Item.Subject.
     // Setting Subject out of sync with DisplayName breaks interop with OLK.
     throw new ServiceObjectPropertyException.withMessage(
@@ -143,6 +145,7 @@ class ContactGroup extends Item {
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {
-    return ServiceObjectDefinitionAttribute(XmlElementNames.DistributionList, false);
+    return ServiceObjectDefinitionAttribute(
+        XmlElementNames.DistributionList, false);
   }
 }

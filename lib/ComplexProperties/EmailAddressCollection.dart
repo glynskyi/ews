@@ -35,7 +35,7 @@ class EmailAddressCollection extends ComplexPropertyCollection<EmailAddress> {
   /// <summary>
   /// XML element name
   /// </summary>
-  /* private */ String collectionItemXmlElementName;
+  /* private */ String? collectionItemXmlElementName;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="EmailAddressCollection"/> class.
@@ -140,7 +140,7 @@ class EmailAddressCollection extends ComplexPropertyCollection<EmailAddress> {
   /// <param name="xmlElementName">The XML element name from which to create the e-mail address.</param>
   /// <returns>An EmailAddress object.</returns>
   @override
-  EmailAddress CreateComplexProperty(String xmlElementName) {
+  EmailAddress? CreateComplexProperty(String xmlElementName) {
     if (xmlElementName == this.collectionItemXmlElementName) {
       return new EmailAddress();
     } else {
@@ -154,7 +154,7 @@ class EmailAddressCollection extends ComplexPropertyCollection<EmailAddress> {
   /// <param name="emailAddress">The EmailAddress object from which to determine the XML element name.</param>
   /// <returns>The XML element name corresponding to the provided EmailAddress object.</returns>
   @override
-  String GetCollectionItemXmlElementName(EmailAddress emailAddress) {
+  String? GetCollectionItemXmlElementName(EmailAddress emailAddress) {
     return this.collectionItemXmlElementName;
   }
 

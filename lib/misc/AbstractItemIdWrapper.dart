@@ -39,7 +39,7 @@ abstract class AbstractItemIdWrapper {
   /// Obtains the ItemBase object associated with the wrapper.
   /// </summary>
   /// <returns>The ItemBase object associated with the wrapper.</returns>
-  Item GetItem() {
+  Item? GetItem() {
     return null;
   }
 

@@ -36,10 +36,10 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a time zone period transition that occurs on a relative day of a specific month.
 /// </summary>
 class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
-  /* private */ enumerations.DayOfTheWeek dayOfTheWeek;
+  /* private */ enumerations.DayOfTheWeek? dayOfTheWeek;
 
   /* private */
-  int weekIndex;
+  int? weekIndex;
 
   /// <summary>
   /// Gets the XML element name associated with the transition.
@@ -123,7 +123,7 @@ class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
   /// Initializes a new instance of the <see cref="RelativeDayOfMonthTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-  RelativeDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition)
+  RelativeDayOfMonthTransition(TimeZoneDefinition? timeZoneDefinition)
       : super(timeZoneDefinition) {}
 
   /// <summary>
@@ -138,10 +138,10 @@ class RelativeDayOfMonthTransition extends AbsoluteMonthTransition {
   /// <summary>
   /// Gets the day of the week when the transition occurs.
   /// </summary>
-  enumerations.DayOfTheWeek get DayOfTheWeek => this.dayOfTheWeek;
+  enumerations.DayOfTheWeek? get DayOfTheWeek => this.dayOfTheWeek;
 
   /// <summary>
   /// Gets the index of the week in the month when the transition occurs.
   /// </summary>
-  int get WeekIndex => this.weekIndex;
+  int? get WeekIndex => this.weekIndex;
 }

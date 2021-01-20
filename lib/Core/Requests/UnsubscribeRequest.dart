@@ -124,5 +124,5 @@ class UnsubscribeRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <summary>
   /// Gets or sets the subscription id.
   /// </summary>
-  String SubscriptionId;
+  String? SubscriptionId;
 }

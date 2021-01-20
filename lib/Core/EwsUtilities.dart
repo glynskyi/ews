@@ -230,9 +230,9 @@ class EwsUtilities {
   /// <summary>
   /// Dictionary of enum type to ExchangeVersion maps.
   /// </summary>
-  static LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>>
+  static LazyMember<Map<Type, Map<dynamic, ExchangeVersion?>>>
       enumVersionDictionaries =
-      new LazyMember<Map<Type, Map<dynamic, ExchangeVersion>>>(() => {
+      new LazyMember<Map<Type, Map<dynamic, ExchangeVersion?>>>(() => {
             WellKnownFolderName:
                 _BuildEnumDict(WellKnownFolderName, WellKnownFolderName.values),
             ItemTraversal: _BuildEnumDict(ItemTraversal, ItemTraversal.values),
@@ -635,8 +635,8 @@ class EwsUtilities {
   /// <param name="request">The HTTP request.</param>
   static String FormatHttpRequestHeaders(IEwsHttpWebRequest request) {
     StringBuffer sb = new StringBuffer();
-    sb.write("${request.Method} ${request.RequestUri.path} HTTP/1.1\n");
-    EwsUtilities.FormatHttpHeadersWithBuffer(sb, request.Headers);
+    sb.write("${request.Method} ${request.RequestUri!.path} HTTP/1.1\n");
+    EwsUtilities.FormatHttpHeadersWithBuffer(sb, request.Headers!);
     sb.write("\n");
 
     return sb.toString();
@@ -865,7 +865,7 @@ class EwsUtilities {
 //        }
 //
 
-  static Map<Type, Converter<String, Object>> possibleEnumsConverter = {
+  static Map<Type, Converter<String, Object?>> possibleEnumsConverter = {
     ServiceResult: (stringValue) =>
         EnumToString.fromString(ServiceResult.values, stringValue),
     ServiceError: (stringValue) =>
@@ -1163,19 +1163,19 @@ class EwsUtilities {
   /// <typeparam name="T">Type of value.</typeparam>
   /// <param name="value">The value.</param>
   /// <returns>Value of type T.</returns>
-  static T Parse<T>(String value) {
+  static T? Parse<T>(String? value) {
     if (possibleEnumsConverter.containsKey(T)) {
-      return possibleEnumsConverter[T](value) as T;
-    } else if (schemaToEnumDictionaries.Member.containsKey(T)) {
-      return schemaToEnumDictionaries.Member[T][value] as T;
+      return possibleEnumsConverter[T]!(value) as T?;
+    } else if (schemaToEnumDictionaries.Member!.containsKey(T)) {
+      return schemaToEnumDictionaries.Member![T]![value!] as T?;
     } else if (T == int) {
-      return int.parse(value) as T;
+      return int.parse(value!) as T;
     } else if (T == double) {
-      return double.parse(value) as T;
+      return double.parse(value!) as T;
     } else if (T == String) {
-      return value as T;
+      return value as T?;
     } else if (T == bool) {
-      return (value.toLowerCase() == "true") as T;
+      return (value!.toLowerCase() == "true") as T;
     } else {
       throw NotImplementedException("Parse<$T>($value)");
     }
@@ -1623,7 +1623,7 @@ class EwsUtilities {
   /// </summary>
   /// <param name="param">The param.</param>
   /// <param name="paramName">Name of the param.</param>
-  static void ValidateParamAllowNull(Object param, String paramName) {
+  static void ValidateParamAllowNull(Object? param, String paramName) {
     if (param is ISelfValidate) {
       try {
         param.Validate();
@@ -1677,7 +1677,7 @@ class EwsUtilities {
 
     int count = 0;
 
-    for (Object obj in collection) {
+    for (Object? obj in collection) {
       try {
         ValidateParam(obj, "collection[$count]");
       } on ArgumentException catch (e) {
@@ -1701,7 +1701,7 @@ class EwsUtilities {
   /// <param name="param">The string parameter.</param>
   /// <param name="paramName">Name of the parameter.</param>
   static void ValidateNonBlankStringParamAllowNull(
-      String param, String paramName) {
+      String? param, String paramName) {
     if (param != null) {
       // Non-empty string has at least one character which is *not* a whitespace character
       if (param.length == param.allMatches(" ").length) {
@@ -1715,7 +1715,7 @@ class EwsUtilities {
   /// </summary>
   /// <param name="param">The String parameter.</param>
   /// <param name="paramName">Name of the parameter.</param>
-  static void ValidateNonBlankStringParam(String param, String paramName) {
+  static void ValidateNonBlankStringParam(String? param, String paramName) {
     if (param == null) {
       throw ArgumentNullException(paramName);
     }
@@ -1732,9 +1732,9 @@ class EwsUtilities {
   static void ValidateEnumVersionValue(
       dynamic enumValue, ExchangeVersion requestVersion) {
     Type enumType = enumValue.runtimeType;
-    Map<dynamic, ExchangeVersion> enumVersionDict =
-        enumVersionDictionaries.Member[enumType];
-    ExchangeVersion enumVersion = enumVersionDict[enumValue];
+    Map<dynamic, ExchangeVersion?> enumVersionDict =
+        enumVersionDictionaries.Member![enumType]!;
+    ExchangeVersion enumVersion = enumVersionDict[enumValue]!;
     if (requestVersion.index < enumVersion.index) {
       throw new ServiceVersionException(
           """Strings.EnumValueIncompatibleWithRequestVersion,
@@ -1809,9 +1809,9 @@ class EwsUtilities {
   /// <param name="enumType">Type of the enum.</param>
   /// <param name="enumName">The enum name.</param>
   /// <returns>Exchange version in which the enum value was first defined.</returns>
-  static ExchangeVersion GetEnumVersion(Type enumType, dynamic enumValue) {
+  static ExchangeVersion? GetEnumVersion(Type enumType, dynamic enumValue) {
     Map<dynamic, ExchangeVersion> exchangeVersions =
-        _requiredServerVersion.Member[enumType];
+        _requiredServerVersion.Member![enumType]!;
 
     EwsUtilities.Assert(
         exchangeVersions != null && exchangeVersions.isNotEmpty,
@@ -1865,15 +1865,15 @@ class EwsUtilities {
   /// <param name="enumType">Type of the enum.</param>
   /// <param name="enumName">The enum name.</param>
   /// <returns>The name for the enum used in the protocol, or null if it is the same as the enum's toString().</returns>
-  static String GetEnumSchemaName(Type enumType, Object enumValue) {
+  static String? GetEnumSchemaName(Type enumType, Object enumValue) {
     final ewsEnumAttribute = {
       MailboxType: {MailboxType.PublicGroup: EwsEnumAttribute("PublicDL")},
       MailboxType: {MailboxType.ContactGroup: EwsEnumAttribute("PrivateDL")}
     };
 
     if (ewsEnumAttribute.containsKey(enumType) &&
-        ewsEnumAttribute[enumType].containsKey(enumValue)) {
-      return ewsEnumAttribute[enumType][enumValue].schemaName;
+        ewsEnumAttribute[enumType]!.containsKey(enumValue)) {
+      return ewsEnumAttribute[enumType]![enumValue as MailboxType]!.schemaName;
     } else {
       return null;
     }
@@ -1901,7 +1901,7 @@ class EwsUtilities {
   /// <param name="enumType">Type of the enum.</param>
   /// <returns>The mapping from enum to schema name</returns>
   static Map<String, Object> BuildSchemaToEnumDict(Type enumType) {
-    return ewsEnumDictionaries[enumType].map((k, v) => MapEntry(v, k));
+    return ewsEnumDictionaries[enumType]!.map((k, v) => MapEntry(v, k));
   }
 
 //        /// <summary>
@@ -2107,8 +2107,8 @@ class EwsUtilities {
   /// Dictionary of enum type to enum-value-to-schema-name maps.
   /// </summary>
   /* private */
-  static LazyMember<Map<Type, Map<Object, String>>> enumToSchemaDictionaries =
-      new LazyMember<Map<Type, Map<Object, String>>>(() => {
+  static LazyMember<Map<Type, Map<Object, String?>>> enumToSchemaDictionaries =
+      new LazyMember<Map<Type, Map<Object, String?>>>(() => {
             EventType: _BuildEnumToSchemaDict(EventType, EventType.values),
             MailboxType:
                 _BuildEnumToSchemaDict(MailboxType, MailboxType.values),
@@ -2287,24 +2287,24 @@ class EwsUtilities {
   /// <returns>Service object.</returns>
   static TServiceObject
       CreateEwsObjectFromXmlElementName<TServiceObject extends ServiceObject>(
-          ExchangeService service, String xmlElementName) {
+          ExchangeService? service, String xmlElementName) {
     // todo("implement CreateEwsObjectFromXmlElementName");
 //          print("CreateEwsObjectFromXmlElementName($xmlElementName);");
 
     if (EwsUtilities
-        .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
+        .serviceObjectInfo.Member!.XmlElementNameToServiceObjectClassMap
         .containsKey(xmlElementName)) {
-      Type itemClass = EwsUtilities.serviceObjectInfo.Member
+      Type? itemClass = EwsUtilities.serviceObjectInfo.Member!
           .XmlElementNameToServiceObjectClassMap[xmlElementName];
 
       if (EwsUtilities
-          .serviceObjectInfo.Member.ServiceObjectConstructorsWithServiceParam
+          .serviceObjectInfo.Member!.ServiceObjectConstructorsWithServiceParam
           .containsKey(itemClass)) {
         CreateServiceObjectWithServiceParam creationDelegate = EwsUtilities
             .serviceObjectInfo
-            .Member
-            .ServiceObjectConstructorsWithServiceParam[itemClass];
-        return creationDelegate(service);
+            .Member!
+            .ServiceObjectConstructorsWithServiceParam[itemClass!]!;
+        return creationDelegate(service) as TServiceObject;
       } else {
         throw new ArgumentException(
             "Strings.NoAppropriateConstructorForItemClass");
@@ -2323,15 +2323,15 @@ class EwsUtilities {
   /// <param name="isNew">If true, item attachment is new.</param>
   /// <returns>New Item.</returns>
   static Item CreateItemFromItemClass(
-      ItemAttachment itemAttachment, Type itemClass, bool isNew) {
+      ItemAttachment itemAttachment, Type? itemClass, bool isNew) {
     if (EwsUtilities
-        .serviceObjectInfo.Member.ServiceObjectConstructorsWithAttachmentParam
+        .serviceObjectInfo.Member!.ServiceObjectConstructorsWithAttachmentParam
         .containsKey(itemClass)) {
       CreateServiceObjectWithAttachmentParam creationDelegate = EwsUtilities
           .serviceObjectInfo
-          .Member
-          .ServiceObjectConstructorsWithAttachmentParam[itemClass];
-      return creationDelegate(itemAttachment, isNew);
+          .Member!
+          .ServiceObjectConstructorsWithAttachmentParam[itemClass!]!;
+      return creationDelegate(itemAttachment, isNew) as Item;
     } else {
       throw new ArgumentException(
           "Strings.NoAppropriateConstructorForItemClass");
@@ -2344,12 +2344,12 @@ class EwsUtilities {
   /// <param name="itemAttachment">The item attachment.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>New Item.</returns>
-  static Item CreateItemFromXmlElementName(
+  static Item? CreateItemFromXmlElementName(
       ItemAttachment itemAttachment, String xmlElementName) {
     if (EwsUtilities
-        .serviceObjectInfo.Member.XmlElementNameToServiceObjectClassMap
+        .serviceObjectInfo.Member!.XmlElementNameToServiceObjectClassMap
         .containsKey(xmlElementName)) {
-      Type itemClass = EwsUtilities.serviceObjectInfo.Member
+      Type? itemClass = EwsUtilities.serviceObjectInfo.Member!
           .XmlElementNameToServiceObjectClassMap[xmlElementName];
       return CreateItemFromItemClass(itemAttachment, itemClass, false);
     } else {
@@ -2362,8 +2362,8 @@ class EwsUtilities {
   /// </summary>
   /// <param name="xmlElementName"></param>
   /// <returns></returns>
-  static Type GetItemTypeFromXmlElementName(String xmlElementName) {
-    return EwsUtilities.serviceObjectInfo.Member
+  static Type? GetItemTypeFromXmlElementName(String xmlElementName) {
+    return EwsUtilities.serviceObjectInfo.Member!
         .XmlElementNameToServiceObjectClassMap[xmlElementName];
   }
 
@@ -2373,11 +2373,11 @@ class EwsUtilities {
   /// <typeparam name="TItem">The type of the item to find.</typeparam>
   /// <param name="items">The collection.</param>
   /// <returns>A TItem instance or null if no instance of TItem could be found.</returns>
-  static TItem FindFirstItemOfType<TItem extends Item>(Iterable<Item> items) {
+  static TItem? FindFirstItemOfType<TItem extends Item>(Iterable<Item> items) {
     for (Item item in items) {
       // We're looking for an exact class match here.
       if (item.runtimeType == TItem) {
-        return item;
+        return item as TItem?;
       }
     }
 
@@ -2680,7 +2680,7 @@ class EwsUtilities {
 //            {
     if (ewsEnumDictionaries.containsKey(enumValue.runtimeType)) {
       resultOutParam.param =
-          ewsEnumDictionaries[enumValue.runtimeType][enumValue];
+          ewsEnumDictionaries[enumValue.runtimeType]![enumValue];
       return true;
     } else if (serializedEnumDictionaries.contains(enumValue.runtimeType)) {
       resultOutParam.param = EnumToString.parse(enumValue);
@@ -2729,7 +2729,7 @@ class EwsUtilities {
   /// <param name="value">The value to parse.</param>
   /// <param name="result">The value cast to the specified type, if TryParse succeeds. Otherwise, the value of result is indeterminate.</param>
   /// <returns>True if value could be parsed; otherwise, false.</returns>
-  static bool TryParse<T>(String value, OutParam<T> resultOutParam) {
+  static bool TryParse<T>(String? value, OutParam<T> resultOutParam) {
     try {
       resultOutParam.param = EwsUtilities.Parse<T>(value);
 
@@ -2958,7 +2958,7 @@ class EwsUtilities {
     String xsTimeDuration =
         xsDuration.split("T").length > 1 ? xsDuration.split("T")[1] : "";
 
-    RegExpMatch m = PATTERN_TIME_SPAN.firstMatch(xsDateDuration);
+    RegExpMatch? m = PATTERN_TIME_SPAN.firstMatch(xsDateDuration);
     bool negative = false;
 
     if (m != null) {
@@ -2970,7 +2970,7 @@ class EwsUtilities {
 
     int year = 0;
     if (m != null) {
-      year = int.parse(m.group(0).substring(0, m.group(0).indexOf("Y")));
+      year = int.parse(m.group(0)!.substring(0, m.group(0)!.indexOf("Y")));
     }
 
     // Month
@@ -2978,7 +2978,7 @@ class EwsUtilities {
 
     int month = 0;
     if (m != null) {
-      month = int.parse(m.group(0).substring(0, m.group(0).indexOf("M")));
+      month = int.parse(m.group(0)!.substring(0, m.group(0)!.indexOf("M")));
     }
 
     // Day
@@ -2986,7 +2986,7 @@ class EwsUtilities {
 
     int day = 0;
     if (m != null) {
-      day = int.parse(m.group(0).substring(0, m.group(0).indexOf("D")));
+      day = int.parse(m.group(0)!.substring(0, m.group(0)!.indexOf("D")));
     }
 
     // Hour
@@ -2994,7 +2994,7 @@ class EwsUtilities {
 
     int hour = 0;
     if (m != null) {
-      hour = int.parse(m.group(0).substring(0, m.group(0).indexOf("H")));
+      hour = int.parse(m.group(0)!.substring(0, m.group(0)!.indexOf("H")));
     }
 
     // Minute
@@ -3002,7 +3002,7 @@ class EwsUtilities {
 
     int minute = 0;
     if (m != null) {
-      minute = int.parse(m.group(0).substring(0, m.group(0).indexOf("M")));
+      minute = int.parse(m.group(0)!.substring(0, m.group(0)!.indexOf("M")));
     }
 
     // Seconds
@@ -3010,7 +3010,7 @@ class EwsUtilities {
 
     int seconds = 0;
     if (m != null) {
-      seconds = int.parse(m.group(0).substring(0, m.group(0).indexOf("S")));
+      seconds = int.parse(m.group(0)!.substring(0, m.group(0)!.indexOf("S")));
     }
 
     int milliseconds = 0;
@@ -3269,7 +3269,7 @@ class EwsUtilities {
   /// </summary>
   /// <param name="param">The param.</param>
   /// <param name="paramName">Name of the param.</param>
-  static void ValidateParam(Object param, String paramName) {
+  static void ValidateParam(Object? param, String paramName) {
     bool isValid;
 
     if (param is String) {
@@ -3391,7 +3391,8 @@ class EwsUtilities {
   /// </summary>
   /// <param name="domainName">Domain name.</param>
   /// <param name="paramName">Parameter name.</param>
-  static void ValidateDomainNameAllowNull(String domainName, String paramName) {
+  static void ValidateDomainNameAllowNull(
+      String? domainName, String paramName) {
     if (domainName != null) {
       RegExp regex = new RegExp(DomainRegex);
 
@@ -3432,11 +3433,11 @@ class EwsUtilities {
   /// </summary>
   /// <param name="enumType">Type of the enum.</param>
   /// <returns>Dictionary of enum values to versions.</returns>
-  static Map<dynamic, ExchangeVersion> _BuildEnumDict(
+  static Map<dynamic, ExchangeVersion?> _BuildEnumDict(
       Type enumType, List<dynamic> enumValues) {
-    Map<dynamic, ExchangeVersion> dict = {};
+    Map<dynamic, ExchangeVersion?> dict = {};
     for (dynamic enumValue in enumValues) {
-      ExchangeVersion version = GetEnumVersion(enumType, enumValue);
+      ExchangeVersion? version = GetEnumVersion(enumType, enumValue);
       dict[enumValue] = version;
     }
     return dict;
@@ -3494,9 +3495,9 @@ class EwsUtilities {
   /// </summary>
   /// <param name="enumType">Type of the enum.</param>
   /// <returns>The mapping from enum to schema name</returns>
-  static Map<Object, String> _BuildEnumToSchemaDict(
+  static Map<Object, String?> _BuildEnumToSchemaDict(
       Type enumType, List<Object> enumValues) {
-    final Map<Object, String> dict = {};
+    final Map<Object, String?> dict = {};
     enumValues.forEach((enumValue) {
       dict[enumValue] = GetEnumSchemaName(enumType, enumValue);
     });
@@ -3526,7 +3527,7 @@ class EwsUtilities {
   static int GetEnumeratedObjectCount(Iterable objects) {
     int count = 0;
 
-    for (Object obj in objects) {
+    for (Object obj in objects as Iterable<Object>) {
       count++;
     }
 
@@ -3542,7 +3543,7 @@ class EwsUtilities {
   static Object GetEnumeratedObjectAt(Iterable objects, int index) {
     int count = 0;
 
-    for (Object obj in objects) {
+    for (Object obj in objects as Iterable<Object>) {
       if (count == index) {
         return obj;
       }

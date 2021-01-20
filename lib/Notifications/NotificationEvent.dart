@@ -35,19 +35,19 @@ abstract class NotificationEvent {
   /// <summary>
   /// Type of this event.
   /// </summary>
-  /* private */ enumerations.EventType eventType;
+  /* private */ enumerations.EventType? eventType;
 
   /// <summary>
   /// Date and time when the event occurred.
   /// </summary>
   /* private */
-  DateTime timestamp;
+  DateTime? timestamp;
 
   /// <summary>
   /// Id of parent folder of the item or folder this event applies to.
   /// </summary>
   /* private */
-  FolderId parentFolderId;
+  FolderId? parentFolderId;
 
   /// <summary>
   /// Id of the old prarent foldero of the item or folder this event applies to.
@@ -55,14 +55,14 @@ abstract class NotificationEvent {
   /// or EventType.Copied. For all other event types, oldParentFolderId will be null.
   /// </summary>
   /* private */
-  FolderId oldParentFolderId;
+  FolderId? oldParentFolderId;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NotificationEvent"/> class.
   /// </summary>
   /// <param name="eventType">Type of the event.</param>
   /// <param name="timestamp">The event timestamp.</param>
-  NotificationEvent(enumerations.EventType eventType, DateTime timestamp) {
+  NotificationEvent(enumerations.EventType? eventType, DateTime? timestamp) {
     this.eventType = eventType;
     this.timestamp = timestamp;
   }
@@ -87,26 +87,26 @@ abstract class NotificationEvent {
   /// <summary>
   /// Gets the type of this event.
   /// </summary>
-  enumerations.EventType get EventType => this.eventType;
+  enumerations.EventType? get EventType => this.eventType;
 
   /// <summary>
   /// Gets the date and time when the event occurred.
   /// </summary>
-  DateTime get TimeStamp => this.timestamp;
+  DateTime? get TimeStamp => this.timestamp;
 
   /// <summary>
   /// Gets the Id of the parent folder of the item or folder this event applie to.
   /// </summary>
-  FolderId get ParentFolderId => this.parentFolderId;
+  FolderId? get ParentFolderId => this.parentFolderId;
 
-  set ParentFolderId(FolderId value) => this.parentFolderId = value;
+  set ParentFolderId(FolderId? value) => this.parentFolderId = value;
 
   /// <summary>
   /// Gets the Id of the old parent folder of the item or folder this event applies to.
   /// OldParentFolderId is only meaningful when EventType is equal to either EventType.Moved or
   /// EventType.Copied. For all other event types, OldParentFolderId is null.
   /// </summary>
-  FolderId get OldParentFolderId => this.oldParentFolderId;
+  FolderId? get OldParentFolderId => this.oldParentFolderId;
 
-  set OldParentFolderId(FolderId value) => this.oldParentFolderId = value;
+  set OldParentFolderId(FolderId? value) => this.oldParentFolderId = value;
 }

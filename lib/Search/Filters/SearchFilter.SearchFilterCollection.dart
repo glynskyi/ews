@@ -111,7 +111,7 @@ class SearchFilterCollection extends SearchFilter
   /// </summary>
   /// <returns>XML element name.</returns>
   @override
-  String GetXmlElementName() {
+  String? GetXmlElementName() {
     return EnumToString.parse(this.LogicalOperator);
   }
 
@@ -158,7 +158,7 @@ class SearchFilterCollection extends SearchFilter
   /// Adds a search filter of any type to the collection.
   /// </summary>
   /// <param name="searchFilter">The search filter to add. Available search filter classes include SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.</param>
-  void Add(SearchFilter searchFilter) {
+  void Add(SearchFilter? searchFilter) {
     if (searchFilter == null) {
       throw new ArgumentNullException("searchFilter");
     }

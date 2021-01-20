@@ -34,7 +34,7 @@ class FolderWrapper extends AbstractFolderIdWrapper {
   /// <summary>
   /// The Folder object providing the Id.
   /// </summary>
-  /* private */ Folder folder;
+  /* private */ Folder? folder;
 
   /// <summary>
   /// Initializes a new instance of FolderWrapper.
@@ -58,7 +58,7 @@ class FolderWrapper extends AbstractFolderIdWrapper {
   /// </summary>
   /// <returns>The Folder object associated with the wrapper.</returns>
   @override
-  Folder GetFolder() {
+  Folder? GetFolder() {
     return this.folder;
   }
 
@@ -68,6 +68,6 @@ class FolderWrapper extends AbstractFolderIdWrapper {
   /// <param name="writer">The writer to write the Id to.</param>
   @override
   void WriteToXml(EwsServiceXmlWriter writer) {
-    this.folder.Id.WriteToXmlElemenetName(writer);
+    this.folder!.Id!.WriteToXmlElemenetName(writer);
   }
 }

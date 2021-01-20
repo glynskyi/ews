@@ -45,36 +45,30 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents an attachment to an item.
 /// </summary>
 abstract class Attachment extends ComplexProperty {
-  Item _owner;
-  String _id;
-  String _name;
-  String _contentType;
-  String _contentId;
-  String _contentLocation;
-  int _size;
-  core.DateTime _lastModifiedTime;
-  bool _isInline;
+  Item? _owner;
+  String? _id;
+  String? _name;
+  String? _contentType;
+  String? _contentId;
+  String? _contentLocation;
+  int? _size;
+  core.DateTime? _lastModifiedTime;
+  bool? _isInline;
   ExchangeService _service;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Attachment"/> class.
   /// </summary>
   /// <param name="owner">The owner.</param>
-  Attachment.withOwner(Item owner) {
+  Attachment.withOwner(Item owner) : _service = owner.Service {
     this._owner = owner;
-
-    if (owner != null) {
-      this._service = this._owner.Service;
-    }
   }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Attachment"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  Attachment.withExchangeService(ExchangeService service) {
-    this._service = service;
-  }
+  Attachment.withExchangeService(this._service);
 
   /// <summary>
   /// Throws exception if this is not a new service object.
@@ -104,18 +98,18 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Gets the Id of the attachment.
   /// </summary>
-  String get Id => this._id;
+  String? get Id => this._id;
 
-  set Id(String value) {
+  set Id(String? value) {
     this._id = value;
   }
 
   /// <summary>
   /// Gets or sets the name of the attachment.
   /// </summary>
-  String get Name => this._name;
+  String? get Name => this._name;
 
-  set Name(String value) {
+  set Name(String? value) {
     if (CanSetFieldValue(this._name, value)) {
       this._name = value;
       this.Changed();
@@ -125,9 +119,9 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Gets or sets the content type of the attachment.
   /// </summary>
-  String get ContentType => this._contentType;
+  String? get ContentType => this._contentType;
 
-  set ContentType(String value) {
+  set ContentType(String? value) {
     if (CanSetFieldValue(this._contentType, value)) {
       this._contentType = value;
       this.Changed();
@@ -138,9 +132,9 @@ abstract class Attachment extends ComplexProperty {
   /// Gets or sets the content Id of the attachment. ContentId can be used as a custom way to identify
   /// an attachment in order to reference it from within the body of the item the attachment belongs to.
   /// </summary>
-  String get ContentId => this._contentId;
+  String? get ContentId => this._contentId;
 
-  set ContentId(String value) {
+  set ContentId(String? value) {
     if (CanSetFieldValue(this._contentId, value)) {
       this._contentId = value;
       Changed();
@@ -151,9 +145,9 @@ abstract class Attachment extends ComplexProperty {
   /// Gets or sets the content location of the attachment. ContentLocation can be used to associate
   /// an attachment with a Url defining its location on the Web.
   /// </summary>
-  String get ContentLocation => this._contentLocation;
+  String? get ContentLocation => this._contentLocation;
 
-  set ContentLocation(String value) {
+  set ContentLocation(String? value) {
     if (CanSetFieldValue(this._contentLocation, value)) {
       this._contentLocation = value;
       this.Changed();
@@ -163,14 +157,14 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Gets the size of the attachment.
   /// </summary>
-  int get Size {
+  int? get Size {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "Size");
 
     return this._size;
   }
 
-  set Size(int value) {
+  set Size(int? value) {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "Size");
     if (CanSetFieldValue(this._size, value)) {
@@ -182,7 +176,7 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Gets the date and time when this attachment was last modified.
   /// </summary>
-  core.DateTime get LastModifiedTime {
+  core.DateTime? get LastModifiedTime {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "LastModifiedTime");
 
@@ -203,14 +197,14 @@ abstract class Attachment extends ComplexProperty {
   /// Gets or sets a value indicating whether this is an inline attachment.
   /// Inline attachments are not visible to end users.
   /// </summary>
-  bool get IsInline {
+  bool? get IsInline {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "IsInline");
 
     return this._isInline;
   }
 
-  set IsInline(bool value) {
+  set IsInline(bool? value) {
     EwsUtilities.ValidatePropertyVersion(
         this._service, ExchangeVersion.Exchange2010, "IsInline");
 
@@ -228,7 +222,7 @@ abstract class Attachment extends ComplexProperty {
   /// <summary>
   /// Gets the owner of the attachment.
   /// </summary>
-  Item get Owner => this._owner;
+  Item? get Owner => this._owner;
 
   /// <summary>
   /// Gets the related exchange service.
@@ -253,11 +247,11 @@ abstract class Attachment extends ComplexProperty {
         this._id = reader.ReadAttributeValue(XmlAttributeNames.Id);
 
         if (this.Owner != null) {
-          String rootItemChangeKey =
+          String? rootItemChangeKey =
               reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
 
           if (!StringUtils.IsNullOrEmpty(rootItemChangeKey)) {
-            this.Owner.RootItemId.ChangeKey = rootItemChangeKey;
+            this.Owner!.RootItemId!.ChangeKey = rootItemChangeKey;
           }
         }
         reader.ReadEndElementIfNecessary(
@@ -315,8 +309,8 @@ abstract class Attachment extends ComplexProperty {
   /// </summary>
   /// <param name="bodyType">Type of the body.</param>
   /// <param name="additionalProperties">The additional properties.</param>
-  Future<void> InternalLoad(BodyType bodyType,
-      Iterable<PropertyDefinitionBase> additionalProperties) {
+  Future<void> InternalLoad(BodyType? bodyType,
+      Iterable<PropertyDefinitionBase>? additionalProperties) {
     return this._service.GetAttachment(this, bodyType, additionalProperties);
   }
 

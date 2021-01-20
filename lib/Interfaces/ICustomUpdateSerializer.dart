@@ -38,7 +38,7 @@ abstract class ICustomUpdateSerializer {
   /// <param name="ewsObject">The ews object.</param>
   /// <param name="propertyDefinition">Property definition.</param>
   /// <returns>True if property generated serialization.</returns>
-  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
+  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject? ewsObject,
       PropertyDefinition propertyDefinition);
 
   /// <summary>
@@ -48,5 +48,5 @@ abstract class ICustomUpdateSerializer {
   /// <param name="ewsObject">The ews object.</param>
   /// <returns>True if property generated serialization.</returns>
   bool WriteDeleteUpdateToXml(
-      EwsServiceXmlWriter writer, ServiceObject ewsObject);
+      EwsServiceXmlWriter writer, ServiceObject? ewsObject);
 }

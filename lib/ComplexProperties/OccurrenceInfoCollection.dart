@@ -43,7 +43,7 @@ class OccurrenceInfoCollection
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>OccurenceInfo instance.</returns>
   @override
-  OccurrenceInfo CreateComplexProperty(String xmlElementName) {
+  OccurrenceInfo? CreateComplexProperty(String xmlElementName) {
     if (xmlElementName == XmlElementNames.Occurrence) {
       return new OccurrenceInfo();
     } else {

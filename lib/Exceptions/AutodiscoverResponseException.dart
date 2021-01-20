@@ -34,7 +34,7 @@ class AutodiscoverResponseException extends ServiceRemoteException {
   /// <summary>
   /// Error code when Autodiscover service operation failed remotely.
   /// </summary>
-  /* private */ final AutodiscoverErrorCode errorCode;
+  /* private */ final AutodiscoverErrorCode? errorCode;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverResponseException"/> class.
@@ -77,5 +77,5 @@ class AutodiscoverResponseException extends ServiceRemoteException {
   /// <summary>
   /// Gets the ErrorCode for the exception.
   /// </summary>
-  AutodiscoverErrorCode get ErrorCode => this.errorCode;
+  AutodiscoverErrorCode? get ErrorCode => this.errorCode;
 }

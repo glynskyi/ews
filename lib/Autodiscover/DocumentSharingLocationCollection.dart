@@ -67,5 +67,5 @@ class DocumentSharingLocationCollection {
   /// <summary>
   /// Gets the collection of alternate mailboxes.
   /// </summary>
-  List<DocumentSharingLocation> Entries;
+  late List<DocumentSharingLocation> Entries;
 }

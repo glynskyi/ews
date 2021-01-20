@@ -35,7 +35,7 @@ class ServiceXmlSerializationException extends ServiceLocalException {
   /// </summary>
   /// <param name="message">Error message text.</param>
   ServiceXmlSerializationException(message,
-      [Exception innerException, StackTrace stackTrace])
+      [Exception? innerException, StackTrace? stackTrace])
       : super(message, innerException, stackTrace);
 
   @override

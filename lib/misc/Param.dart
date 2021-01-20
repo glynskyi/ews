@@ -1,3 +1,3 @@
 abstract class Param<T> {
-  T param;
+  T? param;
 }

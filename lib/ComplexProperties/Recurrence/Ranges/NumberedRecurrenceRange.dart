@@ -31,7 +31,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
 
 class NumberedRecurrenceRange extends RecurrenceRange {
-  /* private */ int numberOfOccurrences;
+  /* private */ int? numberOfOccurrences;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NumberedRecurrenceRange"/> class.
@@ -44,7 +44,7 @@ class NumberedRecurrenceRange extends RecurrenceRange {
   /// <param name="startDate">The start date.</param>
   /// <param name="numberOfOccurrences">The number of occurrences.</param>
   NumberedRecurrenceRange.withStartDate(
-      DateTime startDate, int numberOfOccurrences)
+      DateTime? startDate, int numberOfOccurrences)
       : super.withStartDate(startDate) {
     this.numberOfOccurrences = numberOfOccurrences;
   }
@@ -64,7 +64,7 @@ class NumberedRecurrenceRange extends RecurrenceRange {
   void SetupRecurrence(Recurrence recurrence) {
     super.SetupRecurrence(recurrence);
 
-    recurrence.NumberOfOccurrences = this.NumberOfOccurrences;
+    recurrence.NumberOfOccurrences = this.NumberOfOccurrences!;
   }
 
   /// <summary>
@@ -105,9 +105,9 @@ class NumberedRecurrenceRange extends RecurrenceRange {
   /// Gets or sets the number of occurrences.
   /// </summary>
   /// <value>The number of occurrences.</value>
-  int get NumberOfOccurrences => this.numberOfOccurrences;
+  int? get NumberOfOccurrences => this.numberOfOccurrences;
 
-  set NumberOfOccurrences(int value) {
+  set NumberOfOccurrences(int? value) {
     if (this.CanSetFieldValue(this.numberOfOccurrences, value)) {
       this.numberOfOccurrences = value;
       this.Changed();

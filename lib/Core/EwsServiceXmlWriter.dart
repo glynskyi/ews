@@ -51,11 +51,11 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <summary>
   /// UTF-8 encoding that does not create leading Byte order marks
   /// </summary>
-  static Encoding _utf8Encoding = Encoding.getByName("utf8");
+  static Encoding? _utf8Encoding = Encoding.getByName("utf8");
 
   bool _isDisposed = false;
   ExchangeServiceBase _service;
-  XmlWriter _xmlWriter;
+  XmlWriter? _xmlWriter;
   bool _isTimeZoneHeaderEmitted = false;
   bool _requireWSSecurityUtilityNamespace = false;
 
@@ -64,10 +64,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="stream">The stream.</param>
-  EwsServiceXmlWriter(
-      ExchangeServiceBase service, StreamConsumer<List<int>> stream) {
-    this._service = service;
-
+  EwsServiceXmlWriter(this._service, StreamConsumer<List<int>>? stream) {
 //            XmlWriterSettings settings = new XmlWriterSettings();
 //            settings.Indent = true;
 //
@@ -85,7 +82,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="strValue">The String representation of value.</param>
   /// <returns>True if object was converted, false otherwise.</returns>
   /// <remarks>A null object will be "successfully" converted to a null string.</remarks>
-  bool TryConvertObjectToString(Object value, OutParam<String> strValueOut) {
+  bool TryConvertObjectToString(Object? value, OutParam<String> strValueOut) {
 //          print("TryConvertObjectToString(${value.runtimeType} $value)");
     bool converted = true;
     strValueOut.param = null;
@@ -123,7 +120,7 @@ class EwsServiceXmlWriter implements IDisposable {
       } else {
         converted = false;
         throw new NotImplementedException(
-            "!!! TryConvertObjectToString ${value} of type ${value?.runtimeType}");
+            "!!! TryConvertObjectToString ${value} of type ${value.runtimeType}");
       }
     }
     return converted;
@@ -198,7 +195,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// </summary>
   Future<void> Dispose() async {
     if (!this._isDisposed) {
-      await this._xmlWriter.Close();
+      await this._xmlWriter!.Close();
 
       this._isDisposed = true;
     }
@@ -208,7 +205,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// Flushes this instance.
   /// </summary>
   Future<void> Flush() {
-    return this._xmlWriter.Flush();
+    return this._xmlWriter!.Flush();
   }
 
   /// <summary>
@@ -216,8 +213,8 @@ class EwsServiceXmlWriter implements IDisposable {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">The local name of the element.</param>
-  void WriteStartElement(XmlNamespace xmlNamespace, String localName) {
-    this._xmlWriter.WriteStartElement(
+  void WriteStartElement(XmlNamespace xmlNamespace, String? localName) {
+    this._xmlWriter!.WriteStartElement(
         prefix: EwsUtilities.GetNamespacePrefix(xmlNamespace),
         localName: localName,
         ns: EwsUtilities.GetNamespaceUri(xmlNamespace));
@@ -227,7 +224,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// Writes the end element.
   /// </summary>
   void WriteEndElement() {
-    this._xmlWriter.WriteEndElement();
+    this._xmlWriter!.WriteEndElement();
   }
 
   /// <summary>
@@ -246,12 +243,12 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="localName">The local name of the attribute.</param>
   /// <param name="alwaysWriteEmptyString">Always emit the empty String as the value.</param>
   /// <param name="value">The value.</param>
-  void WriteAttributeValue(String localName, Object value,
+  void WriteAttributeValue(String localName, Object? value,
       [bool alwaysWriteEmptyString = false]) {
     OutParam<String> stringValue = new OutParam();
     if (this.TryConvertObjectToString(value, stringValue)) {
       if ((stringValue.param != null) &&
-          (alwaysWriteEmptyString || (stringValue.param.length != 0))) {
+          (alwaysWriteEmptyString || (stringValue.param!.length != 0))) {
         this.WriteAttributeString(localName, stringValue.param);
       }
     } else {
@@ -286,9 +283,9 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="localName">The local name of the attribute.</param>
   /// <param name="stringValue">The String value.</param>
   /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
-  void WriteAttributeString(String localName, String stringValue) {
+  void WriteAttributeString(String localName, String? stringValue) {
     try {
-      this._xmlWriter.WriteAttributeStringJust(localName, stringValue);
+      this._xmlWriter!.WriteAttributeStringJust(localName, stringValue);
     } on ArgumentException catch (ex, stacktrace) {
       // XmlTextWriter will throw ArgumentException if String includes invalid characters.
       throw new ServiceXmlSerializationException(
@@ -304,9 +301,9 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="stringValue">The String value.</param>
   /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
   void WriteAttributeStringWithPrefix(
-      String namespacePrefix, String localName, String stringValue) {
+      String namespacePrefix, String localName, String? stringValue) {
     try {
-      this._xmlWriter.WriteAttributeString(
+      this._xmlWriter!.WriteAttributeString(
           prefix: namespacePrefix,
           localName: localName,
           ns: null,
@@ -324,9 +321,9 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="value">The value.</param>
   /// <param name="name">Element name (used for error handling)</param>
   /// <exception cref="ServiceXmlSerializationException">Thrown if String value isn't valid for XML.</exception>
-  void WriteValue(String value, String name) {
+  void WriteValue(String? value, String? name) {
     try {
-      this._xmlWriter.WriteValue(value);
+      this._xmlWriter!.WriteValue(value);
     } on ArgumentException catch (ex, stacktrace) {
       // XmlTextWriter will throw ArgumentException if String includes invalid characters.
       throw new ServiceXmlSerializationException(
@@ -341,9 +338,9 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="localName">The local name of the element.</param>
   /// <param name="displayName">The name that should appear in the exception message when the value can not be serialized.</param>
   /// <param name="value">The value.</param>
-  void WriteElementValue(XmlNamespace xmlNamespace, String localName,
-      String displayName, Object value) {
-    String stringValue;
+  void WriteElementValue(XmlNamespace xmlNamespace, String? localName,
+      String? displayName, Object? value) {
+    String? stringValue;
     OutParam<String> strOut = new OutParam<String>();
     if (this.TryConvertObjectToString(value, strOut)) {
       stringValue = strOut.param;
@@ -384,7 +381,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// <param name="localName">The local name of the element.</param>
   /// <param name="value">The value.</param>
   void WriteElementValueWithNamespace(
-      XmlNamespace xmlNamespace, String localName, Object value) {
+      XmlNamespace xmlNamespace, String localName, Object? value) {
     this.WriteElementValue(xmlNamespace, localName, localName, value);
   }
 
@@ -393,7 +390,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// </summary>
   /// <param name="buffer">The buffer.</param>
   void WriteBase64ElementValue(Uint8List buffer) {
-    this._xmlWriter.WriteValue(base64.encode(buffer));
+    this._xmlWriter!.WriteValue(base64.encode(buffer));
   }
 
   /// <summary>
@@ -424,7 +421,7 @@ class EwsServiceXmlWriter implements IDisposable {
   /// Gets the XML writer.
   /// </summary>
   /// <value>The writer.</value>
-  XmlWriter get InternalWriter => this._xmlWriter;
+  XmlWriter? get InternalWriter => this._xmlWriter;
 
   /// <summary>
   /// Gets the service.

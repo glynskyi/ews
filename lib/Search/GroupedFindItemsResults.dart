@@ -35,9 +35,9 @@ import 'package:ews/Search/ItemGroup.dart' as search;
 class GroupedFindItemsResults<TItem extends Item>
     with IterableMixin<search.ItemGroup<TItem>>
     implements Iterable<search.ItemGroup<TItem>> {
-  int _totalCount = 0;
+  int? _totalCount = 0;
 
-  int _nextPageOffset;
+  int? _nextPageOffset;
 
   bool _moreAvailable = false;
 
@@ -54,16 +54,16 @@ class GroupedFindItemsResults<TItem extends Item>
   /// <summary>
   /// Gets the total number of items matching the search criteria available in the searched folder.
   /// </summary>
-  int get TotalCount => this._totalCount;
+  int? get TotalCount => this._totalCount;
 
-  set TotalCount(int value) => this._totalCount = value;
+  set TotalCount(int? value) => this._totalCount = value;
 
   /// <summary>
   /// Gets the offset that should be used with ItemView to retrieve the next page of items in a FindItems operation.
   /// </summary>
-  int get NextPageOffset => this._nextPageOffset;
+  int? get NextPageOffset => this._nextPageOffset;
 
-  set NextPageOffset(int value) => this._nextPageOffset = value;
+  set NextPageOffset(int? value) => this._nextPageOffset = value;
 
   /// <summary>
   /// Gets a value indicating whether more items corresponding to the search criteria

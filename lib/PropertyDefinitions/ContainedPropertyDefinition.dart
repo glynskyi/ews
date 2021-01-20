@@ -40,7 +40,7 @@ import 'package:ews/PropertyDefinitions/ICreateComplexPropertyDelegate.dart';
 /// <typeparam name="TComplexProperty">The type of the complex property.</typeparam>
 class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
     extends ComplexPropertyDefinition<TComplexProperty> {
-  /* private */ String containedXmlElementName;
+  /* private */ String? containedXmlElementName;
 
   ContainedPropertyDefinition.withFlags(
       String xmlElementName,
@@ -99,7 +99,7 @@ class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    ComplexProperty complexProperty = propertyBag[this];
+    ComplexProperty? complexProperty = propertyBag[this] as ComplexProperty?;
 
     if (complexProperty != null) {
       writer.WriteStartElement(XmlNamespace.Types, this.XmlElementName);

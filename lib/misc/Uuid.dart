@@ -1,5 +1,5 @@
 class Uuid {
-  final String value;
+  final String? value;
 
   Uuid(this.value);
 

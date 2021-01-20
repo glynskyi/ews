@@ -42,13 +42,13 @@ import 'package:ews/Search/ViewBase.dart';
 /// Represents the view settings in a folder search operation.
 /// </summary>
 class SeekToConditionItemView extends ViewBase {
-  /* private */ int pageSize;
+  /* private */ late int pageSize;
 
   /* private */
-  ItemTraversal traversal;
+  ItemTraversal? traversal;
 
   /* private */
-  SearchFilter condition;
+  SearchFilter? condition;
 
   /* private */
   enumerations.OffsetBasePoint offsetBasePoint =
@@ -58,14 +58,14 @@ class SeekToConditionItemView extends ViewBase {
   OrderByCollection orderBy = new OrderByCollection();
 
   /* private */
-  ServiceObjectType serviceObjType;
+  ServiceObjectType? serviceObjType;
 
   /// <summary>
   /// Gets the type of service object this view applies to.
   /// </summary>
   /// <returns>A ServiceObjectType value.</returns>
   @override
-  ServiceObjectType GetServiceObjectType() {
+  ServiceObjectType? GetServiceObjectType() {
     return this.serviceObjType;
   }
 
@@ -118,7 +118,7 @@ class SeekToConditionItemView extends ViewBase {
 
     if (this.Condition != null) {
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Condition);
-      this.Condition.WriteToXmlWithWriter(writer);
+      this.Condition!.WriteToXmlWithWriter(writer);
       writer.WriteEndElement(); // Restriction
     }
   }
@@ -130,7 +130,7 @@ class SeekToConditionItemView extends ViewBase {
   /// <param name="groupBy">The group by.</param>
   @override
   void InternalWriteSearchSettingsToXml(
-      EwsServiceXmlWriter writer, Grouping groupBy) {
+      EwsServiceXmlWriter writer, Grouping? groupBy) {
     if (groupBy != null) {
       groupBy.WriteToXml(writer);
     }
@@ -160,7 +160,7 @@ class SeekToConditionItemView extends ViewBase {
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by clause.</param>
   @override
-  void WriteToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
+  void WriteToXml(EwsServiceXmlWriter writer, Grouping? groupBy) {
     if (this.serviceObjType == ServiceObjectType.Item) {
       this
           .GetPropertySetOrDefault()
@@ -228,9 +228,9 @@ class SeekToConditionItemView extends ViewBase {
   /// SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection. If SearchFilter
   /// is null, no search filters are applied.
   /// </summary>
-  SearchFilter get Condition => this.condition;
+  SearchFilter? get Condition => this.condition;
 
-  set Condition(SearchFilter value) {
+  set Condition(SearchFilter? value) {
     if (value == null) {
       throw new ArgumentNullException("Condition");
     }
@@ -241,9 +241,9 @@ class SeekToConditionItemView extends ViewBase {
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to ItemTraversal.Shallow.
   /// </summary>
-  ItemTraversal get Traversal => this.traversal;
+  ItemTraversal? get Traversal => this.traversal;
 
-  set Traversal(ItemTraversal value) => this.traversal = value;
+  set Traversal(ItemTraversal? value) => this.traversal = value;
 
   /// <summary>
   /// Gets the properties against which the returned items should be ordered.

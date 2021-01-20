@@ -35,7 +35,7 @@ class AttributionCollection extends ComplexPropertyCollection<Attribution> {
   /// <summary>
   /// XML element name
   /// </summary>
-  String _collectionItemXmlElementName;
+  String? _collectionItemXmlElementName;
 
   /// <summary>
   /// Creates a new instance of the <see cref="AttributionCollection"/> class.
@@ -66,10 +66,8 @@ class AttributionCollection extends ComplexPropertyCollection<Attribution> {
   /// </summary>
   /// <param name="attributions">Attributions to be added</param>
   void AddRange(Iterable<Attribution> attributions) {
-    if (attributions != null) {
-      for (Attribution attribution in attributions) {
-        this.Add(attribution);
-      }
+    for (Attribution attribution in attributions) {
+      this.Add(attribution);
     }
   }
 
@@ -86,7 +84,7 @@ class AttributionCollection extends ComplexPropertyCollection<Attribution> {
   /// <param name="xmlElementName">Attribution XML node name</param>
   /// <returns>The attribution object created</returns>
   @override
-  Attribution CreateComplexProperty(String xmlElementName) {
+  Attribution? CreateComplexProperty(String xmlElementName) {
     EwsUtilities.ValidateParam(xmlElementName, "xmlElementName");
     if (xmlElementName == this._collectionItemXmlElementName) {
       return new Attribution();
@@ -101,7 +99,7 @@ class AttributionCollection extends ComplexPropertyCollection<Attribution> {
   /// <param name="attribution">The attribution object from which to determine the XML element name.</param>
   /// <returns>The XML element name corresponding to the provided attribution object.</returns>
   @override
-  String GetCollectionItemXmlElementName(Attribution attribution) {
+  String? GetCollectionItemXmlElementName(Attribution attribution) {
     return this._collectionItemXmlElementName;
   }
 

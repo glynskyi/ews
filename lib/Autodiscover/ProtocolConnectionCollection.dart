@@ -34,7 +34,7 @@ import 'ProtocolConnection.dart';
 /// Represents a user setting that is a collection of protocol connection.
 /// </summary>
 class ProtocolConnectionCollection {
-  List<ProtocolConnection> _connections;
+  List<ProtocolConnection>? _connections;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ProtocolConnectionCollection"/> class.
@@ -49,7 +49,7 @@ class ProtocolConnectionCollection {
   /// <param name="reader">EwsServiceXmlReader</param>
   static ProtocolConnectionCollection LoadFromXml(EwsXmlReader reader) {
     ProtocolConnectionCollection value = new ProtocolConnectionCollection();
-    ProtocolConnection connection = null;
+    ProtocolConnection? connection = null;
 
     do {
       reader.Read();
@@ -58,7 +58,7 @@ class ProtocolConnectionCollection {
         if (reader.LocalName == XmlElementNames.ProtocolConnection) {
           connection = ProtocolConnection.LoadFromXml(reader);
           if (connection != null) {
-            value.Connections.add(connection);
+            value.Connections!.add(connection);
           }
         }
       }
@@ -71,7 +71,7 @@ class ProtocolConnectionCollection {
   /// <summary>
   /// Gets the Connections.
   /// </summary>
-  List<ProtocolConnection> get Connections => this._connections;
+  List<ProtocolConnection>? get Connections => this._connections;
 
-  set Connections(List<ProtocolConnection> value) => this._connections = value;
+  set Connections(List<ProtocolConnection>? value) => this._connections = value;
 }

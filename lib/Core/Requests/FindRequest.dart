@@ -51,16 +51,16 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   FolderIdWrapperList parentFolderIds = new FolderIdWrapperList();
 
   /* private */
-  search.SearchFilter searchFilter;
+  search.SearchFilter? searchFilter;
 
   /* private */
-  String queryString;
+  String? queryString;
 
   /* private */
   bool returnHighlightTerms = false;
 
   /* private */
-  ViewBase view;
+  ViewBase? view;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindRequest&lt;TResponse&gt;"/> class.
@@ -77,7 +77,7 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   void Validate() {
     super.Validate();
 
-    this.View.InternalValidate(this);
+    this.View!.InternalValidate(this);
 
     // query String parameter is only valid for Exchange2010 or higher
     //
@@ -132,7 +132,7 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   /// Gets the group by clause.
   /// </summary>
   /// <returns>The group by clause, null if the request does not have or support grouping.</returns>
-  Grouping GetGroupBy() {
+  Grouping? GetGroupBy() {
     return null;
   }
 
@@ -144,7 +144,7 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     super.WriteAttributesToXml(writer);
 
-    this.View.WriteAttributesToXml(writer);
+    this.View!.WriteAttributesToXml(writer);
   }
 
   /// <summary>
@@ -153,16 +153,16 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.View.WriteToXml(writer, this.GetGroupBy());
+    this.View!.WriteToXml(writer, this.GetGroupBy());
 
     if (this.SearchFilter != null) {
       writer.WriteStartElement(
           XmlNamespace.Messages, XmlElementNames.Restriction);
-      this.SearchFilter.WriteToXmlWithWriter(writer);
+      this.SearchFilter!.WriteToXmlWithWriter(writer);
       writer.WriteEndElement(); // Restriction
     }
 
-    this.View.WriteOrderByToXml(writer);
+    this.View!.WriteOrderByToXml(writer);
 
     this.ParentFolderIds.WriteToXml(
         writer, XmlNamespace.Messages, XmlElementNames.ParentFolderIds);
@@ -193,16 +193,16 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   /// SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection. If SearchFilter
   /// is null, no search filters are applied.
   /// </summary>
-  search.SearchFilter get SearchFilter => this.searchFilter;
+  search.SearchFilter? get SearchFilter => this.searchFilter;
 
-  set SearchFilter(search.SearchFilter value) => this.searchFilter = value;
+  set SearchFilter(search.SearchFilter? value) => this.searchFilter = value;
 
   /// <summary>
   /// Gets or sets the query String for indexed search.
   /// </summary>
-  String get QueryString => this.queryString;
+  String? get QueryString => this.queryString;
 
-  set QueryString(String value) => this.queryString = value;
+  set QueryString(String? value) => this.queryString = value;
 
   /// <summary>
   /// Gets or sets the query String highlight terms.
@@ -214,7 +214,7 @@ abstract class FindRequest<TResponse extends ServiceResponse>
   /// <summary>
   /// Gets or sets the view controlling the number of items or folders returned.
   /// </summary>
-  ViewBase get View => this.view;
+  ViewBase? get View => this.view;
 
-  set View(ViewBase value) => this.view = value;
+  set View(ViewBase? value) => this.view = value;
 }

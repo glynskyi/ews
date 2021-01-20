@@ -43,13 +43,13 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// </summary>
 /// <typeparam name="TItem">The type of items that the opeartion returned.</typeparam>
 class FindItemResponse<TItem extends Item> extends ServiceResponse {
-  FindItemsResults<TItem> _results;
+  FindItemsResults<TItem>? _results;
 
-  bool _isGrouped;
+  late bool _isGrouped;
 
-  GroupedFindItemsResults<TItem> _groupedFindResults;
+  GroupedFindItemsResults<TItem>? _groupedFindResults;
 
-  PropertySet _propertySet;
+  PropertySet? _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FindItemResponse&lt;TItem&gt;"/> class.
@@ -73,28 +73,28 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
     reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootFolder);
 
-    int totalItemsInView =
+    int? totalItemsInView =
         reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
     bool moreItemsAvailable = !reader.ReadAttributeValue<bool>(
-        XmlAttributeNames.IncludesLastItemInRange);
+        XmlAttributeNames.IncludesLastItemInRange)!;
 
     // Ignore IndexedPagingOffset attribute if moreItemsAvailable is false.
-    int nextPageOffset = moreItemsAvailable
+    int? nextPageOffset = moreItemsAvailable
         ? reader.ReadNullableAttributeValue<int>(
             XmlAttributeNames.IndexedPagingOffset)
         : null;
 
     if (!this._isGrouped) {
       this._results = new FindItemsResults<TItem>();
-      this._results.TotalCount = totalItemsInView;
-      this._results.NextPageOffset = nextPageOffset;
-      this._results.MoreAvailable = moreItemsAvailable;
-      _InternalReadItemsFromXml(reader, this._propertySet, this._results.Items);
+      this._results!.TotalCount = totalItemsInView;
+      this._results!.NextPageOffset = nextPageOffset;
+      this._results!.MoreAvailable = moreItemsAvailable;
+      _InternalReadItemsFromXml(reader, this._propertySet, this._results!.Items);
     } else {
       this._groupedFindResults = new GroupedFindItemsResults<TItem>();
-      this._groupedFindResults.TotalCount = totalItemsInView;
-      this._groupedFindResults.NextPageOffset = nextPageOffset;
-      this._groupedFindResults.MoreAvailable = moreItemsAvailable;
+      this._groupedFindResults!.TotalCount = totalItemsInView;
+      this._groupedFindResults!.NextPageOffset = nextPageOffset;
+      this._groupedFindResults!.MoreAvailable = moreItemsAvailable;
 
       reader.ReadStartElementWithNamespace(
           XmlNamespace.Types, XmlElementNames.Groups);
@@ -105,7 +105,7 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
 
           if (reader.IsStartElementWithNamespace(
               XmlNamespace.Types, XmlElementNames.GroupedItems)) {
-            String groupIndex = reader.ReadElementValueWithNamespace(
+            String? groupIndex = reader.ReadElementValueWithNamespace(
                 XmlNamespace.Types, XmlElementNames.GroupIndex);
 
             List<TItem> itemList = <TItem>[];
@@ -115,7 +115,7 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
                 XmlNamespace.Types, XmlElementNames.GroupedItems);
 
             this
-                ._groupedFindResults
+                ._groupedFindResults!
                 .ItemGroups
                 .add(new ItemGroup<TItem>(groupIndex, itemList));
           }
@@ -140,7 +140,7 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
 
           term.LoadFromXmlWithNamespace(
               reader, XmlNamespace.Types, XmlElementNames.HighlightTerm);
-          this._results.HighlightTerms.add(term);
+          this._results!.HighlightTerms.add(term);
         }
       } while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Messages, XmlElementNames.HighlightTerms));
@@ -155,7 +155,7 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// <param name="destinationList">The list in which to add the read items.</param>
   static void _InternalReadItemsFromXml<TItem extends Item>(
       EwsServiceXmlReader reader,
-      PropertySet propertySet,
+      PropertySet? propertySet,
       List<TItem> destinationList) {
     EwsUtilities.Assert(
         destinationList != null,
@@ -205,11 +205,11 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// Gets a grouped list of items matching the specified search criteria that were found in Exchange. ItemGroups is
   /// null if the search operation did not specify grouping options.
   /// </summary>
-  GroupedFindItemsResults<TItem> get GroupedFindResults =>
+  GroupedFindItemsResults<TItem>? get GroupedFindResults =>
       this._groupedFindResults;
 
   /// <summary>
   /// Gets the results of the search operation.
   /// </summary>
-  FindItemsResults<TItem> get Results => this._results;
+  FindItemsResults<TItem>? get Results => this._results;
 }

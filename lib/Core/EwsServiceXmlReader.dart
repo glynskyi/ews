@@ -45,10 +45,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <param name="stream">The stream.</param>
   /// <param name="service">The service.</param>
-  EwsServiceXmlReader(XmlReader xmlReader, ExchangeServiceBase service)
-      : super(xmlReader) {
-    this._service = service;
-  }
+  EwsServiceXmlReader(XmlReader xmlReader, this._service) : super(xmlReader);
 
   static Future<EwsServiceXmlReader> Create(
       Stream<List<int>> stream, ExchangeServiceBase service) async {
@@ -61,7 +58,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <param name="dateTimeString">The date time String to convert.</param>
   /// <returns>A DateTime representing the converted string.</returns>
-  DateTime _ConvertStringToDateTime(String dateTimeString) {
+  DateTime? _ConvertStringToDateTime(String? dateTimeString) {
     return this
         .Service
         .ConvertUniversalDateTimeStringToLocalDateTime(dateTimeString);
@@ -72,7 +69,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// </summary>
   /// <param name="dateTimeString">The date time String to convert.</param>
   /// <returns>A DateTime representing the converted string.</returns>
-  DateTime _ConvertStringToUnspecifiedDate(String dateTimeString) {
+  DateTime? _ConvertStringToUnspecifiedDate(String? dateTimeString) {
     return this.Service.ConvertStartDateToUnspecifiedDateTime(dateTimeString);
   }
 
@@ -80,7 +77,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// Reads the element value as date time.
   /// </summary>
   /// <returns>Element value.</returns>
-  DateTime ReadElementValueAsDateTime() {
+  DateTime? ReadElementValueAsDateTime() {
     return this._ConvertStringToDateTime(this.ReadElementValue<String>());
   }
 
@@ -88,7 +85,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// Reads the element value as unspecified date.
   /// </summary>
   /// <returns>Element value.</returns>
-  DateTime ReadElementValueAsUnspecifiedDate() {
+  DateTime? ReadElementValueAsUnspecifiedDate() {
     return this
         ._ConvertStringToUnspecifiedDate(this.ReadElementValue<String>());
   }
@@ -132,10 +129,10 @@ class EwsServiceXmlReader extends EwsXmlReader {
       String collectionXmlElementName,
       IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
       bool clearPropertyBag,
-      PropertySet requestedPropertySet,
+      PropertySet? requestedPropertySet,
       bool summaryPropertiesOnly) {
     List<TServiceObject> serviceObjects = <TServiceObject>[];
-    TServiceObject serviceObject = null;
+    TServiceObject? serviceObject = null;
 
     if (!this.IsStartElementWithNamespace(
         collectionXmlNamespace, collectionXmlElementName)) {
@@ -187,7 +184,7 @@ class EwsServiceXmlReader extends EwsXmlReader {
           String collectionXmlElementName,
           IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
           bool clearPropertyBag,
-          PropertySet requestedPropertySet,
+          PropertySet? requestedPropertySet,
           bool summaryPropertiesOnly) {
     return this
         .ReadServiceObjectsCollectionFromXmlWithNamespace<TServiceObject>(
@@ -203,5 +200,5 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// Gets the service.
   /// </summary>
   /// <value>The service.</value>
-  ExchangeService get Service => this._service;
+  ExchangeService get Service => this._service as ExchangeService;
 }

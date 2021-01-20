@@ -31,7 +31,7 @@ import 'package:ews/Exceptions/ServiceResponseException.dart';
 /// </summary>
 class ServerBusyException extends ServiceResponseException {
   static const String BackOffMillisecondsKey = "BackOffMilliseconds";
-  int _backOffMilliseconds;
+  int? _backOffMilliseconds;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServerBusyException"/> class.
@@ -39,10 +39,10 @@ class ServerBusyException extends ServiceResponseException {
   /// <param name="response">The ServiceResponse when service operation failed remotely.</param>
   ServerBusyException(ServiceResponse response) : super(response) {
     if (response.ErrorDetails != null &&
-        response.ErrorDetails.containsKey(
+        response.ErrorDetails!.containsKey(
             ServerBusyException.BackOffMillisecondsKey)) {
       _backOffMilliseconds = int.tryParse(
-          response.ErrorDetails[ServerBusyException.BackOffMillisecondsKey]);
+          response.ErrorDetails![ServerBusyException.BackOffMillisecondsKey]!);
     }
   }
 
@@ -80,5 +80,5 @@ class ServerBusyException extends ServiceResponseException {
   /// Suggested number of milliseconds to wait before attempting a request again. If zero,
   /// there is no suggested backoff time.
   /// </summary>
-  int get BackOffMilliseconds => this._backOffMilliseconds;
+  int? get BackOffMilliseconds => this._backOffMilliseconds;
 }

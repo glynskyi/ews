@@ -43,7 +43,7 @@ import '../EwsUtilities.dart';
 /// <typeparam name="TResponse">The type of the response.</typeparam>
 abstract class MultiResponseServiceRequest<TResponse extends ServiceResponse>
     extends SimpleServiceRequestBase {
-  /* private */ ServiceErrorHandling errorHandlingMode;
+  /* private */ ServiceErrorHandling? errorHandlingMode;
 
   /// <summary>
   /// Parses the response.
@@ -136,7 +136,7 @@ abstract class MultiResponseServiceRequest<TResponse extends ServiceResponse>
   /// <returns>Service response collection.</returns>
   Future<ServiceResponseCollection<TResponse>> Execute() async {
     ServiceResponseCollection<TResponse> serviceResponses =
-        await this.InternalExecute();
+        (await this.InternalExecute()) as ServiceResponseCollection<TResponse>;
 
     if (this.ErrorHandlingMode == ServiceErrorHandling.ThrowOnError) {
       EwsUtilities.Assert(
@@ -175,5 +175,5 @@ abstract class MultiResponseServiceRequest<TResponse extends ServiceResponse>
   /// <summary>
   /// Gets a value indicating how errors should be handled.
   /// </summary>
-  ServiceErrorHandling get ErrorHandlingMode => this.errorHandlingMode;
+  ServiceErrorHandling? get ErrorHandlingMode => this.errorHandlingMode;
 }

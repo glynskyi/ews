@@ -35,10 +35,9 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents the body of a message.
 /// </summary>
 class MessageBody extends ComplexProperty {
-  /* private */ enumerations.BodyType bodyType;
+  enumerations.BodyType? _bodyType;
 
-  /* private */
-  String text;
+  String? _text;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="MessageBody"/> class.
@@ -50,10 +49,10 @@ class MessageBody extends ComplexProperty {
   /// </summary>
   /// <param name="bodyType">The type of the message body's text.</param>
   /// <param name="text">The text of the message body.</param>
-  MessageBody.withText(String text,
+  MessageBody.withText(String? text,
       [enumerations.BodyType bodyType = enumerations.BodyType.HTML]) {
-    this.bodyType = bodyType;
-    this.text = text;
+    this._bodyType = bodyType;
+    this._text = text;
   }
 
   /// <summary>
@@ -84,7 +83,7 @@ class MessageBody extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadAttributesFromXml(EwsServiceXmlReader reader) {
-    this.bodyType = reader.ReadAttributeValue<enumerations.BodyType>(
+    this._bodyType = reader.ReadAttributeValue<enumerations.BodyType>(
         XmlAttributeNames.BodyType);
   }
 
@@ -94,7 +93,7 @@ class MessageBody extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   @override
   void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this.text = reader.ReadValue();
+    this._text = reader.ReadValue();
   }
 
   /// <summary>
@@ -120,11 +119,11 @@ class MessageBody extends ComplexProperty {
   /// <summary>
   /// Gets or sets the type of the message body's text.
   /// </summary>
-  enumerations.BodyType get BodyType => this.bodyType;
+  enumerations.BodyType? get BodyType => this._bodyType;
 
-  set BodyType(enumerations.BodyType value) {
-    if (CanSetFieldValue(this.bodyType, value)) {
-      this.bodyType = bodyType;
+  set BodyType(enumerations.BodyType? value) {
+    if (CanSetFieldValue(this._bodyType, value)) {
+      this._bodyType = _bodyType;
       Changed();
     }
   }
@@ -132,11 +131,11 @@ class MessageBody extends ComplexProperty {
   /// <summary>
   /// Gets or sets the text of the message body.
   /// </summary>
-  String get Text => this.text;
+  String? get Text => this._text;
 
-  set Text(String value) {
-    if (CanSetFieldValue(this.text, value)) {
-      this.text = value;
+  set Text(String? value) {
+    if (CanSetFieldValue(this._text, value)) {
+      this._text = value;
       Changed();
     }
   }
@@ -149,6 +148,6 @@ class MessageBody extends ComplexProperty {
   /// </returns>
   @override
   String toString() {
-    return (this.Text == null) ? "" : this.Text;
+    return (this.Text == null) ? "" : this.Text!;
   }
 }

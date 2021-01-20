@@ -58,7 +58,7 @@ class GroupMemberCollection
   /// </summary>
   /// <param name="key">The key of the member to find.</param>
   /// <returns>The member with the specified key.</returns>
-  GroupMember Find(String key) {
+  GroupMember? Find(String key) {
     EwsUtilities.ValidateParam(key, "key");
 
     for (GroupMember item in this.Items) {

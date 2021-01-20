@@ -37,7 +37,7 @@ class SyncFolderItemsResponse extends SyncResponse<Item, ItemChange> {
   /// Initializes a new instance of the <see cref="SyncFolderItemsResponse"/> class.
   /// </summary>
   /// <param name="propertySet">PropertySet from request.</param>
-  SyncFolderItemsResponse(PropertySet propertySet) : super(propertySet) {}
+  SyncFolderItemsResponse(PropertySet? propertySet) : super(propertySet) {}
 
   /// <summary>
   /// Gets the name of the includes last in range XML element.

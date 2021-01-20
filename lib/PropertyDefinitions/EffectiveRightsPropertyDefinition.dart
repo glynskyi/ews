@@ -71,37 +71,37 @@ class EffectiveRightsPropertyDefinition extends PropertyDefinition {
         if (reader.IsStartElement()) {
           switch (reader.LocalName) {
             case XmlElementNames.CreateAssociated:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.CreateAssociated);
               }
               break;
             case XmlElementNames.CreateContents:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.CreateContents);
               }
               break;
             case XmlElementNames.CreateHierarchy:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.CreateHierarchy);
               }
               break;
             case XmlElementNames.Delete:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.Delete);
               }
               break;
             case XmlElementNames.Modify:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.Modify);
               }
               break;
             case XmlElementNames.Read:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.Read);
               }
               break;
             case XmlElementNames.ViewPrivateItems:
-              if (reader.ReadElementValue<bool>()) {
+              if (reader.ReadElementValue<bool>()!) {
                 value.add(EffectiveRights.ViewPrivateItems);
               }
               break;

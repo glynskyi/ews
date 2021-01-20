@@ -35,16 +35,16 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// Represents the response to an individual folder retrieval operation.
 /// </summary>
 class GetFolderResponse extends ServiceResponse {
-  ServiceObjects.Folder _folder;
+  ServiceObjects.Folder? _folder;
 
-  PropertySet _propertySet;
+  PropertySet? _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetFolderResponse"/> class.
   /// </summary>
   /// <param name="folder">The folders.</param>
   /// <param name="propertySet">The property set from the request.</param>
-  GetFolderResponse(ServiceObjects.Folder folder, PropertySet propertySet)
+  GetFolderResponse(ServiceObjects.Folder? folder, PropertySet? propertySet)
       : super() {
     this._folder = folder;
     this._propertySet = propertySet;
@@ -81,9 +81,9 @@ class GetFolderResponse extends ServiceResponse {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>folders.</returns>
   ServiceObjects.Folder _GetObjectInstance(
-      ExchangeService service, String xmlElementName) {
+      ExchangeService? service, String xmlElementName) {
     if (this.Folder != null) {
-      return this.Folder;
+      return this.Folder!;
     } else {
       return EwsUtilities.CreateEwsObjectFromXmlElementName<
           ServiceObjects.Folder>(service, xmlElementName);
@@ -93,5 +93,5 @@ class GetFolderResponse extends ServiceResponse {
   /// <summary>
   /// Gets the folder that was retrieved.
   /// </summary>
-  ServiceObjects.Folder get Folder => this._folder;
+  ServiceObjects.Folder? get Folder => this._folder;
 }

@@ -40,19 +40,19 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// <summary>
   /// Email address.
   /// </summary>
-  /* private */ enumerations.LobbyBypass lobbyBypass;
+  /* private */ enumerations.LobbyBypass? lobbyBypass;
 
   /// <summary>
   /// Routing type.
   /// </summary>
   /* private */
-  OnlineMeetingAccessLevel accessLevel;
+  OnlineMeetingAccessLevel? accessLevel;
 
   /// <summary>
   /// Routing type.
   /// </summary>
   /* private */
-  enumerations.Presenters presenters;
+  enumerations.Presenters? presenters;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OnlineMeetingSettings"/> class.
@@ -91,9 +91,9 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// <summary>
   /// Gets or sets the online meeting setting that describes whether users dialing in by phone have to wait in the lobby.
   /// </summary>
-  enumerations.LobbyBypass get LobbyBypass => this.lobbyBypass;
+  enumerations.LobbyBypass? get LobbyBypass => this.lobbyBypass;
 
-  set LobbyBypass(enumerations.LobbyBypass value) {
+  set LobbyBypass(enumerations.LobbyBypass? value) {
     if (this.CanSetFieldValue(this.lobbyBypass, value)) {
       this.lobbyBypass = value;
       this.Changed();
@@ -103,9 +103,9 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// <summary>
   /// Gets or sets the online meeting setting that describes access permission to the meeting.
   /// </summary>
-  OnlineMeetingAccessLevel get AccessLevel => this.accessLevel;
+  OnlineMeetingAccessLevel? get AccessLevel => this.accessLevel;
 
-  set AccessLevel(OnlineMeetingAccessLevel value) {
+  set AccessLevel(OnlineMeetingAccessLevel? value) {
     if (this.CanSetFieldValue(this.accessLevel, value)) {
       this.accessLevel = value;
       this.Changed();
@@ -115,9 +115,9 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// <summary>
   /// Gets or sets the online meeting setting that defines the meeting leaders.
   /// </summary>
-  enumerations.Presenters get Presenters => this.presenters;
+  enumerations.Presenters? get Presenters => this.presenters;
 
-  set Presenters(enumerations.Presenters value) {
+  set Presenters(enumerations.Presenters? value) {
     if (this.CanSetFieldValue(this.presenters, value)) {
       this.presenters = value;
       this.Changed();

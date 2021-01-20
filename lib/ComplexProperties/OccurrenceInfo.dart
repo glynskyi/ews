@@ -32,13 +32,13 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// Encapsulates information on the occurrence of a recurring appointment.
 /// </summary>
 class OccurrenceInfo extends ComplexProperty {
-  complex.ItemId _itemId;
+  complex.ItemId? _itemId;
 
-  DateTime _start;
+  DateTime? _start;
 
-  DateTime _end;
+  DateTime? _end;
 
-  DateTime _originalStart;
+  DateTime? _originalStart;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OccurrenceInfo"/> class.
@@ -55,7 +55,7 @@ class OccurrenceInfo extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.ItemId:
         this._itemId = new complex.ItemId();
-        this._itemId.LoadFromXml(reader, reader.LocalName);
+        this._itemId!.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.Start:
         this._start = reader.ReadElementValueAsDateTime();
@@ -74,20 +74,20 @@ class OccurrenceInfo extends ComplexProperty {
   /// <summary>
   /// Gets the Id of the occurrence.
   /// </summary>
-  complex.ItemId get ItemId => this._itemId;
+  complex.ItemId? get ItemId => this._itemId;
 
   /// <summary>
   /// Gets the start date and time of the occurrence.
   /// </summary>
-  DateTime get Start => this._start;
+  DateTime? get Start => this._start;
 
   /// <summary>
   /// Gets the end date and time of the occurrence.
   /// </summary>
-  DateTime get End => this._end;
+  DateTime? get End => this._end;
 
   /// <summary>
   /// Gets the original start date and time of the occurrence.
   /// </summary>
-  DateTime get OriginalStart => this._originalStart;
+  DateTime? get OriginalStart => this._originalStart;
 }

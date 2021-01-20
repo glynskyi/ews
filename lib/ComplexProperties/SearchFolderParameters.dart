@@ -38,13 +38,13 @@ import 'package:ews/Search/Filters/SearchFilter.dart' as search;
 /// Represents the parameters associated with a search folder.
 /// </summary>
 class SearchFolderParameters extends ComplexProperty {
-  /* private */ SearchFolderTraversal traversal;
+  /* private */ SearchFolderTraversal? traversal;
 
   /* private */
   FolderIdCollection rootFolderIds = new FolderIdCollection();
 
   /* private */
-  search.SearchFilter searchFilter;
+  search.SearchFilter? searchFilter;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SearchFolderParameters"/> class.
@@ -110,7 +110,7 @@ class SearchFolderParameters extends ComplexProperty {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     if (this.SearchFilter != null) {
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Restriction);
-      this.SearchFilter.WriteToXmlWithWriter(writer);
+      this.SearchFilter!.WriteToXmlWithWriter(writer);
       writer.WriteEndElement(); // Restriction
     }
 
@@ -129,16 +129,16 @@ class SearchFolderParameters extends ComplexProperty {
 
     // Validate the search filter
     if (this.SearchFilter != null) {
-      this.SearchFilter.InternalValidate();
+      this.SearchFilter!.InternalValidate();
     }
   }
 
   /// <summary>
   /// Gets or sets the traversal mode for the search folder.
   /// </summary>
-  SearchFolderTraversal get Traversal => this.traversal;
+  SearchFolderTraversal? get Traversal => this.traversal;
 
-  set Traversal(SearchFolderTraversal value) => this.traversal = value;
+  set Traversal(SearchFolderTraversal? value) => this.traversal = value;
 
   /// <summary>
   /// Gets the list of root folders the search folder searches in.
@@ -150,17 +150,17 @@ class SearchFolderParameters extends ComplexProperty {
   /// Gets or sets the search filter associated with the search folder. Available search filter classes include
   /// SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.
   /// </summary>
-  search.SearchFilter get SearchFilter => this.searchFilter;
+  search.SearchFilter? get SearchFilter => this.searchFilter;
 
-  set SearchFilter(search.SearchFilter value) {
+  set SearchFilter(search.SearchFilter? value) {
     if (this.searchFilter != null) {
-      this.searchFilter.removeChangeEvent(this.PropertyChanged);
+      this.searchFilter!.removeChangeEvent(this.PropertyChanged);
     }
 
     this.searchFilter = value;
 
     if (this.searchFilter != null) {
-      this.searchFilter.addOnChangeEvent(this.PropertyChanged);
+      this.searchFilter!.addOnChangeEvent(this.PropertyChanged);
     }
   }
 }

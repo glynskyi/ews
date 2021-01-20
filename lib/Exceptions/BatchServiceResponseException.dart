@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Core/Responses/ServiceResponseCollection.dart';
 import 'package:ews/Exceptions/ServiceRemoteException.dart';
@@ -38,7 +37,7 @@ abstract class BatchServiceResponseException<TResponse extends ServiceResponse>
   /// <summary>
   /// The list of responses returned by the web method.
   /// </summary>
-  /* private */ ServiceResponseCollection<TResponse> responses;
+  /* private */ ServiceResponseCollection<TResponse>? responses;
 
   @override
   String toString() {
@@ -69,15 +68,9 @@ abstract class BatchServiceResponseException<TResponse extends ServiceResponse>
   /// <param name="serviceResponses">The list of responses to be associated with this exception.</param>
   /// <param name="message">The message that describes the error.</param>
   /// <param name="innerException">The exception that is the cause of the current exception.</param>
-  BatchServiceResponseException(
-      ServiceResponseCollection<TResponse> serviceResponses, String message,
-      [Exception innerException])
-      : super(message, innerException) {
-    EwsUtilities.Assert(serviceResponses != null,
-        "MultiServiceResponseException.ctor", "serviceResponses is null");
-
-    this.responses = serviceResponses;
-  }
+  BatchServiceResponseException(this.responses, String message,
+      [Exception? innerException])
+      : super(message, innerException);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="T:Microsoft.Exchange.WebServices.Data.BatchServiceResponseException"/> class with serialized data.
@@ -107,5 +100,5 @@ abstract class BatchServiceResponseException<TResponse extends ServiceResponse>
   /// <summary>
   /// Gets a list of responses returned by the web method.
   /// </summary>
-  ServiceResponseCollection<TResponse> get ServiceResponses => this.responses;
+  ServiceResponseCollection<TResponse>? get ServiceResponses => this.responses;
 }

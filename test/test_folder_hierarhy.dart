@@ -16,12 +16,12 @@ main() {
         new FolderId.fromWellKnownFolder(WellKnownFolderName.Root),
         PropertySet.IdOnly,
         "");
-    print(fcc.syncState);
+    print(fcc.SyncState);
   });
 
   test('syncs folder items', () async {
     final service = prepareExchangeService(primaryUserCredential);
-    ChangeCollection<ItemChange> icc = await service.SyncFolderItems(
+    ChangeCollection<ItemChange>? icc = await service.SyncFolderItems(
         new FolderId.fromWellKnownFolder(WellKnownFolderName.Inbox),
         PropertySet.FirstClassProperties,
         null,

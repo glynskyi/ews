@@ -109,7 +109,7 @@ class AttendeeCollection extends ComplexPropertyCollection<Attendee> {
   /// <param name="xmlElementName">The XML element name from which to create the attendee.</param>
   /// <returns>An Attendee object.</returns>
   @override
-  Attendee CreateComplexProperty(String xmlElementName) {
+  Attendee? CreateComplexProperty(String xmlElementName) {
     if (xmlElementName == XmlElementNames.Attendee) {
       return new Attendee();
     } else {

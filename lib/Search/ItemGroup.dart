@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ServiceObjects/Items/Item.dart';
 
 /// <summary>
@@ -36,9 +35,7 @@ class ItemGroup<TItem extends Item> {
   /// </summary>
   /// <param name="groupIndex">Index of the group.</param>
   /// <param name="items">The items.</param>
-  ItemGroup(String groupIndex, List<TItem> items) {
-    EwsUtilities.Assert(items != null, "ItemGroup.ctor", "items is null");
-
+  ItemGroup(String? groupIndex, List<TItem>? items) {
     this.GroupIndex = groupIndex;
     this.Items = items;
   }
@@ -46,10 +43,10 @@ class ItemGroup<TItem extends Item> {
   /// <summary>
   /// Gets an index identifying the group.
   /// </summary>
-  String GroupIndex;
+  String? GroupIndex;
 
   /// <summary>
   /// Gets a collection of the items in this group.
   /// </summary>
-  List<TItem> Items;
+  List<TItem>? Items;
 }

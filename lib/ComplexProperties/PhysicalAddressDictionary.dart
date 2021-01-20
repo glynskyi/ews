@@ -47,11 +47,11 @@ class PhysicalAddressDictionary
   /// </summary>
   /// <param name="key">The key of the physical address to get or set.</param>
   /// <returns>The physical address at the specified key.</returns>
-  PhysicalAddressEntry operator [](PhysicalAddressKey key) {
+  PhysicalAddressEntry? operator [](PhysicalAddressKey key) {
     return this.Entries[key];
   }
 
-  operator []=(PhysicalAddressKey key, PhysicalAddressEntry value) {
+  operator []=(PhysicalAddressKey key, PhysicalAddressEntry? value) {
     if (value == null) {
       this.InternalRemove(key);
     } else {

@@ -88,7 +88,7 @@ class ItemView extends PagedView {
   /// <param name="groupBy">The group by.</param>
   @override
   void InternalWriteSearchSettingsToXml(
-      EwsServiceXmlWriter writer, Grouping groupBy) {
+      EwsServiceXmlWriter writer, Grouping? groupBy) {
     super.InternalWriteSearchSettingsToXml(writer, groupBy);
   }
 

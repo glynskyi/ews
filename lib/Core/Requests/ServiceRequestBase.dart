@@ -38,7 +38,6 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 import 'package:ews/Enumerations/ServiceError.dart';
 import 'package:ews/Enumerations/TraceFlags.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
-import 'package:ews/Exceptions/ArgumentNullException.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Exceptions/ServerBusyException.dart';
 import 'package:ews/Exceptions/ServiceRequestException.dart';
@@ -87,7 +86,7 @@ abstract class ServiceRequestBase {
   /// will route the request directly to the mailbox server against which the request
   /// is to be executed.
   /// </remarks>
-  String AnchorMailbox;
+  String? AnchorMailbox;
 
   /// <summary>
   /// Maintains the collection of client side statistics for requests already completed
@@ -105,7 +104,8 @@ abstract class ServiceRequestBase {
     String contentEncoding = response.ContentEncoding;
     Stream responseStream = response.GetResponseStream();
 
-    return _WrapStream(responseStream, response.ContentEncoding);
+    return _WrapStream(
+        responseStream as Stream<List<int>>, response.ContentEncoding);
   }
 
   /// <summary>
@@ -119,7 +119,8 @@ abstract class ServiceRequestBase {
     Stream responseStream = response.GetResponseStream();
 
 //            responseStream.ReadTimeout = readTimeout;
-    return _WrapStream(responseStream, response.ContentEncoding);
+    return _WrapStream(
+        responseStream as Stream<List<int>>, response.ContentEncoding);
   }
 
   static Stream<List<int>> _WrapStream(
@@ -225,9 +226,9 @@ abstract class ServiceRequestBase {
   /// Allows the subclasses to add their own header information
   /// </summary>
   /// <param name="webHeaderCollection">The HTTP request headers</param>
-  void AddHeaders(WebHeaderCollection webHeaderCollection) {
+  void AddHeaders(WebHeaderCollection? webHeaderCollection) {
     if (!StringUtils.IsNullOrEmpty(this.AnchorMailbox)) {
-      webHeaderCollection.Set(_AnchorMailboxHeaderName, this.AnchorMailbox);
+      webHeaderCollection!.Set(_AnchorMailboxHeaderName, this.AnchorMailbox);
       webHeaderCollection.Set(_ExplicitLogonUserHeaderName, this.AnchorMailbox);
     }
   }
@@ -236,12 +237,7 @@ abstract class ServiceRequestBase {
   /// Initializes a new instance of the <see cref="ServiceRequestBase"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  ServiceRequestBase(ExchangeService service) {
-    if (service == null) {
-      throw new ArgumentNullException("service");
-    }
-
-    this._service = service;
+  ServiceRequestBase(this._service) {
     this.ThrowIfNotSupportedByRequestedServerVersion();
   }
 
@@ -295,7 +291,7 @@ abstract class ServiceRequestBase {
     if (this.Service.Credentials != null) {
       this
           .Service
-          .Credentials
+          .Credentials!
           .EmitExtraSoapHeaderNamespaceAliases(writer.InternalWriter);
     }
 
@@ -365,7 +361,7 @@ abstract class ServiceRequestBase {
 //            }
 
     if (this.Service.Credentials != null) {
-      this.Service.Credentials.SerializeExtraSoapHeaders(
+      this.Service.Credentials!.SerializeExtraSoapHeaders(
           writer.InternalWriter, this.GetXmlElementName());
     }
 
@@ -390,7 +386,7 @@ abstract class ServiceRequestBase {
   /// we should use "Exchange2007" as the server version String rather than Exchange2007_SP1.
   /// </remarks>
   /// <returns>String representation of requested server version.</returns>
-  String _GetRequestedServiceVersionString() {
+  String? _GetRequestedServiceVersionString() {
     if (this.Service.Exchange2007CompatibilityMode &&
         this.Service.RequestedServerVersion ==
             ExchangeVersion.Exchange2007_SP1) {
@@ -405,7 +401,7 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <param name="request">The request.</param>
   Future<void> _EmitRequest(IEwsHttpWebRequest request) async {
-    StreamConsumer<List<int>> requestStream =
+    StreamConsumer<List<int>>? requestStream =
         await this._GetWebRequestStream(request);
     EwsServiceXmlWriter writer =
         new EwsServiceXmlWriter(this.Service, requestStream);
@@ -434,15 +430,15 @@ abstract class ServiceRequestBase {
     await writer.Dispose();
 
     if (needSignature) {
-      this._service.Credentials.Sign(memoryStream);
+      this._service.Credentials!.Sign(memoryStream);
     }
 
     if (needTrace) {
       this.TraceXmlRequest(memoryStream);
     }
 
-    StreamConsumer<List<int>> serviceRequestStream =
-        await this._GetWebRequestStream(request);
+    StreamConsumer<List<int>> serviceRequestStream = await (this
+        ._GetWebRequestStream(request) as FutureOr<StreamConsumer<List<int>>>);
 
     await EwsUtilities.CopyStream(memoryStream, serviceRequestStream);
     await serviceRequestStream.close();
@@ -474,7 +470,7 @@ abstract class ServiceRequestBase {
   /// <param name="responseHeaders">HTTP response headers</param>
   /// <returns>Service response.</returns>
   Object ReadResponseWithHeaders(
-      EwsServiceXmlReader ewsXmlReader, WebHeaderCollection responseHeaders) {
+      EwsServiceXmlReader ewsXmlReader, WebHeaderCollection? responseHeaders) {
     Object serviceResponse;
 
     this.ReadPreamble(ewsXmlReader);
@@ -538,8 +534,8 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>SOAP fault details.</returns>
-  SoapFaultDetails ReadSoapFault(EwsServiceXmlReader reader) {
-    SoapFaultDetails soapFaultDetails = null;
+  SoapFaultDetails? ReadSoapFault(EwsServiceXmlReader reader) {
+    SoapFaultDetails? soapFaultDetails = null;
 
     try {
       this._ReadXmlDeclaration(reader);
@@ -645,7 +641,7 @@ abstract class ServiceRequestBase {
 //            }
 //
 //            DateTime startTime = DateTime.UtcNow;
-    IEwsHttpWebResponse response = null;
+    IEwsHttpWebResponse? response = null;
 //
 //            try
 //            {
@@ -696,7 +692,7 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <returns>An IEwsHttpWebRequest instance</returns>
   Future<IEwsHttpWebRequest> BuildEwsHttpWebRequest() async {
-    IEwsHttpWebRequest request = null;
+    IEwsHttpWebRequest? request = null;
     try {
       request = this.Service.PrepareHttpWebRequest(this.GetXmlElementName());
 
@@ -705,7 +701,7 @@ abstract class ServiceRequestBase {
           .TraceHttpRequestHeaders(TraceFlags.EwsRequestHttpHeaders, request);
 
       bool needSignature = this.Service.Credentials != null &&
-          this.Service.Credentials.NeedSignature;
+          this.Service.Credentials!.NeedSignature;
       bool needTrace = this.Service.IsTraceEnabledFor(TraceFlags.EwsRequest);
 
       // The request might need to add additional headers
@@ -807,7 +803,7 @@ abstract class ServiceRequestBase {
           .Service
           .HttpWebRequestFactory
           .CreateExceptionResponse(webException);
-      SoapFaultDetails soapFaultDetails = null;
+      SoapFaultDetails? soapFaultDetails = null;
 
       if (httpWebResponse.StatusCode == HttpStatusCode.InternalServerError) {
         this.Service.ProcessHttpResponseHeaders(
@@ -822,7 +818,8 @@ abstract class ServiceRequestBase {
               ServiceRequestBase.GetResponseStream(httpWebResponse);
 
           // Copy response to in-memory stream and reset position to start.
-          await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
+          await EwsUtilities.CopyStream(
+              serviceResponseStream as Stream<List<int>>, memoryStream);
           memoryStream.Position = 0;
 
 //                            await serviceResponseStream.close();
@@ -836,8 +833,8 @@ abstract class ServiceRequestBase {
         } else {
           Stream stream = ServiceRequestBase.GetResponseStream(httpWebResponse);
 
-          EwsServiceXmlReader reader =
-              await EwsServiceXmlReader.Create(stream, this.Service);
+          EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(
+              stream as Stream<List<int>>, this.Service);
           soapFaultDetails = this.ReadSoapFault(reader);
 //                        await stream.close();
         }
@@ -852,8 +849,8 @@ abstract class ServiceRequestBase {
               // If we're talking to an E12 server (8.00.xxxx.xxx), a schema validation error is the same as a version mismatch error.
               // (Which only will happen if we send a request that's not valid for E12).
               if ((this.Service.ServerInfo != null) &&
-                  (this.Service.ServerInfo.MajorVersion == 8) &&
-                  (this.Service.ServerInfo.MinorVersion == 0)) {
+                  (this.Service.ServerInfo!.MajorVersion == 8) &&
+                  (this.Service.ServerInfo!.MinorVersion == 0)) {
                 throw new ServiceVersionException(
                     "Strings.ServerVersionNotSupported");
               }

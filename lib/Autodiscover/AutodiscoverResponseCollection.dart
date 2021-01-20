@@ -37,7 +37,7 @@ import 'package:ews/Xml/XmlNodeType.dart';
 abstract class AutodiscoverResponseCollection<
         TResponse extends AutodiscoverResponse> extends AutodiscoverResponse
     with IterableMixin<TResponse> {
-  List<TResponse> _responses;
+  List<TResponse>? _responses;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverResponseCollection&lt;TResponse&gt;"/> class.
@@ -49,20 +49,20 @@ abstract class AutodiscoverResponseCollection<
   /// <summary>
   /// Gets the number of responses in the collection.
   /// </summary>
-  int get Count => this._responses.length;
+  int get Count => this._responses!.length;
 
   /// <summary>
   /// Gets the response at the specified index.
   /// </summary>
   /// <param name="index">Index.</param>
   TResponse operator [](int index) {
-    return this._responses[index];
+    return this._responses![index];
   }
 
   /// <summary>
   /// Gets the responses list.
   /// </summary>
-  List<TResponse> get Responses => this._responses;
+  List<TResponse>? get Responses => this._responses;
 
   /// <summary>
   /// Loads response from XML.
@@ -99,7 +99,7 @@ abstract class AutodiscoverResponseCollection<
           TResponse response = this.CreateResponseInstance();
           response.LoadFromXml(
               reader, this.GetResponseInstanceXmlElementName());
-          this.Responses.add(response);
+          this.Responses!.add(response);
         }
       } while (!reader.IsEndElementWithNamespace(XmlNamespace.Autodiscover,
           this.GetResponseCollectionXmlElementName()));
@@ -129,5 +129,5 @@ abstract class AutodiscoverResponseCollection<
   /// </summary>
   /// <returns>An IEnumerator for the collection.</returns>
   @override
-  Iterator<TResponse> get iterator => this._responses.iterator;
+  Iterator<TResponse> get iterator => this._responses!.iterator;
 }

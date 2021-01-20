@@ -53,7 +53,7 @@ class ItemCollection<TItem extends Item> extends ComplexProperty
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String localElementName) {
+  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, localElementName);
     if (!reader.IsEmptyElement) {

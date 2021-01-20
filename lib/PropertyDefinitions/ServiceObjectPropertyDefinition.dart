@@ -35,7 +35,7 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents a property definition for a service object.
 /// </summary>
 abstract class ServiceObjectPropertyDefinition extends PropertyDefinitionBase {
-  String _uri;
+  String? _uri;
 
   /// <summary>
   /// Gets the name of the XML element.
@@ -51,7 +51,7 @@ abstract class ServiceObjectPropertyDefinition extends PropertyDefinitionBase {
   /// </summary>
   /// <value>The version.</value>
   @override
-  ExchangeVersion get Version => ExchangeVersion.Exchange2007_SP1;
+  ExchangeVersion? get Version => ExchangeVersion.Exchange2007_SP1;
 
   /// <summary>
   /// Writes the attributes to XML.
@@ -71,7 +71,7 @@ abstract class ServiceObjectPropertyDefinition extends PropertyDefinitionBase {
   /// Initializes a new instance of the <see cref="ServiceObjectPropertyDefinition"/> class.
   /// </summary>
   /// <param name="uri">The URI.</param>
-  ServiceObjectPropertyDefinition.withUri(String uri) : super() {
+  ServiceObjectPropertyDefinition.withUri(String? uri) : super() {
     EwsUtilities.Assert(!StringUtils.IsNullOrEmpty(uri),
         "ServiceObjectPropertyDefinition.ctor", "uri is null or empty");
     this._uri = uri;
@@ -80,5 +80,5 @@ abstract class ServiceObjectPropertyDefinition extends PropertyDefinitionBase {
   /// <summary>
   /// Gets the URI of the property definition.
   /// </summary>
-  String get Uri => this._uri;
+  String? get Uri => this._uri;
 }

@@ -38,7 +38,7 @@ import 'package:ews/Core/XmlAttributeNames.dart';
 /// </remarks>
 /// <typeparam name="TKey">The type of the key used by this dictionary.</typeparam>
 abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
-  /* private */ TKey key;
+  /* private */ TKey? key;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DictionaryEntryProperty&lt;TKey&gt;"/> class.
@@ -57,9 +57,9 @@ abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
   /// Gets or sets the key.
   /// </summary>
   /// <value>The key.</value>
-  TKey get Key => this.key;
+  TKey? get Key => this.key;
 
-  set Key(TKey value) {
+  set Key(TKey? value) {
     this.key = value;
   }
 
@@ -88,8 +88,8 @@ abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
   /// <param name="ewsObject">The ews object.</param>
   /// <param name="ownerDictionaryXmlElementName">Name of the owner dictionary XML element.</param>
   /// <returns>True if update XML was written.</returns>
-  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
-      String ownerDictionaryXmlElementName) {
+  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject? ewsObject,
+      String? ownerDictionaryXmlElementName) {
     return false;
   }
 
@@ -100,7 +100,7 @@ abstract class DictionaryEntryProperty<TKey> extends ComplexProperty {
   /// <param name="ewsObject">The ews object.</param>
   /// <returns>True if update XML was written.</returns>
   bool WriteDeleteUpdateToXml(
-      EwsServiceXmlWriter writer, ServiceObject ewsObject) {
+      EwsServiceXmlWriter writer, ServiceObject? ewsObject) {
     return false;
   }
 }

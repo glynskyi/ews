@@ -38,9 +38,9 @@ typedef T InitializeLazyMember<T>();
 /// this.  Each lazy member holds the actual member, a lock object, a boolean flag and a delegate.
 /// That can turn into a whole lot of overhead.</remarks>
 class LazyMember<T> {
-  T _lazyMember;
+  T? _lazyMember;
 
-  InitializeLazyMember<T> _initializationDelegate;
+  late InitializeLazyMember<T> _initializationDelegate;
 
   bool _initialized = false;
 
@@ -56,7 +56,7 @@ class LazyMember<T> {
   /// <summary>
   /// Public accessor for the lazy member.  Lazy initializes the member on first access
   /// </summary>
-  T get Member {
+  T? get Member {
     if (!this._initialized) {
       this._lazyMember = this._initializationDelegate();
       this._initialized = true;

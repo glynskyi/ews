@@ -37,44 +37,44 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents the response to a GetDomainSettings call for an individual domain.
 /// </summary>
 class GetDomainSettingsResponse extends AutodiscoverResponse {
-  String _domain;
+  String? _domain;
 
-  String _redirectTarget;
+  String? _redirectTarget;
 
-  Map<DomainSettingName, Object> _settings;
+  Map<DomainSettingName?, Object?>? _settings;
 
-  List<DomainSettingError> _domainSettingErrors;
+  List<DomainSettingError>? _domainSettingErrors;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetDomainSettingsResponse"/> class.
   /// </summary>
   GetDomainSettingsResponse() : super() {
     this._domain = "";
-    this._settings = new Map<DomainSettingName, Object>();
+    this._settings = new Map<DomainSettingName?, Object?>();
     this._domainSettingErrors = <DomainSettingError>[];
   }
 
   /// <summary>
   /// Gets the domain this response applies to.
   /// </summary>
-  String get Domain => this._domain;
+  String? get Domain => this._domain;
 
-  set Domain(String value) => this._domain = value;
+  set Domain(String? value) => this._domain = value;
 
   /// <summary>
   /// Gets the redirectionTarget (URL or email address)
   /// </summary>
-  String get RedirectTarget => this._redirectTarget;
+  String? get RedirectTarget => this._redirectTarget;
 
   /// <summary>
   /// Gets the requested settings for the domain.
   /// </summary>
-  Map<DomainSettingName, Object> get Settings => this._settings;
+  Map<DomainSettingName?, Object?>? get Settings => this._settings;
 
   /// <summary>
   /// Gets error information for settings that could not be returned.
   /// </summary>
-  List<DomainSettingError> get DomainSettingErrors => this._domainSettingErrors;
+  List<DomainSettingError>? get DomainSettingErrors => this._domainSettingErrors;
 
   /// <summary>
   /// Loads response from XML.
@@ -117,7 +117,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
 
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == XmlElementNames.DomainSetting)) {
-          String settingClass = reader.ReadAttributeValueWithNamespace(
+          String? settingClass = reader.ReadAttributeValueWithNamespace(
               XmlNamespace.XmlSchemaInstance, XmlAttributeNames.Type);
 
           switch (settingClass) {
@@ -144,8 +144,8 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   /// <param name="reader">The reader.</param>
   /* private */
   void ReadSettingFromXml(EwsXmlReader reader) {
-    DomainSettingName name = null;
-    Object value = null;
+    DomainSettingName? name = null;
+    Object? value = null;
 
     do {
       reader.Read();
@@ -168,7 +168,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
         "GetDomainSettingsResponse.ReadSettingFromXml",
         "Missing name element in domain setting");
 
-    this._settings[name] = value;
+    this._settings![name] = value;
   }
 
   /// <summary>
@@ -185,7 +185,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
             (reader.LocalName == XmlElementNames.DomainSettingError)) {
           DomainSettingError error = new DomainSettingError();
           error.LoadFromXml(reader);
-          _domainSettingErrors.add(error);
+          _domainSettingErrors!.add(error);
         }
       } while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Autodiscover, XmlElementNames.DomainSettingErrors));

@@ -40,7 +40,7 @@ import 'package:ews/misc/OutParam.dart';
 class OrderByCollection
     with IterableMixin<MapEntry<PropertyDefinitionBase, SortDirection>>
     implements Iterable<MapEntry<PropertyDefinitionBase, SortDirection>> {
-  List<MapEntry<PropertyDefinitionBase, SortDirection>>
+  late List<MapEntry<PropertyDefinitionBase, SortDirection>>
       _propDefSortOrderPairList;
 
   /// <summary>

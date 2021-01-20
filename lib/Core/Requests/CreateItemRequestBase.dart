@@ -43,9 +43,9 @@ import 'package:ews/Enumerations/ServiceErrorHandling.dart';
 abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
         TResponse extends ServiceResponse>
     extends CreateRequest<TServiceObject, TResponse> {
-  enumerations.MessageDisposition _messageDisposition;
+  enumerations.MessageDisposition? _messageDisposition;
 
-  enumerations.SendInvitationsMode _sendInvitationsMode;
+  enumerations.SendInvitationsMode? _sendInvitationsMode;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateItemRequestBase&lt;TServiceObject, TResponse&gt;"/> class.
@@ -157,10 +157,10 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
   /// Gets or sets the message disposition.
   /// </summary>
   /// <value>The message disposition.</value>
-  enumerations.MessageDisposition get MessageDisposition =>
+  enumerations.MessageDisposition? get MessageDisposition =>
       this._messageDisposition;
 
-  set MessageDisposition(enumerations.MessageDisposition value) {
+  set MessageDisposition(enumerations.MessageDisposition? value) {
     this._messageDisposition = value;
   }
 
@@ -168,10 +168,10 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
   /// Gets or sets the send invitations mode.
   /// </summary>
   /// <value>The send invitations mode.</value>
-  enumerations.SendInvitationsMode get SendInvitationsMode =>
+  enumerations.SendInvitationsMode? get SendInvitationsMode =>
       this._sendInvitationsMode;
 
-  set SendInvitationsMode(enumerations.SendInvitationsMode value) {
+  set SendInvitationsMode(enumerations.SendInvitationsMode? value) {
     this._sendInvitationsMode = value;
   }
 
@@ -179,9 +179,9 @@ abstract class CreateItemRequestBase<TServiceObject extends ServiceObject,
   /// Gets or sets the items.
   /// </summary>
   /// <value>The items.</value>
-  Iterable<TServiceObject> get Items => this.Objects;
+  Iterable<TServiceObject>? get Items => this.Objects;
 
-  set Items(Iterable<TServiceObject> value) {
+  set Items(Iterable<TServiceObject>? value) {
     this.Objects = value;
   }
 }

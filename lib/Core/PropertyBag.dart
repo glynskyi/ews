@@ -51,18 +51,18 @@ import 'ServiceObjects/Folders/Folder.dart';
 /// Represents a property bag keyed on PropertyDefinition objects.
 /// </summary>
 class PropertyBag {
-  ServiceObject _owner;
+  ServiceObject? _owner;
   bool _isDirty = false;
   bool _loading = false;
-  bool _onlySummaryPropertiesRequested;
+  late bool _onlySummaryPropertiesRequested;
   List<PropertyDefinition> _loadedProperties = <PropertyDefinition>[];
   Map<PropertyDefinition, Object> _properties =
       new Map<PropertyDefinition, Object>();
-  Map<PropertyDefinition, Object> _deletedProperties =
-      new Map<PropertyDefinition, Object>();
+  Map<PropertyDefinition, Object?> _deletedProperties =
+      new Map<PropertyDefinition, Object?>();
   List<PropertyDefinition> _modifiedProperties = <PropertyDefinition>[];
   List<PropertyDefinition> _addedProperties = <PropertyDefinition>[];
-  PropertySet _requestedPropertySet;
+  PropertySet? _requestedPropertySet;
 
   /// <summary>
   /// Initializes a new instance of PropertyBag.
@@ -82,7 +82,7 @@ class PropertyBag {
   /// <summary>
   /// Gets the owner of this bag.
   /// </summary>
-  ServiceObject get Owner => this._owner;
+  ServiceObject? get Owner => this._owner;
 
   /// <summary>
   /// True if the bag has pending changes, false otherwise.
@@ -154,17 +154,17 @@ class PropertyBag {
     // If base property set is all first-class properties, use the appropriate list of
     // property definitions to see if this property was requested. Otherwise, property had
     // to be explicitly requested and needs to be listed in AdditionalProperties.
-    if (this._requestedPropertySet.BasePropertySet ==
+    if (this._requestedPropertySet!.BasePropertySet ==
         BasePropertySet.FirstClassProperties) {
       List<PropertyDefinition> firstClassProps =
           this._onlySummaryPropertiesRequested
-              ? this.Owner.Schema.FirstClassSummaryProperties
-              : this.Owner.Schema.FirstClassProperties;
+              ? this.Owner!.Schema.FirstClassSummaryProperties
+              : this.Owner!.Schema.FirstClassProperties;
 
       return firstClassProps.contains(propertyDefinition) ||
-          this._requestedPropertySet.Contains(propertyDefinition);
+          this._requestedPropertySet!.Contains(propertyDefinition);
     } else {
-      return this._requestedPropertySet.Contains(propertyDefinition);
+      return this._requestedPropertySet!.Contains(propertyDefinition);
     }
   }
 
@@ -220,7 +220,7 @@ class PropertyBag {
     bool result = this.TryGetProperty(propertyDefinition, value);
 
     if (result) {
-      propertyValue.param = value.param;
+      propertyValue.param = value.param as T?;
     } else {
       propertyValue.param = null;
     }
@@ -236,14 +236,14 @@ class PropertyBag {
   /// <param name="exception">Exception that would be raised if there's an error retrieving the property.</param>
   /// <returns>Propert value. May be null.</returns>
   /* private */
-  Object GetPropertyValueOrException(PropertyDefinition propertyDefinition,
+  Object? GetPropertyValueOrException(PropertyDefinition propertyDefinition,
       OutParam<ServiceLocalException> serviceExceptionOutParam) {
     OutParam<Object> propertyValueOutParam = new OutParam<Object>();
     propertyValueOutParam.param = null;
     serviceExceptionOutParam.param = null;
 
-    if (propertyDefinition.Version.index >
-        this.Owner.Service.RequestedServerVersion.index) {
+    if (propertyDefinition.Version!.index >
+        this.Owner!.Service.RequestedServerVersion.index) {
       serviceExceptionOutParam.param =
           new ServiceVersionException("""string.Format(
                                         Strings.PropertyIncompatibleWithRequestVersion,
@@ -278,7 +278,7 @@ class PropertyBag {
       } else {
         // If the property is not the Id (we need to let developers read the Id when it's null) and if has
         // not been loaded, we throw.
-        if (propertyDefinition != this.Owner.GetIdPropertyDefinition()) {
+        if (propertyDefinition != this.Owner!.GetIdPropertyDefinition()) {
           if (!this.IsPropertyLoaded(propertyDefinition)) {
             serviceExceptionOutParam.param =
                 new ServiceObjectPropertyException.withMessage(
@@ -310,21 +310,21 @@ class PropertyBag {
   /// <returns>An object representing the value of the property.</returns>
   /// <exception cref="ServiceVersionException">Raised if this property requires a later version of Exchange.</exception>
   /// <exception cref="ServiceObjectPropertyException">Raised for get if property hasn't been assigned or loaded. Raised for set if property cannot be updated or deleted.</exception>
-  Object operator [](PropertyDefinition propertyDefinition) {
+  Object? operator [](PropertyDefinition propertyDefinition) {
     OutParam<ServiceLocalException> serviceExceptionOut =
         new OutParam<ServiceLocalException>();
-    Object propertyValue = this
+    Object? propertyValue = this
         .GetPropertyValueOrException(propertyDefinition, serviceExceptionOut);
     if (serviceExceptionOut.param == null) {
       return propertyValue;
     } else {
-      throw serviceExceptionOut.param;
+      throw serviceExceptionOut.param!;
     }
   }
 
-  operator []=(PropertyDefinition propertyDefinition, Object value) {
-    if (propertyDefinition.Version.index >
-        this.Owner.Service.RequestedServerVersion.index) {
+  operator []=(PropertyDefinition propertyDefinition, Object? value) {
+    if (propertyDefinition.Version!.index >
+        this.Owner!.Service.RequestedServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
                         Strings.PropertyIncompatibleWithRequestVersion,
                         propertyDefinition.Name,
@@ -335,14 +335,14 @@ class PropertyBag {
     // the property can actually be set or updated.
     if (!this._loading) {
       // If the owner is new and if the property cannot be set, throw.
-      if (this.Owner.IsNew &&
+      if (this.Owner!.IsNew &&
           !propertyDefinition.HasFlag(PropertyDefinitionFlags.CanSet,
-              _owner.Service.RequestedServerVersion)) {
+              _owner!.Service.RequestedServerVersion)) {
         throw new ServiceObjectPropertyException(
             /*Strings.PropertyIsReadOnly, */
             propertyDefinition);
       }
-      if (!this.Owner.IsNew) {
+      if (!this.Owner!.IsNew) {
         // If owner is an item attachment, properties cannot be updated (EWS doesn't support updating item attachments)
         if (this.Owner is Item && (this.Owner as Item).IsAttachment) {
           throw new ServiceObjectPropertyException(
@@ -414,7 +414,7 @@ class PropertyBag {
   /// </summary>
   void Changed() {
     this._isDirty = true;
-    this.Owner.Changed();
+    this.Owner!.Changed();
   }
 
   /// <summary>
@@ -435,7 +435,7 @@ class PropertyBag {
   bool TryGetValue(PropertyDefinition propertyDefinition,
       OutParam<Object> propertyValueOutParam) {
     if (this._properties.containsKey(propertyDefinition)) {
-      Object param = _properties[propertyDefinition];
+      Object? param = _properties[propertyDefinition];
       propertyValueOutParam.param = param;
       return true;
     } else {
@@ -466,7 +466,7 @@ class PropertyBag {
   /// <param name="propertyDefinition">The property to delete.</param>
   void DeleteProperty(PropertyDefinition propertyDefinition) {
     if (!this._deletedProperties.containsKey(propertyDefinition)) {
-      Object propertyValue;
+      Object? propertyValue;
 
       propertyValue = this._properties[propertyDefinition];
 
@@ -518,7 +518,7 @@ class PropertyBag {
   /// <param name="requestedPropertySet">The requested property set.</param>
   /// <param name="onlySummaryPropertiesRequested">Indicates whether summary or full properties were requested.</param>
   void LoadFromXml(EwsServiceXmlReader reader, bool clear,
-      PropertySet requestedPropertySet, bool onlySummaryPropertiesRequested) {
+      PropertySet? requestedPropertySet, bool onlySummaryPropertiesRequested) {
     if (clear) {
       this.Clear();
     }
@@ -538,10 +538,10 @@ class PropertyBag {
           OutParam<PropertyDefinition> propertyDefinitionOutParam =
               new OutParam<PropertyDefinition>();
 
-          if (this.Owner.Schema.TryGetPropertyDefinition(
+          if (this.Owner!.Schema.TryGetPropertyDefinition(
               reader.LocalName, propertyDefinitionOutParam)) {
             PropertyDefinition propertyDefinition =
-                propertyDefinitionOutParam.param;
+                propertyDefinitionOutParam.param!;
             propertyDefinition.LoadPropertyValueFromXml(reader, this);
 
             this._loadedProperties.add(propertyDefinition);
@@ -550,7 +550,7 @@ class PropertyBag {
           }
         }
       } while (!reader.IsEndElementWithNamespace(
-          XmlNamespace.Types, this.Owner.GetXmlElementName()));
+          XmlNamespace.Types, this.Owner!.GetXmlElementName()));
 
       this.ClearChangeLog();
     } finally {
@@ -564,9 +564,9 @@ class PropertyBag {
   /// <param name="writer">The writer to write the properties to.</param>
   void WriteToXml(EwsServiceXmlWriter writer) {
     writer.WriteStartElement(
-        XmlNamespace.Types, this.Owner.GetXmlElementName());
+        XmlNamespace.Types, this.Owner!.GetXmlElementName());
 
-    for (PropertyDefinition propertyDefinition in this.Owner.Schema) {
+    for (PropertyDefinition propertyDefinition in this.Owner!.Schema) {
       // The following test should not be necessary since the property bag prevents
       // properties to be set if they don't have the CanSet flag, but it doesn't hurt...
       if (propertyDefinition.HasFlag(PropertyDefinitionFlags.CanSet,
@@ -587,9 +587,9 @@ class PropertyBag {
   /// <param name="writer">The writer to write the updates to.</param>
   void WriteToXmlForUpdate(EwsServiceXmlWriter writer) {
     writer.WriteStartElement(
-        XmlNamespace.Types, this.Owner.GetChangeXmlElementName());
+        XmlNamespace.Types, this.Owner!.GetChangeXmlElementName());
 
-    this.Owner.GetId().WriteToXmlElemenetName(writer);
+    this.Owner!.GetId()!.WriteToXmlElemenetName(writer);
 
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Updates);
 
@@ -601,7 +601,7 @@ class PropertyBag {
       this._WriteSetUpdateToXml(writer, propertyDefinition);
     }
 
-    for (MapEntry<PropertyDefinition, Object> property
+    for (MapEntry<PropertyDefinition, Object?> property
         in this._deletedProperties.entries) {
       this.WriteDeleteUpdateToXml(writer, property.key, property.value);
     }
@@ -662,7 +662,7 @@ class PropertyBag {
     // doesn't hurt...
     if (propertyDefinition.HasFlagWithoutExchangeVersion(
         PropertyDefinitionFlags.CanUpdate)) {
-      Object propertyValue = this[propertyDefinition];
+      Object? propertyValue = this[propertyDefinition];
 
       bool handled = false;
       if (propertyValue is ICustomUpdateSerializer) {
@@ -672,12 +672,12 @@ class PropertyBag {
 
       if (!handled) {
         writer.WriteStartElement(
-            XmlNamespace.Types, this.Owner.GetSetFieldXmlElementName());
+            XmlNamespace.Types, this.Owner!.GetSetFieldXmlElementName());
 
         propertyDefinition.WriteToXml(writer);
 
         writer.WriteStartElement(
-            XmlNamespace.Types, this.Owner.GetXmlElementName());
+            XmlNamespace.Types, this.Owner!.GetXmlElementName());
         propertyDefinition.WritePropertyValueToXml(
             writer, this, true /* isUpdateOperation */);
         writer.WriteEndElement();
@@ -695,7 +695,7 @@ class PropertyBag {
   /// <param name="propertyValue">The current value of the property.</param>
   /* private */
   void WriteDeleteUpdateToXml(EwsServiceXmlWriter writer,
-      PropertyDefinition propertyDefinition, Object propertyValue) {
+      PropertyDefinition propertyDefinition, Object? propertyValue) {
     // The following test should not be necessary since the property bag prevents
     // properties to be deleted (set to null) if they don't have the CanDelete flag,
     // but it doesn't hurt...
@@ -709,7 +709,7 @@ class PropertyBag {
 
       if (!handled) {
         writer.WriteStartElement(
-            XmlNamespace.Types, this.Owner.GetDeleteFieldXmlElementName());
+            XmlNamespace.Types, this.Owner!.GetDeleteFieldXmlElementName());
         propertyDefinition.WriteToXml(writer);
         writer.WriteEndElement();
       }
@@ -737,7 +737,7 @@ class PropertyBag {
   void ValidatePropertyValue(PropertyDefinition propertyDefinition) {
     OutParam<Object> propertyValueOutParam = new OutParam<Object>();
     if (this.TryGetProperty(propertyDefinition, propertyValueOutParam)) {
-      Object propertyValue = propertyValueOutParam.param;
+      Object? propertyValue = propertyValueOutParam.param;
       if (propertyValue is ISelfValidate) {
         propertyValue.Validate();
       }

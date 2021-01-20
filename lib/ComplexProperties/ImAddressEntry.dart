@@ -33,7 +33,7 @@ import 'package:ews/Enumerations/ImAddressKey.dart';
 /// Represents an entry of an ImAddressDictionary.
 /// </summary>
 class ImAddressEntry extends DictionaryEntryProperty<ImAddressKey> {
-  String _imAddress;
+  String? _imAddress;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ImAddressEntry"/> class.
@@ -53,9 +53,9 @@ class ImAddressEntry extends DictionaryEntryProperty<ImAddressKey> {
   /// <summary>
   /// Gets or sets the Instant Messaging address of the entry.
   /// </summary>
-  String get ImAddress => this._imAddress;
+  String? get ImAddress => this._imAddress;
 
-  set ImAddress(String value) {
+  set ImAddress(String? value) {
     if (this.CanSetFieldValue(this._imAddress, value)) {
       this._imAddress = value;
       this.Changed();

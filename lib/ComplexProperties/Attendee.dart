@@ -33,9 +33,9 @@ import 'package:ews/Enumerations/ResponseType.dart';
 /// Represents an attendee to a meeting.
 /// </summary>
 class Attendee extends EmailAddress {
-  MeetingResponseType _responseType;
+  MeetingResponseType? _responseType;
 
-  DateTime _lastResponseTime;
+  DateTime? _lastResponseTime;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Attendee"/> class.
@@ -43,7 +43,7 @@ class Attendee extends EmailAddress {
   /// <param name="name">The name used to initialize the Attendee.</param>
   /// <param name="smtpAddress">The SMTP address used to initialize the Attendee.</param>
   /// <param name="routingType">The routing type used to initialize the Attendee.</param>
-  Attendee({String name, String smtpAddress, String routingType})
+  Attendee({String? name, String? smtpAddress, String? routingType})
       : super(name: name, smtpAddress: smtpAddress, routingType: routingType);
 
   /// <summary>
@@ -56,12 +56,12 @@ class Attendee extends EmailAddress {
   /// <summary>
   /// Gets the type of response the attendee gave to the meeting invitation it received.
   /// </summary>
-  MeetingResponseType get ResponseType => this._responseType;
+  MeetingResponseType? get ResponseType => this._responseType;
 
   /// <summary>
   /// Gets the date and time when the attendee last responded to a meeting invitation or update.
   /// </summary>
-  DateTime get LastResponseTime => this._lastResponseTime;
+  DateTime? get LastResponseTime => this._lastResponseTime;
 
   /// <summary>
   /// Tries to read element from XML.

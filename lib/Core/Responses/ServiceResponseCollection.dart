@@ -39,7 +39,7 @@ class ServiceResponseCollection<TResponse extends ServiceResponse>
     implements Iterable<TResponse> {
   List<TResponse> _responses = <TResponse>[];
 
-  ServiceResult _overallResult = ServiceResult.Success;
+  ServiceResult? _overallResult = ServiceResult.Success;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServiceResponseCollection&lt;TResponse&gt;"/> class.
@@ -54,7 +54,7 @@ class ServiceResponseCollection<TResponse extends ServiceResponse>
     EwsUtilities.Assert(
         response != null, "EwsResponseList.Add", "response is null");
 
-    if (response.Result.index > this._overallResult.index) {
+    if (response.Result!.index > this._overallResult!.index) {
       this._overallResult = response.Result;
     }
 
@@ -86,7 +86,7 @@ class ServiceResponseCollection<TResponse extends ServiceResponse>
   /// property set to Success, OverallResult returns Warning. If at least one response has a its Result set to
   /// Error, OverallResult returns Error.
   /// </summary>
-  ServiceResult get OverallResult => this._overallResult;
+  ServiceResult? get OverallResult => this._overallResult;
 
   /// <summary>
   /// Gets an enumerator that iterates through the elements of the collection.

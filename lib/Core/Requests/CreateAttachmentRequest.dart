@@ -40,9 +40,9 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// </summary>
 class CreateAttachmentRequest
     extends MultiResponseServiceRequest<CreateAttachmentResponse> {
-  String _parentItemId;
+  String? _parentItemId;
 
-  List<Attachment> _attachments = <Attachment>[];
+  List<Attachment?> _attachments = <Attachment?>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateAttachmentRequest"/> class.
@@ -123,8 +123,8 @@ class CreateAttachmentRequest
 
     writer.WriteStartElement(
         XmlNamespace.Messages, XmlElementNames.Attachments);
-    for (Attachment attachment in this.Attachments) {
-      attachment.WriteToXml(writer, attachment.GetXmlElementName());
+    for (Attachment? attachment in this.Attachments) {
+      attachment!.WriteToXml(writer, attachment.GetXmlElementName());
     }
     writer.WriteEndElement();
   }
@@ -162,15 +162,15 @@ class CreateAttachmentRequest
   /// Gets the attachments.
   /// </summary>
   /// <value>The attachments.</value>
-  List<Attachment> get Attachments => this._attachments;
+  List<Attachment?> get Attachments => this._attachments;
 
   /// <summary>
   /// Gets or sets the parent item id.
   /// </summary>
   /// <value>The parent item id.</value>
-  String get ParentItemId => this._parentItemId;
+  String? get ParentItemId => this._parentItemId;
 
-  set ParentItemId(String value) {
+  set ParentItemId(String? value) {
     this._parentItemId = value;
   }
 }

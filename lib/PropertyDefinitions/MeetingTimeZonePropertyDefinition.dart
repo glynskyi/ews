@@ -74,7 +74,7 @@ class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    MeetingTimeZone value = propertyBag[this];
+    MeetingTimeZone? value = propertyBag[this] as MeetingTimeZone?;
 
     if (value != null) {
       value.WriteToXml(writer, this.XmlElementName);

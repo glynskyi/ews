@@ -47,7 +47,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// </summary>
   GetUserSettingsResponse() : super() {
     this.SmtpAddress = "";
-    this.Settings = new Map<UserSettingName, Object>();
+    this.Settings = new Map<UserSettingName?, Object?>();
     this.UserSettingErrors = <UserSettingError>[];
   }
 
@@ -59,9 +59,9 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// <param name="value">The setting value.</param>
   /// <returns>True if setting was available.</returns>
   bool TryGetSettingValue<T>(
-      UserSettingName setting, OutParam<T> valueOutParam) {
+      UserSettingName setting, OutParam<T>? valueOutParam) {
     if (this.Settings.containsKey(setting)) {
-      valueOutParam.param = this.Settings[setting] as T;
+      valueOutParam!.param = this.Settings[setting] as T?;
       return true;
     } else {
       valueOutParam = null;
@@ -72,22 +72,22 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// <summary>
   /// Gets the SMTP address this response applies to.
   /// </summary>
-  String SmtpAddress;
+  String? SmtpAddress;
 
   /// <summary>
   /// Gets the redirectionTarget (URL or email address)
   /// </summary>
-  String RedirectTarget;
+  String? RedirectTarget;
 
   /// <summary>
   /// Gets the requested settings for the user.
   /// </summary>
-  Map<UserSettingName, Object> Settings;
+  late Map<UserSettingName?, Object?> Settings;
 
   /// <summary>
   /// Gets error information for settings that could not be returned.
   /// </summary>
-  List<UserSettingError> UserSettingErrors;
+  late List<UserSettingError> UserSettingErrors;
 
   /// <summary>
   /// Loads response from XML.
@@ -130,7 +130,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
 
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == XmlElementNames.UserSetting)) {
-          String settingClass = reader.ReadAttributeValueWithNamespace(
+          String? settingClass = reader.ReadAttributeValueWithNamespace(
               XmlNamespace.XmlSchemaInstance, XmlAttributeNames.Type);
 
           switch (settingClass) {
@@ -160,8 +160,8 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   void _ReadSettingFromXml(EwsXmlReader reader) {
-    String name = null;
-    Object value = null;
+    String? name = null;
+    Object? value = null;
 
     do {
       reader.Read();
@@ -193,7 +193,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
 
     // EWS Managed API is broken with AutoDSvc endpoint in RedirectUrl scenario
     try {
-      UserSettingName userSettingName =
+      UserSettingName? userSettingName =
           EwsUtilities.Parse<UserSettingName>(name);
       this.Settings[userSettingName] = value;
     } catch (ArgumentException) {

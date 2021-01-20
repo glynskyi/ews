@@ -29,8 +29,8 @@
 //	[Serializable]
 class ServiceRemoteException implements Exception {
   final String message;
-  final Exception innerException;
-  final StackTrace innerStackTrace;
+  final Exception? innerException;
+  final StackTrace? innerStackTrace;
 
   /// <summary>
   /// ServiceRemoteException Constructor.

@@ -42,13 +42,13 @@ class Grouping extends ISelfValidate {
       enumerations.SortDirection.Ascending;
 
   /* private */
-  PropertyDefinitionBase groupOn;
+  PropertyDefinitionBase? groupOn;
 
   /* private */
-  PropertyDefinitionBase aggregateOn;
+  PropertyDefinitionBase? aggregateOn;
 
   /* private */
-  enumerations.AggregateType aggregateType;
+  enumerations.AggregateType? aggregateType;
 
   /// <summary>
   /// Validates this grouping.
@@ -94,12 +94,12 @@ class Grouping extends ISelfValidate {
     writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.GroupBy);
     writer.WriteAttributeValue(XmlAttributeNames.Order, this.SortDirection);
 
-    this.GroupOn.WriteToXml(writer);
+    this.GroupOn!.WriteToXml(writer);
 
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.AggregateOn);
     writer.WriteAttributeValue(XmlAttributeNames.Aggregate, this.AggregateType);
 
-    this.AggregateOn.WriteToXml(writer);
+    this.AggregateOn!.WriteToXml(writer);
 
     writer.WriteEndElement(); // AggregateOn
 
@@ -116,23 +116,23 @@ class Grouping extends ISelfValidate {
   /// <summary>
   /// Gets or sets the property to group on.
   /// </summary>
-  PropertyDefinitionBase get GroupOn => this.groupOn;
+  PropertyDefinitionBase? get GroupOn => this.groupOn;
 
-  set GroupOn(PropertyDefinitionBase value) => this.groupOn = value;
+  set GroupOn(PropertyDefinitionBase? value) => this.groupOn = value;
 
   /// <summary>
   /// Gets or sets the property to aggregate on.
   /// </summary>
-  PropertyDefinitionBase get AggregateOn => this.aggregateOn;
+  PropertyDefinitionBase? get AggregateOn => this.aggregateOn;
 
-  set AggregateOn(PropertyDefinitionBase value) => this.aggregateOn = value;
+  set AggregateOn(PropertyDefinitionBase? value) => this.aggregateOn = value;
 
   /// <summary>
   /// Gets or sets the types of aggregate to calculate.
   /// </summary>
-  enumerations.AggregateType get AggregateType => this.aggregateType;
+  enumerations.AggregateType? get AggregateType => this.aggregateType;
 
-  set AggregateType(enumerations.AggregateType value) =>
+  set AggregateType(enumerations.AggregateType? value) =>
       this.aggregateType = value;
 
   /// <summary>

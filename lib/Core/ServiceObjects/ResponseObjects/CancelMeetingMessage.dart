@@ -72,8 +72,9 @@ class CancelMeetingMessage
   /// <summary>
   /// Gets or sets the body of the response.
   /// </summary>
-  MessageBody get Body => this.PropertyBag[CancelMeetingMessageSchema.Body];
+  MessageBody? get Body =>
+      this.PropertyBag[CancelMeetingMessageSchema.Body] as MessageBody?;
 
-  set Body(MessageBody value) =>
+  set Body(MessageBody? value) =>
       this.PropertyBag[CancelMeetingMessageSchema.Body] = value;
 }

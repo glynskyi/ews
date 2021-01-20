@@ -30,15 +30,15 @@ import 'package:ews/Core/EwsUtilities.dart';
 /// Represents Exchange server information.
 /// </summary>
 class ExchangeServerInfo {
-  int _majorVersion;
+  int? _majorVersion;
 
-  int _minorVersion;
+  int? _minorVersion;
 
-  int _majorBuildNumber;
+  int? _majorBuildNumber;
 
-  int _minorBuildNumber;
+  int? _minorBuildNumber;
 
-  String _versionString;
+  String? _versionString;
 
   /// <summary>
   /// Default constructor
@@ -66,36 +66,36 @@ class ExchangeServerInfo {
   /// <summary>
   /// Gets the Major Exchange server version number
   /// </summary>
-  int get MajorVersion => this._majorVersion;
+  int? get MajorVersion => this._majorVersion;
 
-  set MajorVersion(int value) {
+  set MajorVersion(int? value) {
     this._majorVersion = value;
   }
 
   /// <summary>
   /// Gets the Minor Exchange server version number
   /// </summary>
-  int get MinorVersion => this._minorVersion;
+  int? get MinorVersion => this._minorVersion;
 
-  set MinorVersion(int value) {
+  set MinorVersion(int? value) {
     this._minorVersion = value;
   }
 
   /// <summary>
   /// Gets the Major Exchange server build number
   /// </summary>
-  int get MajorBuildNumber => this._majorBuildNumber;
+  int? get MajorBuildNumber => this._majorBuildNumber;
 
-  set MajorBuildNumber(int value) {
+  set MajorBuildNumber(int? value) {
     this._majorBuildNumber = value;
   }
 
   /// <summary>
   /// Gets the Minor Exchange server build number
   /// </summary>
-  int get MinorBuildNumber => this._minorBuildNumber;
+  int? get MinorBuildNumber => this._minorBuildNumber;
 
-  set MinorBuildNumber(int value) {
+  set MinorBuildNumber(int? value) {
     this._minorBuildNumber = value;
   }
 
@@ -106,9 +106,9 @@ class ExchangeServerInfo {
   /// The version is a String rather than an enum since its possible for the client to
   /// be connected to a later server for which there would be no appropriate enum value.
   /// </remarks>
-  String get VersionString => this._versionString;
+  String? get VersionString => this._versionString;
 
-  set VersionString(String value) {
+  set VersionString(String? value) {
     this._versionString = value;
   }
 

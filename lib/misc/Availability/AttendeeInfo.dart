@@ -34,9 +34,9 @@ import 'package:ews/Interfaces/ISelfValidate.dart';
 /// Represents information about an attendee for which to request availability information.
 /// </summary>
 class AttendeeInfo extends ISelfValidate {
-  String _smtpAddress;
+  String? _smtpAddress;
   MeetingAttendeeType _attendeeType = MeetingAttendeeType.Required;
-  bool _excludeConflicts;
+  bool? _excludeConflicts;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AttendeeInfo"/> class.
@@ -87,9 +87,9 @@ class AttendeeInfo extends ISelfValidate {
   /// <summary>
   /// Gets or sets the SMTP address of this attendee.
   /// </summary>
-  String get SmtpAddress => this._smtpAddress;
+  String? get SmtpAddress => this._smtpAddress;
 
-  set SmtpAddress(String value) => this._smtpAddress = value;
+  set SmtpAddress(String? value) => this._smtpAddress = value;
 
   /// <summary>
   /// Gets or sets the type of this attendee.
@@ -101,9 +101,9 @@ class AttendeeInfo extends ISelfValidate {
   /// <summary>
   /// Gets or sets a value indicating whether times when this attendee is not available should be returned.
   /// </summary>
-  bool get ExcludeConflicts => this._excludeConflicts;
+  bool? get ExcludeConflicts => this._excludeConflicts;
 
-  set ExcludeConflicts(bool value) => this._excludeConflicts = value;
+  set ExcludeConflicts(bool? value) => this._excludeConflicts = value;
 
   /// <summary>
   /// Validates this instance.

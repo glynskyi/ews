@@ -32,8 +32,8 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents the URL of the Exchange web client.
 /// </summary>
 class WebClientUrl {
-  String _authenticationMethods;
-  String _url;
+  String? _authenticationMethods;
+  String? _url;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="WebClientUrl"/> class.
@@ -45,7 +45,7 @@ class WebClientUrl {
   /// </summary>
   /// <param name="authenticationMethods">The authentication methods.</param>
   /// <param name="url">The URL.</param>
-  WebClientUrl(String authenticationMethods, String url) {
+  WebClientUrl(String? authenticationMethods, String? url) {
     this._authenticationMethods = authenticationMethods;
     this._url = url;
   }
@@ -81,15 +81,15 @@ class WebClientUrl {
   /// <summary>
   /// Gets the authentication methods.
   /// </summary>
-  String get AuthenticationMethods => this._authenticationMethods;
+  String? get AuthenticationMethods => this._authenticationMethods;
 
-  set AuthenticationMethods(String value) =>
+  set AuthenticationMethods(String? value) =>
       this._authenticationMethods = value;
 
   /// <summary>
   /// Gets the URL.
   /// </summary>
-  String get Url => this._url;
+  String? get Url => this._url;
 
-  set Url(String value) => this._url = value;
+  set Url(String? value) => this._url = value;
 }

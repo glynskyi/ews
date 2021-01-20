@@ -39,8 +39,8 @@ import 'package:ews/misc/NameResolution.dart';
 class NameResolutionCollection
     with IterableMixin<NameResolution>
     implements Iterable<NameResolution> {
-  ExchangeService _service;
-  bool _includesAllResolutions;
+  ExchangeService? _service;
+  bool? _includesAllResolutions;
   List<NameResolution> _items = <NameResolution>[];
 
   /// <summary>
@@ -63,7 +63,7 @@ class NameResolutionCollection
         XmlNamespace.Messages, XmlElementNames.ResolutionSet);
 
     int totalItemsInView =
-        reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
+        reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView)!;
     this._includesAllResolutions = reader.ReadAttributeValue<bool>(
         XmlAttributeNames.IncludesLastItemInRange);
 
@@ -83,7 +83,7 @@ class NameResolutionCollection
   /// Gets the session.
   /// </summary>
   /// <value>The session.</value>
-  ExchangeService get Session => this._service;
+  ExchangeService? get Session => this._service;
 
   /// <summary>
   /// Gets the total number of elements in the list.
@@ -95,7 +95,7 @@ class NameResolutionCollection
   /// a maximum of 100 name resolutions. When IncludesAllResolutions is false, there were more than 100
   /// matching names on the server. To narrow the search, provide a more precise name to ResolveName.
   /// </summary>
-  bool get IncludesAllResolutions => this._includesAllResolutions;
+  bool? get IncludesAllResolutions => this._includesAllResolutions;
 
   /// <summary>
   /// Gets the name resolution at the specified index.

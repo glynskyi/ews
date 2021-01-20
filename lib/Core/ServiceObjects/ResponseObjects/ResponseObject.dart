@@ -46,7 +46,7 @@ import 'package:ews/Exceptions/NotSupportedException.dart';
 /// <typeparam name="TMessage">Type of message.</typeparam>
 abstract class ResponseObject<TMessage extends EmailMessage>
     extends ServiceObject {
-  Item _referenceItem;
+  late Item _referenceItem;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ResponseObject&lt;TMessage&gt;"/> class.
@@ -100,9 +100,9 @@ abstract class ResponseObject<TMessage extends EmailMessage>
   /// <param name="messageDisposition">The message disposition.</param>
   /// <returns>The list of items returned by EWS.</returns>
   Future<List<Item>> InternalCreate(
-      FolderId destinationFolderId, MessageDisposition messageDisposition) {
+      FolderId? destinationFolderId, MessageDisposition messageDisposition) {
     (this.PropertyBag[ResponseObjectSchema.ReferenceItemId] as ItemId)
-        .Assign(this._referenceItem.Id);
+        .Assign(this._referenceItem.Id!);
 
     return this.Service.InternalCreateResponseObject(
         this, destinationFolderId, messageDisposition);
@@ -179,18 +179,18 @@ abstract class ResponseObject<TMessage extends EmailMessage>
   /// <summary>
   /// Gets or sets a value indicating whether read receipts will be requested from recipients of this response.
   /// </summary>
-  bool get IsReadReceiptRequested =>
-      this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested];
+  bool? get IsReadReceiptRequested =>
+      this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested] as bool?;
 
-  set IsReadReceiptRequested(bool value) =>
+  set IsReadReceiptRequested(bool? value) =>
       this.PropertyBag[EmailMessageSchema.IsReadReceiptRequested] = value;
 
   /// <summary>
   /// Gets or sets a value indicating whether delivery receipts should be sent to the sender.
   /// </summary>
-  bool get IsDeliveryReceiptRequested =>
-      this.PropertyBag[EmailMessageSchema.IsDeliveryReceiptRequested];
+  bool? get IsDeliveryReceiptRequested =>
+      this.PropertyBag[EmailMessageSchema.IsDeliveryReceiptRequested] as bool?;
 
-  set IsDeliveryReceiptRequested(bool value) =>
+  set IsDeliveryReceiptRequested(bool? value) =>
       this.PropertyBag[EmailMessageSchema.IsDeliveryReceiptRequested] = value;
 }

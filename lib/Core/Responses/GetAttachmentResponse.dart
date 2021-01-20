@@ -37,13 +37,13 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents the response to an individual attachment retrieval request.
 /// </summary>
 class GetAttachmentResponse extends ServiceResponse {
-  /* private */ complex.Attachment attachment;
+  /* private */ complex.Attachment? attachment;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetAttachmentResponse"/> class.
   /// </summary>
   /// <param name="attachment">The attachment.</param>
-  GetAttachmentResponse(complex.Attachment attachment) : super() {
+  GetAttachmentResponse(complex.Attachment? attachment) : super() {
     this.attachment = attachment;
   }
 
@@ -73,7 +73,7 @@ class GetAttachmentResponse extends ServiceResponse {
       }
 
       if (this.attachment != null) {
-        this.attachment.LoadFromXml(reader, reader.LocalName);
+        this.attachment!.LoadFromXml(reader, reader.LocalName);
       }
 
       reader.ReadEndElementWithNamespace(
@@ -84,5 +84,5 @@ class GetAttachmentResponse extends ServiceResponse {
   /// <summary>
   /// Gets the attachment that was retrieved.
   /// </summary>
-  complex.Attachment get Attachment => this.attachment;
+  complex.Attachment? get Attachment => this.attachment;
 }

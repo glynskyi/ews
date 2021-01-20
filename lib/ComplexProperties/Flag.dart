@@ -36,16 +36,16 @@ import 'ComplexProperty.dart';
 /// Encapsulates information on the occurrence of a recurring appointment.
 /// </summary>
 class Flag extends ComplexProperty {
-  /* private */ ItemFlagStatus flagStatus;
+  /* private */ ItemFlagStatus? flagStatus;
 
   /* private */
-  DateTime startDate;
+  DateTime? startDate;
 
   /* private */
-  DateTime dueDate;
+  DateTime? dueDate;
 
   /* private */
-  DateTime completeDate;
+  DateTime? completeDate;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Flag"/> class.
@@ -107,9 +107,9 @@ class Flag extends ComplexProperty {
   /// <summary>
   /// Gets or sets the flag status.
   /// </summary>
-  ItemFlagStatus get FlagStatus => this.flagStatus;
+  ItemFlagStatus? get FlagStatus => this.flagStatus;
 
-  set FlagStatus(ItemFlagStatus value) {
+  set FlagStatus(ItemFlagStatus? value) {
     if (this.CanSetFieldValue(this.flagStatus, value)) {
       this.flagStatus = value;
       this.Changed();
@@ -119,9 +119,9 @@ class Flag extends ComplexProperty {
   /// <summary>
   /// Gets the start date.
   /// </summary>
-  DateTime get StartDate => this.startDate;
+  DateTime? get StartDate => this.startDate;
 
-  set StartDate(DateTime value) {
+  set StartDate(DateTime? value) {
     if (this.CanSetFieldValue(this.startDate, value)) {
       this.startDate = value;
       this.Changed();
@@ -131,9 +131,9 @@ class Flag extends ComplexProperty {
   /// <summary>
   /// Gets the due date.
   /// </summary>
-  DateTime get DueDate => this.dueDate;
+  DateTime? get DueDate => this.dueDate;
 
-  set DueDate(DateTime value) {
+  set DueDate(DateTime? value) {
     if (this.CanSetFieldValue(this.dueDate, value)) {
       this.dueDate = value;
       this.Changed();
@@ -143,9 +143,9 @@ class Flag extends ComplexProperty {
   /// <summary>
   /// Gets the complete date.
   /// </summary>
-  DateTime get CompleteDate => this.completeDate;
+  DateTime? get CompleteDate => this.completeDate;
 
-  set CompleteDate(DateTime value) {
+  set CompleteDate(DateTime? value) {
     if (this.CanSetFieldValue(this.completeDate, value)) {
       this.completeDate = value;
       this.Changed();

@@ -34,7 +34,7 @@ class ServiceVersionException extends ServiceLocalException {
   /// Initializes a new instance of the <see cref="ServiceVersionException"/> class.
   /// </summary>
   /// <param name="message">The error message.</param>
-  ServiceVersionException([String message]) : super(message);
+  ServiceVersionException([String? message]) : super(message);
 
   @override
   String toString() {

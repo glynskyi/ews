@@ -35,7 +35,7 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 /// Represents the response to an individual folder creation operation.
 /// </summary>
 class CreateFolderResponse extends ServiceResponse {
-  Folder _folder;
+  Folder? _folder;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateFolderResponse"/> class.
@@ -51,9 +51,9 @@ class CreateFolderResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Folder.</returns>
-  Folder _GetObjectInstance(ExchangeService service, String xmlElementName) {
+  Folder _GetObjectInstance(ExchangeService? service, String xmlElementName) {
     if (this._folder != null) {
-      return this._folder;
+      return this._folder!;
     } else {
       return EwsUtilities.CreateEwsObjectFromXmlElementName<Folder>(
           service, xmlElementName);
@@ -86,7 +86,7 @@ class CreateFolderResponse extends ServiceResponse {
   @override
   void Loaded() {
     if (this.Result == ServiceResult.Success) {
-      this._folder.ClearChangeLog();
+      this._folder!.ClearChangeLog();
     }
   }
 }

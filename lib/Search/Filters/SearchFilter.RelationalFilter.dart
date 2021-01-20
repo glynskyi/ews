@@ -43,9 +43,9 @@ import 'package:ews/misc/OutParam.dart';
 /// Represents the base class for relational filters (for example, IsEqualTo, IsGreaterThan or IsLessThanOrEqualTo).
 /// </summary>
 abstract class RelationalFilter extends PropertyBasedFilter {
-  PropertyDefinitionBase _otherPropertyDefinition;
+  PropertyDefinitionBase? _otherPropertyDefinition;
 
-  Object _value;
+  Object? _value;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="RelationalFilter"/> class.
@@ -148,7 +148,7 @@ abstract class RelationalFilter extends PropertyBasedFilter {
           true /* alwaysWriteEmptyString */);
       writer.WriteEndElement(); // Constant
     } else {
-      this.OtherPropertyDefinition.WriteToXml(writer);
+      this.OtherPropertyDefinition!.WriteToXml(writer);
     }
 
     writer.WriteEndElement(); // FieldURIOrConstant
@@ -159,10 +159,10 @@ abstract class RelationalFilter extends PropertyBasedFilter {
   /// from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)
   /// The OtherPropertyDefinition and Value properties are mutually exclusive; setting one resets the other to null.
   /// </summary>
-  PropertyDefinitionBase get OtherPropertyDefinition =>
+  PropertyDefinitionBase? get OtherPropertyDefinition =>
       this._otherPropertyDefinition;
 
-  set OtherPropertyDefinition(PropertyDefinitionBase value) {
+  set OtherPropertyDefinition(PropertyDefinitionBase? value) {
     this._otherPropertyDefinition = OtherPropertyDefinition;
     this._value = null;
   }
@@ -171,9 +171,9 @@ abstract class RelationalFilter extends PropertyBasedFilter {
   /// Gets or sets the value to compare with. The Value and OtherPropertyDefinition properties
   /// are mutually exclusive; setting one resets the other to null.
   /// </summary>
-  Object get Value => this._value;
+  Object? get Value => this._value;
 
-  set Value(Object value) {
+  set Value(Object? value) {
     this._value = value;
     this._otherPropertyDefinition = null;
   }

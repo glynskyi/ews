@@ -58,28 +58,28 @@ class GetEventsResults {
   /// Gets the XML element name to event type mapping.
   /// </summary>
   /// <value>The XML element name to event type mapping.</value>
-  static Map<String, EventType> get XmlElementNameToEventTypeMap =>
+  static Map<String, EventType>? get XmlElementNameToEventTypeMap =>
       GetEventsResults._xmlElementNameToEventTypeMap.Member;
 
   /// <summary>
   /// Watermark in event.
   /// </summary>
-  String _newWatermark;
+  String? _newWatermark;
 
   /// <summary>
   /// Subscription id.
   /// </summary>
-  String _subscriptionId;
+  String? _subscriptionId;
 
   /// <summary>
   /// Previous watermark.
   /// </summary>
-  String _previousWatermark;
+  String? _previousWatermark;
 
   /// <summary>
   /// True if more events available for this subscription.
   /// </summary>
-  bool _moreEventsAvailable;
+  bool? _moreEventsAvailable;
 
   /// <summary>
   /// Collection of notification events.
@@ -112,10 +112,10 @@ class GetEventsResults {
       if (reader.IsStartElement()) {
         String eventElementName = reader.LocalName;
 
-        if (_xmlElementNameToEventTypeMap.Member.containsKey(
+        if (_xmlElementNameToEventTypeMap.Member!.containsKey(
             eventElementName)) {
-          EventType eventType =
-              _xmlElementNameToEventTypeMap.Member[eventElementName];
+          EventType? eventType =
+              _xmlElementNameToEventTypeMap.Member![eventElementName];
           this._newWatermark = reader.ReadElementValueWithNamespace(
               XmlNamespace.Types, XmlElementNames.Watermark);
 
@@ -142,8 +142,8 @@ class GetEventsResults {
   /// <param name="eventElementName">Name of the event XML element.</param>
   /// <param name="eventType">Type of the event.</param>
   void _LoadNotificationEventFromXml(EwsServiceXmlReader reader,
-      String eventElementName, EventType eventType) {
-    DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(
+      String eventElementName, EventType? eventType) {
+    DateTime? timestamp = reader.ReadElementValueWithNamespace<DateTime>(
         XmlNamespace.Types, XmlElementNames.TimeStamp);
 
     NotificationEvent notificationEvent;
@@ -163,36 +163,36 @@ class GetEventsResults {
   /// <summary>
   /// Gets the Id of the subscription the collection is associated with.
   /// </summary>
-  String get SubscriptionId => this._subscriptionId;
+  String? get SubscriptionId => this._subscriptionId;
 
   /// <summary>
   /// Gets the subscription's previous watermark.
   /// </summary>
-  String get PreviousWatermark => this._previousWatermark;
+  String? get PreviousWatermark => this._previousWatermark;
 
   /// <summary>
   /// Gets the subscription's new watermark.
   /// </summary>
-  String get NewWatermark => this._newWatermark;
+  String? get NewWatermark => this._newWatermark;
 
   /// <summary>
   /// Gets a value indicating whether more events are available on the Exchange server.
   /// </summary>
-  bool get MoreEventsAvailable => this._moreEventsAvailable;
+  bool? get MoreEventsAvailable => this._moreEventsAvailable;
 
   /// <summary>
   /// Gets the collection of folder events.
   /// </summary>
   /// <value>The folder events.</value>
   Iterable<FolderEvent> get FolderEvents =>
-      this._events.where((event) => event is FolderEvent);
+      this._events.where((event) => event is FolderEvent) as Iterable<FolderEvent>;
 
   /// <summary>
   /// Gets the collection of item events.
   /// </summary>
   /// <value>The item events.</value>
   Iterable<ItemEvent> get ItemEvents =>
-      this._events.where((event) => event is ItemEvent);
+      this._events.where((event) => event is ItemEvent) as Iterable<ItemEvent>;
 
   /// <summary>
   /// Gets the collection of all events.

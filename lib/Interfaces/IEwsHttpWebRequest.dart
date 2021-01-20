@@ -99,92 +99,92 @@ abstract class IEwsHttpWebRequest {
   /// Gets or sets the value of the Accept HTTP header.
   /// </summary>
   /// <returns>The value of the Accept HTTP header. The default value is null.</returns>
-  String Accept;
+  String? Accept;
 
   /// <summary>
   /// Gets or sets a value that indicates whether the request should follow redirection responses.
   /// </summary>
-  bool AllowAutoRedirect;
+  bool? AllowAutoRedirect;
 
   /// <summary>
   /// Gets or sets the client certificates.
   /// </summary>
   /// <returns>The collection of X509 client certificates.</returns>
-  X509CertificateCollection ClientCertificates;
+  X509CertificateCollection? ClientCertificates;
 
   /// <summary>
   /// Gets or sets the value of the Content-type HTTP header.
   /// </summary>
   /// <returns>The value of the Content-type HTTP header. The default value is null.</returns>
-  String ContentType;
+  String? ContentType;
 
   /// <summary>
   /// Gets or sets the cookie container.
   /// </summary>
   /// <value>The cookie container.</value>
-  http.CookieContainer CookieContainer;
+  http.CookieContainer? CookieContainer;
 
   /// <summary>
   /// Gets or sets authentication information for the request.
   /// </summary>
   /// <returns>An <see cref="T:System.Net.ICredentials"/> that contains the authentication credentials associated with the request. The default is null.</returns>
-  ICredentials Credentials;
+  ICredentials? Credentials;
 
   /// <summary>
   /// Specifies a collection of the name/value pairs that make up the HTTP headers.
   /// </summary>
   /// <returns>A <see cref="T:System.Net.WebHeaderCollection"/> that contains the name/value pairs that make up the headers for the HTTP request.</returns>
-  WebHeaderCollection Headers;
+  WebHeaderCollection? Headers;
 
   /// <summary>
   /// Gets or sets the method for the request.
   /// </summary>
   /// <returns>The request method to use to contact the Internet resource. The default value is GET.</returns>
   /// <exception cref="T:System.ArgumentException">No method is supplied.-or- The method String contains invalid characters. </exception>
-  String Method;
+  String? Method;
 
   /// <summary>
   /// Gets or sets a value that indicates whether to send an authenticate header with the request.
   /// </summary>
   /// <returns>true to send a WWW-authenticate HTTP header with requests after authentication has taken place; otherwise, false. The default is false.</returns>
-  bool PreAuthenticate;
+  bool? PreAuthenticate;
 
   /// <summary>
   /// Gets or sets proxy information for the request.
   /// </summary>
-  IWebProxy Proxy;
+  IWebProxy? Proxy;
 
   /// <summary>
   /// Gets the original Uniform Resource Identifier (URI) of the request.
   /// </summary>
   /// <returns>A <see cref="T:System.Uri"/> that contains the URI of the Internet resource passed to the <see cref="M:System.Net.WebRequest.Create(System.String)"/> method.</returns>
-  Uri RequestUri;
+  Uri? RequestUri;
 
   /// <summary>
   /// Gets or sets the time-out value in milliseconds for the <see cref="M:System.Net.HttpWebRequest.GetResponse"/> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"/> methods.
   /// </summary>
   /// <returns>The number of milliseconds to wait before the request times out. The default is 100,000 milliseconds (100 seconds).</returns>
-  int Timeout;
+  int? Timeout;
 
   /// <summary>
   /// Gets or sets a <see cref="T:System.Boolean"/> value that controls whether default credentials are sent with requests.
   /// </summary>
   /// <returns>true if the default credentials are used; otherwise false. The default value is false.</returns>
-  bool UseDefaultCredentials;
+  bool? UseDefaultCredentials;
 
   /// <summary>
   /// Gets or sets the value of the User-agent HTTP header.
   /// </summary>
   /// <returns>The value of the User-agent HTTP header. The default value is null.The value for this property is stored in <see cref="T:System.Net.WebHeaderCollection"/>. If WebHeaderCollection is set, the property value is lost.</returns>
-  String UserAgent;
+  String? UserAgent;
 
   /// <summary>
   /// Gets or sets if the request to the internet resource should contain a Connection HTTP header with the value Keep-alive
   /// </summary>
-  bool KeepAlive;
+  bool? KeepAlive;
 
   /// <summary>
   /// Gets or sets the name of the connection group for the request.
   /// </summary>
-  String ConnectionGroupName;
+  String? ConnectionGroupName;
 }

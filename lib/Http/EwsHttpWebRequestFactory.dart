@@ -22,7 +22,7 @@ class EwsHttpWebRequestFactory implements IEwsHttpWebRequestFactory {
   }
 
   @override
-  IEwsHttpWebRequest CreateRequestWithUrl(HttpClient httpClient, Uri url) {
+  IEwsHttpWebRequest CreateRequestWithUrl(HttpClient? httpClient, Uri url) {
     return EwsHttpWebRequest(httpClient)..RequestUri = url;
   }
 

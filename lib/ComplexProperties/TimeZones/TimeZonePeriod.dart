@@ -42,13 +42,13 @@ class TimeZonePeriod extends ComplexProperty {
   static const String DaylightPeriodName = "Daylight";
 
   /* private */
-  TimeSpan bias;
+  TimeSpan? bias;
 
   /* private */
-  String name;
+  String? name;
 
   /* private */
-  String id;
+  String? id;
 
   /// <summary>
   /// Reads the attributes from XML.
@@ -69,7 +69,7 @@ class TimeZonePeriod extends ComplexProperty {
   @override
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     writer.WriteAttributeValue(
-        XmlAttributeNames.Bias, EwsUtilities.TimeSpanToXSDuration(this.bias));
+        XmlAttributeNames.Bias, EwsUtilities.TimeSpanToXSDuration(this.bias!));
     writer.WriteAttributeValue(XmlAttributeNames.Name, this.name);
     writer.WriteAttributeValue(XmlAttributeNames.Id, this.id);
   }
@@ -103,27 +103,27 @@ class TimeZonePeriod extends ComplexProperty {
   /// </value>
   bool get IsStandardPeriod {
     return StringUtils.EqualsIgnoreCase(
-        this.name, TimeZonePeriod.StandardPeriodName);
+        this.name!, TimeZonePeriod.StandardPeriodName);
   }
 
   /// <summary>
   /// Gets or sets the bias to UTC associated with this period.
   /// </summary>
-  TimeSpan get Bias => this.bias;
+  TimeSpan? get Bias => this.bias;
 
-  set Bias(TimeSpan value) => this.bias = value;
+  set Bias(TimeSpan? value) => this.bias = value;
 
   /// <summary>
   /// Gets or sets the name of this period.
   /// </summary>
-  String get Name => this.name;
+  String? get Name => this.name;
 
-  set Name(String value) => this.name = value;
+  set Name(String? value) => this.name = value;
 
   /// <summary>
   /// Gets or sets the id of this period.
   /// </summary>
-  String get Id => this.id;
+  String? get Id => this.id;
 
-  set Id(String value) => this.id = value;
+  set Id(String? value) => this.id = value;
 }

@@ -33,7 +33,7 @@ import 'package:ews/Enumerations/PhoneNumberKey.dart';
 /// Represents an entry of a PhoneNumberDictionary.
 /// </summary>
 class PhoneNumberEntry extends DictionaryEntryProperty<PhoneNumberKey> {
-  String _phoneNumber;
+  String? _phoneNumber;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="PhoneNumberEntry"/> class.
@@ -71,9 +71,9 @@ class PhoneNumberEntry extends DictionaryEntryProperty<PhoneNumberKey> {
   /// <summary>
   /// Gets or sets the phone number of the entry.
   /// </summary>
-  String get PhoneNumber => this._phoneNumber;
+  String? get PhoneNumber => this._phoneNumber;
 
-  set PhoneNumber(String value) {
+  set PhoneNumber(String? value) {
     if (this.CanSetFieldValue(this._phoneNumber, value)) {
       this._phoneNumber = value;
       this.Changed();

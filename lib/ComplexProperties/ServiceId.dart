@@ -33,9 +33,9 @@ import 'package:ews/Core/XmlAttributeNames.dart';
 /// Represents the Id of an Exchange object.
 /// </summary>
 abstract class ServiceId extends ComplexProperty {
-  String _changeKey;
+  String? _changeKey;
 
-  String _uniqueId;
+  String? _uniqueId;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServiceId"/> class.
@@ -99,22 +99,22 @@ abstract class ServiceId extends ComplexProperty {
   /// True if this instance is valid, false otherthise.
   /// </summary>
   /// <value><c>true</c> if this instance is valid; otherwise, <c>false</c>.</value>
-  bool get IsValid => this._uniqueId != null && this._uniqueId.isNotEmpty;
+  bool get IsValid => this._uniqueId != null && this._uniqueId!.isNotEmpty;
 
   /// <summary>
   /// Gets the unique Id of the Exchange object.
   /// </summary>
-  String get UniqueId => this._uniqueId;
+  String? get UniqueId => this._uniqueId;
 
-  set UniqueId(String value) => this._uniqueId = value;
+  set UniqueId(String? value) => this._uniqueId = value;
 
   /// <summary>
   /// Gets the change key associated with the Exchange object. The change key represents the
   /// the version of the associated item or folder.
   /// </summary>
-  String get ChangeKey => this._changeKey;
+  String? get ChangeKey => this._changeKey;
 
-  set ChangeKey(String value) => this._changeKey;
+  set ChangeKey(String? value) => this._changeKey;
 
   /// <summary>
   /// Determines whether two ServiceId instances are equal (including ChangeKeys)
@@ -144,7 +144,7 @@ abstract class ServiceId extends ComplexProperty {
     if (identical(this, obj)) {
       return true;
     } else {
-      ServiceId other = obj is ServiceId ? obj : null;
+      ServiceId? other = obj is ServiceId ? obj : null;
 
       if (other == null) {
         return false;
@@ -178,6 +178,6 @@ abstract class ServiceId extends ComplexProperty {
   /// </returns>
   @override
   String toString() {
-    return (this._uniqueId == null) ? "" : this._uniqueId;
+    return (this._uniqueId == null) ? "" : this._uniqueId!;
   }
 }

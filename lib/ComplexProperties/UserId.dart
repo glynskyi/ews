@@ -35,13 +35,13 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents the Id of a user.
 /// </summary>
 class UserId extends ComplexProperty {
-  String _sID;
+  String? _sID;
 
-  String _primarySmtpAddress;
+  String? _primarySmtpAddress;
 
-  String _displayName;
+  String? _displayName;
 
-  enumerations.StandardUser _standardUser;
+  enumerations.StandardUser? _standardUser;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UserId"/> class.
@@ -73,9 +73,9 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets the SID of the user.
   /// </summary>
-  String get SID => this._sID;
+  String? get SID => this._sID;
 
-  set SID(String value) {
+  set SID(String? value) {
     if (this.CanSetFieldValue(this._sID, value)) {
       this._sID = value;
       this.Changed();
@@ -85,9 +85,9 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets the primary SMTP address or the user.
   /// </summary>
-  String get PrimarySmtpAddress => this._primarySmtpAddress;
+  String? get PrimarySmtpAddress => this._primarySmtpAddress;
 
-  set PrimarySmtpAddress(String value) {
+  set PrimarySmtpAddress(String? value) {
     if (this.CanSetFieldValue(this._primarySmtpAddress, value)) {
       this._primarySmtpAddress = value;
       this.Changed();
@@ -97,9 +97,9 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets the display name of the user.
   /// </summary>
-  String get DisplayName => this._displayName;
+  String? get DisplayName => this._displayName;
 
-  set DisplayName(String value) {
+  set DisplayName(String? value) {
     if (this.CanSetFieldValue(this._displayName, value)) {
       this._displayName = value;
       this.Changed();
@@ -109,9 +109,9 @@ class UserId extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating which standard user the user represents.
   /// </summary>
-  enumerations.StandardUser get StandardUser => this._standardUser;
+  enumerations.StandardUser? get StandardUser => this._standardUser;
 
-  set StandardUser(enumerations.StandardUser value) {
+  set StandardUser(enumerations.StandardUser? value) {
     if (this.CanSetFieldValue(this._standardUser, value)) {
       this._standardUser = value;
       this.Changed();

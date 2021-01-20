@@ -33,7 +33,7 @@ class AccountIsLockedException extends ServiceRemoteException {
   /// <summary>
   /// Gets the URL of a web page where the user can navigate to unlock his or her account.
   /// </summary>
-  Uri AccountUnlockUrl;
+  Uri? AccountUnlockUrl;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AccountIsLockedException"/> class.

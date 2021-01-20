@@ -40,7 +40,7 @@ class NoEndRecurrenceRange extends RecurrenceRange {
   /// Initializes a new instance of the <see cref="NoEndRecurrenceRange"/> class.
   /// </summary>
   /// <param name="startDate">The start date.</param>
-  NoEndRecurrenceRange.withStartDate(DateTime startDate)
+  NoEndRecurrenceRange.withStartDate(DateTime? startDate)
       : super.withStartDate(startDate);
 
   /// <summary>

@@ -130,14 +130,15 @@ class MeetingCancellation extends MeetingMessage {
   /// <summary>
   /// Gets the recurrence pattern for this meeting request.
   /// </summary>
-  complex.Recurrence get Recurrence =>
-      this.PropertyBag[AppointmentSchema.Recurrence];
+  complex.Recurrence? get Recurrence =>
+      this.PropertyBag[AppointmentSchema.Recurrence] as complex.Recurrence?;
 
   /// <summary>
   /// Gets the Enhanced location object.
   /// </summary>
-  complex.EnhancedLocation get EnhancedLocation =>
-      this.PropertyBag[MeetingCancellationSchema.EnhancedLocation];
+  complex.EnhancedLocation? get EnhancedLocation =>
+      this.PropertyBag[MeetingCancellationSchema.EnhancedLocation]
+          as complex.EnhancedLocation?;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

@@ -52,7 +52,7 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
     super.Validate();
     EwsUtilities.ValidateParam(this.FolderIds, "FolderIds");
     EwsUtilities.ValidateParamCollection(this.EventTypes, "EventTypes");
-    this.FolderIds.Validate(this.Service.RequestedServerVersion);
+    this.FolderIds!.Validate(this.Service.RequestedServerVersion);
 
     // Check that caller isn't trying to subscribe to Status events.
     if (this
@@ -131,12 +131,12 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
     writer.WriteStartElement(
         XmlNamespace.Messages, this.GetSubscriptionXmlElementName());
 
-    if (this.FolderIds.Count == 0) {
+    if (this.FolderIds!.Count == 0) {
       writer.WriteAttributeValue(XmlAttributeNames.SubscribeToAllFolders, true);
     }
 
     this
-        .FolderIds
+        .FolderIds!
         .WriteToXml(writer, XmlNamespace.Types, XmlElementNames.FolderIds);
 
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.EventTypes);
@@ -169,15 +169,15 @@ abstract class SubscribeRequest<TSubscription extends SubscriptionBase>
   /// <summary>
   /// Gets the folder ids.
   /// </summary>
-  FolderIdWrapperList FolderIds;
+  FolderIdWrapperList? FolderIds;
 
   /// <summary>
   /// Gets the event types.
   /// </summary>
-  List<EventType> EventTypes;
+  late List<EventType> EventTypes;
 
   /// <summary>
   /// Gets or sets the watermark.
   /// </summary>
-  String Watermark;
+  String? Watermark;
 }

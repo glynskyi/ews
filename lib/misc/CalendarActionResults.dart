@@ -39,16 +39,16 @@ import 'package:ews/Core/ServiceObjects/Items/MeetingResponse.dart'
 /// such as accepting, tentatively accepting or declining a meeting request.
 /// </summary>
 class CalendarActionResults {
-  /* private */ serviceObjects.Appointment appointment;
+  /* private */ serviceObjects.Appointment? appointment;
 
   /* private */
-  serviceObjects.MeetingRequest meetingRequest;
+  serviceObjects.MeetingRequest? meetingRequest;
 
   /* private */
-  serviceObjects.MeetingResponse meetingResponse;
+  serviceObjects.MeetingResponse? meetingResponse;
 
   /* private */
-  serviceObjects.MeetingCancellation meetingCancellation;
+  serviceObjects.MeetingCancellation? meetingCancellation;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CalendarActionResults"/> class.
@@ -83,7 +83,7 @@ class CalendarActionResults {
   /// When a meeting is declined via either an Appointment or a MeetingRequest object
   /// from the Deleted Items folder, Appointment is null.
   /// </remarks>
-  serviceObjects.Appointment get Appointment => this.appointment;
+  serviceObjects.Appointment? get Appointment => this.appointment;
 
   /// <summary>
   /// Gets the meeting request that was moved to the Deleted Items folder as a result
@@ -91,19 +91,19 @@ class CalendarActionResults {
   /// If the meeting request is accepted, tentatively accepted or declined from the
   /// Deleted Items folder, it is permanently deleted and MeetingRequest is null.
   /// </summary>
-  serviceObjects.MeetingRequest get MeetingRequest => this.meetingRequest;
+  serviceObjects.MeetingRequest? get MeetingRequest => this.meetingRequest;
 
   /// <summary>
   /// Gets the copy of the response that is sent to the organizer of a meeting when
   /// the meeting is accepted, tentatively accepted or declined by an attendee.
   /// MeetingResponse is null if the attendee chose not to send a response.
   /// </summary>
-  serviceObjects.MeetingResponse get MeetingResponse => this.meetingResponse;
+  serviceObjects.MeetingResponse? get MeetingResponse => this.meetingResponse;
 
   /// <summary>
   /// Gets the copy of the meeting cancellation message sent by the organizer to the
   /// attendees of a meeting when the meeting is cancelled.
   /// </summary>
-  serviceObjects.MeetingCancellation get MeetingCancellation =>
+  serviceObjects.MeetingCancellation? get MeetingCancellation =>
       this.meetingCancellation;
 }

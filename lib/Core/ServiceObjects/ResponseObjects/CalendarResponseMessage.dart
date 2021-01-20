@@ -61,47 +61,51 @@ abstract class CalendarResponseMessage<
   /// <summary>
   /// Gets or sets the body of the response.
   /// </summary>
-  MessageBody get Body => this.PropertyBag[ItemSchema.Body];
+  MessageBody? get Body => this.PropertyBag[ItemSchema.Body] as MessageBody?;
 
-  set Body(MessageBody value) => this.PropertyBag[ItemSchema.Body] = value;
+  set Body(MessageBody? value) => this.PropertyBag[ItemSchema.Body] = value;
 
   /// <summary>
   /// Gets a list of recipients the response will be sent to.
   /// </summary>
   EmailAddressCollection get ToRecipients =>
-      this.PropertyBag[EmailMessageSchema.ToRecipients];
+      this.PropertyBag[EmailMessageSchema.ToRecipients]
+          as EmailAddressCollection;
 
   /// <summary>
   /// Gets a list of recipients the response will be sent to as Cc.
   /// </summary>
   EmailAddressCollection get CcRecipients =>
-      this.PropertyBag[EmailMessageSchema.CcRecipients];
+      this.PropertyBag[EmailMessageSchema.CcRecipients]
+          as EmailAddressCollection;
 
   /// <summary>
   /// Gets a list of recipients this response will be sent to as Bcc.
   /// </summary>
   EmailAddressCollection get BccRecipients =>
-      this.PropertyBag[EmailMessageSchema.BccRecipients];
+      this.PropertyBag[EmailMessageSchema.BccRecipients]
+          as EmailAddressCollection;
 
   // TODO : Does this need to be exposed?
-  String get ItemClass => this.PropertyBag[ItemSchema.ItemClass];
+  String? get ItemClass => this.PropertyBag[ItemSchema.ItemClass] as String?;
 
-  set ItemClass(String value) => this.PropertyBag[ItemSchema.ItemClass] = value;
+  set ItemClass(String? value) =>
+      this.PropertyBag[ItemSchema.ItemClass] = value;
 
   /// <summary>
   /// Gets or sets the sensitivity of this response.
   /// </summary>
-  enumerations.Sensitivity get Sensitivity =>
-      this.PropertyBag[ItemSchema.Sensitivity];
+  enumerations.Sensitivity? get Sensitivity =>
+      this.PropertyBag[ItemSchema.Sensitivity] as enumerations.Sensitivity?;
 
-  set Sensitivity(enumerations.Sensitivity value) =>
+  set Sensitivity(enumerations.Sensitivity? value) =>
       this.PropertyBag[ItemSchema.Sensitivity] = value;
 
   /// <summary>
   /// Gets a list of attachments to this response.
   /// </summary>
-  AttachmentCollection get Attachments =>
-      this.PropertyBag[ItemSchema.Attachments];
+  AttachmentCollection? get Attachments =>
+      this.PropertyBag[ItemSchema.Attachments] as AttachmentCollection?;
 
 // TODO : Does this need to be exposed?
 //               InternetMessageHeaderCollection get InternetMessageHeaders => this.PropertyBag[ItemSchema.InternetMessageHeaders];

@@ -52,7 +52,7 @@ class CreateAttachmentException
   CreateAttachmentException(
       ServiceResponseCollection<CreateAttachmentResponse> serviceResponses,
       String message,
-      [Exception innerException])
+      [Exception? innerException])
       : super(serviceResponses, message, innerException);
 
   @override

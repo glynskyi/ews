@@ -37,37 +37,37 @@ class Attribution extends ComplexProperty {
   /// <summary>
   /// Attribution id
   /// </summary>
-  String Id;
+  String? Id;
 
   /// <summary>
   /// Attribution source
   /// </summary>
-  ItemId SourceId;
+  late ItemId SourceId;
 
   /// <summary>
   /// Display name
   /// </summary>
-  String DisplayName;
+  String? DisplayName;
 
   /// <summary>
   /// Whether writable
   /// </summary>
-  bool IsWritable;
+  bool? IsWritable;
 
   /// <summary>
   /// Whether a quick contact
   /// </summary>
-  bool IsQuickContact;
+  bool? IsQuickContact;
 
   /// <summary>
   /// Whether hidden
   /// </summary>
-  bool IsHidden;
+  bool? IsHidden;
 
   /// <summary>
   /// Folder id
   /// </summary>
-  complex.FolderId FolderId;
+  complex.FolderId? FolderId;
 
   /// <summary>
   /// Default constructor
@@ -101,7 +101,7 @@ class Attribution extends ComplexProperty {
       bool isWritable,
       bool isQuickContact,
       bool isHidden,
-      complex.FolderId folderId)
+      complex.FolderId? folderId)
       : super() {
     EwsUtilities.ValidateParam(id, "id");
     EwsUtilities.ValidateParam(displayName, "displayName");
@@ -144,7 +144,7 @@ class Attribution extends ComplexProperty {
         break;
       case XmlElementNames.FolderId:
         this.FolderId = new complex.FolderId();
-        this.FolderId.LoadFromXml(reader, reader.LocalName);
+        this.FolderId!.LoadFromXml(reader, reader.LocalName);
         break;
 
       default:

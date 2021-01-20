@@ -31,9 +31,9 @@ import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
 /// Represents the results of a folder search operation.
 /// </summary>
 class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
-  int _totalCount;
+  int? _totalCount;
 
-  int _nextPageOffset;
+  int? _nextPageOffset;
 
   bool _moreAvailable = false;
 
@@ -47,16 +47,16 @@ class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
   /// <summary>
   /// Gets the total number of folders matching the search criteria available in the searched folder.
   /// </summary>
-  int get TotalCount => this._totalCount;
+  int? get TotalCount => this._totalCount;
 
-  set TotalCount(int value) => this._totalCount = value;
+  set TotalCount(int? value) => this._totalCount = value;
 
   /// <summary>
   /// Gets the offset that should be used with FolderView to retrieve the next page of folders in a FindFolders operation.
   /// </summary>
-  int get NextPageOffset => this._nextPageOffset;
+  int? get NextPageOffset => this._nextPageOffset;
 
-  set NextPageOffset(int value) => this._nextPageOffset = value;
+  set NextPageOffset(int? value) => this._nextPageOffset = value;
 
   /// <summary>
   /// Gets a value indicating whether more folders matching the search criteria.

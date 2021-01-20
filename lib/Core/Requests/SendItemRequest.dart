@@ -40,9 +40,9 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a SendItem request.
 /// </summary>
 class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
-  Iterable<Item> _items;
+  Iterable<Item>? _items;
 
-  FolderId _savedCopyDestinationFolderId;
+  FolderId? _savedCopyDestinationFolderId;
 
   /// <summary>
   /// Asserts the valid.
@@ -54,7 +54,7 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
 
     if (this.SavedCopyDestinationFolderId != null) {
       this
-          .SavedCopyDestinationFolderId
+          .SavedCopyDestinationFolderId!
           .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
   }
@@ -77,7 +77,7 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// <returns>Number of expected response messages.</returns>
   @override
   int GetExpectedResponseMessageCount() {
-    return EwsUtilities.GetEnumeratedObjectCount(this.Items);
+    return EwsUtilities.GetEnumeratedObjectCount(this.Items!);
   }
 
   /// <summary>
@@ -127,8 +127,8 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     writer.WriteStartElement(XmlNamespace.Messages, XmlElementNames.ItemIds);
 
-    for (Item item in this.Items) {
-      item.Id.WriteToXml(writer, XmlElementNames.ItemId);
+    for (Item item in this.Items!) {
+      item.Id!.WriteToXml(writer, XmlElementNames.ItemId);
     }
 
     writer.WriteEndElement(); // ItemIds
@@ -136,7 +136,7 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
     if (this.SavedCopyDestinationFolderId != null) {
       writer.WriteStartElement(
           XmlNamespace.Messages, XmlElementNames.SavedItemFolderId);
-      this.SavedCopyDestinationFolderId.WriteToXmlElemenetName(writer);
+      this.SavedCopyDestinationFolderId!.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
   }
@@ -163,17 +163,17 @@ class SendItemRequest extends MultiResponseServiceRequest<ServiceResponse> {
   /// Gets or sets the items.
   /// </summary>
   /// <value>The items.</value>
-  Iterable<Item> get Items => this._items;
+  Iterable<Item>? get Items => this._items;
 
-  set Items(Iterable<Item> value) => this._items = value;
+  set Items(Iterable<Item>? value) => this._items = value;
 
   /// <summary>
   /// Gets or sets the saved copy destination folder id.
   /// </summary>
   /// <value>The saved copy destination folder id.</value>
-  FolderId get SavedCopyDestinationFolderId =>
+  FolderId? get SavedCopyDestinationFolderId =>
       this._savedCopyDestinationFolderId;
 
-  set SavedCopyDestinationFolderId(FolderId value) =>
+  set SavedCopyDestinationFolderId(FolderId? value) =>
       this._savedCopyDestinationFolderId = value;
 }

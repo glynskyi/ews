@@ -46,15 +46,15 @@ import 'package:ews/misc/StringUtils.dart';
 /// </summary>
 class ContainsSubString extends PropertyBasedFilter {
   /* private */
-  enumerations.ContainmentMode containmentMode =
+  enumerations.ContainmentMode? containmentMode =
       enumerations.ContainmentMode.Substring;
 
   /* private */
-  enumerations.ComparisonMode comparisonMode =
+  enumerations.ComparisonMode? comparisonMode =
       enumerations.ComparisonMode.IgnoreCase;
 
   /* private */
-  String value;
+  String? value;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ContainsSubstring"/> class.
@@ -187,27 +187,27 @@ class ContainsSubString extends PropertyBasedFilter {
   /// <summary>
   /// Gets or sets the containment mode.
   /// </summary>
-  enumerations.ContainmentMode get ContainmentMode => this.containmentMode;
+  enumerations.ContainmentMode? get ContainmentMode => this.containmentMode;
 
-  set ContainmentMode(enumerations.ContainmentMode value) {
+  set ContainmentMode(enumerations.ContainmentMode? value) {
     this.containmentMode = value;
   }
 
   /// <summary>
   /// Gets or sets the comparison mode.
   /// </summary>
-  enumerations.ComparisonMode get ComparisonMode => this.comparisonMode;
+  enumerations.ComparisonMode? get ComparisonMode => this.comparisonMode;
 
-  set ComparisonMode(enumerations.ComparisonMode value) {
+  set ComparisonMode(enumerations.ComparisonMode? value) {
     this.comparisonMode = value;
   }
 
   /// <summary>
   /// Gets or sets the value to compare the specified property with.
   /// </summary>
-  String get Value => this.value;
+  String? get Value => this.value;
 
-  set Value(String value) {
+  set Value(String? value) {
     this.value = value;
   }
 }

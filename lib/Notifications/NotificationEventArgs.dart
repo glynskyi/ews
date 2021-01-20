@@ -45,10 +45,10 @@ abstract class NotificationEventArgs /* extends EventArgs */ {
   /// <summary>
   /// Gets the subscription for which notifications have been received.
   /// </summary>
-  StreamingSubscription Subscription;
+  StreamingSubscription? Subscription;
 
   /// <summary>
   /// Gets the events that were received.
   /// </summary>
-  Iterable<NotificationEvent> Events;
+  Iterable<NotificationEvent>? Events;
 }

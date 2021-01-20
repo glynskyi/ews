@@ -41,27 +41,27 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <summary>
   /// Mapping of streaming id to subscriptions currently on the connection.
   /// </summary>
-  Map<String, StreamingSubscription> _subscriptions;
+  late Map<String?, StreamingSubscription> _subscriptions;
 
   /// <summary>
   /// connection lifetime, in minutes
   /// </summary>
-  int _connectionTimeout;
+  int? _connectionTimeout;
 
   /// <summary>
   /// ExchangeService instance used to make the EWS call.
   /// </summary>
-  ExchangeService _session;
+  ExchangeService? _session;
 
   /// <summary>
   /// Value indicating whether the class is disposed.
   /// </summary>
-  bool _isDisposed;
+  bool? _isDisposed;
 
   /// <summary>
   /// Currently used instance of a GetStreamingEventsRequest connected to EWS.
   /// </summary>
-  GetStreamingEventsRequest _currentHangingRequest;
+  GetStreamingEventsRequest? _currentHangingRequest;
 
   /// <summary>
   /// Represents a delegate that is invoked when notifications are received from the server
@@ -108,7 +108,7 @@ class StreamingSubscriptionConnection // extends IDisposable
     }
 
     this._session = service;
-    this._subscriptions = new Map<String, StreamingSubscription>();
+    this._subscriptions = new Map<String?, StreamingSubscription>();
     this._connectionTimeout = lifetime;
   }
 
@@ -256,12 +256,12 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <summary>
   /// Gets a value indicating whether this connection is opened
   /// </summary>
-  bool get IsOpen {
+  bool? get IsOpen {
     this.ThrowIfDisposed();
     if (this._currentHangingRequest == null) {
       return false;
     } else {
-      return this._currentHangingRequest.IsConnected;
+      return this._currentHangingRequest!.IsConnected;
     }
   }
 
@@ -272,8 +272,8 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <param name="errorMessage">The error message.</param>
   /* private */
   void ValidateConnectionState(bool isConnectedExpected, String errorMessage) {
-    if ((isConnectedExpected && !this.IsOpen) ||
-        (!isConnectedExpected && this.IsOpen)) {
+    if ((isConnectedExpected && !this.IsOpen!) ||
+        (!isConnectedExpected && this.IsOpen!)) {
       throw new ServiceLocalException(errorMessage);
     }
   }

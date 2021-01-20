@@ -36,11 +36,11 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the response to an individual item update operation.
 /// </summary>
 class UpdateItemResponse extends ServiceResponse {
-  Item _item;
+  late Item _item;
 
-  Item _returnedItem;
+  Item? _returnedItem;
 
-  int _conflictCount;
+  int? _conflictCount;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UpdateItemResponse"/> class.
@@ -92,8 +92,8 @@ class UpdateItemResponse extends ServiceResponse {
     // Note that there can be no returned item at all, as in an UpdateItem call
     // with MessageDisposition set to SendOnly or SendAndSaveCopy.
     if (this._returnedItem != null) {
-      if (this._item.Id.UniqueId == this._returnedItem.Id.UniqueId) {
-        this._item.Id.ChangeKey = this._returnedItem.Id.ChangeKey;
+      if (this._item.Id!.UniqueId == this._returnedItem!.Id!.UniqueId) {
+        this._item.Id!.ChangeKey = this._returnedItem!.Id!.ChangeKey;
         this._returnedItem = null;
       }
     }
@@ -115,21 +115,21 @@ class UpdateItemResponse extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
-  Item _GetObjectInstance(ExchangeService service, String xmlElementName) {
+  Item _GetObjectInstance(ExchangeService? service, String xmlElementName) {
     this._returnedItem = EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
         service, xmlElementName);
 
-    return this._returnedItem;
+    return this._returnedItem!;
   }
 
   /// <summary>
   /// Gets the item that was returned by the update operation. ReturnedItem is set only when a recurring Task
   /// is marked as complete or when its recurrence pattern changes.
   /// </summary>
-  Item get ReturnedItem => this._returnedItem;
+  Item? get ReturnedItem => this._returnedItem;
 
   /// <summary>
   /// Gets the number of property conflicts that were resolved during the update operation.
   /// </summary>
-  int get ConflictCount => this._conflictCount;
+  int? get ConflictCount => this._conflictCount;
 }

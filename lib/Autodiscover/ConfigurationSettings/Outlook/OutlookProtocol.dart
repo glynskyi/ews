@@ -50,10 +50,10 @@ class OutlookProtocol {
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookProtocol instance.
   /// </summary>
   /* private */
-  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       commonProtocolSettings =
-      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>(() {
-    final results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
+    final Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.EcpDeliveryReportUrlFragment] = (p) => p.ecpUrlMt;
     results[UserSettingName.EcpEmailSubscriptionsUrlFragment] =
         (p) => p.ecpUrlAggr;
@@ -81,10 +81,10 @@ class OutlookProtocol {
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookProtocol instance.
   /// </summary>
   /* private */
-  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       internalProtocolSettings =
-      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>(() {
-    var results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.ActiveDirectoryServer] =
         (p) => p.activeDirectoryServer;
     results[UserSettingName.CrossOrganizationSharingEnabled] =
@@ -136,10 +136,10 @@ class OutlookProtocol {
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookProtocol instance.
   /// </summary>
   /* private */
-  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       externalProtocolSettings =
-      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>(() {
-    var results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.ExternalEcpDeliveryReportUrl] =
         (p) => p.ConvertEcpFragmentToUrl(p.ecpUrlRet);
     results[UserSettingName.ExternalEcpEmailSubscriptionsUrl] =
@@ -193,12 +193,12 @@ class OutlookProtocol {
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookProtocol instance.
   /// </summary>
   /* private */
-  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       internalProtocolConverterDictionary =
-      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>(() {
-    var results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
-    commonProtocolSettings.Member.forEach((key, value) => results[key] = value);
-    internalProtocolSettings.Member.forEach(
+      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    commonProtocolSettings.Member!.forEach((key, value) => results[key] = value);
+    internalProtocolSettings.Member!.forEach(
         (key, value) => results[key] = value);
     return results;
   });
@@ -208,12 +208,12 @@ class OutlookProtocol {
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookProtocol instance.
   /// </summary>
   /* private */
-  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       externalProtocolConverterDictionary =
-      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>(() {
-    var results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
-    commonProtocolSettings.Member.forEach((key, value) => results[key] = value);
-    externalProtocolSettings.Member.forEach(
+      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    commonProtocolSettings.Member!.forEach((key, value) => results[key] = value);
+    externalProtocolSettings.Member!.forEach(
         (key, value) => results[key] = value);
     return results;
   });
@@ -223,10 +223,10 @@ class OutlookProtocol {
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookProtocol instance.
   /// </summary>
   /* private */
-  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       webProtocolConverterDictionary =
-      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object>>>(() {
-    var results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+      new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.InternalWebClientUrls] =
         (p) => p.internalOutlookWebAccessUrls;
     results[UserSettingName.ExternalWebClientUrls] =
@@ -241,10 +241,10 @@ class OutlookProtocol {
   static LazyMember<List<UserSettingName>> availableUserSettings =
       new LazyMember<List<UserSettingName>>(() {
     var results = <UserSettingName>[];
-    results.addAll(commonProtocolSettings.Member.keys);
-    results.addAll(internalProtocolSettings.Member.keys);
-    results.addAll(externalProtocolSettings.Member.keys);
-    results.addAll(webProtocolConverterDictionary.Member.keys);
+    results.addAll(commonProtocolSettings.Member!.keys);
+    results.addAll(internalProtocolSettings.Member!.keys);
+    results.addAll(externalProtocolSettings.Member!.keys);
+    results.addAll(webProtocolConverterDictionary.Member!.keys);
     return results;
   });
 
@@ -263,109 +263,109 @@ class OutlookProtocol {
   });
 
   /* private */
-  String activeDirectoryServer;
+  String? activeDirectoryServer;
 
   /* private */
-  String authPackage;
+  String? authPackage;
 
   /* private */
-  String availabilityServiceUrl;
+  String? availabilityServiceUrl;
 
   /* private */
-  String ecpUrl;
+  String? ecpUrl;
 
   /* private */
-  String ecpUrlAggr;
+  String? ecpUrlAggr;
 
   /* private */
-  String ecpUrlMt;
+  String? ecpUrlMt;
 
   /* private */
-  String ecpUrlPublish;
+  String? ecpUrlPublish;
 
   /* private */
-  String ecpUrlPhoto;
+  String? ecpUrlPhoto;
 
   /* private */
-  String ecpUrlConnect;
+  String? ecpUrlConnect;
 
   /* private */
-  String ecpUrlRet;
+  String? ecpUrlRet;
 
   /* private */
-  String ecpUrlSms;
+  String? ecpUrlSms;
 
   /* private */
-  String ecpUrlUm;
+  String? ecpUrlUm;
 
   /* private */
-  String ecpUrlTm;
+  String? ecpUrlTm;
 
   /* private */
-  String ecpUrlTmCreating;
+  String? ecpUrlTmCreating;
 
   /* private */
-  String ecpUrlTmEditing;
+  String? ecpUrlTmEditing;
 
   /* private */
-  String ecpUrlTmHiding;
+  String? ecpUrlTmHiding;
 
   /* private */
-  String siteMailboxCreationURL;
+  String? siteMailboxCreationURL;
 
   /* private */
-  String ecpUrlExtInstall;
+  String? ecpUrlExtInstall;
 
   /* private */
-  String exchangeWebServicesUrl;
+  String? exchangeWebServicesUrl;
 
   /* private */
-  String exchangeManagementWebServicesUrl;
+  String? exchangeManagementWebServicesUrl;
 
   /* private */
-  String mailboxDN;
+  String? mailboxDN;
 
   /* private */
-  String offlineAddressBookUrl;
+  String? offlineAddressBookUrl;
 
   /* private */
-  String exchangeRpcUrl;
+  String? exchangeRpcUrl;
 
   /* private */
-  String exchangeWebServicesPartnerUrl;
+  String? exchangeWebServicesPartnerUrl;
 
   /* private */
-  String publicFolderServer;
+  String? publicFolderServer;
 
   /* private */
-  String server;
+  String? server;
 
   /* private */
-  String serverDN;
+  String? serverDN;
 
   /* private */
-  String unifiedMessagingUrl;
+  String? unifiedMessagingUrl;
 
   /* private */
-  bool sharingEnabled;
+  bool? sharingEnabled;
 
   /* private */
-  bool sslEnabled;
+  bool? sslEnabled;
 
   /* private */
-  bool serverExclusiveConnect;
+  bool? serverExclusiveConnect;
 
   /* private */
-  String certPrincipalName;
+  String? certPrincipalName;
 
   /* private */
-  String groupingInformation;
+  String? groupingInformation;
 
   /* private */
-  WebClientUrlCollection externalOutlookWebAccessUrls;
+  WebClientUrlCollection? externalOutlookWebAccessUrls;
 
   /* private */
-  WebClientUrlCollection internalOutlookWebAccessUrls;
+  WebClientUrlCollection? internalOutlookWebAccessUrls;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OutlookProtocol"/> class.
@@ -440,11 +440,11 @@ class OutlookProtocol {
                 reader, this.externalOutlookWebAccessUrls, reader.LocalName);
             break;
           case XmlElementNames.Ssl:
-            String sslStr = reader.ReadElementValue<String>();
+            String sslStr = reader.ReadElementValue<String>()!;
             this.sslEnabled = sslStr.toLowerCase() == "on";
             break;
           case XmlElementNames.SharingUrl:
-            this.sharingEnabled = reader.ReadElementValue<String>().length > 0;
+            this.sharingEnabled = reader.ReadElementValue<String>()!.length > 0;
             break;
           case XmlElementNames.EcpUrl:
             this.ecpUrl = reader.ReadElementValue<String>();
@@ -500,7 +500,7 @@ class OutlookProtocol {
             break;
           case XmlElementNames.ServerExclusiveConnect:
             String serverExclusiveConnectStr =
-                reader.ReadElementValue<String>();
+                reader.ReadElementValue<String>()!;
             this.serverExclusiveConnect =
                 serverExclusiveConnectStr.toLowerCase() == "on";
             break;
@@ -525,9 +525,9 @@ class OutlookProtocol {
   /// <param name="protocolName">Name of the protocol.</param>
   /// <returns>OutlookProtocolType</returns>
   /* private */
-  static OutlookProtocolType ProtocolNameToType(String protocolName) {
-    OutlookProtocolType protocolType;
-    if (!protocolNameToTypeMap.Member.containsKey(protocolName)) {
+  static OutlookProtocolType? ProtocolNameToType(String? protocolName) {
+    OutlookProtocolType? protocolType;
+    if (!protocolNameToTypeMap.Member!.containsKey(protocolName)) {
       protocolType = OutlookProtocolType.Unknown;
     }
     return protocolType;
@@ -541,18 +541,18 @@ class OutlookProtocol {
   /// <param name="elementName">Name of the element.</param>
   /* private */
   static void LoadWebClientUrlsFromXml(EwsXmlReader reader,
-      WebClientUrlCollection webClientUrls, String elementName) {
+      WebClientUrlCollection? webClientUrls, String elementName) {
     do {
       reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.OWAUrl:
-            String authMethod = reader.ReadAttributeValue(
+            String? authMethod = reader.ReadAttributeValue(
                 XmlAttributeNames.AuthenticationMethod);
-            String owaUrl = reader.ReadElementValue<String>();
+            String? owaUrl = reader.ReadElementValue<String>();
             WebClientUrl webClientUrl = new WebClientUrl(authMethod, owaUrl);
-            webClientUrls.Urls.add(webClientUrl);
+            webClientUrls!.Urls!.add(webClientUrl);
             break;
           default:
             reader.SkipCurrentElement();
@@ -569,11 +569,11 @@ class OutlookProtocol {
   /// <param name="fragment">The fragment.</param>
   /// <returns>Full URL String (or null if either portion is empty.</returns>
   /* private */
-  String ConvertEcpFragmentToUrl(String fragment) {
+  String? ConvertEcpFragmentToUrl(String? fragment) {
     return (StringUtils.IsNullOrEmpty(this.ecpUrl) ||
             StringUtils.IsNullOrEmpty(fragment))
         ? null
-        : (this.ecpUrl + fragment);
+        : (this.ecpUrl! + fragment!);
   }
 
   /// <summary>
@@ -586,16 +586,16 @@ class OutlookProtocol {
     if (this.ConverterDictionary != null) {
       // In English: collect converters that are contained in the requested settings.
       var converterQuery = this
-          .ConverterDictionary
+          .ConverterDictionary!
           .entries
           .where((converter) => requestedSettings.contains(converter.key));
 //                var converterQuery = from converter in this.ConverterDictionary
 //                                     where requestedSettings.Contains(converter.Key)
 //                                     select converter;
 
-      for (MapEntry<UserSettingName, Func<OutlookProtocol, Object>> kv
+      for (MapEntry<UserSettingName, Func<OutlookProtocol, Object?>> kv
           in converterQuery) {
-        Object value = kv.value(this);
+        Object? value = kv.value(this);
         if (value != null) {
           response.Settings[kv.key] = value;
         }
@@ -607,14 +607,14 @@ class OutlookProtocol {
   /// Gets the type of the protocol.
   /// </summary>
   /// <value>The type of the protocol.</value>
-  OutlookProtocolType ProtocolType;
+  OutlookProtocolType? ProtocolType;
 
   /// <summary>
   /// Gets the converter dictionary for protocol type.
   /// </summary>
   /// <value>The converter dictionary.</value>
   /* private */
-  Map<UserSettingName, Func<OutlookProtocol, Object>> get ConverterDictionary {
+  Map<UserSettingName, Func<OutlookProtocol, Object?>>? get ConverterDictionary {
     switch (this.ProtocolType) {
       case OutlookProtocolType.Rpc:
         return internalProtocolConverterDictionary.Member;
@@ -630,6 +630,6 @@ class OutlookProtocol {
   /// <summary>
   /// Gets the available user settings.
   /// </summary>
-  static List<UserSettingName> get AvailableUserSettings =>
+  static List<UserSettingName>? get AvailableUserSettings =>
       availableUserSettings.Member;
 }

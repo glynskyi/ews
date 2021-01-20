@@ -72,7 +72,7 @@ class ItemIdWrapperList
   /// Adds the specified item id.
   /// </summary>
   /// <param name="itemId">The item id.</param>
-  void AddItemId(ItemId itemId) {
+  void AddItemId(ItemId? itemId) {
     this.itemIds.add(new ItemIdWrapper(itemId));
   }
 
@@ -80,8 +80,8 @@ class ItemIdWrapperList
   /// Adds the range.
   /// </summary>
   /// <param name="itemIds">The item ids.</param>
-  void AddRangeItemIds(Iterable<ItemId> itemIds) {
-    for (ItemId itemId in itemIds) {
+  void AddRangeItemIds(Iterable<ItemId?> itemIds) {
+    for (ItemId? itemId in itemIds) {
       this.AddItemId(itemId);
     }
   }
@@ -115,7 +115,7 @@ class ItemIdWrapperList
   /// Gets the <see cref="Microsoft.Exchange.WebServices.Data.Item"/> at the specified index.
   /// </summary>
   /// <param name="index">the index</param>
-  serviceObjects.Item operator [](int index) {
+  serviceObjects.Item? operator [](int index) {
     return this.itemIds[index].GetItem();
   }
 

@@ -35,14 +35,11 @@ import 'package:ews/Sync/Change.dart';
 class ChangeCollection<TChange extends Change>
     with IterableMixin<TChange>
     implements Iterable<TChange> {
-  /* private */
-  List<TChange> changes = <TChange>[];
+  List<TChange> _changes = <TChange>[];
 
-  /* private */
-  String syncState;
+  String? _syncState;
 
-  /* private */
-  bool moreChangesAvailable;
+  bool _moreChangesAvailable = false;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ChangeCollection&lt;TChange&gt;"/> class.
@@ -56,13 +53,13 @@ class ChangeCollection<TChange extends Change>
   void Add(TChange change) {
     EwsUtilities.Assert(change != null, "ChangeList.Add", "change is null");
 
-    this.changes.add(change);
+    this._changes.add(change);
   }
 
   /// <summary>
   /// Gets the number of changes in the collection.
   /// </summary>
-  int get Count => this.changes.length;
+  int get Count => this._changes.length;
 
   /// <summary>
   /// Gets an individual change from the change collection.
@@ -75,25 +72,25 @@ class ChangeCollection<TChange extends Change>
           index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
     }
 
-    return this.changes[index];
+    return this._changes[index];
   }
 
   /// <summary>
   /// Gets the SyncState blob returned by a synchronization operation.
   /// </summary>
-  String get SyncState => this.syncState;
+  String? get SyncState => this._syncState;
 
-  set SyncState(String value) {
-    this.syncState = value;
+  set SyncState(String? value) {
+    this._syncState = value;
   }
 
   /// <summary>
   /// Gets a value indicating whether the there are more changes to be synchronized from the server.
   /// </summary>
-  bool get MoreChangesAvailable => this.moreChangesAvailable;
+  bool get MoreChangesAvailable => this._moreChangesAvailable;
 
   set MoreChangesAvailable(bool value) {
-    this.moreChangesAvailable = value;
+    this._moreChangesAvailable = value;
   }
 
   /// <summary>
@@ -101,5 +98,5 @@ class ChangeCollection<TChange extends Change>
   /// </summary>
   /// <returns>An IEnumerator for the collection.</returns>
   @override
-  Iterator<TChange> get iterator => this.changes.iterator;
+  Iterator<TChange> get iterator => this._changes.iterator;
 }

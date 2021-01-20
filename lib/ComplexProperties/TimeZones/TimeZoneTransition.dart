@@ -48,13 +48,13 @@ class TimeZoneTransition extends ComplexProperty {
   static const String GroupTarget = "Group";
 
   /* private */
-  TimeZoneDefinition timeZoneDefinition;
+  TimeZoneDefinition? timeZoneDefinition;
 
   /* private */
-  TimeZonePeriod targetPeriod;
+  TimeZonePeriod? targetPeriod;
 
   /* private */
-  TimeZoneTransitionGroup targetGroup;
+  TimeZoneTransitionGroup? targetGroup;
 
   /// <summary>
   /// Creates a time zone period transition of the appropriate type given an XML element name.
@@ -63,7 +63,7 @@ class TimeZoneTransition extends ComplexProperty {
   /// <param name="xmlElementName">The XML element name.</param>
   /// <returns>A TimeZonePeriodTransition instance.</returns>
   static TimeZoneTransition Create(
-      TimeZoneDefinition timeZoneDefinition, String xmlElementName) {
+      TimeZoneDefinition? timeZoneDefinition, String xmlElementName) {
     switch (xmlElementName) {
       case XmlElementNames.AbsoluteDateTransition:
         return new AbsoluteDateTransition(timeZoneDefinition);
@@ -142,12 +142,12 @@ class TimeZoneTransition extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.To:
-        String targetKind = reader.ReadAttributeValue(XmlAttributeNames.Kind);
-        String targetId = reader.ReadElementValue<String>();
+        String? targetKind = reader.ReadAttributeValue(XmlAttributeNames.Kind);
+        String? targetId = reader.ReadElementValue<String>();
 
         switch (targetKind) {
           case TimeZoneTransition.PeriodTarget:
-            if (!this.timeZoneDefinition.Periods.containsKey(targetId)) {
+            if (!this.timeZoneDefinition!.Periods.containsKey(targetId)) {
               throw new ServiceLocalException("""string.Format(
                                         Strings.PeriodNotFound,
                                         targetId)""");
@@ -156,7 +156,7 @@ class TimeZoneTransition extends ComplexProperty {
             break;
           case TimeZoneTransition.GroupTarget:
             if (!this
-                .timeZoneDefinition
+                .timeZoneDefinition!
                 .TransitionGroups
                 .containsKey(targetId)) {
               throw new ServiceLocalException("""string.Format(
@@ -186,10 +186,10 @@ class TimeZoneTransition extends ComplexProperty {
 
     if (this.targetPeriod != null) {
       writer.WriteAttributeValue(XmlAttributeNames.Kind, PeriodTarget);
-      writer.WriteValue(this.targetPeriod.Id, XmlElementNames.To);
+      writer.WriteValue(this.targetPeriod!.Id, XmlElementNames.To);
     } else {
       writer.WriteAttributeValue(XmlAttributeNames.Kind, GroupTarget);
-      writer.WriteValue(this.targetGroup.Id, XmlElementNames.To);
+      writer.WriteValue(this.targetGroup!.Id, XmlElementNames.To);
     }
 
     writer.WriteEndElement(); // To
@@ -215,7 +215,7 @@ class TimeZoneTransition extends ComplexProperty {
   /// Initializes a new instance of the <see cref="TimeZoneTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
-  TimeZoneTransition(TimeZoneDefinition timeZoneDefinition) : super() {
+  TimeZoneTransition(TimeZoneDefinition? timeZoneDefinition) : super() {
     this.timeZoneDefinition = timeZoneDefinition;
   }
 
@@ -245,10 +245,10 @@ class TimeZoneTransition extends ComplexProperty {
   /// <summary>
   /// Gets the target period of the transition.
   /// </summary>
-  TimeZonePeriod get TargetPeriod => this.targetPeriod;
+  TimeZonePeriod? get TargetPeriod => this.targetPeriod;
 
   /// <summary>
   /// Gets the target transition group of the transition.
   /// </summary>
-  TimeZoneTransitionGroup get TargetGroup => this.targetGroup;
+  TimeZoneTransitionGroup? get TargetGroup => this.targetGroup;
 }

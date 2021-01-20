@@ -42,7 +42,7 @@ class EwsHttpWebExceptionResponse implements IEwsHttpWebResponse {
   }
 
   @override
-  Uri get ResponseUri => _webException.Request.uri;
+  Uri get ResponseUri => _webException.Request!.uri;
 
   @override
   int get StatusCode => _webException.Response.statusCode;

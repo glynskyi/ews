@@ -38,11 +38,11 @@ import 'package:ews/misc/TimeSpan.dart';
 /// Represents a change of time for a time zone.
 /// </summary>
 class TimeChange extends ComplexProperty {
-  String _timeZoneName;
-  TimeSpan _offset;
-  misc.Time _time;
-  DateTime _absoluteDate;
-  TimeChangeRecurrence _recurrence;
+  String? _timeZoneName;
+  TimeSpan? _offset;
+  misc.Time? _time;
+  DateTime? _absoluteDate;
+  TimeChangeRecurrence? _recurrence;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="TimeChange"/> class.
@@ -70,9 +70,9 @@ class TimeChange extends ComplexProperty {
   /// <summary>
   /// Gets or sets the name of the associated time zone.
   /// </summary>
-  String get TimeZoneName => this._timeZoneName;
+  String? get TimeZoneName => this._timeZoneName;
 
-  set TimeZoneName(String value) {
+  set TimeZoneName(String? value) {
     if (this.CanSetFieldValue(this._timeZoneName, value)) {
       this._timeZoneName = value;
       this.Changed();
@@ -82,9 +82,9 @@ class TimeChange extends ComplexProperty {
   /// <summary>
   /// Gets or sets the offset since the beginning of the year when the change occurs.
   /// </summary>
-  TimeSpan get Offset => this._offset;
+  TimeSpan? get Offset => this._offset;
 
-  set Offset(TimeSpan value) {
+  set Offset(TimeSpan? value) {
     if (this.CanSetFieldValue(this._offset, value)) {
       this._offset = value;
       this.Changed();
@@ -94,9 +94,9 @@ class TimeChange extends ComplexProperty {
   /// <summary>
   /// Gets or sets the time at which the change occurs.
   /// </summary>
-  misc.Time get Time => this._time;
+  misc.Time? get Time => this._time;
 
-  set Time(misc.Time value) {
+  set Time(misc.Time? value) {
     if (this.CanSetFieldValue(this._time, value)) {
       this._time = value;
       this.Changed();
@@ -106,9 +106,9 @@ class TimeChange extends ComplexProperty {
   /// <summary>
   /// Gets or sets the absolute date at which the change occurs. AbsoluteDate and Recurrence are mutually exclusive; setting one resets the other.
   /// </summary>
-  DateTime get AbsoluteDate => this._absoluteDate;
+  DateTime? get AbsoluteDate => this._absoluteDate;
 
-  set AbsoluteDate(DateTime value) {
+  set AbsoluteDate(DateTime? value) {
     if (this.CanSetFieldValue(this._absoluteDate, value)) {
       this._absoluteDate = value;
       this.Changed();
@@ -121,9 +121,9 @@ class TimeChange extends ComplexProperty {
   /// <summary>
   /// Gets or sets the recurrence pattern defining when the change occurs. Recurrence and AbsoluteDate are mutually exclusive; setting one resets the other.
   /// </summary>
-  TimeChangeRecurrence get Recurrence => this._recurrence;
+  TimeChangeRecurrence? get Recurrence => this._recurrence;
 
-  set Recurrence(TimeChangeRecurrence value) {
+  set Recurrence(TimeChangeRecurrence? value) {
     if (this.CanSetFieldValue(this._recurrence, value)) {
       this._recurrence = value;
       this.Changed();
@@ -143,7 +143,7 @@ class TimeChange extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.Offset:
         this._offset =
-            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>());
+            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>()!);
         return true;
       case XmlElementNames.RelativeYearlyRecurrence:
         throw UnimplementedError("XmlElementNames.RelativeYearlyRecurrence");
@@ -151,7 +151,7 @@ class TimeChange extends ComplexProperty {
 //                    this.Recurrence.LoadFromXml(reader, reader.LocalName);
 //        return true;
       case XmlElementNames.AbsoluteDate:
-        DateTime dateTime = DateTime.parse(reader.ReadElementValue<String>());
+        DateTime dateTime = DateTime.parse(reader.ReadElementValue<String>()!);
 
         // TODO: BUG
         this._absoluteDate = dateTime;
@@ -159,7 +159,7 @@ class TimeChange extends ComplexProperty {
         return true;
       case XmlElementNames.Time:
         this._time = new misc.Time.fromDateTime(
-            DateTime.parse(reader.ReadElementValue<String>()));
+            DateTime.parse(reader.ReadElementValue<String>()!));
         return true;
       default:
         return false;
@@ -196,12 +196,12 @@ class TimeChange extends ComplexProperty {
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Types,
           XmlElementNames.Offset,
-          EwsUtilities.TimeSpanToXSDuration(this.Offset));
+          EwsUtilities.TimeSpanToXSDuration(this.Offset!));
     }
 
     if (this.Recurrence != null) {
       this
-          .Recurrence
+          .Recurrence!
           .WriteToXml(writer, XmlElementNames.RelativeYearlyRecurrence);
     }
 
@@ -209,14 +209,14 @@ class TimeChange extends ComplexProperty {
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Types,
           XmlElementNames.AbsoluteDate,
-          EwsUtilities.DateTimeToXSDate(this.AbsoluteDate));
+          EwsUtilities.DateTimeToXSDate(this.AbsoluteDate!));
       // todo : review absolute date conversation
 //                    EwsUtilities.DateTimeToXSDate(new DateTime(this.AbsoluteDate.Value.Ticks, DateTimeKind.Unspecified)));
     }
 
     if (this.Time != null) {
       writer.WriteElementValueWithNamespace(
-          XmlNamespace.Types, XmlElementNames.Time, this.Time.ToXSTime());
+          XmlNamespace.Types, XmlElementNames.Time, this.Time!.ToXSTime());
     }
   }
 }

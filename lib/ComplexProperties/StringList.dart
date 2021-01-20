@@ -71,7 +71,7 @@ class StringList extends ComplexProperty
   @override
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     if (reader.LocalName == this._itemXmlElementName) {
-      this.Add(reader.ReadValue());
+      this.Add(reader.ReadValue<String>()!);
 
       return true;
     } else {
@@ -85,7 +85,7 @@ class StringList extends ComplexProperty
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    for (String item in this) {
+    for (String? item in this) {
       writer.WriteStartElement(XmlNamespace.Types, this._itemXmlElementName);
       writer.WriteValue(item, this._itemXmlElementName);
       writer.WriteEndElement();
@@ -186,7 +186,7 @@ class StringList extends ComplexProperty
   /// </summary>
   /// <param name="index">The index of the String to get or set.</param>
   /// <returns>The String at the specified index.</returns>
-  String operator [](int index) {
+  String? operator [](int index) {
     if (index < 0 || index >= this.Count) {
       throw new RangeError.range(
           index, 0, this.Count, "index", "Strings.IndexIsOutOfRange");
@@ -223,7 +223,7 @@ class StringList extends ComplexProperty
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
   bool operator ==(obj) {
-    StringList other = obj is StringList ? obj : null;
+    StringList? other = obj is StringList ? obj : null;
     if (other != null) {
       return this.toString() == other.toString();
     } else {

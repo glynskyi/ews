@@ -41,11 +41,11 @@ import 'package:ews/misc/SoapFaultDetails.dart';
 /// </summary>
 //    [Serializable]
 class ServiceResponse {
-  ServiceResult _result;
-  ServiceError _errorCode;
-  String _errorMessage;
-  Map<String, String> _errorDetails = {};
-  List<PropertyDefinitionBase> _errorProperties = [];
+  ServiceResult? _result;
+  ServiceError? _errorCode;
+  String? _errorMessage;
+  Map<String?, String?>? _errorDetails = {};
+  List<PropertyDefinitionBase?> _errorProperties = [];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ServiceResponse"/> class.
@@ -154,7 +154,7 @@ class ServiceResponse {
       if (reader.IsStartElement()) {
         switch (reader.LocalName) {
           case XmlElementNames.Value:
-            this._errorDetails[
+            this._errorDetails![
                     reader.ReadAttributeValue(XmlAttributeNames.Name)] =
                 reader.ReadElementValue<String>();
             break;
@@ -261,21 +261,21 @@ class ServiceResponse {
   /// <summary>
   /// Gets the result associated with this response.
   /// </summary>
-  ServiceResult get Result => this._result;
+  ServiceResult? get Result => this._result;
 
   /// <summary>
   /// Gets the error code associated with this response.
   /// </summary>
-  ServiceError get ErrorCode => this._errorCode;
+  ServiceError? get ErrorCode => this._errorCode;
 
   /// <summary>
   /// Gets a detailed error message associated with the response. If Result is set to Success, ErrorMessage returns null.
   /// ErrorMessage is localized according to the PreferredCulture property of the ExchangeService object that
   /// was used to call the method that generated the response.
   /// </summary>
-  String get ErrorMessage => this._errorMessage;
+  String? get ErrorMessage => this._errorMessage;
 
-  set ErrorMessage(String value) {
+  set ErrorMessage(String? value) {
     this._errorMessage = value;
   }
 
@@ -285,7 +285,7 @@ class ServiceResponse {
   /// the ErrorDetailsDictionary will contain keys for EffectiveStartDate and EffectiveEndDate.
   /// </summary>
   /// <value>The error details dictionary.</value>
-  Map<String, String> get ErrorDetails => this._errorDetails;
+  Map<String?, String?>? get ErrorDetails => this._errorDetails;
 
   /// <summary>
   /// Gets information about property errors associated with the response. If Result is set to Success, ErrorProperties returns null.
@@ -293,7 +293,7 @@ class ServiceResponse {
   /// ErrorProperties will contain the definition of the property that was invalid for the request.
   /// </summary>
   /// <value>The error properties list.</value>
-  List<PropertyDefinitionBase> get ErrorProperties => this._errorProperties;
+  List<PropertyDefinitionBase?> get ErrorProperties => this._errorProperties;
 
   @override
   String toString() {

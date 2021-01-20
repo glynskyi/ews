@@ -90,24 +90,24 @@ class ServiceResponseException extends ServiceRemoteException {
   /// <summary>
   /// Gets the service error code.
   /// </summary>
-  ServiceError get ErrorCode => this._response.ErrorCode;
+  ServiceError? get ErrorCode => this._response.ErrorCode;
 
   /// <summary>
   /// Gets a message that describes the current exception.
   /// </summary>
   /// <returns>The error message that explains the reason for the exception.</returns>
   @override
-  String get Message {
+  String? get Message {
     // Special case for Server Error. If the server returned
     // stack trace information, include it in the exception message.
     if (this.Response.ErrorCode == ServiceError.ErrorInternalServerError) {
-      if (this.Response.ErrorDetails.containsKey(_ExceptionClassKey) &&
-          this.Response.ErrorDetails.containsKey(_ExceptionMessageKey) &&
-          this.Response.ErrorDetails.containsKey(_StackTraceKey)) {
-        String exceptionClass = this.Response.ErrorDetails[_ExceptionClassKey];
-        String exceptionMessage =
-            this.Response.ErrorDetails[_ExceptionMessageKey];
-        String stackTrace = this.Response.ErrorDetails[_StackTraceKey];
+      if (this.Response.ErrorDetails!.containsKey(_ExceptionClassKey) &&
+          this.Response.ErrorDetails!.containsKey(_ExceptionMessageKey) &&
+          this.Response.ErrorDetails!.containsKey(_StackTraceKey)) {
+        String? exceptionClass = this.Response.ErrorDetails![_ExceptionClassKey];
+        String? exceptionMessage =
+            this.Response.ErrorDetails![_ExceptionMessageKey];
+        String? stackTrace = this.Response.ErrorDetails![_StackTraceKey];
 
 //                        return StringUtils.Format(
 //                            Strings.ServerErrorAndStackTraceDetails,

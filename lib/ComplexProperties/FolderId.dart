@@ -37,10 +37,10 @@ import 'package:ews/misc/Std/EnumToString.dart';
 /// Represents the Id of a folder.
 /// </summary>
 class FolderId extends ServiceId {
-  /* private */ WellKnownFolderName folderName;
+  /* private */ WellKnownFolderName? folderName;
 
   /* private */
-  complexProperties.Mailbox mailbox;
+  complexProperties.Mailbox? mailbox;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FolderId"/> class.
@@ -96,10 +96,10 @@ class FolderId extends ServiceId {
   void WriteAttributesToXml(EwsServiceXmlWriter writer) {
     if (this.FolderName != null) {
       writer.WriteAttributeValue(
-          XmlAttributeNames.Id, EnumToString.parse(this.FolderName).toLowerCase());
+          XmlAttributeNames.Id, EnumToString.parse(this.FolderName)!.toLowerCase());
 
       if (this.Mailbox != null) {
-        this.Mailbox.WriteToXml(writer, XmlElementNames.Mailbox);
+        this.Mailbox!.WriteToXml(writer, XmlElementNames.Mailbox);
       }
     } else {
       super.WriteAttributesToXml(writer);
@@ -121,12 +121,12 @@ class FolderId extends ServiceId {
   /// <summary>
   /// Gets the name of the folder associated with the folder Id. Name and Id are mutually exclusive; if one is set, the other is null.
   /// </summary>
-  WellKnownFolderName get FolderName => this.folderName;
+  WellKnownFolderName? get FolderName => this.folderName;
 
   /// <summary>
   /// Gets the mailbox of the folder. Mailbox is only set when FolderName is set.
   /// </summary>
-  complexProperties.Mailbox get Mailbox => this.mailbox;
+  complexProperties.Mailbox? get Mailbox => this.mailbox;
 
   /// <summary>
   ///  Defines an implicit conversion between String and FolderId.
@@ -155,7 +155,7 @@ class FolderId extends ServiceId {
   @override
   bool get IsValid {
     if (this.FolderName != null) {
-      return (this.Mailbox == null) || this.Mailbox.IsValid;
+      return (this.Mailbox == null) || this.Mailbox!.IsValid;
     } else {
       return super.IsValid;
     }
@@ -174,7 +174,7 @@ class FolderId extends ServiceId {
     if (identical(this, obj)) {
       return true;
     } else {
-      FolderId other = obj is FolderId ? obj : null;
+      FolderId? other = obj is FolderId ? obj : null;
 
       if (other == null) {
         return false;
@@ -208,7 +208,7 @@ class FolderId extends ServiceId {
     if (this.FolderName != null) {
       hashCode = this.FolderName.hashCode;
 
-      if ((this.Mailbox != null) && this.Mailbox.IsValid) {
+      if ((this.Mailbox != null) && this.Mailbox!.IsValid) {
         hashCode = hashCode ^ this.Mailbox.hashCode;
       }
     } else {
@@ -228,7 +228,7 @@ class FolderId extends ServiceId {
   String toString() {
     if (this.IsValid) {
       if (this.FolderName != null) {
-        if ((this.Mailbox != null) && mailbox.IsValid) {
+        if ((this.Mailbox != null) && mailbox!.IsValid) {
           return "$FolderName ($Mailbox)";
         } else {
           return this.FolderName.toString();

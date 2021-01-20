@@ -35,7 +35,7 @@ import 'package:ews/Search/PagedView.dart';
 /// Represents the view settings in a folder search operation.
 /// </summary>
 class FolderView extends PagedView {
-  FolderTraversal _traversal;
+  FolderTraversal? _traversal;
 
   /// <summary>
   /// Gets the name of the view XML element.
@@ -92,7 +92,7 @@ class FolderView extends PagedView {
   /// <summary>
   /// Gets or sets the search traversal mode. Defaults to FolderTraversal.Shallow.
   /// </summary>
-  FolderTraversal get Traversal => this._traversal;
+  FolderTraversal? get Traversal => this._traversal;
 
-  set Traversal(FolderTraversal value) => this._traversal = value;
+  set Traversal(FolderTraversal? value) => this._traversal = value;
 }

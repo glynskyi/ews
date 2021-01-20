@@ -38,14 +38,14 @@ class IndexedPropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <summary>
   /// Index attribute of IndexedFieldURI element.
   /// </summary>
-  /* private */ String index;
+  /* private */ String? index;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="IndexedPropertyDefinition"/> class.
   /// </summary>
   /// <param name="uri">The FieldURI attribute of the IndexedFieldURI element.</param>
   /// <param name="index">The Index attribute of the IndexedFieldURI element.</param>
-  IndexedPropertyDefinition(String uri, String index) : super.withUri(uri) {
+  IndexedPropertyDefinition(String? uri, String? index) : super.withUri(uri) {
     this.index = index;
   }
 
@@ -67,7 +67,7 @@ class IndexedPropertyDefinition extends ServiceObjectPropertyDefinition {
   /// <summary>
   /// Gets the index of the property.
   /// </summary>
-  String get Index => this.index;
+  String? get Index => this.index;
 
   /// <summary>
   /// Writes the attributes to XML.

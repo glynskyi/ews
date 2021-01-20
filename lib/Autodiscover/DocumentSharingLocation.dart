@@ -36,69 +36,69 @@ class DocumentSharingLocation {
   /// The URL of the web service to use to manipulate documents at the
   /// sharing location.
   /// </summary>
-  String _serviceUrl;
+  String? _serviceUrl;
 
   /// <summary>
   /// The URL of the sharing location (for viewing the contents in a web
   /// browser).
   /// </summary>
-  String _locationUrl;
+  String? _locationUrl;
 
   /// <summary>
   /// The display name of the location.
   /// </summary>
-  String _displayName;
+  String? _displayName;
 
   /// <summary>
   /// The set of file extensions that are allowed at the location.
   /// </summary>
-  Iterable<String> _supportedFileExtensions;
+  Iterable<String?>? _supportedFileExtensions;
 
   /// <summary>
   /// Indicates whether external users (outside the enterprise/tenant)
   /// can view documents at the location.
   /// </summary>
-  bool _externalAccessAllowed = false;
+  bool? _externalAccessAllowed = false;
 
   /// <summary>
   /// Indicates whether anonymous users can view documents at the location.
   /// </summary>
-  bool _anonymousAccessAllowed = false;
+  bool? _anonymousAccessAllowed = false;
 
   /// <summary>
   /// Indicates whether the user can modify permissions for documents at
   /// the location.
   /// </summary>
-  bool _canModifyPermissions = false;
+  bool? _canModifyPermissions = false;
 
   /// <summary>
   /// Indicates whether this location is the user's default location.
   /// This will generally be their My Site.
   /// </summary>
-  bool _isDefault = false;
+  bool? _isDefault = false;
 
   /// <summary>
   /// Gets the URL of the web service to use to manipulate
   /// documents at the sharing location.
   /// </summary>
-  String get ServiceUrl => this._serviceUrl;
+  String? get ServiceUrl => this._serviceUrl;
 
-  set ServiceUrl(String value) => this._serviceUrl = value;
+  set ServiceUrl(String? value) => this._serviceUrl = value;
 
   /// <summary>
   /// Gets the URL of the sharing location (for viewing the
   /// contents in a web browser).
   /// </summary>
-  String get LocationUrl => this._locationUrl;
+  String? get LocationUrl => this._locationUrl;
 
-  set LocationUrl(String value) => this._locationUrl = value;
+  set LocationUrl(String? value) => this._locationUrl = value;
 
   /// <summary>
   /// Gets the display name of the location.
   /// </summary>
-  String get DisplayName => this._displayName;
+  String? get DisplayName => this._displayName;
 
-  set DisplayName(String value) => this._displayName = value;
+  set DisplayName(String? value) => this._displayName = value;
 
   /// <summary>
   /// Gets the space-separated list of file extensions that are
@@ -107,26 +107,26 @@ class DocumentSharingLocation {
   /// <remarks>
   /// Example:  "docx pptx xlsx"
   /// </remarks>
-  Iterable<String> get SupportedFileExtensions => this._supportedFileExtensions;
+  Iterable<String?>? get SupportedFileExtensions => this._supportedFileExtensions;
 
-  set SupportedFileExtensions(Iterable<String> value) =>
+  set SupportedFileExtensions(Iterable<String?>? value) =>
       this._supportedFileExtensions = value;
 
   /// <summary>
   /// Gets a flag indicating whether external users (outside the
   /// enterprise/tenant) can view documents at the location.
   /// </summary>
-  bool get ExternalAccessAllowed => this._externalAccessAllowed;
+  bool? get ExternalAccessAllowed => this._externalAccessAllowed;
 
-  set ExternalAccessAllowed(bool value) => this._externalAccessAllowed = value;
+  set ExternalAccessAllowed(bool? value) => this._externalAccessAllowed = value;
 
   /// <summary>
   /// Gets a flag indicating whether anonymous users can view
   /// documents at the location.
   /// </summary>
-  bool get AnonymousAccessAllowed => this._anonymousAccessAllowed;
+  bool? get AnonymousAccessAllowed => this._anonymousAccessAllowed;
 
-  set AnonymousAccessAllowed(bool value) =>
+  set AnonymousAccessAllowed(bool? value) =>
       this._anonymousAccessAllowed = value;
 
   /// <summary>
@@ -141,17 +141,17 @@ class DocumentSharingLocation {
   /// to avoid surprises.  They should go to SharePoint to modify
   /// permissions for team and project sites.
   /// </remarks>
-  bool get CanModifyPermissions => this._canModifyPermissions;
+  bool? get CanModifyPermissions => this._canModifyPermissions;
 
-  set CanModifyPermissions(bool value) => this._canModifyPermissions = value;
+  set CanModifyPermissions(bool? value) => this._canModifyPermissions = value;
 
   /// <summary>
   /// Gets a flag indicating whether this location is the user's
   /// default location.  This will generally be their My Site.
   /// </summary>
-  bool get IsDefault => this._isDefault;
+  bool? get IsDefault => this._isDefault;
 
-  set IsDefault(bool value) => this._isDefault = value;
+  set IsDefault(bool? value) => this._isDefault = value;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DocumentSharingLocation"/> class.
@@ -184,11 +184,11 @@ class DocumentSharingLocation {
             break;
 
           case XmlElementNames.SupportedFileExtensions:
-            List<String> fileExtensions = <String>[];
+            List<String?> fileExtensions = <String?>[];
             reader.Read();
             while (reader.IsStartElementWithNamespace(
                 XmlNamespace.Autodiscover, XmlElementNames.FileExtension)) {
-              String extension = reader.ReadElementValue<String>();
+              String? extension = reader.ReadElementValue<String>();
               fileExtensions.add(extension);
               reader.Read();
             }

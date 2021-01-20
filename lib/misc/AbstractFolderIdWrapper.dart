@@ -35,7 +35,7 @@ abstract class AbstractFolderIdWrapper {
   /// Obtains the Folder object associated with the wrapper.
   /// </summary>
   /// <returns>The Folder object associated with the wrapper.</returns>
-  Folder GetFolder() {
+  Folder? GetFolder() {
     return null;
   }
 

@@ -80,17 +80,17 @@ class UserSettingError {
   /// Gets the error code.
   /// </summary>
   /// <value>The error code.</value>
-  AutodiscoverErrorCode ErrorCode;
+  AutodiscoverErrorCode? ErrorCode;
 
   /// <summary>
   /// Gets the error message.
   /// </summary>
   /// <value>The error message.</value>
-  String ErrorMessage;
+  String? ErrorMessage;
 
   /// <summary>
   /// Gets the name of the setting.
   /// </summary>
   /// <value>The name of the setting.</value>
-  String SettingName;
+  String? SettingName;
 }

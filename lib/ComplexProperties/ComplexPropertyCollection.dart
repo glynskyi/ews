@@ -43,21 +43,21 @@ abstract class ComplexPropertyCollection<
   List<TComplexProperty> _items = <TComplexProperty>[];
   List<TComplexProperty> _addedItems = <TComplexProperty>[];
   List<TComplexProperty> _modifiedItems = <TComplexProperty>[];
-  List<TComplexProperty> _removedItems = <TComplexProperty>[];
+  List<TComplexProperty?> _removedItems = <TComplexProperty>[];
 
   /// <summary>
   /// Creates the complex property.
   /// </summary>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Complex property instance.</returns>
-  TComplexProperty CreateComplexProperty(String xmlElementName);
+  TComplexProperty? CreateComplexProperty(String xmlElementName);
 
   /// <summary>
   /// Gets the name of the collection item XML element.
   /// </summary>
   /// <param name="complexProperty">The complex property.</param>
   /// <returns>XML element name.</returns>
-  String GetCollectionItemXmlElementName(TComplexProperty complexProperty);
+  String? GetCollectionItemXmlElementName(TComplexProperty complexProperty);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ComplexPropertyCollection&lt;TComplexProperty&gt;"/> class.
@@ -90,7 +90,7 @@ abstract class ComplexPropertyCollection<
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String localElementName) {
+  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
     this.LoadFromXmlWithNamespace(reader, XmlNamespace.Types, localElementName);
   }
 
@@ -102,7 +102,7 @@ abstract class ComplexPropertyCollection<
   /// <param name="localElementName">Name of the local element.</param>
   @override
   void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String localElementName) {
+      XmlNamespace xmlNamespace, String? localElementName) {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         xmlNamespace, localElementName);
 
@@ -111,7 +111,7 @@ abstract class ComplexPropertyCollection<
         reader.Read();
 
         if (reader.IsStartElement()) {
-          TComplexProperty complexProperty =
+          TComplexProperty? complexProperty =
               this.CreateComplexProperty(reader.LocalName);
 
           if (complexProperty != null) {
@@ -144,7 +144,7 @@ abstract class ComplexPropertyCollection<
         reader.Read();
 
         if (reader.IsStartElement()) {
-          TComplexProperty complexProperty =
+          TComplexProperty? complexProperty =
               this.CreateComplexProperty(reader.LocalName);
           TComplexProperty actualComplexProperty = this[index++];
 
@@ -169,7 +169,7 @@ abstract class ComplexPropertyCollection<
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
   void WriteToXmlWithNamespace(EwsServiceXmlWriter writer,
-      XmlNamespace xmlNamespace, String xmlElementName) {
+      XmlNamespace xmlNamespace, String? xmlElementName) {
     if (this.ShouldWriteToRequest()) {
       super.WriteToXmlWithNamespace(writer, xmlNamespace, xmlElementName);
     }
@@ -210,7 +210,7 @@ abstract class ComplexPropertyCollection<
   /// Removes from change log.
   /// </summary>
   /// <param name="complexProperty">The complex property.</param>
-  void RemoveFromChangeLog(TComplexProperty complexProperty) {
+  void RemoveFromChangeLog(TComplexProperty? complexProperty) {
     this._removedItems.remove(complexProperty);
     this._modifiedItems.remove(complexProperty);
     this._addedItems.remove(complexProperty);
@@ -238,7 +238,7 @@ abstract class ComplexPropertyCollection<
   /// Gets the removed items.
   /// </summary>
   /// <value>The removed items.</value>
-  List<TComplexProperty> get RemovedItems => this._removedItems;
+  List<TComplexProperty?> get RemovedItems => this._removedItems;
 
   /// <summary>
   /// Add complex property.
@@ -286,12 +286,12 @@ abstract class ComplexPropertyCollection<
   /// </summary>
   /// <param name="complexProperty">The complex property.</param>
   /// <returns>True if the complex property was successfully removed from the collection, false otherwise.</returns>
-  bool InternalRemove(TComplexProperty complexProperty) {
+  bool InternalRemove(TComplexProperty? complexProperty) {
     EwsUtilities.Assert(complexProperty != null,
         "ComplexPropertyCollection.InternalRemove", "complexProperty is null");
 
     if (this._items.remove(complexProperty)) {
-      complexProperty.removeChangeEvent(this.ItemChanged);
+      complexProperty!.removeChangeEvent(this.ItemChanged);
 
       if (!this._addedItems.contains(complexProperty)) {
         this._removedItems.add(complexProperty);

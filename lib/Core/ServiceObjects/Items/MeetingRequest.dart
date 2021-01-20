@@ -200,8 +200,9 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// <summary>
   /// Gets the type of this meeting request.
   /// </summary>
-  enumerations.MeetingRequestType get MeetingRequestType =>
-      this.PropertyBag[MeetingRequestSchema.MeetingRequestType];
+  enumerations.MeetingRequestType? get MeetingRequestType =>
+      this.PropertyBag[MeetingRequestSchema.MeetingRequestType]
+          as enumerations.MeetingRequestType?;
 
   /// <summary>
   /// Gets the a value representing the intended free/busy status of the meeting.
@@ -216,8 +217,9 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// <summary>
   /// Gets the Enhanced location object.
   /// </summary>
-  complex.EnhancedLocation get EnhancedLocation =>
-      this.PropertyBag[MeetingRequestSchema.EnhancedLocation];
+  complex.EnhancedLocation? get EnhancedLocation =>
+      this.PropertyBag[MeetingRequestSchema.EnhancedLocation]
+          as complex.EnhancedLocation?;
 
   /// <summary>
   /// Gets the start time of the appointment.
@@ -237,7 +239,8 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// <summary>
   /// Gets a value indicating whether this appointment is an all day event.
   /// </summary>
-  bool get IsAllDayEvent => this.PropertyBag[AppointmentSchema.IsAllDayEvent];
+  bool? get IsAllDayEvent =>
+      this.PropertyBag[AppointmentSchema.IsAllDayEvent] as bool?;
 
   /// <summary>
   /// Gets a value indicating the free/busy status of the owner of this appointment.
@@ -247,45 +250,50 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// <summary>
   /// Gets the location of this appointment.
   /// </summary>
-  String get Location => this.PropertyBag[AppointmentSchema.Location];
+  String? get Location =>
+      this.PropertyBag[AppointmentSchema.Location] as String?;
 
   /// <summary>
 
   /// </summary>
-  String get When => this.PropertyBag[AppointmentSchema.When];
+  String? get When => this.PropertyBag[AppointmentSchema.When] as String?;
 
   /// <summary>
   /// Gets a value indicating whether the appointment is a meeting.
   /// </summary>
-  bool get IsMeeting => this.PropertyBag[AppointmentSchema.IsMeeting];
+  bool? get IsMeeting => this.PropertyBag[AppointmentSchema.IsMeeting] as bool?;
 
   /// <summary>
   ///  Gets a value indicating whether the appointment has been cancelled.
   /// </summary>
-  bool get IsCancelled => this.PropertyBag[AppointmentSchema.IsCancelled];
+  bool? get IsCancelled =>
+      this.PropertyBag[AppointmentSchema.IsCancelled] as bool?;
 
   /// <summary>
   ///  Gets a value indicating whether the appointment is recurring.
   /// </summary>
-  bool get IsRecurring => this.PropertyBag[AppointmentSchema.IsRecurring];
+  bool? get IsRecurring =>
+      this.PropertyBag[AppointmentSchema.IsRecurring] as bool?;
 
   /// <summary>
   ///  Gets a value indicating whether the meeting request has already been sent.
   /// </summary>
-  bool get MeetingRequestWasSent =>
-      this.PropertyBag[AppointmentSchema.MeetingRequestWasSent];
+  bool? get MeetingRequestWasSent =>
+      this.PropertyBag[AppointmentSchema.MeetingRequestWasSent] as bool?;
 
   /// <summary>
   /// Gets a value indicating the type of this appointment.
   /// </summary>
-  enumerations.AppointmentType get AppointmentType =>
-      this.PropertyBag[AppointmentSchema.AppointmentType];
+  enumerations.AppointmentType? get AppointmentType =>
+      this.PropertyBag[AppointmentSchema.AppointmentType]
+          as enumerations.AppointmentType?;
 
   /// <summary>
   /// Gets a value indicating what was the last response of the user that loaded this meeting.
   /// </summary>
-  MeetingResponseType get MyResponseType =>
-      this.PropertyBag[AppointmentSchema.MyResponseType];
+  MeetingResponseType? get MyResponseType =>
+      this.PropertyBag[AppointmentSchema.MyResponseType]
+          as MeetingResponseType?;
 
   /// <summary>
   /// Gets the organizer of this meeting.
@@ -296,43 +304,47 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// Gets a list of required attendees for this meeting.
   /// </summary>
   AttendeeCollection get RequiredAttendees =>
-      this.PropertyBag[AppointmentSchema.RequiredAttendees];
+      this.PropertyBag[AppointmentSchema.RequiredAttendees]
+          as AttendeeCollection;
 
   /// <summary>
   /// Gets a list of optional attendeed for this meeting.
   /// </summary>
   AttendeeCollection get OptionalAttendees =>
-      this.PropertyBag[AppointmentSchema.OptionalAttendees];
+      this.PropertyBag[AppointmentSchema.OptionalAttendees]
+          as AttendeeCollection;
 
   /// <summary>
   /// Gets a list of resources for this meeting.
   /// </summary>
   AttendeeCollection get Resources =>
-      this.PropertyBag[AppointmentSchema.Resources];
+      this.PropertyBag[AppointmentSchema.Resources] as AttendeeCollection;
 
   /// <summary>
   /// Gets the number of calendar entries that conflict with this appointment in the authenticated user's calendar.
   /// </summary>
-  int get ConflictingMeetingCount =>
-      this.PropertyBag[AppointmentSchema.ConflictingMeetingCount];
+  int? get ConflictingMeetingCount =>
+      this.PropertyBag[AppointmentSchema.ConflictingMeetingCount] as int?;
 
   /// <summary>
   /// Gets the number of calendar entries that are adjacent to this appointment in the authenticated user's calendar.
   /// </summary>
-  int get AdjacentMeetingCount =>
-      this.PropertyBag[AppointmentSchema.AdjacentMeetingCount];
+  int? get AdjacentMeetingCount =>
+      this.PropertyBag[AppointmentSchema.AdjacentMeetingCount] as int?;
 
   /// <summary>
   /// Gets a list of meetings that conflict with this appointment in the authenticated user's calendar.
   /// </summary>
-  ItemCollection<Appointment> get ConflictingMeetings =>
-      this.PropertyBag[AppointmentSchema.ConflictingMeetings];
+  ItemCollection<Appointment>? get ConflictingMeetings =>
+      this.PropertyBag[AppointmentSchema.ConflictingMeetings]
+          as ItemCollection<Appointment>?;
 
   /// <summary>
   /// Gets a list of meetings that conflict with this appointment in the authenticated user's calendar.
   /// </summary>
-  ItemCollection<Appointment> get AdjacentMeetings =>
-      this.PropertyBag[AppointmentSchema.AdjacentMeetings];
+  ItemCollection<Appointment>? get AdjacentMeetings =>
+      this.PropertyBag[AppointmentSchema.AdjacentMeetings]
+          as ItemCollection<Appointment>?;
 
   /// <summary>
   /// Gets the duration of this appointment.
@@ -342,31 +354,32 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// <summary>
   /// Gets the name of the time zone this appointment is defined in.
   /// </summary>
-  String get TimeZone => this.PropertyBag[AppointmentSchema.TimeZone];
+  String? get TimeZone =>
+      this.PropertyBag[AppointmentSchema.TimeZone] as String?;
 
   /// <summary>
   /// Gets the time when the attendee replied to the meeting request.
   /// </summary>
-  DateTime get AppointmentReplyTime =>
-      this.PropertyBag[AppointmentSchema.AppointmentReplyTime];
+  DateTime? get AppointmentReplyTime =>
+      this.PropertyBag[AppointmentSchema.AppointmentReplyTime] as DateTime?;
 
   /// <summary>
   /// Gets the sequence number of this appointment.
   /// </summary>
-  int get AppointmentSequenceNumber =>
-      this.PropertyBag[AppointmentSchema.AppointmentSequenceNumber];
+  int? get AppointmentSequenceNumber =>
+      this.PropertyBag[AppointmentSchema.AppointmentSequenceNumber] as int?;
 
   /// <summary>
   /// Gets the state of this appointment.
   /// </summary>
-  int get AppointmentState =>
-      this.PropertyBag[AppointmentSchema.AppointmentState];
+  int? get AppointmentState =>
+      this.PropertyBag[AppointmentSchema.AppointmentState] as int?;
 
   /// <summary>
   /// Gets the recurrence pattern for this meeting request.
   /// </summary>
-  complex.Recurrence get Recurrence =>
-      this.PropertyBag[AppointmentSchema.Recurrence];
+  complex.Recurrence? get Recurrence =>
+      this.PropertyBag[AppointmentSchema.Recurrence] as complex.Recurrence?;
 
   /// <summary>
   /// Gets an OccurrenceInfo identifying the first occurrence of this meeting.
@@ -401,30 +414,32 @@ class MeetingRequest extends MeetingMessage implements ICalendarActionProvider {
   /// <summary>
   /// Gets the type of conferencing that will be used during the meeting.
   /// </summary>
-  int get ConferenceType => this.PropertyBag[AppointmentSchema.ConferenceType];
+  int? get ConferenceType =>
+      this.PropertyBag[AppointmentSchema.ConferenceType] as int?;
 
   /// <summary>
   /// Gets a value indicating whether new time proposals are allowed for attendees of this meeting.
   /// </summary>
-  bool get AllowNewTimeProposal =>
-      this.PropertyBag[AppointmentSchema.AllowNewTimeProposal];
+  bool? get AllowNewTimeProposal =>
+      this.PropertyBag[AppointmentSchema.AllowNewTimeProposal] as bool?;
 
   /// <summary>
   /// Gets a value indicating whether this is an online meeting.
   /// </summary>
-  bool get IsOnlineMeeting =>
-      this.PropertyBag[AppointmentSchema.IsOnlineMeeting];
+  bool? get IsOnlineMeeting =>
+      this.PropertyBag[AppointmentSchema.IsOnlineMeeting] as bool?;
 
   /// <summary>
   /// Gets the URL of the meeting workspace. A meeting workspace is a shared Web site for planning meetings and tracking results.
   /// </summary>
-  String get MeetingWorkspaceUrl =>
-      this.PropertyBag[AppointmentSchema.MeetingWorkspaceUrl];
+  String? get MeetingWorkspaceUrl =>
+      this.PropertyBag[AppointmentSchema.MeetingWorkspaceUrl] as String?;
 
   /// <summary>
   /// Gets the URL of the Microsoft NetShow online meeting.
   /// </summary>
-  String get NetShowUrl => this.PropertyBag[AppointmentSchema.NetShowUrl];
+  String? get NetShowUrl =>
+      this.PropertyBag[AppointmentSchema.NetShowUrl] as String?;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

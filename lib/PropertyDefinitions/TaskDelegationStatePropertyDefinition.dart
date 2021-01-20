@@ -63,7 +63,7 @@ class TaskDelegationStatePropertyDefinition
   /// <param name="value">The value.</param>
   /// <returns>TaskDelegationState value.</returns>
   @override
-  Object Parse(String value) {
+  Object? Parse(String? value) {
     switch (value) {
       case NoMatch:
         return TaskDelegationState.NoDelegation;
@@ -88,8 +88,8 @@ class TaskDelegationStatePropertyDefinition
   /// <param name="value">The value.</param>
   /// <returns>TaskDelegationState value.</returns>
   @override
-  String toStringWithObject(Object value) {
-    TaskDelegationState taskDelegationState = value;
+  String? toStringWithObject(Object value) {
+    TaskDelegationState taskDelegationState = value as TaskDelegationState;
 
     switch (taskDelegationState) {
       case TaskDelegationState.NoDelegation:

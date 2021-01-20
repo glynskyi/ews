@@ -42,7 +42,7 @@ import 'package:timezone/standalone.dart';
 /// months after the previous one.
 /// </summary>
 class MonthlyPattern extends IntervalPattern {
-  int _dayOfMonth;
+  int? _dayOfMonth;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="MonthlyPattern"/> class.
@@ -117,7 +117,7 @@ class MonthlyPattern extends IntervalPattern {
   /// Gets or sets the day of the month when each occurrence happens. DayOfMonth must be between 1 and 31.
   /// </summary>
   int get DayOfMonth =>
-      this.GetFieldValueOrThrowIfNull<int>(this._dayOfMonth, "DayOfMonth");
+      this.GetFieldValueOrThrowIfNull<int?>(this._dayOfMonth, "DayOfMonth")!;
 
   set DayOfMonth(int value) {
     if (value < 1 || value > 31) {

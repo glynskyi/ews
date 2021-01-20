@@ -35,21 +35,21 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents PersonaPostalAddress.
 /// </summary>
 class PersonaPostalAddress extends ComplexProperty {
-  String _street;
-  String _city;
-  String _state;
-  String _country;
-  String _postalCode;
-  String _postOfficeBox;
-  String _type;
-  double _latitude;
-  double _longitude;
-  double _accuracy;
-  double _altitude;
-  double _altitudeAccuracy;
-  String _formattedAddress;
-  String _uri;
-  LocationSource _source;
+  String? _street;
+  String? _city;
+  String? _state;
+  String? _country;
+  String? _postalCode;
+  String? _postOfficeBox;
+  String? _type;
+  double? _latitude;
+  double? _longitude;
+  double? _accuracy;
+  double? _altitude;
+  double? _altitudeAccuracy;
+  String? _formattedAddress;
+  String? _uri;
+  LocationSource? _source;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="PersonaPostalAddress"/> class.
@@ -181,9 +181,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the street.
   /// </summary>
-  String get Street => this._street;
+  String? get Street => this._street;
 
-  set Street(String value) {
+  set Street(String? value) {
     if (this.CanSetFieldValue(this._street, value)) {
       this._street = value;
       this.Changed();
@@ -193,9 +193,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the City.
   /// </summary>
-  String get City => this._city;
+  String? get City => this._city;
 
-  set City(String value) {
+  set City(String? value) {
     if (this.CanSetFieldValue(this._city, value)) {
       this._city = value;
       this.Changed();
@@ -205,9 +205,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the state.
   /// </summary>
-  String get State => this._state;
+  String? get State => this._state;
 
-  set State(String value) {
+  set State(String? value) {
     if (this.CanSetFieldValue(this._state, value)) {
       this._state = value;
       this.Changed();
@@ -217,9 +217,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the Country.
   /// </summary>
-  String get Country => this._country;
+  String? get Country => this._country;
 
-  set Country(String value) {
+  set Country(String? value) {
     if (this.CanSetFieldValue(this._country, value)) {
       this._country = value;
       this.Changed();
@@ -229,9 +229,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the postalCode.
   /// </summary>
-  String get PostalCode => this._postalCode;
+  String? get PostalCode => this._postalCode;
 
-  set PostalCode(String value) {
+  set PostalCode(String? value) {
     if (this.CanSetFieldValue(this._postalCode, value)) {
       this._postalCode = value;
       this.Changed();
@@ -241,9 +241,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the postOfficeBox.
   /// </summary>
-  String get PostOfficeBox => this._postOfficeBox;
+  String? get PostOfficeBox => this._postOfficeBox;
 
-  set PostOfficeBox(String value) {
+  set PostOfficeBox(String? value) {
     if (this.CanSetFieldValue(this._postOfficeBox, value)) {
       this._postOfficeBox = value;
       this.Changed();
@@ -253,9 +253,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the type.
   /// </summary>
-  String get Type => this._type;
+  String? get Type => this._type;
 
-  set Type(String value) {
+  set Type(String? value) {
     if (this.CanSetFieldValue(this._type, value)) {
       this._type = value;
       this.Changed();
@@ -265,9 +265,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the location source type.
   /// </summary>
-  LocationSource get Source => this._source;
+  LocationSource? get Source => this._source;
 
-  set Source(LocationSource value) {
+  set Source(LocationSource? value) {
     if (this.CanSetFieldValue(this._source, value)) {
       this._source = value;
       this.Changed();
@@ -277,9 +277,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the location Uri.
   /// </summary>
-  String get Uri => this._uri;
+  String? get Uri => this._uri;
 
-  set Uri(String value) {
+  set Uri(String? value) {
     if (this.CanSetFieldValue(this._uri, value)) {
       this._uri = value;
       this.Changed();
@@ -289,9 +289,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating location latitude.
   /// </summary>
-  double get Latitude => this._latitude;
+  double? get Latitude => this._latitude;
 
-  set Latitude(double value) {
+  set Latitude(double? value) {
     if (this.CanSetFieldValue(this._latitude, value)) {
       this._latitude = value;
       this.Changed();
@@ -301,9 +301,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating location longitude.
   /// </summary>
-  double get Longitude => this._longitude;
+  double? get Longitude => this._longitude;
 
-  set Longitude(double value) {
+  set Longitude(double? value) {
     if (this.CanSetFieldValue(this._longitude, value)) {
       this._longitude = value;
       this.Changed();
@@ -313,9 +313,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the location accuracy.
   /// </summary>
-  double get Accuracy => this._accuracy;
+  double? get Accuracy => this._accuracy;
 
-  set Accuracy(double value) {
+  set Accuracy(double? value) {
     if (this.CanSetFieldValue(this._accuracy, value)) {
       this._accuracy = value;
       this.Changed();
@@ -325,9 +325,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the location altitude.
   /// </summary>
-  double get Altitude => this._altitude;
+  double? get Altitude => this._altitude;
 
-  set Altitude(double value) {
+  set Altitude(double? value) {
     if (this.CanSetFieldValue(this._altitude, value)) {
       this._altitude = value;
       this.Changed();
@@ -337,9 +337,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the location altitude accuracy.
   /// </summary>
-  double get AltitudeAccuracy => this._altitudeAccuracy;
+  double? get AltitudeAccuracy => this._altitudeAccuracy;
 
-  set AltitudeAccuracy(double value) {
+  set AltitudeAccuracy(double? value) {
     if (this.CanSetFieldValue(this._altitudeAccuracy, value)) {
       this._altitudeAccuracy = value;
       this.Changed();
@@ -349,9 +349,9 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <summary>
   /// Gets or sets the street address.
   /// </summary>
-  String get FormattedAddress => this._formattedAddress;
+  String? get FormattedAddress => this._formattedAddress;
 
-  set FormattedAddress(String value) {
+  set FormattedAddress(String? value) {
     if (this.CanSetFieldValue(this._formattedAddress, value)) {
       this._formattedAddress = value;
       this.Changed();

@@ -40,9 +40,9 @@ import 'package:ews/misc/TimeSpan.dart';
 /// Represents custom time zone creation parameters.
 /// </summary>
 class CustomTimeZoneCreateParams {
-  TimeSpan _baseOffsetToUtc;
-  String _standardDisplayName;
-  String _daylightDisplayName;
+  TimeSpan? _baseOffsetToUtc;
+  String? _standardDisplayName;
+  String? _daylightDisplayName;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CustomTimeZoneCreateParams"/> class.
@@ -52,23 +52,23 @@ class CustomTimeZoneCreateParams {
   /// <summary>
   /// Gets or sets the base offset to UTC.
   /// </summary>
-  TimeSpan get BaseOffsetToUtc => this._baseOffsetToUtc;
+  TimeSpan? get BaseOffsetToUtc => this._baseOffsetToUtc;
 
-  set BaseOffsetToUtc(TimeSpan value) => this._baseOffsetToUtc = value;
+  set BaseOffsetToUtc(TimeSpan? value) => this._baseOffsetToUtc = value;
 
   /// <summary>
   /// Gets or sets the display name of the standard period.
   /// </summary>
-  String get StandardDisplayName => this._standardDisplayName;
+  String? get StandardDisplayName => this._standardDisplayName;
 
-  set StandardDisplayName(String value) => this._standardDisplayName = value;
+  set StandardDisplayName(String? value) => this._standardDisplayName = value;
 
   /// <summary>
   /// Gets or sets the display name of the daylight period.
   /// </summary>
-  String get DaylightDisplayName => this._standardDisplayName;
+  String? get DaylightDisplayName => this._standardDisplayName;
 
-  set DaylightDisplayName(String value) => this._standardDisplayName = value;
+  set DaylightDisplayName(String? value) => this._standardDisplayName = value;
 
   /// <summary>
   /// Gets a value indicating whether the custom time zone should have a daylight period.
@@ -84,19 +84,19 @@ class CustomTimeZoneCreateParams {
 /// Represents a group of time zone period transitions.
 /// </summary>
 class TimeZoneTransitionGroup extends ComplexProperty {
-  /* private */ TimeZoneDefinition timeZoneDefinition;
+  /* private */ TimeZoneDefinition? timeZoneDefinition;
 
   /* private */
-  String id;
+  String? id;
 
   /* private */
   List<TimeZoneTransition> transitions = <TimeZoneTransition>[];
 
   /* private */
-  TimeZoneTransition transitionToStandard;
+  TimeZoneTransition? transitionToStandard;
 
   /* private */
-  TimeZoneTransition transitionToDaylight;
+  TimeZoneTransition? transitionToDaylight;
 
   /// <summary>
   /// Loads from XML.
@@ -276,7 +276,7 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   void InitializeTransitions() {
     if (this.transitionToStandard == null) {
       for (TimeZoneTransition transition in this.transitions) {
-        if (transition.TargetPeriod.IsStandardPeriod ||
+        if (transition.TargetPeriod!.IsStandardPeriod ||
             (this.transitions.length == 1)) {
           this.transitionToStandard = transition;
         } else {
@@ -296,7 +296,7 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   /// Gets the transition to the Daylight period.
   /// </summary>
   /* private */
-  TimeZoneTransition get TransitionToDaylight {
+  TimeZoneTransition? get TransitionToDaylight {
     this.InitializeTransitions();
 
     return this.transitionToDaylight;
@@ -306,7 +306,7 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   /// Gets the transition to the Standard period.
   /// </summary>
   /* private */
-  TimeZoneTransition get TransitionToStandard {
+  TimeZoneTransition? get TransitionToStandard {
     this.InitializeTransitions();
 
     return this.transitionToStandard;
@@ -319,10 +319,10 @@ class TimeZoneTransitionGroup extends ComplexProperty {
     CustomTimeZoneCreateParams result = new CustomTimeZoneCreateParams();
 
     if (this.TransitionToDaylight != null) {
-      result.DaylightDisplayName = this.TransitionToDaylight.TargetPeriod.Name;
+      result.DaylightDisplayName = this.TransitionToDaylight!.TargetPeriod!.Name;
     }
 
-    result.StandardDisplayName = this.TransitionToStandard.TargetPeriod.Name;
+    result.StandardDisplayName = this.TransitionToStandard!.TargetPeriod!.Name;
 
     // Assume that the standard period's offset is the base offset to UTC.
     // EWS returns a positive offset for time zones that are behind UTC, and
@@ -398,9 +398,9 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   /// <summary>
   /// Gets or sets the id of this group.
   /// </summary>
-  String get Id => this.id;
+  String? get Id => this.id;
 
-  set Id(String value) => this.id = value;
+  set Id(String? value) => this.id = value;
 
   /// <summary>
   /// Gets the transitions in this group.

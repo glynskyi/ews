@@ -34,11 +34,11 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// </summary>
 //    [Serializable]
 class AutodiscoverError {
-  String _time;
-  String _id;
-  int _errorCode;
-  String _message;
-  String _debugData;
+  String? _time;
+  String? _id;
+  int? _errorCode;
+  String? _message;
+  String? _debugData;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverError"/> class.
@@ -84,25 +84,25 @@ class AutodiscoverError {
   /// <summary>
   /// Gets the time when the error was returned.
   /// </summary>
-  String get Time => this._time;
+  String? get Time => this._time;
 
   /// <summary>
   /// Gets a hash of the name of the computer that is running Microsoft Exchange Server that has the Client Access server role installed.
   /// </summary>
-  String get Id => this._id;
+  String? get Id => this._id;
 
   /// <summary>
   /// Gets the error code.
   /// </summary>
-  int get ErrorCode => this._errorCode;
+  int? get ErrorCode => this._errorCode;
 
   /// <summary>
   /// Gets the error message.
   /// </summary>
-  String get Message => this._message;
+  String? get Message => this._message;
 
   /// <summary>
   /// Gets the debug data.
   /// </summary>
-  String get DebugData => this._debugData;
+  String? get DebugData => this._debugData;
 }

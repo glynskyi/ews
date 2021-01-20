@@ -75,7 +75,7 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// </summary>
   /// <param name="owner">The owner.</param>
   /// <returns>ComplexProperty.</returns>
-  ComplexProperty CreatePropertyInstance(ServiceObject owner);
+  ComplexProperty CreatePropertyInstance(ServiceObject? owner);
 
   /// <summary>
   /// Internals the load from XML.
@@ -91,7 +91,7 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
 
     if (!justCreated &&
         this.HasFlag(PropertyDefinitionFlags.UpdateCollectionItems,
-            propertyBag.Owner.Service.RequestedServerVersion)) {
+            propertyBag.Owner!.Service.RequestedServerVersion)) {
       (complexPropertyOutParam.param as ComplexProperty)
           .UpdateFromXml(reader, reader.LocalName);
     } else {
@@ -112,7 +112,7 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
       PropertyBag propertyBag, OutParam<Object> complexPropertyOutParam) {
     if (!propertyBag.TryGetValue(this, complexPropertyOutParam) ||
         !this.HasFlag(PropertyDefinitionFlags.ReuseInstance,
-            propertyBag.Owner.Service.RequestedServerVersion)) {
+            propertyBag.Owner!.Service.RequestedServerVersion)) {
       complexPropertyOutParam.param =
           this.CreatePropertyInstance(propertyBag.Owner);
       return true;
@@ -148,7 +148,7 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    ComplexProperty complexProperty = propertyBag[this];
+    ComplexProperty? complexProperty = propertyBag[this] as ComplexProperty?;
 
     if (complexProperty != null) {
       complexProperty.WriteToXml(writer, this.XmlElementName);

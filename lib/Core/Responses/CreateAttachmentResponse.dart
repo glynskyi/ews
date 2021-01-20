@@ -35,13 +35,13 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents the response to an individual attachment creation operation.
 /// </summary>
 class CreateAttachmentResponse extends ServiceResponse {
-  /* private */ complex.Attachment attachment;
+  /* private */ complex.Attachment? attachment;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateAttachmentResponse"/> class.
   /// </summary>
   /// <param name="attachment">The attachment.</param>
-  CreateAttachmentResponse(complex.Attachment attachment) : super() {
+  CreateAttachmentResponse(complex.Attachment? attachment) : super() {
     EwsUtilities.Assert(attachment != null, "CreateAttachmentResponse.ctor",
         "attachment is null");
 
@@ -60,7 +60,7 @@ class CreateAttachmentResponse extends ServiceResponse {
         XmlNamespace.Messages, XmlElementNames.Attachments);
 
     reader.Read(nodeType: XmlNodeType.Element);
-    this.attachment.LoadFromXml(reader, reader.LocalName);
+    this.attachment!.LoadFromXml(reader, reader.LocalName);
 
     reader.ReadEndElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Attachments);
@@ -69,5 +69,5 @@ class CreateAttachmentResponse extends ServiceResponse {
   /// <summary>
   /// Gets the attachment that was created.
   /// </summary>
-  complex.Attachment get Attachment => this.attachment;
+  complex.Attachment? get Attachment => this.attachment;
 }

@@ -41,7 +41,7 @@ import 'package:ews/Xml/XmlNodeType.dart';
 class FindFolderResponse extends ServiceResponse {
   FindFoldersResults _results = new FindFoldersResults();
 
-  PropertySet _propertySet;
+  PropertySet? _propertySet;
 
   /// <summary>
   /// Reads response elements from XML.
@@ -55,7 +55,7 @@ class FindFolderResponse extends ServiceResponse {
     this._results.TotalCount =
         reader.ReadAttributeValue<int>(XmlAttributeNames.TotalItemsInView);
     this._results.MoreAvailable = !reader.ReadAttributeValue<bool>(
-        XmlAttributeNames.IncludesLastItemInRange);
+        XmlAttributeNames.IncludesLastItemInRange)!;
 
     // Ignore IndexedPagingOffset attribute if MoreAvailable is false.
     this._results.NextPageOffset = _results.MoreAvailable

@@ -53,8 +53,8 @@ class ByteArrayPropertyDefinition extends TypedPropertyDefinition {
   /// <param name="value">The value.</param>
   /// <returns>Byte array value.</returns>
   @override
-  Object Parse(String value) {
-    return base64.decode(value);
+  Object Parse(String? value) {
+    return base64.decode(value!);
   }
 
   /// <summary>

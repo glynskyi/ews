@@ -50,8 +50,8 @@ class TimeSpanPropertyDefinition extends GenericPropertyDefinition<TimeSpan> {
   /// <param name="value">The value.</param>
   /// <returns>TimeSpan value.</returns>
   @override
-  Object Parse(String value) {
-    return EwsUtilities.XSDurationToTimeSpan(value);
+  Object Parse(String? value) {
+    return EwsUtilities.XSDurationToTimeSpan(value!);
   }
 
 //        /// <summary>

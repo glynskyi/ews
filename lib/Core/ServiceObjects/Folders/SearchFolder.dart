@@ -118,10 +118,7 @@ class SearchFolder extends Folder {
   @override
   void Validate() {
     super.Validate();
-
-    if (this.SearchParameters != null) {
-      this.SearchParameters.Validate();
-    }
+    this.SearchParameters.Validate();
   }
 
   /// <summary>
@@ -137,7 +134,8 @@ class SearchFolder extends Folder {
   /// Gets the search parameters associated with the search folder.
   /// </summary>
   SearchFolderParameters get SearchParameters =>
-      this.PropertyBag[SearchFolderSchema.SearchParameters];
+      this.PropertyBag[SearchFolderSchema.SearchParameters]
+          as SearchFolderParameters;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

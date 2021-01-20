@@ -1,7 +1,7 @@
 class ArgumentException implements Exception {
   final String message;
-  final Exception innerException;
-  final StackTrace innerStackTrace;
+  final Exception? innerException;
+  final StackTrace? innerStackTrace;
 
   const ArgumentException(this.message,
       [this.innerException, this.innerStackTrace]);

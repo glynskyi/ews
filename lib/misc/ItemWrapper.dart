@@ -35,7 +35,7 @@ class ItemWrapper extends AbstractItemIdWrapper {
   /// <summary>
   /// The ItemBase object providing the Id.
   /// </summary>
-  /* private */ Item item;
+  /* private */ Item? item;
 
   /// <summary>
   /// Initializes a new instance of ItemWrapper.
@@ -54,7 +54,7 @@ class ItemWrapper extends AbstractItemIdWrapper {
   /// </summary>
   /// <returns>The ItemBase object associated with the wrapper.</returns>
   @override
-  Item GetItem() {
+  Item? GetItem() {
     return this.item;
   }
 
@@ -64,6 +64,6 @@ class ItemWrapper extends AbstractItemIdWrapper {
   /// <param name="writer">The writer to write the Id to.</param>
   @override
   void WriteToXml(EwsServiceXmlWriter writer) {
-    this.item.Id.WriteToXmlElemenetName(writer);
+    this.item!.Id!.WriteToXmlElemenetName(writer);
   }
 }

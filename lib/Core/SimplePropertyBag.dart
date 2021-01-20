@@ -152,7 +152,7 @@ class SimplePropertyBag<TKey>
     }
   }
 
-  operator []=(TKey key, Object value) {
+  operator []=(TKey key, Object? value) {
     if (value == null) {
       this._InternalRemoveItem(key);
     } else {

@@ -48,13 +48,13 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
       new LazyMember<List<UserSettingName>>(() {
     List<UserSettingName> results = <UserSettingName>[];
     results.addAll(OutlookUser.AvailableUserSettings);
-    results.addAll(OutlookProtocol.AvailableUserSettings);
+    results.addAll(OutlookProtocol.AvailableUserSettings!);
     results.add(UserSettingName.AlternateMailboxes);
     return results;
   });
 
-  OutlookUser _user;
-  OutlookAccount _account;
+  late OutlookUser _user;
+  OutlookAccount? _account;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OutlookConfigurationSettings"/> class.
@@ -71,7 +71,7 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
   /// <returns>True if user setting is available, otherwise, false.
   /// </returns>
   static bool IsAvailableUserSetting(UserSettingName setting) {
-    return _allOutlookProviderSettings.Member.contains(setting);
+    return _allOutlookProviderSettings.Member!.contains(setting);
   }
 
   /// <summary>
@@ -107,7 +107,7 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
           this._user.LoadFromXml(reader);
           return true;
         case XmlElementNames.Account:
-          this._account.LoadFromXml(reader);
+          this._account!.LoadFromXml(reader);
           return true;
         default:
           reader.SkipCurrentElement();
@@ -132,14 +132,14 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
 
     if (this.Error != null) {
       response.ErrorCode = AutodiscoverErrorCode.InternalServerError;
-      response.ErrorMessage = this.Error.Message;
+      response.ErrorMessage = this.Error!.Message;
     } else {
       switch (this.ResponseType) {
         case AutodiscoverResponseType.Success:
           response.ErrorCode = AutodiscoverErrorCode.NoError;
           response.ErrorMessage = "";
           this._user.ConvertToUserSettings(requestedSettings, response);
-          this._account.ConvertToUserSettings(requestedSettings, response);
+          this._account!.ConvertToUserSettings(requestedSettings, response);
           this._ReportUnsupportedSettings(requestedSettings, response);
           break;
         case AutodiscoverResponseType.Error:
@@ -198,9 +198,9 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
   /// </summary>
   /// <value>The type of the response.</value>
   @override
-  AutodiscoverResponseType get ResponseType {
+  AutodiscoverResponseType? get ResponseType {
     if (this._account != null) {
-      return this._account.ResponseType;
+      return this._account!.ResponseType;
     } else {
       return AutodiscoverResponseType.Error;
     }
@@ -210,5 +210,5 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
   /// Gets the redirect target.
   /// </summary>
   @override
-  String get RedirectTarget => this._account.RedirectTarget;
+  String? get RedirectTarget => this._account!.RedirectTarget;
 }

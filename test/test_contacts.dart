@@ -17,7 +17,7 @@ main() {
 
     // Set the number of items to the number of items in the Contacts folder or 50, whichever is smaller.
     int numItems =
-        contactsFolder.TotalCount < 50 ? contactsFolder.TotalCount : 50;
+        contactsFolder.TotalCount! < 50 ? contactsFolder.TotalCount! : 50;
 
     // Instantiate the item view with the number of items to retrieve from the Contacts folder.
     ItemView view = new ItemView.withPageSize(numItems);
@@ -33,7 +33,7 @@ main() {
         await exchangeService.FindItemsGeneric([contactsFolder.Id], null, null,
             view, null, ServiceErrorHandling.ThrowOnError);
 
-    response.first.Results.Items.forEach((contact) {
+    response.first.Results!.Items.forEach((contact) {
       expect(contact.Id, isNotNull);
     });
   });
@@ -49,7 +49,7 @@ main() {
   test('resolves name with contacts', () async {
     final exchangeService = prepareExchangeService(primaryUserCredential);
     await exchangeService.ResolveName(
-        secondaryUserCredential.user.substring(0, 2),
+        secondaryUserCredential.user!.substring(0, 2),
         null,
         ResolveNameSearchLocation.ContactsThenDirectory,
         true,
@@ -65,7 +65,7 @@ main() {
         ResolveNameSearchLocation.ContactsThenDirectory,
         true,
         PropertySet.FirstClassProperties);
-    expect(response.first.Contact.DirectoryPhoto.length, greaterThan(0));
+    expect(response.first.Contact!.DirectoryPhoto!.length, greaterThan(0));
   });
 
   test('creates contact', () async {
@@ -123,9 +123,9 @@ main() {
         "093 76-71-0111");
     expect(savedContact.PhoneNumbers[PhoneNumberKey.MobilePhone],
         "093 76-71-0222");
-    expect(savedContact.Birthday.year, 1988);
-    expect(savedContact.Birthday.month, 11);
-    expect(savedContact.Birthday.day, 22);
+    expect(savedContact.Birthday!.year, 1988);
+    expect(savedContact.Birthday!.month, 11);
+    expect(savedContact.Birthday!.day, 22);
 
     await folder.Delete(DeleteMode.HardDelete);
   });
@@ -168,6 +168,6 @@ main() {
         await Contact.BindWithItemId(exchangeService, updatedContact.Id);
     expect(
         contact.PhoneNumbers[PhoneNumberKey.BusinessPhone], "093 76-71-0333");
-    expect(contact.PhysicalAddresses[PhysicalAddressKey.Home].City, "Ostin");
+    expect(contact.PhysicalAddresses[PhysicalAddressKey.Home]!.City, "Ostin");
   });
 }

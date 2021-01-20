@@ -36,10 +36,10 @@ class FindItemsResults<TItem extends Item>
     with IterableMixin<TItem>
     implements Iterable<TItem> {
   /* private */
-  int totalCount = 0;
+  int? totalCount = 0;
 
   /* private */
-  int nextPageOffset;
+  int? nextPageOffset;
 
   /* private */
   bool moreAvailable = false;
@@ -58,16 +58,16 @@ class FindItemsResults<TItem extends Item>
   /// <summary>
   /// Gets the total number of items matching the search criteria available in the searched folder.
   /// </summary>
-  int get TotalCount => this.totalCount;
+  int? get TotalCount => this.totalCount;
 
-  set TotalCount(int value) => this.totalCount = value;
+  set TotalCount(int? value) => this.totalCount = value;
 
   /// <summary>
   /// Gets the offset that should be used with ItemView to retrieve the next page of items in a FindItems operation.
   /// </summary>
-  int get NextPageOffset => this.nextPageOffset;
+  int? get NextPageOffset => this.nextPageOffset;
 
-  set NextPageOffset(int value) => this.nextPageOffset = value;
+  set NextPageOffset(int? value) => this.nextPageOffset = value;
 
   /// <summary>
   /// Gets a value indicating whether more items matching the search criteria

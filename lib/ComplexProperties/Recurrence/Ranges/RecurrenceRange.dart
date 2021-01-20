@@ -31,14 +31,15 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:timezone/timezone.dart';
 
 /// <summary>
 /// Represents recurrence range with start and end dates.
 /// </summary>
 abstract class RecurrenceRange extends ComplexProperty {
-  DateTime _startDate;
+  DateTime? _startDate;
 
-  complex.Recurrence _recurrence;
+  complex.Recurrence? _recurrence;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="RecurrenceRange"/> class.
@@ -57,7 +58,7 @@ abstract class RecurrenceRange extends ComplexProperty {
   @override
   void Changed() {
     if (this.Recurrence != null) {
-      this.Recurrence.Changed();
+      this.Recurrence!.Changed();
     }
   }
 
@@ -66,7 +67,7 @@ abstract class RecurrenceRange extends ComplexProperty {
   /// </summary>
   /// <param name="recurrence">The recurrence.</param>
   void SetupRecurrence(complex.Recurrence recurrence) {
-    recurrence.StartDate = this.StartDate;
+    recurrence.StartDate = this.StartDate as TZDateTime?;
   }
 
   /// <summary>
@@ -78,7 +79,7 @@ abstract class RecurrenceRange extends ComplexProperty {
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types,
         XmlElementNames.StartDate,
-        EwsUtilities.DateTimeToXSDate(this.StartDate));
+        EwsUtilities.DateTimeToXSDate(this.StartDate!));
   }
 
   /// <summary>
@@ -90,7 +91,7 @@ abstract class RecurrenceRange extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.StartDate:
-        DateTime startDate = reader.ReadElementValueAsUnspecifiedDate();
+        DateTime? startDate = reader.ReadElementValueAsUnspecifiedDate();
         if (startDate != null) {
           this._startDate = startDate;
           return true;
@@ -113,17 +114,17 @@ abstract class RecurrenceRange extends ComplexProperty {
   /// Gets or sets the recurrence.
   /// </summary>
   /// <value>The recurrence.</value>
-  complex.Recurrence get Recurrence => this._recurrence;
+  complex.Recurrence? get Recurrence => this._recurrence;
 
-  set Recurrence(complex.Recurrence value) => this._recurrence = value;
+  set Recurrence(complex.Recurrence? value) => this._recurrence = value;
 
   /// <summary>
   /// Gets or sets the start date.
   /// </summary>
   /// <value>The start date.</value>
-  DateTime get StartDate => this._startDate;
+  DateTime? get StartDate => this._startDate;
 
-  set StartDate(DateTime value) {
+  set StartDate(DateTime? value) {
     if (this.CanSetFieldValue(this._startDate, value)) {
       this._startDate = value;
       Changed();

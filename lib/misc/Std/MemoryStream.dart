@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 class MemoryStream extends Stream<List<int>>
     implements StreamConsumer<Uint8List> {
-  int Position;
-  final elements = List<List<int>>();
+  int? Position;
+  final elements = <List<int>>[];
 
   @override
   Future<void> addStream(Stream<List<int>> stream) async {
@@ -21,8 +21,8 @@ class MemoryStream extends Stream<List<int>>
   Future close() async {}
 
   @override
-  StreamSubscription<List<int>> listen(void Function(List<int> event) onData,
-      {Function onError, void Function() onDone, bool cancelOnError}) {
+  StreamSubscription<List<int>> listen(void Function(List<int> event)? onData,
+      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
     return Stream.fromIterable(elements).listen(onData,
         onError: onError, onDone: onDone, cancelOnError: cancelOnError);
   }

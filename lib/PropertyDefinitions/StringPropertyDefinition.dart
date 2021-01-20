@@ -51,7 +51,7 @@ class StringPropertyDefinition extends TypedPropertyDefinition {
   /// <param name="value">The value.</param>
   /// <returns>String value.</returns>
   @override
-  Object Parse(String value) {
+  Object? Parse(String? value) {
     return value;
   }
 

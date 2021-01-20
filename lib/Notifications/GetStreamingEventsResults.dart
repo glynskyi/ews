@@ -39,12 +39,12 @@ class NotificationGroup {
   /// <summary>
   /// Subscription Id
   /// </summary>
-  String SubscriptionId;
+  String? SubscriptionId;
 
   /// <summary>
   /// Events in the response associated with the subscription id.
   /// </summary>
-  List<NotificationEvent> Events;
+  late List<NotificationEvent> Events;
 }
 
 /// <summary>
@@ -84,10 +84,10 @@ class GetStreamingEventsResults {
         if (reader.IsStartElement()) {
           String eventElementName = reader.LocalName;
 
-          if (GetEventsResults.XmlElementNameToEventTypeMap.containsKey(
+          if (GetEventsResults.XmlElementNameToEventTypeMap!.containsKey(
               eventElementName)) {
-            EventType eventType =
-                GetEventsResults.XmlElementNameToEventTypeMap[eventElementName];
+            EventType? eventType =
+                GetEventsResults.XmlElementNameToEventTypeMap![eventElementName];
             if (eventType == EventType.Status) {
               // We don't need to return status events
               reader.ReadEndElementIfNecessary(
@@ -119,9 +119,9 @@ class GetStreamingEventsResults {
   void LoadNotificationEventFromXml(
       EwsServiceXmlReader reader,
       String eventElementName,
-      EventType eventType,
+      EventType? eventType,
       NotificationGroup notifications) {
-    DateTime timestamp = reader.ReadElementValueWithNamespace<DateTime>(
+    DateTime? timestamp = reader.ReadElementValueWithNamespace<DateTime>(
         XmlNamespace.Types, XmlElementNames.TimeStamp);
 
     NotificationEvent notificationEvent;

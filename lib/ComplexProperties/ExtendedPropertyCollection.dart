@@ -58,7 +58,7 @@ class ExtendedPropertyCollection
   /// <param name="complexProperty">The complex property.</param>
   /// <returns>XML element name.</returns>
   @override
-  String GetCollectionItemXmlElementName(ExtendedProperty complexProperty) {
+  String? GetCollectionItemXmlElementName(ExtendedProperty complexProperty) {
     // This method is unused in this class, so just return null.
     return null;
   }
@@ -69,7 +69,7 @@ class ExtendedPropertyCollection
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String localElementName) {
+  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
     ExtendedProperty extendedProperty = new ExtendedProperty();
 
     extendedProperty.LoadFromXml(reader, reader.LocalName);
@@ -82,7 +82,7 @@ class ExtendedPropertyCollection
   /// <param name="writer">The writer.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void WriteToXml(EwsServiceXmlWriter writer, String xmlElementName) {
+  void WriteToXml(EwsServiceXmlWriter writer, String? xmlElementName) {
     for (ExtendedProperty extendedProperty in this) {
       extendedProperty.WriteToXml(writer, XmlElementNames.ExtendedProperty);
     }
@@ -95,7 +95,7 @@ class ExtendedPropertyCollection
   /// <returns>ExtendedProperty.</returns>
   ExtendedProperty _GetOrAddExtendedProperty(
       ExtendedPropertyDefinition propertyDefinition) {
-    ExtendedProperty extendedProperty = null;
+    ExtendedProperty? extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =
         new OutParam<ExtendedProperty>();
     if (!this._TryGetProperty(propertyDefinition, extendedPropertyOut)) {
@@ -105,7 +105,7 @@ class ExtendedPropertyCollection
     } else {
       extendedProperty = extendedPropertyOut.param;
     }
-    return extendedProperty;
+    return extendedProperty!;
   }
 
   /// <summary>
@@ -128,7 +128,7 @@ class ExtendedPropertyCollection
   bool RemoveExtendedProperty(ExtendedPropertyDefinition propertyDefinition) {
     EwsUtilities.ValidateParam(propertyDefinition, "propertyDefinition");
 
-    ExtendedProperty extendedProperty = null;
+    ExtendedProperty? extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =
         new OutParam<ExtendedProperty>();
     if (this._TryGetProperty(propertyDefinition, extendedPropertyOut)) {
@@ -168,7 +168,7 @@ class ExtendedPropertyCollection
   /// <returns>True if property exists in collection.</returns>
   bool TryGetValue<T>(ExtendedPropertyDefinition propertyDefinition,
       OutParam<T> propertyValueOut) {
-    ExtendedProperty extendedProperty = null;
+    ExtendedProperty? extendedProperty = null;
     OutParam<ExtendedProperty> extendedPropertyOut =
         new OutParam<ExtendedProperty>();
     if (this._TryGetProperty(propertyDefinition, extendedPropertyOut)) {
@@ -181,7 +181,7 @@ class ExtendedPropertyCollection
 //            cls.getSimpleName());
 //        throw new ArgumentException(errorMessage, "propertyDefinition");
 //      }
-      propertyValueOut.param = extendedProperty.Value;
+      propertyValueOut.param = extendedProperty!.Value as T?;
       return true;
     } else {
       propertyValueOut.param = null;
@@ -219,7 +219,7 @@ class ExtendedPropertyCollection
   /// <returns>
   /// True if property generated serialization.
   /// </returns>
-  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
+  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject? ewsObject,
       PropertyDefinition propertyDefinition) {
     List<ExtendedProperty> propertiesToSet = <ExtendedProperty>[];
 
@@ -228,8 +228,8 @@ class ExtendedPropertyCollection
 
     for (ExtendedProperty extendedProperty in propertiesToSet) {
       writer.WriteStartElement(
-          XmlNamespace.Types, ewsObject.GetSetFieldXmlElementName());
-      extendedProperty.PropertyDefinition.WriteToXml(writer);
+          XmlNamespace.Types, ewsObject!.GetSetFieldXmlElementName());
+      extendedProperty.PropertyDefinition!.WriteToXml(writer);
 
       writer.WriteStartElement(
           XmlNamespace.Types, ewsObject.GetXmlElementName());
@@ -239,10 +239,10 @@ class ExtendedPropertyCollection
       writer.WriteEndElement();
     }
 
-    for (ExtendedProperty extendedProperty in this.RemovedItems) {
+    for (ExtendedProperty? extendedProperty in this.RemovedItems) {
       writer.WriteStartElement(
-          XmlNamespace.Types, ewsObject.GetDeleteFieldXmlElementName());
-      extendedProperty.PropertyDefinition.WriteToXml(writer);
+          XmlNamespace.Types, ewsObject!.GetDeleteFieldXmlElementName());
+      extendedProperty!.PropertyDefinition!.WriteToXml(writer);
       writer.WriteEndElement();
     }
 
@@ -258,11 +258,11 @@ class ExtendedPropertyCollection
   /// True if property generated serialization.
   /// </returns>
   bool WriteDeleteUpdateToXml(
-      EwsServiceXmlWriter writer, ServiceObject ewsObject) {
+      EwsServiceXmlWriter writer, ServiceObject? ewsObject) {
     for (ExtendedProperty extendedProperty in this.Items) {
       writer.WriteStartElement(
-          XmlNamespace.Types, ewsObject.GetDeleteFieldXmlElementName());
-      extendedProperty.PropertyDefinition.WriteToXml(writer);
+          XmlNamespace.Types, ewsObject!.GetDeleteFieldXmlElementName());
+      extendedProperty.PropertyDefinition!.WriteToXml(writer);
       writer.WriteEndElement();
     }
 

@@ -62,14 +62,14 @@ class _PhysicalAddressSchema {
   /// Gets the XML element names.
   /// </summary>
   /// <value>The XML element names.</value>
-  static List<String> get XmlElementNames => _xmlElementNames.Member;
+  static List<String>? get XmlElementNames => _xmlElementNames.Member;
 }
 
 /// <summary>
 /// Represents an entry of an PhysicalAddressDictionary.
 /// </summary>
 class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
-  SimplePropertyBag<String> _propertyBag;
+  late SimplePropertyBag<String> _propertyBag;
 
   /// <summary>
   /// Initializes a new instance of PhysicalAddressEntry
@@ -82,42 +82,45 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   /// <summary>
   /// Gets or sets the street.
   /// </summary>
-  String get Street => this._propertyBag[_PhysicalAddressSchema.Street];
+  String? get Street =>
+      this._propertyBag[_PhysicalAddressSchema.Street] as String?;
 
-  set Street(String value) =>
+  set Street(String? value) =>
       this._propertyBag[_PhysicalAddressSchema.Street] = value;
 
   /// <summary>
   /// Gets or sets the city.
   /// </summary>
-  String get City => this._propertyBag[_PhysicalAddressSchema.City];
+  String? get City => this._propertyBag[_PhysicalAddressSchema.City] as String?;
 
-  set City(String value) =>
+  set City(String? value) =>
       this._propertyBag[_PhysicalAddressSchema.City] = value;
 
   /// <summary>
   /// Gets or sets the state.
   /// </summary>
-  String get State => this._propertyBag[_PhysicalAddressSchema.State];
+  String? get State =>
+      this._propertyBag[_PhysicalAddressSchema.State] as String?;
 
-  set State(String value) =>
+  set State(String? value) =>
       this._propertyBag[_PhysicalAddressSchema.State] = value;
 
   /// <summary>
   /// Gets or sets the country or region.
   /// </summary>
-  String get CountryOrRegion =>
-      this._propertyBag[_PhysicalAddressSchema.CountryOrRegion];
+  String? get CountryOrRegion =>
+      this._propertyBag[_PhysicalAddressSchema.CountryOrRegion] as String?;
 
-  set CountryOrRegion(String value) =>
+  set CountryOrRegion(String? value) =>
       this._propertyBag[_PhysicalAddressSchema.CountryOrRegion] = value;
 
   /// <summary>
   /// Gets or sets the postal code.
   /// </summary>
-  String get PostalCode => this._propertyBag[_PhysicalAddressSchema.PostalCode];
+  String? get PostalCode =>
+      this._propertyBag[_PhysicalAddressSchema.PostalCode] as String?;
 
-  set PostalCode(String value) =>
+  set PostalCode(String? value) =>
       this._propertyBag[_PhysicalAddressSchema.PostalCode] = value;
 
   /// <summary>
@@ -135,7 +138,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   /// <returns>True if element was read.</returns>
   @override
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (_PhysicalAddressSchema.XmlElementNames.contains(reader.LocalName)) {
+    if (_PhysicalAddressSchema.XmlElementNames!.contains(reader.LocalName)) {
       this._propertyBag[reader.LocalName] = reader.ReadElementValue<String>();
 
       return true;
@@ -150,7 +153,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    for (String xmlElementName in _PhysicalAddressSchema.XmlElementNames) {
+    for (String xmlElementName in _PhysicalAddressSchema.XmlElementNames!) {
       writer.WriteElementValueWithNamespace(XmlNamespace.Types, xmlElementName,
           this._propertyBag[xmlElementName]);
     }
@@ -164,8 +167,8 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   /// <param name="ownerDictionaryXmlElementName">Name of the owner dictionary XML element.</param>
   /// <returns>True if update XML was written.</returns>
   @override
-  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject ewsObject,
-      String ownerDictionaryXmlElementName) {
+  bool WriteSetUpdateToXml(EwsServiceXmlWriter writer, ServiceObject? ewsObject,
+      String? ownerDictionaryXmlElementName) {
     List<String> fieldsToSet = <String>[];
 
     for (String xmlElementName in this._propertyBag.AddedItems) {
@@ -178,7 +181,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
 
     for (String xmlElementName in fieldsToSet) {
       writer.WriteStartElement(
-          XmlNamespace.Types, ewsObject.GetSetFieldXmlElementName());
+          XmlNamespace.Types, ewsObject!.GetSetFieldXmlElementName());
 
       writer.WriteStartElement(
           XmlNamespace.Types, XmlElementNames.IndexedFieldURI);
@@ -203,7 +206,7 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
     }
 
     for (String xmlElementName in this._propertyBag.RemovedItems) {
-      this._InternalWriteDeleteFieldToXml(writer, ewsObject, xmlElementName);
+      this._InternalWriteDeleteFieldToXml(writer, ewsObject!, xmlElementName);
     }
 
     return true;
@@ -217,9 +220,9 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   /// <returns>True if update XML was written.</returns>
   @override
   bool WriteDeleteUpdateToXml(
-      EwsServiceXmlWriter writer, ServiceObject ewsObject) {
-    for (String xmlElementName in _PhysicalAddressSchema.XmlElementNames) {
-      this._InternalWriteDeleteFieldToXml(writer, ewsObject, xmlElementName);
+      EwsServiceXmlWriter writer, ServiceObject? ewsObject) {
+    for (String xmlElementName in _PhysicalAddressSchema.XmlElementNames!) {
+      this._InternalWriteDeleteFieldToXml(writer, ewsObject!, xmlElementName);
     }
 
     return true;

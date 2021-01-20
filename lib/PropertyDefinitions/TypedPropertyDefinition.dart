@@ -85,7 +85,7 @@ abstract class TypedPropertyDefinition extends PropertyDefinition {
   /// </summary>
   /// <param name="value">The value.</param>
   /// <returns>Typed value.</returns>
-  Object Parse(String value);
+  Object? Parse(String? value);
 
   /// <summary>
   /// Gets a value indicating whether this property definition is for a nullable type (ref, int?, bool?...).
@@ -98,7 +98,7 @@ abstract class TypedPropertyDefinition extends PropertyDefinition {
   /// </summary>
   /// <param name="value">The value.</param>
   /// <returns>String representation of property value.</returns>
-  String toStringWithObject(Object value) {
+  String? toStringWithObject(Object value) {
     return value.toString();
   }
 
@@ -110,7 +110,7 @@ abstract class TypedPropertyDefinition extends PropertyDefinition {
   @override
   void LoadPropertyValueFromXml(
       EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    String value = reader.ReadElementValueWithNamespace(
+    String? value = reader.ReadElementValueWithNamespace(
         XmlNamespace.Types, this.XmlElementName);
 
     if (!StringUtils.IsNullOrEmpty(value)) {
@@ -127,7 +127,7 @@ abstract class TypedPropertyDefinition extends PropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    Object value = propertyBag[this];
+    Object? value = propertyBag[this];
 
     if (value != null) {
       writer.WriteElementValue(

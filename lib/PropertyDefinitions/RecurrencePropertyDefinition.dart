@@ -68,7 +68,7 @@ class RecurrencePropertyDefinition extends PropertyDefinition {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Recurrence);
 
-    Recurrence recurrence = null;
+    Recurrence? recurrence = null;
 
     reader.Read(nodeType: XmlNodeType.Element); // This is the pattern element
 
@@ -172,7 +172,7 @@ class RecurrencePropertyDefinition extends PropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    Recurrence value = propertyBag[this];
+    Recurrence? value = propertyBag[this] as Recurrence?;
 
     if (value != null) {
       value.WriteToXml(writer, XmlElementNames.Recurrence);

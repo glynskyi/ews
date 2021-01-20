@@ -82,7 +82,7 @@ class Contact extends Item {
   /// <param name="propertySet">The set of properties to load.</param>
   /// <returns>A Contact instance representing the contact corresponding to the specified Id.</returns>
   static Future<Contact> BindWithItemIdAndPropertySet(
-      ExchangeService service, ItemId id, PropertySet propertySet) {
+      ExchangeService service, ItemId? id, PropertySet propertySet) {
     return service.BindToItemGeneric<Contact>(id, propertySet);
   }
 
@@ -93,7 +93,7 @@ class Contact extends Item {
   /// <param name="service">The service to use to bind to the contact.</param>
   /// <param name="id">The Id of the contact to bind to.</param>
   /// <returns>A Contact instance representing the contact corresponding to the specified Id.</returns>
-  static Future<Contact> BindWithItemId(ExchangeService service, ItemId id) {
+  static Future<Contact> BindWithItemId(ExchangeService service, ItemId? id) {
     return Contact.BindWithItemIdAndPropertySet(
         service, id, PropertySet.FirstClassProperties);
   }
@@ -160,7 +160,7 @@ class Contact extends Item {
   /// Retrieves the file attachment that holds the contact's picture.
   /// </summary>
   /// <returns>The file attachment that holds the contact's picture.</returns>
-  FileAttachment GetContactPictureAttachment() {
+  FileAttachment? GetContactPictureAttachment() {
     EwsUtilities.ValidateMethodVersion(this.Service,
         ExchangeVersion.Exchange2010, "GetContactPictureAttachment");
 
@@ -169,8 +169,9 @@ class Contact extends Item {
           "AttachmentCollectionNotLoaded", "Attachments");
     }
 
-    for (FileAttachment fileAttachment in this.Attachments) {
-      if (fileAttachment.IsContactPhoto) {
+    for (FileAttachment fileAttachment
+        in this.Attachments as Iterable<FileAttachment>) {
+      if (fileAttachment.IsContactPhoto!) {
         return fileAttachment;
       }
     }
@@ -186,7 +187,7 @@ class Contact extends Item {
     for (int index = this.Attachments.Count - 1; index >= 0; index--) {
       FileAttachment fileAttachment = this.Attachments[index] as FileAttachment;
       if (fileAttachment != null) {
-        if (fileAttachment.IsContactPhoto) {
+        if (fileAttachment.IsContactPhoto!) {
           this.Attachments.Remove(fileAttachment);
         }
       }
@@ -227,71 +228,75 @@ class Contact extends Item {
   /// Gets or set the name under which this contact is filed as. FileAs can be manually set or
   /// can be automatically calculated based on the value of the FileAsMapping property.
   /// </summary>
-  String get FileAs => this.PropertyBag[ContactSchema.FileAs];
+  String? get FileAs => this.PropertyBag[ContactSchema.FileAs] as String?;
 
-  set FileAs(String value) => this.PropertyBag[ContactSchema.FileAs] = value;
+  set FileAs(String? value) => this.PropertyBag[ContactSchema.FileAs] = value;
 
   /// <summary>
   /// Gets or sets a value indicating how the FileAs property should be automatically calculated.
   /// </summary>
-  enumerations.FileAsMapping get FileAsMapping =>
-      this.PropertyBag[ContactSchema.FileAsMapping];
+  enumerations.FileAsMapping? get FileAsMapping =>
+      this.PropertyBag[ContactSchema.FileAsMapping]
+          as enumerations.FileAsMapping?;
 
-  set FileAsMapping(enumerations.FileAsMapping value) =>
+  set FileAsMapping(enumerations.FileAsMapping? value) =>
       this.PropertyBag[ContactSchema.FileAsMapping] = value;
 
   /// <summary>
   /// Gets or sets the display name of the contact.
   /// </summary>
-  String get DisplayName => this.PropertyBag[ContactSchema.DisplayName];
+  String? get DisplayName =>
+      this.PropertyBag[ContactSchema.DisplayName] as String?;
 
-  set DisplayName(String value) =>
+  set DisplayName(String? value) =>
       this.PropertyBag[ContactSchema.DisplayName] = value;
 
   /// <summary>
   /// Gets or sets the given name of the contact.
   /// </summary>
-  String get GivenName => this.PropertyBag[ContactSchema.GivenName];
+  String? get GivenName => this.PropertyBag[ContactSchema.GivenName] as String?;
 
-  set GivenName(String value) =>
+  set GivenName(String? value) =>
       this.PropertyBag[ContactSchema.GivenName] = value;
 
   /// <summary>
   /// Gets or sets the initials of the contact.
   /// </summary>
-  String get Initials => this.PropertyBag[ContactSchema.Initials];
+  String? get Initials => this.PropertyBag[ContactSchema.Initials] as String?;
 
-  set Initials(String value) =>
+  set Initials(String? value) =>
       this.PropertyBag[ContactSchema.Initials] = value;
 
   /// <summary>
   /// Gets or sets the initials of the contact.
   /// </summary>
-  String get MiddleName => this.PropertyBag[ContactSchema.MiddleName];
+  String? get MiddleName =>
+      this.PropertyBag[ContactSchema.MiddleName] as String?;
 
-  set MiddleName(String value) =>
+  set MiddleName(String? value) =>
       this.PropertyBag[ContactSchema.MiddleName] = value;
 
   /// <summary>
   /// Gets or sets the middle name of the contact.
   /// </summary>
-  String get NickName => this.PropertyBag[ContactSchema.NickName];
+  String? get NickName => this.PropertyBag[ContactSchema.NickName] as String?;
 
-  set NickName(String value) =>
+  set NickName(String? value) =>
       this.PropertyBag[ContactSchema.NickName] = value;
 
   /// <summary>
   /// Gets the complete name of the contact.
   /// </summary>
-  complex.CompleteName get CompleteName =>
-      this.PropertyBag[ContactSchema.CompleteName];
+  complex.CompleteName? get CompleteName =>
+      this.PropertyBag[ContactSchema.CompleteName] as complex.CompleteName?;
 
   /// <summary>
   /// Gets or sets the compnay name of the contact.
   /// </summary>
-  String get CompanyName => this.PropertyBag[ContactSchema.CompanyName];
+  String? get CompanyName =>
+      this.PropertyBag[ContactSchema.CompanyName] as String?;
 
-  set CompanyName(String value) =>
+  set CompanyName(String? value) =>
       this.PropertyBag[ContactSchema.CompanyName] = value;
 
   /// <summary>
@@ -299,59 +304,64 @@ class Contact extends Item {
   /// use the following syntax: EmailAddresses[EmailAddressKey.EmailAddress1] = "john.doe@contoso.com"
   /// </summary>
   EmailAddressDictionary get EmailAddresses =>
-      this.PropertyBag[ContactSchema.EmailAddresses];
+      this.PropertyBag[ContactSchema.EmailAddresses] as EmailAddressDictionary;
 
   /// <summary>
   /// Gets an indexed list of physical addresses for the contact. For example, to set the business address,
   /// use the following syntax: PhysicalAddresses[PhysicalAddressKey.Business] = new PhysicalAddressEntry()
   /// </summary>
   PhysicalAddressDictionary get PhysicalAddresses =>
-      this.PropertyBag[ContactSchema.PhysicalAddresses];
+      this.PropertyBag[ContactSchema.PhysicalAddresses]
+          as PhysicalAddressDictionary;
 
   /// <summary>
   /// Gets an indexed list of phone numbers for the contact. For example, to set the home phone number,
   /// use the following syntax: PhoneNumbers[PhoneNumberKey.HomePhone] = "phone number"
   /// </summary>
   PhoneNumberDictionary get PhoneNumbers =>
-      this.PropertyBag[ContactSchema.PhoneNumbers];
+      this.PropertyBag[ContactSchema.PhoneNumbers] as PhoneNumberDictionary;
 
   /// <summary>
   /// Gets or sets the contact's assistant name.
   /// </summary>
-  String get AssistantName => this.PropertyBag[ContactSchema.AssistantName];
+  String? get AssistantName =>
+      this.PropertyBag[ContactSchema.AssistantName] as String?;
 
-  set AssistantName(String value) =>
+  set AssistantName(String? value) =>
       this.PropertyBag[ContactSchema.AssistantName] = value;
 
   /// <summary>
   /// Gets or sets the birthday of the contact.
   /// </summary>
-  DateTime get Birthday => this.PropertyBag[ContactSchema.Birthday];
+  DateTime? get Birthday =>
+      this.PropertyBag[ContactSchema.Birthday] as DateTime?;
 
-  set Birthday(DateTime value) =>
+  set Birthday(DateTime? value) =>
       this.PropertyBag[ContactSchema.Birthday] = value;
 
   /// <summary>
   /// Gets or sets the business home page of the contact.
   /// </summary>
-  String get BusinessHomePage =>
-      this.PropertyBag[ContactSchema.BusinessHomePage];
+  String? get BusinessHomePage =>
+      this.PropertyBag[ContactSchema.BusinessHomePage] as String?;
 
-  set BusinessHomePage(String value) =>
+  set BusinessHomePage(String? value) =>
       this.PropertyBag[ContactSchema.BusinessHomePage] = value;
 
   /// <summary>
   /// Gets or sets a list of children for the contact.
   /// </summary>
-  StringList get Children => this.PropertyBag[ContactSchema.Children];
+  StringList get Children =>
+      this.PropertyBag[ContactSchema.Children] as StringList;
 
-  set Children(StringList value) =>
+  set Children(StringList? value) =>
       this.PropertyBag[ContactSchema.Children] = value;
 
   /// <summary>
   /// Gets or sets a list of companies for the contact.
   /// </summary>
-  StringList get Companies => this.PropertyBag[ContactSchema.Companies];
+  StringList get Companies =>
+      this.PropertyBag[ContactSchema.Companies] as StringList;
 
   set Companies(StringList value) =>
       this.PropertyBag[ContactSchema.Companies] = value;
@@ -359,23 +369,26 @@ class Contact extends Item {
   /// <summary>
   /// Gets the source of the contact.
   /// </summary>
-  enumerations.ContactSource get ContactSource =>
-      this.PropertyBag[ContactSchema.ContactSource];
+  enumerations.ContactSource? get ContactSource =>
+      this.PropertyBag[ContactSchema.ContactSource]
+          as enumerations.ContactSource?;
 
   /// <summary>
   /// Gets or sets the department of the contact.
   /// </summary>
-  String get Department => this.PropertyBag[ContactSchema.Department];
+  String? get Department =>
+      this.PropertyBag[ContactSchema.Department] as String?;
 
-  set Department(String value) =>
+  set Department(String? value) =>
       this.PropertyBag[ContactSchema.Department] = value;
 
   /// <summary>
   /// Gets or sets the generation of the contact.
   /// </summary>
-  String get Generation => this.PropertyBag[ContactSchema.Generation];
+  String? get Generation =>
+      this.PropertyBag[ContactSchema.Generation] as String?;
 
-  set Generation(String value) =>
+  set Generation(String? value) =>
       this.PropertyBag[ContactSchema.Generation] = value;
 
   /// <summary>
@@ -383,36 +396,37 @@ class Contact extends Item {
   /// IM address, use the following syntax: ImAddresses[ImAddressKey.ImAddress1] = "john.doe@contoso.com"
   /// </summary>
   ImAddressDictionary get ImAddresses =>
-      this.PropertyBag[ContactSchema.ImAddresses];
+      this.PropertyBag[ContactSchema.ImAddresses] as ImAddressDictionary;
 
   /// <summary>
   /// Gets or sets the contact's job title.
   /// </summary>
-  String get JobTitle => this.PropertyBag[ContactSchema.JobTitle];
+  String? get JobTitle => this.PropertyBag[ContactSchema.JobTitle] as String?;
 
-  set JobTitle(String value) =>
+  set JobTitle(String? value) =>
       this.PropertyBag[ContactSchema.JobTitle] = value;
 
   /// <summary>
   /// Gets or sets the name of the contact's manager.
   /// </summary>
-  String get Manager => this.PropertyBag[ContactSchema.Manager];
+  String? get Manager => this.PropertyBag[ContactSchema.Manager] as String?;
 
-  set Manager(String value) => this.PropertyBag[ContactSchema.Manager] = value;
+  set Manager(String? value) => this.PropertyBag[ContactSchema.Manager] = value;
 
   /// <summary>
   /// Gets or sets the mileage for the contact.
   /// </summary>
-  String get Mileage => this.PropertyBag[ContactSchema.Mileage];
+  String? get Mileage => this.PropertyBag[ContactSchema.Mileage] as String?;
 
-  set Mileage(String value) => this.PropertyBag[ContactSchema.Mileage] = value;
+  set Mileage(String? value) => this.PropertyBag[ContactSchema.Mileage] = value;
 
   /// <summary>
   /// Gets or sets the location of the contact's office.
   /// </summary>
-  String get OfficeLocation => this.PropertyBag[ContactSchema.OfficeLocation];
+  String? get OfficeLocation =>
+      this.PropertyBag[ContactSchema.OfficeLocation] as String?;
 
-  set OfficeLocation(String value) =>
+  set OfficeLocation(String? value) =>
       this.PropertyBag[ContactSchema.OfficeLocation] = value;
 
   /// <summary>
@@ -425,72 +439,75 @@ class Contact extends Item {
   /// <summary>
   /// Gets or sets the contact's profession.
   /// </summary>
-  String get Profession => this.PropertyBag[ContactSchema.Profession];
+  String? get Profession =>
+      this.PropertyBag[ContactSchema.Profession] as String?;
 
-  set Profession(String value) =>
+  set Profession(String? value) =>
       this.PropertyBag[ContactSchema.Profession] = value;
 
   /// <summary>
   /// Gets or sets the name of the contact's spouse.
   /// </summary>
-  String get SpouseName => this.PropertyBag[ContactSchema.SpouseName];
+  String? get SpouseName =>
+      this.PropertyBag[ContactSchema.SpouseName] as String?;
 
-  set SpouseName(String value) =>
+  set SpouseName(String? value) =>
       this.PropertyBag[ContactSchema.SpouseName] = value;
 
   /// <summary>
   /// Gets or sets the surname of the contact.
   /// </summary>
-  String get Surname => this.PropertyBag[ContactSchema.Surname];
+  String? get Surname => this.PropertyBag[ContactSchema.Surname] as String?;
 
-  set Surname(String value) => this.PropertyBag[ContactSchema.Surname] = value;
+  set Surname(String? value) => this.PropertyBag[ContactSchema.Surname] = value;
 
   /// <summary>
   /// Gets or sets the date of the contact's wedding anniversary.
   /// </summary>
-  DateTime get WeddingAnniversary =>
-      this.PropertyBag[ContactSchema.WeddingAnniversary];
+  DateTime? get WeddingAnniversary =>
+      this.PropertyBag[ContactSchema.WeddingAnniversary] as DateTime?;
 
-  set WeddingAnniversary(DateTime value) =>
+  set WeddingAnniversary(DateTime? value) =>
       this.PropertyBag[ContactSchema.WeddingAnniversary] = value;
 
   /// <summary>
   /// Gets a value indicating whether this contact has a picture associated with it.
   /// </summary>
-  bool get HasPicture => this.PropertyBag[ContactSchema.HasPicture];
+  bool? get HasPicture => this.PropertyBag[ContactSchema.HasPicture] as bool?;
 
   /// <summary>
   /// Gets the full phonetic name from the directory
   /// </summary>
-  String get PhoneticFullName =>
-      this.PropertyBag[ContactSchema.PhoneticFullName];
+  String? get PhoneticFullName =>
+      this.PropertyBag[ContactSchema.PhoneticFullName] as String?;
 
   /// <summary>
   /// Gets the phonetic first name from the directory
   /// </summary>
-  String get PhoneticFirstName =>
-      this.PropertyBag[ContactSchema.PhoneticFirstName];
+  String? get PhoneticFirstName =>
+      this.PropertyBag[ContactSchema.PhoneticFirstName] as String?;
 
   /// <summary>
   /// Gets the phonetic last name from the directory
   /// </summary>
-  String get PhoneticLastName =>
-      this.PropertyBag[ContactSchema.PhoneticLastName];
+  String? get PhoneticLastName =>
+      this.PropertyBag[ContactSchema.PhoneticLastName] as String?;
 
   /// <summary>
   /// Gets the Alias from the directory
   /// </summary>
-  String get Alias => this.PropertyBag[ContactSchema.Alias];
+  String? get Alias => this.PropertyBag[ContactSchema.Alias] as String?;
 
   /// <summary>
   /// Get the Notes from the directory
   /// </summary>
-  String get Notes => this.PropertyBag[ContactSchema.Notes];
+  String? get Notes => this.PropertyBag[ContactSchema.Notes] as String?;
 
   /// <summary>
   /// Gets the Photo from the directory
   /// </summary>
-  Uint8List get DirectoryPhoto => this.PropertyBag[ContactSchema.Photo];
+  Uint8List? get DirectoryPhoto =>
+      this.PropertyBag[ContactSchema.Photo] as Uint8List?;
 
   /// <summary>
   /// Gets the User SMIME certificate from the directory
@@ -517,19 +534,20 @@ class Contact extends Item {
   /// <summary>
   /// Gets the DirectoryID as Guid or DN string
   /// </summary>
-  String get DirectoryId => this.PropertyBag[ContactSchema.DirectoryId];
+  String? get DirectoryId =>
+      this.PropertyBag[ContactSchema.DirectoryId] as String?;
 
   /// <summary>
   /// Gets the manager mailbox information
   /// </summary>
-  EmailAddress get ManagerMailbox =>
-      this.PropertyBag[ContactSchema.ManagerMailbox];
+  EmailAddress? get ManagerMailbox =>
+      this.PropertyBag[ContactSchema.ManagerMailbox] as EmailAddress?;
 
   /// <summary>
   /// Get the direct reports mailbox information
   /// </summary>
-  EmailAddressCollection get DirectReports =>
-      this.PropertyBag[ContactSchema.DirectReports];
+  EmailAddressCollection? get DirectReports =>
+      this.PropertyBag[ContactSchema.DirectReports] as EmailAddressCollection?;
 
   @override
   ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {

@@ -71,12 +71,12 @@ class HangingRequestDisconnectEventArgs // : EventArgs
   /// <summary>
   /// Gets the reason that the user was disconnected.
   /// </summary>
-  HangingRequestDisconnectReason Reason;
+  HangingRequestDisconnectReason? Reason;
 
   /// <summary>
   /// Gets the exception that caused the disconnection. Can be null.
   /// </summary>
-  Error Exception;
+  Error? Exception;
 }
 
 /// <summary>
@@ -108,22 +108,22 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// <summary>
   /// Callback delegate to handle response objects
   /// </summary>
-  HandleResponseObject _responseHandler;
+  HandleResponseObject? _responseHandler;
 
   /// <summary>
   /// Response from the server.
   /// </summary>
-  IEwsHttpWebResponse _response;
+  late IEwsHttpWebResponse _response;
 
   /// <summary>
   /// Request to the server.
   /// </summary>
-  IEwsHttpWebRequest _request;
+  IEwsHttpWebRequest? _request;
 
   /// <summary>
   /// Expected minimum frequency in responses, in milliseconds.
   /// </summary>
-  int heartbeatFrequencyMilliseconds;
+  int? heartbeatFrequencyMilliseconds;
 
   /// <summary>
   /// lock object
@@ -287,7 +287,7 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// Gets a value indicating whether this instance is connected.
   /// </summary>
   /// <value><c>true</c> if this instance is connected; otherwise, <c>false</c>.</value>
-  bool IsConnected;
+  bool? IsConnected;
 
   /// <summary>
   /// Disconnects the request.
@@ -308,8 +308,8 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// <param name="reason">The reason.</param>
   /// <param name="exception">The exception.</param>
   void DisconnectWithException(
-      HangingRequestDisconnectReason reason, Exception exception) {
-    if (this.IsConnected) {
+      HangingRequestDisconnectReason reason, Exception? exception) {
+    if (this.IsConnected!) {
       this._response.Close();
       this._InternalOnDisconnect(reason, exception);
     }
@@ -340,7 +340,7 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// <param name="reason"></param>
   /// <param name="exception"></param>
   void _InternalOnDisconnect(
-      HangingRequestDisconnectReason reason, Exception exception) {
+      HangingRequestDisconnectReason reason, Exception? exception) {
     throw NotImplementedException("InternalOnDisconnect");
 //            if (this.IsConnected)
 //            {

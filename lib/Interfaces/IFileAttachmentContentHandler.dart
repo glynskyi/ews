@@ -35,5 +35,5 @@ abstract class IFileAttachmentContentHandler {
   /// </summary>
   /// <param name="attachmentId">The Id of the attachment that is being loaded.</param>
   /// <returns>A Stream to which the content of the attachment will be written.</returns>
-  Stream<Int8List> GetOutputStream(String attachmentId);
+  Stream<Int8List> GetOutputStream(String? attachmentId);
 }

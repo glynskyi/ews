@@ -31,9 +31,9 @@ import 'package:ews/Enumerations/AutodiscoverErrorCode.dart';
 /// Represents the base class for all responses returned by the Autodiscover service.
 /// </summary>
 abstract class AutodiscoverResponse {
-  AutodiscoverErrorCode _errorCode;
-  String _errorMessage;
-  Uri _redirectionUrl;
+  AutodiscoverErrorCode? _errorCode;
+  String? _errorMessage;
+  Uri? _redirectionUrl;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AutodiscoverResponse"/> class.
@@ -64,23 +64,23 @@ abstract class AutodiscoverResponse {
   /// <summary>
   /// Gets the error code that was returned by the service.
   /// </summary>
-  AutodiscoverErrorCode get ErrorCode => this._errorCode;
+  AutodiscoverErrorCode? get ErrorCode => this._errorCode;
 
-  set ErrorCode(AutodiscoverErrorCode value) => this._errorCode = value;
+  set ErrorCode(AutodiscoverErrorCode? value) => this._errorCode = value;
 
   /// <summary>
   /// Gets the error message that was returned by the service.
   /// </summary>
   /// <value>The error message.</value>
-  String get ErrorMessage => this._errorMessage;
+  String? get ErrorMessage => this._errorMessage;
 
-  set ErrorMessage(String value) => this._errorMessage = value;
+  set ErrorMessage(String? value) => this._errorMessage = value;
 
   /// <summary>
   /// Gets or sets the redirection URL.
   /// </summary>
   /// <value>The redirection URL.</value>
-  Uri get RedirectionUrl => this._redirectionUrl;
+  Uri? get RedirectionUrl => this._redirectionUrl;
 
-  set RedirectionUrl(Uri value) => this._redirectionUrl = value;
+  set RedirectionUrl(Uri? value) => this._redirectionUrl = value;
 }

@@ -1,5 +1,5 @@
 class StringUtils {
-  static bool IsNullOrEmpty(String value) {
+  static bool IsNullOrEmpty(String? value) {
     return value == null || value.isEmpty;
   }
 

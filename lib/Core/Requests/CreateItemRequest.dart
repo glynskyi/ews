@@ -55,7 +55,7 @@ class CreateItemRequest extends CreateItemRequestBase<Item, ServiceResponse> {
   ServiceResponse CreateServiceResponse(
       ExchangeService service, int responseIndex) {
     return new CreateItemResponse(
-        EwsUtilities.GetEnumeratedObjectAt(this.Items, responseIndex));
+        EwsUtilities.GetEnumeratedObjectAt(this.Items!, responseIndex) as Item);
   }
 
   /// <summary>
@@ -66,7 +66,7 @@ class CreateItemRequest extends CreateItemRequestBase<Item, ServiceResponse> {
     super.Validate();
 
     // Validate each item.
-    for (Item item in this.Items) {
+    for (Item item in this.Items!) {
       item.Validate();
     }
   }

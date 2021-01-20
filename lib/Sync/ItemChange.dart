@@ -32,7 +32,7 @@ import 'package:ews/Sync/Change.dart';
 /// Represents a change on an item as returned by a synchronization operation.
 /// </summary>
 class ItemChange extends Change {
-  bool _isRead;
+  bool? _isRead;
 
   /// <summary>
   /// Initializes a new instance of ItemChange.
@@ -54,20 +54,20 @@ class ItemChange extends Change {
   /// ItemId property to retrieve the Id of the item that was deleted or whose IsRead
   /// property changed.
   /// </summary>
-  core.Item get Item => this.ServiceObject;
+  core.Item? get Item => this.ServiceObject as core.Item?;
 
   /// <summary>
   /// Gets the IsRead property for the item that the change applies to. IsRead is
   /// only valid when ChangeType is equal to ChangeType.ReadFlagChange.
   /// </summary>
-  bool get IsRead => this._isRead;
+  bool? get IsRead => this._isRead;
 
-  set IsRead(bool value) {
+  set IsRead(bool? value) {
     this._isRead = value;
   }
 
   /// <summary>
   /// Gets the Id of the item the change applies to.
   /// </summary>
-  complex.ItemId get ItemId => this.Id;
+  complex.ItemId? get ItemId => this.Id as complex.ItemId?;
 }

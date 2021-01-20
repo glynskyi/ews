@@ -33,35 +33,25 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the base class for event subscriptions.
 /// </summary>
 abstract class SubscriptionBase {
-  /* private */ ExchangeService service;
+  ExchangeService _service;
 
-  /* private */
-  String id;
+  String? _id;
 
-  /* private */
-  String watermark;
+  String? _watermark;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SubscriptionBase"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  SubscriptionBase(ExchangeService service) {
-    EwsUtilities.ValidateParam(service, "service");
-
-    this.service = service;
-  }
+  SubscriptionBase(this._service);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SubscriptionBase"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
   /// <param name="id">The id.</param>
-  SubscriptionBase.withId(ExchangeService service, String id) {
-    EwsUtilities.ValidateParam(id, "id");
-    EwsUtilities.ValidateParam(service, "service");
-
-    this.service = service;
-    this.id = id;
+  SubscriptionBase.withId(this._service, String id) {
+    this._id = id;
   }
 
   /// <summary>
@@ -71,13 +61,11 @@ abstract class SubscriptionBase {
   /// <param name="id">The id.</param>
   /// <param name="watermark">The watermark.</param>
   SubscriptionBase.withIdAndWatermark(
-      ExchangeService service, String id, String watermark) {
+      this._service, String id, String watermark) {
     EwsUtilities.ValidateParam(id, "id");
-    EwsUtilities.ValidateParam(service, "service");
 
-    this.id = id;
-    this.service = service;
-    this.watermark = watermark;
+    this._id = id;
+    this._watermark = watermark;
   }
 
   /// <summary>
@@ -85,11 +73,11 @@ abstract class SubscriptionBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   void LoadFromXml(EwsServiceXmlReader reader) {
-    this.id = reader.ReadElementValueWithNamespace(
+    this._id = reader.ReadElementValueWithNamespace(
         XmlNamespace.Messages, XmlElementNames.SubscriptionId);
 
     if (this.UsesWatermark) {
-      this.watermark = reader.ReadElementValueWithNamespace(
+      this._watermark = reader.ReadElementValueWithNamespace(
           XmlNamespace.Messages, XmlElementNames.Watermark);
     }
   }
@@ -98,21 +86,21 @@ abstract class SubscriptionBase {
   /// Gets the session.
   /// </summary>
   /// <value>The session.</value>
-  ExchangeService get Service => this.service;
+  ExchangeService get Service => this._service;
 
   /// <summary>
   /// Gets the Id of the subscription.
   /// </summary>
-  String get Id => this.id;
+  String? get Id => this._id;
 
-  set Id(String value) => this.id = value;
+  set Id(String? value) => this._id = value;
 
   /// <summary>
   /// Gets the latest watermark of the subscription. Watermark is always null for streaming subscriptions.
   /// </summary>
-  String get Watermark => this.watermark;
+  String? get Watermark => this._watermark;
 
-  set Watermark(String value) => this.watermark = value;
+  set Watermark(String? value) => this._watermark = value;
 
   /// <summary>
   /// Gets whether or not this subscription uses watermarks.

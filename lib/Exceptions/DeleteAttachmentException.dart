@@ -54,7 +54,7 @@ class DeleteAttachmentException
   DeleteAttachmentException(
       ServiceResponseCollection<DeleteAttachmentResponse> serviceResponses,
       String message,
-      [Exception innerException])
+      [Exception? innerException])
       : super(serviceResponses, message, innerException);
 
   @override

@@ -43,10 +43,10 @@ import 'package:ews/Enumerations/ResponseMessageType.dart';
 /// Represents the base class for e-mail related responses (Reply, Reply all and Forward).
 /// </summary>
 class ResponseMessage extends ResponseObject<EmailMessage> {
-  ResponseMessageType _responseType;
+  ResponseMessageType? _responseType;
 
   @override
-  ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {
+  ServiceObjectDefinitionAttribute? getServiceObjectDefinitionAttribute() {
     return null;
   }
 
@@ -93,7 +93,7 @@ class ResponseMessage extends ResponseObject<EmailMessage> {
   /// attribute for XML element name determination.
   /// </remarks>
   @override
-  String GetXmlElementNameOverride() {
+  String? GetXmlElementNameOverride() {
     switch (this._responseType) {
       case ResponseMessageType.Reply:
         return XmlElementNames.ReplyToItem;
@@ -111,32 +111,35 @@ class ResponseMessage extends ResponseObject<EmailMessage> {
   /// <summary>
   /// Gets a value indicating the type of response this object represents.
   /// </summary>
-  ResponseMessageType get ResponseType => this._responseType;
+  ResponseMessageType? get ResponseType => this._responseType;
 
   /// <summary>
   /// Gets or sets the body of the response.
   /// </summary>
-  MessageBody get Body => this.PropertyBag[ItemSchema.Body];
+  MessageBody? get Body => this.PropertyBag[ItemSchema.Body] as MessageBody?;
 
-  set Body(MessageBody value) => this.PropertyBag[ItemSchema.Body] = value;
+  set Body(MessageBody? value) => this.PropertyBag[ItemSchema.Body] = value;
 
   /// <summary>
   /// Gets a list of recipients the response will be sent to.
   /// </summary>
   EmailAddressCollection get ToRecipients =>
-      this.PropertyBag[EmailMessageSchema.ToRecipients];
+      this.PropertyBag[EmailMessageSchema.ToRecipients]
+          as EmailAddressCollection;
 
   /// <summary>
   /// Gets a list of recipients the response will be sent to as Cc.
   /// </summary>
   EmailAddressCollection get CcRecipients =>
-      this.PropertyBag[EmailMessageSchema.CcRecipients];
+      this.PropertyBag[EmailMessageSchema.CcRecipients]
+          as EmailAddressCollection;
 
   /// <summary>
   /// Gets a list of recipients this response will be sent to as Bcc.
   /// </summary>
   EmailAddressCollection get BccRecipients =>
-      this.PropertyBag[EmailMessageSchema.BccRecipients];
+      this.PropertyBag[EmailMessageSchema.BccRecipients]
+          as EmailAddressCollection;
 
   /// <summary>
   /// Gets or sets the subject of this response.
@@ -148,9 +151,9 @@ class ResponseMessage extends ResponseObject<EmailMessage> {
   /// Gets or sets the body prefix of this response. The body prefix will be prepended to the original
   /// message's body when the response is created.
   /// </summary>
-  MessageBody get BodyPrefix =>
-      this.PropertyBag[ResponseObjectSchema.BodyPrefix];
+  MessageBody? get BodyPrefix =>
+      this.PropertyBag[ResponseObjectSchema.BodyPrefix] as MessageBody?;
 
-  set BodyPrefix(MessageBody value) =>
+  set BodyPrefix(MessageBody? value) =>
       this.PropertyBag[ResponseObjectSchema.BodyPrefix] = value;
 }

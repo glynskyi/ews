@@ -47,31 +47,31 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// Display name.
   /// </summary>
   /* private */
-  String name;
+  String? name;
 
   /// <summary>
   /// Email address.
   /// </summary>
   /* private */
-  String address;
+  String? address;
 
   /// <summary>
   /// Routing type.
   /// </summary>
   /* private */
-  String routingType;
+  String? routingType;
 
   /// <summary>
   /// Mailbox type.
   /// </summary>
   /* private */
-  enumerations.MailboxType mailboxType;
+  enumerations.MailboxType? mailboxType;
 
   /// <summary>
   /// ItemId - Contact or PDL.
   /// </summary>
   /* private */
-  ItemId id;
+  ItemId? id;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="EmailAddress"/> class.
@@ -81,11 +81,11 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// <param name="routingType">The routing type used to initialize the EmailAddress.</param>
   /// <param name="mailboxType">Mailbox type of the participant.</param>
   EmailAddress(
-      {String name,
-      String smtpAddress,
-      String routingType,
-      enumerations.MailboxType mailboxType,
-      ItemId itemId})
+      {String? name,
+      String? smtpAddress,
+      String? routingType,
+      enumerations.MailboxType? mailboxType,
+      ItemId? itemId})
       : super() {
     this.name = name;
     this.address = smtpAddress;
@@ -131,9 +131,9 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// <summary>
   /// Gets or sets the name associated with the e-mail address.
   /// </summary>
-  String get Name => this.name;
+  String? get Name => this.name;
 
-  set Name(String value) {
+  set Name(String? value) {
     if (this.CanSetFieldValue(this.name, value)) {
       this.name = value;
       this.Changed();
@@ -145,9 +145,9 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// must match the specified routing type. If RoutingType is not set, Address is assumed to be an SMTP
   /// address.
   /// </summary>
-  String get Address => this.address;
+  String? get Address => this.address;
 
-  set Address(String value) {
+  set Address(String? value) {
     if (this.CanSetFieldValue(this.address, value)) {
       this.address = value;
       this.Changed();
@@ -158,9 +158,9 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// Gets or sets the routing type associated with the e-mail address. If RoutingType is not set,
   /// Address is assumed to be an SMTP address.
   /// </summary>
-  String get RoutingType => this.routingType;
+  String? get RoutingType => this.routingType;
 
-  set RoutingType(String value) {
+  set RoutingType(String? value) {
     if (this.CanSetFieldValue(this.routingType, value)) {
       this.routingType = value;
       this.Changed();
@@ -170,9 +170,9 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// <summary>
   /// Gets or sets the type of the e-mail address.
   /// </summary>
-  enumerations.MailboxType get MailboxType => this.mailboxType;
+  enumerations.MailboxType? get MailboxType => this.mailboxType;
 
-  set MailboxType(enumerations.MailboxType value) {
+  set MailboxType(enumerations.MailboxType? value) {
     if (this.CanSetFieldValue(this.mailboxType, value)) {
       this.mailboxType = value;
       this.Changed();
@@ -183,9 +183,9 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// Gets or sets the Id of the contact the e-mail address represents. When Id is specified, Address
   /// should be set to null.
   /// </summary>
-  ItemId get Id => this.id;
+  ItemId? get Id => this.id;
 
-  set Id(ItemId value) {
+  set Id(ItemId? value) {
     if (this.CanSetFieldValue(this.id, value)) {
       this.id = value;
       this.Changed();
@@ -224,7 +224,7 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
         return true;
       case XmlElementNames.ItemId:
         this.id = new ItemId();
-        this.id.LoadFromXml(reader, reader.LocalName);
+        this.id!.LoadFromXml(reader, reader.LocalName);
         return true;
       default:
         return false;
@@ -247,7 +247,7 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
         XmlNamespace.Types, XmlElementNames.MailboxType, this.MailboxType);
 
     if (this.Id != null) {
-      this.Id.WriteToXml(writer, XmlElementNames.ItemId);
+      this.Id!.WriteToXml(writer, XmlElementNames.ItemId);
     }
   }
 
@@ -255,7 +255,7 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
 
   /// </summary>
   /// <returns>String representation of instance.</returns>
-  String GetSearchString() {
+  String? GetSearchString() {
     return this.Address;
   }
 
@@ -267,22 +267,22 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// </returns>
   @override
   String toString() {
-    String addressPart;
+    String? addressPart;
 
     if (StringUtils.IsNullOrEmpty(this.Address)) {
       return "";
     }
 
     if (!StringUtils.IsNullOrEmpty(this.RoutingType)) {
-      addressPart = this.RoutingType + ":" + this.Address;
+      addressPart = this.RoutingType! + ":" + this.Address!;
     } else {
       addressPart = this.Address;
     }
 
     if (!StringUtils.IsNullOrEmpty(this.Name)) {
-      return this.Name + " <" + addressPart + ">";
+      return this.Name! + " <" + addressPart! + ">";
     } else {
-      return addressPart;
+      return addressPart!;
     }
   }
 }

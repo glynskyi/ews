@@ -36,13 +36,13 @@ import 'ComplexProperty.dart';
 /// Represents the body part of an item that is unique to the conversation the item is part of.
 /// </summary>
 class UniqueBody extends ComplexProperty {
-  /* private */ enumerations.BodyType bodyType;
+  /* private */ enumerations.BodyType? bodyType;
 
   /* private */
-  String text;
+  String? text;
 
   /* private */
-  bool isTruncated;
+  bool? isTruncated;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UniqueBody"/> class.
@@ -69,7 +69,7 @@ class UniqueBody extends ComplexProperty {
     this.bodyType = reader.ReadAttributeValue<enumerations.BodyType>(
         XmlAttributeNames.BodyType);
 
-    String attributeValue =
+    String? attributeValue =
         reader.ReadAttributeValue(XmlAttributeNames.IsTruncated);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
       this.isTruncated = attributeValue?.toLowerCase() == 'true';
@@ -108,17 +108,17 @@ class UniqueBody extends ComplexProperty {
   /// <summary>
   /// Gets the type of the unique body's text.
   /// </summary>
-  enumerations.BodyType get BodyType => this.bodyType;
+  enumerations.BodyType? get BodyType => this.bodyType;
 
   /// <summary>
   /// Gets the text of the unique body.
   /// </summary>
-  String get Text => this.text;
+  String? get Text => this.text;
 
   /// <summary>
   /// Gets whether the unique body is truncated.
   /// </summary>
-  bool get IsTruncated => this.isTruncated;
+  bool? get IsTruncated => this.isTruncated;
 
   /// <summary>
   /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -128,6 +128,6 @@ class UniqueBody extends ComplexProperty {
   /// </returns>
   @override
   String toString() {
-    return (this.Text == null) ? "" : this.Text;
+    return (this.Text == null) ? "" : this.Text!;
   }
 }

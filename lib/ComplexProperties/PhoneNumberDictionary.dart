@@ -56,17 +56,16 @@ class PhoneNumberDictionary
   /// </summary>
   /// <param name="key">The key of the phone number to get or set.</param>
   /// <returns>The phone number at the specified key.</returns>
-  String operator [](PhoneNumberKey key) {
-    return this.Entries[key].PhoneNumber;
+  String? operator [](PhoneNumberKey key) {
+    return this.Entries[key]!.PhoneNumber;
   }
 
-  operator []=(PhoneNumberKey key, String value) {
+  operator []=(PhoneNumberKey key, String? value) {
     if (value == null) {
       this.InternalRemove(key);
     } else {
-
       if (this.Entries.containsKey(key)) {
-        PhoneNumberEntry entry = this.Entries[key];
+        PhoneNumberEntry entry = this.Entries[key]!;
         entry.PhoneNumber = value;
         this.Changed();
       } else {
@@ -88,10 +87,10 @@ class PhoneNumberDictionary
   /// true if the Dictionary contains a phone number associated with the specified key; otherwise, false.
   /// </returns>
   bool TryGetValue(PhoneNumberKey key, OutParam<String> phoneNumberOutParam) {
-    PhoneNumberEntry entry = null;
+    PhoneNumberEntry? entry = null;
 
     if (this.Entries.containsKey(key)) {
-      phoneNumberOutParam.param = entry.PhoneNumber;
+      phoneNumberOutParam.param = entry!.PhoneNumber;
       return true;
     } else {
       phoneNumberOutParam.param = null;

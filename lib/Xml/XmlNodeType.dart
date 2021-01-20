@@ -1,1 +1,1 @@
-enum XmlNodeType { None, XmlDeclaration, Element, EndElement, Text }
+enum XmlNodeType { XmlDeclaration, Element, EndElement, Text }

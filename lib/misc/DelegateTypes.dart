@@ -33,7 +33,7 @@ import 'package:ews/Xml/XmlWriter.dart';
 /// Defines a delegate that is used to allow applications to emit custom XML when SOAP requests are sent to Exchange.
 /// </summary>
 /// <param name="writer">The XmlWriter to use to emit the custom XML.</param>
-typedef void CustomXmlSerializationDelegate(XmlWriter writer);
+typedef void CustomXmlSerializationDelegate(XmlWriter? writer);
 
 /// <summary>
 /// Delegate method to handle capturing http response headers.

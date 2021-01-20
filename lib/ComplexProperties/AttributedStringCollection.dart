@@ -36,7 +36,7 @@ class AttributedStringCollection
   /// <summary>
   /// Collection parent XML element name
   /// </summary>
-  String _collectionItemXmlElementName;
+  String? _collectionItemXmlElementName;
 
   /// <summary>
   /// Creates a new instance of the <see cref="AttributedStringCollection"/> class.
@@ -130,7 +130,7 @@ class AttributedStringCollection
   /// <param name="xmlElementName">The XML element name from which to create the attributed String object</param>
   /// <returns>An AttributedString object</returns>
   @override
-  AttributedString CreateComplexProperty(String xmlElementName) {
+  AttributedString? CreateComplexProperty(String xmlElementName) {
     EwsUtilities.ValidateParam(xmlElementName, "xmlElementName");
     if (xmlElementName == this._collectionItemXmlElementName) {
       return new AttributedString();
@@ -145,7 +145,7 @@ class AttributedStringCollection
   /// <param name="attributedString">The AttributedString object from which to determine the XML element name.</param>
   /// <returns>The XML element name corresponding to the provided AttributedString object.</returns>
   @override
-  String GetCollectionItemXmlElementName(AttributedString attributedString) {
+  String? GetCollectionItemXmlElementName(AttributedString attributedString) {
     return this._collectionItemXmlElementName;
   }
 

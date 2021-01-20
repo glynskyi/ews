@@ -50,14 +50,14 @@ class TimeZoneDefinition extends ComplexProperty {
   /// </summary>
   static const String _NoIdPrefix = "NoId_";
 
-  String _name;
+  String? _name;
 
-  String _id;
+  String? _id;
 
-  Map<String, TimeZonePeriod> _periods = new Map<String, TimeZonePeriod>();
+  Map<String?, TimeZonePeriod> _periods = new Map<String?, TimeZonePeriod>();
 
-  Map<String, TimeZoneTransitionGroup> _transitionGroups =
-      new Map<String, TimeZoneTransitionGroup>();
+  Map<String?, TimeZoneTransitionGroup> _transitionGroups =
+      new Map<String?, TimeZoneTransitionGroup>();
 
   List<TimeZoneTransition> _transitions = <TimeZoneTransition>[];
 
@@ -78,7 +78,7 @@ class TimeZoneDefinition extends ComplexProperty {
       AbsoluteDateTransition firstTransition = x as AbsoluteDateTransition;
       AbsoluteDateTransition secondTransition = y as AbsoluteDateTransition;
 
-      return firstTransition.DateTime.compareTo(secondTransition.DateTime);
+      return firstTransition.DateTime!.compareTo(secondTransition.DateTime!);
     }
   }
 
@@ -218,7 +218,7 @@ class TimeZoneDefinition extends ComplexProperty {
 
     // EWS can return a TimeZone definition with no Id. Generate a new Id in this case.
     if (StringUtils.IsNullOrEmpty(this._id)) {
-      String nameValue = StringUtils.IsNullOrEmpty(this.Name) ? "" : this.Name;
+      String? nameValue = StringUtils.IsNullOrEmpty(this.Name) ? "" : this.Name;
       this.Id = _NoIdPrefix + Abs(nameValue.hashCode).toString();
     }
   }
@@ -336,7 +336,7 @@ class TimeZoneDefinition extends ComplexProperty {
       if (this._periods.length > 0) {
         writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Periods);
 
-        for (MapEntry<String, TimeZonePeriod> keyValuePair
+        for (MapEntry<String?, TimeZonePeriod> keyValuePair
             in this._periods.entries) {
           keyValuePair.value.WriteToXmlElementName(writer);
         }
@@ -348,7 +348,7 @@ class TimeZoneDefinition extends ComplexProperty {
         writer.WriteStartElement(
             XmlNamespace.Types, XmlElementNames.TransitionsGroups);
 
-        for (MapEntry<String, TimeZoneTransitionGroup> keyValuePair
+        for (MapEntry<String?, TimeZoneTransitionGroup> keyValuePair
             in this._transitionGroups.entries) {
           keyValuePair.value.WriteToXmlElementName(writer);
         }
@@ -426,7 +426,7 @@ class TimeZoneDefinition extends ComplexProperty {
   /// </summary>
   /// <param name="service">The service.</param>
   /// <returns>A TimeZoneInfo representing the same time zone as this definition.</returns>
-  TimeZone ToTimeZoneInfo(ExchangeService service) {
+  TimeZone ToTimeZoneInfo(ExchangeService? service) {
     throw NotImplementedException("TimeZoneDefinition.ToTimeZoneInfo");
 //            this.Validate();
 //
@@ -508,25 +508,25 @@ class TimeZoneDefinition extends ComplexProperty {
   /// <summary>
   /// Gets or sets the name of this time zone definition.
   /// </summary>
-  String get Name => this._name;
+  String? get Name => this._name;
 
-  set Name(String value) => this._name = value;
+  set Name(String? value) => this._name = value;
 
   /// <summary>
   /// Gets or sets the Id of this time zone definition.
   /// </summary>
-  String get Id => this._id;
+  String? get Id => this._id;
 
-  set Id(String value) => this._id = value;
+  set Id(String? value) => this._id = value;
 
   /// <summary>
   /// Gets the periods associated with this time zone definition, indexed by Id.
   /// </summary>
-  Map<String, TimeZonePeriod> get Periods => this._periods;
+  Map<String?, TimeZonePeriod> get Periods => this._periods;
 
   /// <summary>
   /// Gets the transition groups associated with this time zone definition, indexed by Id.
   /// </summary>
-  Map<String, TimeZoneTransitionGroup> get TransitionGroups =>
+  Map<String?, TimeZoneTransitionGroup> get TransitionGroups =>
       this._transitionGroups;
 }

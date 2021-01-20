@@ -24,7 +24,6 @@
  */
 
 import 'package:ews/Core/EwsServiceXmlReader.dart';
-import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
@@ -35,18 +34,13 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 /// Represents response to UpdateFolder request.
 /// </summary>
 class UpdateFolderResponse extends ServiceResponse {
-  /* private */ Folder folder;
+  Folder _folder;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="UpdateFolderResponse"/> class.
   /// </summary>
   /// <param name="folder">The folder.</param>
-  UpdateFolderResponse(Folder folder) : super() {
-    EwsUtilities.Assert(
-        folder != null, "UpdateFolderResponse.ctor", "folder is null");
-
-    this.folder = folder;
-  }
+  UpdateFolderResponse(this._folder);
 
   /// <summary>
   /// Reads response elements from XML.
@@ -72,7 +66,7 @@ class UpdateFolderResponse extends ServiceResponse {
   @override
   void Loaded() {
     if (this.Result == ServiceResult.Success) {
-      this.folder.ClearChangeLog();
+      this._folder.ClearChangeLog();
     }
   }
 
@@ -82,7 +76,7 @@ class UpdateFolderResponse extends ServiceResponse {
   /// <param name="session">The session.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Folder.</returns>
-  Folder _GetObjectInstance(ExchangeService session, String xmlElementName) {
-    return this.folder;
+  Folder _GetObjectInstance(ExchangeService? session, String xmlElementName) {
+    return this._folder;
   }
 }

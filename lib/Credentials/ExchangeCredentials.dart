@@ -109,7 +109,7 @@ abstract class ExchangeCredentials implements ICredentials {
   /// Emit any extra necessary namespace aliases for the SOAP:header block.
   /// </summary>
   /// <param name="writer">The writer.</param>
-  void EmitExtraSoapHeaderNamespaceAliases(XmlWriter writer) {
+  void EmitExtraSoapHeaderNamespaceAliases(XmlWriter? writer) {
     // do nothing by default.
   }
 
@@ -119,7 +119,7 @@ abstract class ExchangeCredentials implements ICredentials {
   /// </summary>
   /// <param name="writer">The writer.</param>
   /// <param name="webMethodName">The Web method being called.</param>
-  void SerializeExtraSoapHeaders(XmlWriter writer, String webMethodName) {
+  void SerializeExtraSoapHeaders(XmlWriter? writer, String webMethodName) {
     // do nothing by default.
   }
 
@@ -127,7 +127,7 @@ abstract class ExchangeCredentials implements ICredentials {
   /// Serialize SOAP headers used for authentication schemes that rely on WS-Security
   /// </summary>
   /// <param name="writer">The writer.</param>
-  void SerializeWSSecurityHeaders(XmlWriter writer) {
+  void SerializeWSSecurityHeaders(XmlWriter? writer) {
     // do nothing by default.
   }
 

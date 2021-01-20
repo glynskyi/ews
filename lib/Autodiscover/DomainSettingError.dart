@@ -33,11 +33,11 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents an error from a GetDomainSettings request.
 /// </summary>
 class DomainSettingError {
-  AutodiscoverErrorCode _errorCode;
+  AutodiscoverErrorCode? _errorCode;
 
-  String _errorMessage;
+  String? _errorMessage;
 
-  String _settingName;
+  String? _settingName;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DomainSettingError"/> class.
@@ -73,17 +73,17 @@ class DomainSettingError {
   /// Gets the error code.
   /// </summary>
   /// <value>The error code.</value>
-  AutodiscoverErrorCode get ErrorCode => this._errorCode;
+  AutodiscoverErrorCode? get ErrorCode => this._errorCode;
 
   /// <summary>
   /// Gets the error message.
   /// </summary>
   /// <value>The error message.</value>
-  String get ErrorMessage => this._errorMessage;
+  String? get ErrorMessage => this._errorMessage;
 
   /// <summary>
   /// Gets the name of the setting.
   /// </summary>
   /// <value>The name of the setting.</value>
-  String get SettingName => this._settingName;
+  String? get SettingName => this._settingName;
 }

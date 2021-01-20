@@ -54,14 +54,14 @@ enum ConnectionStatus {
 class GetStreamingEventsResponse extends ServiceResponse {
   GetStreamingEventsResults _results = new GetStreamingEventsResults();
 
-  HangingServiceRequestBase _request;
+  late HangingServiceRequestBase _request;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetStreamingEventsResponse"/> class.
   /// </summary>
   /// <param name="request">Request to disconnect when we get a close message.</param>
   GetStreamingEventsResponse(HangingServiceRequestBase request) : super() {
-    this.ErrorSubscriptionIds = <String>[];
+    this.ErrorSubscriptionIds = <String?>[];
     this._request = request;
   }
 
@@ -78,7 +78,7 @@ class GetStreamingEventsResponse extends ServiceResponse {
     if (reader.LocalName == XmlElementNames.Notifications) {
       this._results.LoadFromXml(reader);
     } else if (reader.LocalName == XmlElementNames.ConnectionStatus) {
-      String connectionStatus = reader.ReadElementValueWithNamespace(
+      String? connectionStatus = reader.ReadElementValueWithNamespace(
           XmlNamespace.Messages, XmlElementNames.ConnectionStatus);
 
       if (EnumToString.parse(ConnectionStatus.Closed) == connectionStatus) {
@@ -131,5 +131,5 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// Gets the error subscription ids.
   /// </summary>
   /// <value>The error subscription ids.</value>
-  List<String> ErrorSubscriptionIds;
+  late List<String?> ErrorSubscriptionIds;
 }

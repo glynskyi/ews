@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Xml/XmlNodeType.dart' as xml;
@@ -7,28 +8,31 @@ import 'package:xml/xml.dart';
 import 'package:xml/xml_events.dart';
 
 class XmlReader {
-  Iterator<XmlEvent> events;
-  final namespaces = Map<String, String>();
+  late Iterator<XmlEvent> _events;
+  final _namespaces = Map<String, String>();
+  var _isStarted = false;
+  var _isFinished = false;
 
   XmlReader(String data) {
-    events = parseEvents(data).iterator;
+    _events = parseEvents(data).iterator;
   }
 
   String get Value => throw NotImplementedException("Value");
 
-  xml.XmlNodeType get NodeType {
-    if (events.current == null) return xml.XmlNodeType.None;
-
-    switch (events.current.nodeType) {
+  xml.XmlNodeType? get NodeType {
+    if (!_isStarted || _isFinished) {
+      return null;
+    }
+    switch (_events.current.nodeType) {
       case XmlNodeType.TEXT:
         return xml.XmlNodeType.Text;
       case XmlNodeType.ELEMENT:
-        if (events.current is XmlStartElementEvent) {
+        if (_events.current is XmlStartElementEvent) {
           return xml.XmlNodeType.Element;
-        } else if (events.current is XmlEndElementEvent) {
+        } else if (_events.current is XmlEndElementEvent) {
           return xml.XmlNodeType.EndElement;
         } else {
-          throw ArgumentException("Unexpected ${events.current} element");
+          throw ArgumentException("Unexpected ${_events.current} element");
         }
         break;
       case XmlNodeType.ATTRIBUTE:
@@ -54,11 +58,11 @@ class XmlReader {
         return xml.XmlNodeType.XmlDeclaration;
     }
     throw NotImplementedException(
-        "Can't convert NodeType of ${events.current}");
+        "Can't convert NodeType of ${_events.current}");
   }
 
   String get Name {
-    XmlEvent event = events.current;
+    XmlEvent event = _events.current;
     if (event is XmlStartElementEvent) {
       return event.name;
     } else if (event is XmlEndElementEvent) {
@@ -68,10 +72,10 @@ class XmlReader {
     }
   }
 
-  get NamespaceURI => namespaces[Prefix ?? "xmlns"];
+  get NamespaceURI => _namespaces[Prefix ?? "xmlns"];
 
   get Prefix {
-    XmlEvent event = events.current;
+    XmlEvent event = _events.current;
     if (event is XmlStartElementEvent) {
       return event.namespacePrefix;
     } else if (event is XmlEndElementEvent) {
@@ -82,7 +86,7 @@ class XmlReader {
   }
 
   get LocalName {
-    XmlEvent event = events.current;
+    XmlEvent event = _events.current;
     if (event is XmlStartElementEvent) {
       return event.localName;
     } else if (event is XmlEndElementEvent) {
@@ -95,68 +99,65 @@ class XmlReader {
   }
 
   bool get IsEmptyElement {
-    final event = (events.current as XmlStartElementEvent);
+    final event = (_events.current as XmlStartElementEvent);
     return event.isSelfClosing;
   }
 
   int get AttributeCount {
-    final event = (events.current as XmlStartElementEvent);
+    final event = (_events.current as XmlStartElementEvent);
     return event.attributes.length;
   }
 
   bool Read() {
-    bool result = events.moveNext();
+    _isStarted = true;
+    _isFinished = !_events.moveNext();
 
-    if (result) {
-      if (events.current is XmlStartElementEvent) {
-        final attributes = (events.current as XmlStartElementEvent)
+    if (!_isFinished) {
+      if (_events.current is XmlStartElementEvent) {
+        final attributes = (_events.current as XmlStartElementEvent)
             .attributes
             .where((attr) =>
                 attr.namespacePrefix == "xmlns" || attr.name == "xmlns")
             .toList();
         attributes.forEach((attr) {
-          namespaces[attr.localName] = attr.value;
+          _namespaces[attr.localName] = attr.value;
         });
       }
     }
 
-    return result;
+    return !_isFinished;
   }
 
-  String GetAttribute(String attributeName) {
-    return (events.current as XmlStartElementEvent)
+  String? GetAttribute(String attributeName) {
+    return (_events.current as XmlStartElementEvent)
         .attributes
-        .firstWhere((attr) => attr.localName == attributeName,
-            orElse: () => null)
+        .firstWhereOrNull((attr) => attr.localName == attributeName)
         ?.value;
   }
 
-  String GetAttributeWithNamespace(String attributeName, String namespace) {
-    var namespacePrefix = namespaces.keys.firstWhere(
-        (prefix) => namespaces[prefix] == namespace,
-        orElse: () => null);
-    return (events.current as XmlStartElementEvent)
+  String? GetAttributeWithNamespace(String attributeName, String namespace) {
+    var namespacePrefix = _namespaces.keys
+        .firstWhereOrNull((prefix) => _namespaces[prefix] == namespace);
+    return (_events.current as XmlStartElementEvent)
         .attributes
-        .firstWhere(
-            (attr) =>
-                attr.localName == attributeName &&
-                attr.namespacePrefix == namespacePrefix,
-            orElse: () => null)
+        .firstWhereOrNull((attr) =>
+            attr.localName == attributeName &&
+            attr.namespacePrefix == namespacePrefix)
         ?.value;
   }
 
   String ReadString() {
-    if (events.current is XmlTextEvent) {
-      final value = (events.current as XmlTextEvent).text;
+    if (_events.current is XmlTextEvent) {
+      final value = (_events.current as XmlTextEvent).text;
       Read();
       return value;
     } else {
-      if (events.current is XmlStartElementEvent &&
-          (events.current as XmlStartElementEvent).isSelfClosing) {
+      if (_events.current is XmlStartElementEvent &&
+          (_events.current as XmlStartElementEvent).isSelfClosing) {
         return "";
       } else {
         Read();
-        final value = (events.current as XmlTextEvent).text;
+        final value = (_events.current as XmlTextEvent).text;
         Read();
         return value;
       }

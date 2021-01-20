@@ -38,7 +38,7 @@ class DeletedOccurrenceInfo extends ComplexProperty {
   /// The EWS schema contains a Start property for deleted occurrences but it's
   /// really the original start date and time of the occurrence.
   /// </remarks>
-  DateTime _originalStart;
+  DateTime? _originalStart;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeletedOccurrenceInfo"/> class.
@@ -64,5 +64,5 @@ class DeletedOccurrenceInfo extends ComplexProperty {
   /// <summary>
   /// Gets the original start date and time of the deleted occurrence.
   /// </summary>
-  DateTime get OriginalStart => this._originalStart;
+  DateTime? get OriginalStart => this._originalStart;
 }

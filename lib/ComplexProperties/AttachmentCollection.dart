@@ -52,7 +52,7 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// <summary>
   /// The item owner that owns this attachment collection
   /// </summary>
-  Item _owner;
+  Item? _owner;
 
   /// <summary>
   /// Initializes a new instance of AttachmentCollection.
@@ -62,13 +62,13 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// <summary>
   /// The owner of this attachment collection.
   /// </summary>
-  ServiceObject get Owner => this._owner;
+  ServiceObject? get Owner => this._owner;
 
-  set Owner(ServiceObject value) {
-    Item item = value as Item;
+  set Owner(ServiceObject? value) {
+    Item? item = value as Item?;
 
     EwsUtilities.Assert(
-        item != null,
+        item is Item?,
         "AttachmentCollection.IOwnedProperty.set_Owner",
         "value is not a descendant of ItemBase");
 
@@ -110,9 +110,9 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// <returns>A FileAttachment instance.</returns>
   FileAttachment AddFileAttachmentWithStream(
       String name, Stream contentStream) {
-    FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
+    FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner!);
     fileAttachment.Name = name;
-    fileAttachment.ContentStream = contentStream;
+    fileAttachment.ContentStream = contentStream as Stream<List<int>>?;
 
     this.InternalAdd(fileAttachment);
 
@@ -126,7 +126,7 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// <param name="content">A byte arrays representing the content of the attachment.</param>
   /// <returns>A FileAttachment instance.</returns>
   FileAttachment AddFileAttachmentWithContent(String name, Uint8List content) {
-    FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner);
+    FileAttachment fileAttachment = new FileAttachment.withOwner(this._owner!);
     fileAttachment.Name = name;
     fileAttachment.Content = content;
 
@@ -215,14 +215,14 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// <param name="xmlElementName">The XML element name from which to determine the type of attachment to create.</param>
   /// <returns>An Attachment instance.</returns>
   @override
-  Attachment CreateComplexProperty(String xmlElementName) {
+  Attachment? CreateComplexProperty(String xmlElementName) {
     switch (xmlElementName) {
       case XmlElementNames.FileAttachment:
-        return new FileAttachment.withOwner(this._owner);
+        return new FileAttachment.withOwner(this._owner!);
       case XmlElementNames.ItemAttachment:
-        return new ItemAttachment.withOwner(this._owner);
+        return new ItemAttachment.withOwner(this._owner!);
       case XmlElementNames.ReferenceAttachment:
-        return new ReferenceAttachment.withOwner(this._owner);
+        return new ReferenceAttachment.withOwner(this._owner!);
       default:
         return null;
     }
@@ -248,11 +248,11 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// Saves this collection by creating new attachment and deleting removed ones.
   /// </summary>
   Future<void> Save() async {
-    List<Attachment> attachments = <Attachment>[];
+    List<Attachment?> attachments = <Attachment?>[];
 
     // Retrieve a list of attachments that have to be deleted.
-    for (Attachment attachment in this.RemovedItems) {
-      if (!attachment.IsNew) {
+    for (Attachment? attachment in this.RemovedItems) {
+      if (!attachment!.IsNew) {
         attachments.add(attachment);
       }
     }
@@ -273,12 +273,12 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
 
     // If there are any, create them by calling the CreateAttachment web method.
     if (attachments.length > 0) {
-      if (this._owner.IsAttachment) {
+      if (this._owner!.IsAttachment) {
         await this._InternalCreateAttachments(
-            this._owner.ParentAttachment.Id, attachments);
+            this._owner!.ParentAttachment!.Id, attachments);
       } else {
         await this
-            ._InternalCreateAttachments(this._owner.Id.UniqueId, attachments);
+            ._InternalCreateAttachments(this._owner!.Id!.UniqueId, attachments);
       }
     }
 
@@ -288,10 +288,10 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
         // Make sure item was created/loaded before trying to create/delete sub-attachments
         if (attachment.Item != null) {
           // Create/delete any sub-attachments
-          await attachment.Item.Attachments.Save();
+          await attachment.Item!.Attachments.Save();
 
           // Clear the item's change log
-          attachment.Item.ClearChangeLog();
+          attachment.Item!.ClearChangeLog();
         }
       }
     }
@@ -312,8 +312,8 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
     }
 
     // Any pending deletions?
-    for (Attachment attachment in this.RemovedItems) {
-      if (!attachment.IsNew) {
+    for (Attachment? attachment in this.RemovedItems) {
+      if (!attachment!.IsNew) {
         return true;
       }
     }
@@ -321,7 +321,7 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
     // Recurse: process item attachments to check for new or deleted sub-attachments.
     for (ItemAttachment itemAttachment in this.OfType<ItemAttachment>()) {
       if (itemAttachment.Item != null) {
-        if (itemAttachment.Item.Attachments.HasUnprocessedChanges()) {
+        if (itemAttachment.Item!.Attachments.HasUnprocessedChanges()) {
           return true;
         }
       }
@@ -360,12 +360,12 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
         //
         // The IsNew check is to still let CreateAttachmentRequest allow multiple IsContactPhoto attachments.
         //
-        if (this._owner.IsNew &&
-            this._owner.Service.RequestedServerVersion.index >=
+        if (this._owner!.IsNew &&
+            this._owner!.Service.RequestedServerVersion.index >=
                 ExchangeVersion.Exchange2010_SP2.index) {
           FileAttachment fileAttachment = attachment as FileAttachment;
 
-          if (fileAttachment != null && fileAttachment.IsContactPhoto) {
+          if (fileAttachment != null && fileAttachment.IsContactPhoto!) {
             if (contactPhotoFound) {
               throw new ServiceValidationException(
                   "Strings.MultipleContactPhotosInAttachment");
@@ -385,9 +385,9 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// </summary>
   /// <param name="attachments">The attachments to delete.</param>
   Future<void> _InternalDeleteAttachments(
-      Iterable<Attachment> attachments) async {
+      Iterable<Attachment?> attachments) async {
     ServiceResponseCollection<DeleteAttachmentResponse> responses =
-        await this._owner.Service.DeleteAttachments(attachments);
+        await this._owner!.Service.DeleteAttachments(attachments);
 
     for (DeleteAttachmentResponse response in responses) {
       // We remove all attachments that were successfully deleted from the change log. We should never
@@ -410,9 +410,9 @@ class AttachmentCollection extends ComplexPropertyCollection<Attachment>
   /// <param name="parentItemId">The Id of the parent item of the new attachments.</param>
   /// <param name="attachments">The attachments to create.</param>
   Future<void> _InternalCreateAttachments(
-      String parentItemId, Iterable<Attachment> attachments) async {
+      String? parentItemId, Iterable<Attachment?> attachments) async {
     ServiceResponseCollection<CreateAttachmentResponse> responses =
-        await this._owner.Service.CreateAttachments(parentItemId, attachments);
+        await this._owner!.Service.CreateAttachments(parentItemId, attachments);
 
     for (CreateAttachmentResponse response in responses) {
       // We remove all attachments that were successfully created from the change log. We should never

@@ -34,19 +34,19 @@ abstract class Change {
   /// <summary>
   /// The type of change.
   /// </summary>
-  /* private */ enumerations.ChangeType changeType;
+  /* private */ enumerations.ChangeType? changeType;
 
   /// <summary>
   /// The service object the change applies to.
   /// </summary>
   /* private */
-  core.ServiceObject serviceObject;
+  core.ServiceObject? serviceObject;
 
   /// <summary>
   /// The Id of the service object the change applies to.
   /// </summary>
   /* private */
-  ServiceId id;
+  ServiceId? id;
 
   /// <summary>
   /// Initializes a new instance of Change.
@@ -62,28 +62,28 @@ abstract class Change {
   /// <summary>
   /// Gets the type of the change.
   /// </summary>
-  enumerations.ChangeType get ChangeType => this.changeType;
+  enumerations.ChangeType? get ChangeType => this.changeType;
 
-  set ChangeType(enumerations.ChangeType value) {
+  set ChangeType(enumerations.ChangeType? value) {
     this.changeType = value;
   }
 
   /// <summary>
   /// Gets or sets the service object the change applies to.
   /// </summary>
-  core.ServiceObject get ServiceObject => this.serviceObject;
+  core.ServiceObject? get ServiceObject => this.serviceObject;
 
-  set ServiceObject(core.ServiceObject value) {
+  set ServiceObject(core.ServiceObject? value) {
     this.serviceObject = value;
   }
 
   /// <summary>
   /// Gets or sets the Id of the service object the change applies to.
   /// </summary>
-  ServiceId get Id =>
-      this.ServiceObject != null ? this.ServiceObject.GetId() : this.id;
+  ServiceId? get Id =>
+      this.ServiceObject != null ? this.ServiceObject!.GetId() : this.id;
 
-  set Id(ServiceId value) {
+  set Id(ServiceId? value) {
     this.id = value;
   }
 }

@@ -44,14 +44,14 @@ class OutlookAccount {
   static const String _RedirectAddr = "redirectAddr";
   static const String _RedirectUrl = "redirectUrl";
 
-  Map<OutlookProtocolType, OutlookProtocol> _protocols;
-  AlternateMailboxCollection _alternateMailboxes;
+  late Map<OutlookProtocolType?, OutlookProtocol> _protocols;
+  AlternateMailboxCollection? _alternateMailboxes;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OutlookAccount"/> class.
   /// </summary>
   OutlookAccount() {
-    this._protocols = new Map<OutlookProtocolType, OutlookProtocol>();
+    this._protocols = new Map<OutlookProtocolType?, OutlookProtocol>();
     this._alternateMailboxes = new AlternateMailboxCollection();
   }
 
@@ -69,7 +69,7 @@ class OutlookAccount {
             this.AccountType = reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Action:
-            String xmlResponseType = reader.ReadElementValue<String>();
+            String? xmlResponseType = reader.ReadElementValue<String>();
 
             switch (xmlResponseType) {
               case OutlookAccount._Settings:
@@ -104,7 +104,7 @@ class OutlookAccount {
           case XmlElementNames.AlternateMailboxes:
             AlternateMailbox alternateMailbox =
                 AlternateMailbox.LoadFromXml(reader);
-            this._alternateMailboxes.Entries.add(alternateMailbox);
+            this._alternateMailboxes!.Entries.add(alternateMailbox);
             break;
 
           default:
@@ -136,15 +136,15 @@ class OutlookAccount {
   /// <summary>
   /// Gets or sets type of the account.
   /// </summary>
-  String AccountType;
+  String? AccountType;
 
   /// <summary>
   /// Gets or sets the type of the response.
   /// </summary>
-  AutodiscoverResponseType ResponseType;
+  AutodiscoverResponseType? ResponseType;
 
   /// <summary>
   /// Gets or sets the redirect target.
   /// </summary>
-  String RedirectTarget;
+  String? RedirectTarget;
 }

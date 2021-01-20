@@ -17,61 +17,61 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 
 class EwsHttpWebRequest implements IEwsHttpWebRequest {
   @override
-  String Accept;
+  String? Accept;
 
   @override
-  bool AllowAutoRedirect;
+  bool? AllowAutoRedirect;
 
   @override
-  X509CertificateCollection ClientCertificates;
+  X509CertificateCollection? ClientCertificates;
 
   @override
-  String ConnectionGroupName;
+  String? ConnectionGroupName;
 
   @override
-  String ContentType;
+  String? ContentType;
 
   @override
-  http.CookieContainer CookieContainer;
+  http.CookieContainer? CookieContainer;
 
   @override
-  ICredentials Credentials;
+  ICredentials? Credentials;
 
   @override
-  WebHeaderCollection Headers = WebHeaderCollection();
+  WebHeaderCollection? Headers = WebHeaderCollection();
 
   @override
-  bool KeepAlive;
+  bool? KeepAlive;
 
   @override
-  String Method;
+  String? Method;
 
   @override
-  bool PreAuthenticate;
+  bool? PreAuthenticate;
 
   @override
-  IWebProxy Proxy;
+  IWebProxy? Proxy;
 
   @override
-  Uri RequestUri;
+  Uri? RequestUri;
 
   @override
-  int Timeout;
+  int? Timeout;
 
   @override
-  bool UseDefaultCredentials;
+  bool? UseDefaultCredentials;
 
   @override
-  String UserAgent;
+  String? UserAgent;
 
   @override
   void Abort() {
     // TODO: implement Abort
   }
 
-  HttpClient _httpClient;
+  HttpClient? _httpClient;
 
-  HttpClientRequest _request;
+  HttpClientRequest? _request;
 
   EwsHttpWebRequest(this._httpClient);
 
@@ -83,43 +83,43 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
   Future<HttpClientRequest> _InternalGetRequest() async {
     if (_request == null) {
       if (this.Timeout != null) {
-        _httpClient.connectionTimeout = Duration(milliseconds: this.Timeout);
+        // _httpClient!.connectionTimeout = Duration(milliseconds: this.Timeout!);
       }
 
       if (this.UserAgent != null) {
-        _httpClient.userAgent = this.UserAgent;
+        _httpClient!.userAgent = this.UserAgent;
       }
 
       if (Method == "POST") {
-        _request = await _httpClient.postUrl(RequestUri);
+        _request = await _httpClient!.postUrl(RequestUri!);
       } else if (Method == "GET") {
-        _request = await _httpClient.getUrl(RequestUri);
+        _request = await _httpClient!.getUrl(RequestUri!);
       } else {
         throw ArgumentException("Method: $Method, Unknown HTTP method");
       }
-      _request.followRedirects = AllowAutoRedirect;
+      _request!.followRedirects = AllowAutoRedirect!;
 
       if (Credentials != null) {
         final user = (Credentials as WebCredentials).user;
-        String password = (Credentials as WebCredentials).pwd;
+        String? password = (Credentials as WebCredentials).pwd;
         String auth = 'Basic ' + base64Encode(utf8.encode('$user:$password'));
-        _request.headers.add("Authorization", auth);
+        _request!.headers.add("Authorization", auth);
       }
 
       if (this.Accept != null) {
-        _request.headers.add("Accept", this.Accept);
+        _request!.headers.add("Accept", this.Accept!);
       }
 
       if (this.ContentType != null) {
-        _request.headers.add("Content-Type", this.ContentType);
+        _request!.headers.add("Content-Type", this.ContentType!);
       }
 
       if (this.KeepAlive == true) {
-        _request.headers.add("Connection", "Keep-Alive");
-        _request.headers.add("Keep-Alive", "300");
+        _request!.headers.add("Connection", "Keep-Alive");
+        _request!.headers.add("Keep-Alive", "300");
       }
     }
-    return _request;
+    return _request!;
   }
 
   @override
@@ -128,7 +128,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(
+          WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }

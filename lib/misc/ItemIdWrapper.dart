@@ -35,13 +35,13 @@ class ItemIdWrapper extends AbstractItemIdWrapper {
   /// <summary>
   /// The ItemId object providing the Id.
   /// </summary>
-  ItemId _itemId;
+  ItemId? _itemId;
 
   /// <summary>
   /// Initializes a new instance of ItemIdWrapper.
   /// </summary>
   /// <param name="itemId">The ItemId object providing the Id.</param>
-  ItemIdWrapper(ItemId itemId) {
+  ItemIdWrapper(ItemId? itemId) {
     EwsUtilities.Assert(itemId != null, "ItemIdWrapper.ctor", "itemId is null");
 
     this._itemId = itemId;
@@ -53,6 +53,6 @@ class ItemIdWrapper extends AbstractItemIdWrapper {
   /// <param name="writer">The writer to write the Id to.</param>
   @override
   void WriteToXml(EwsServiceXmlWriter writer) {
-    this._itemId.WriteToXmlElemenetName(writer);
+    this._itemId!.WriteToXmlElemenetName(writer);
   }
 }

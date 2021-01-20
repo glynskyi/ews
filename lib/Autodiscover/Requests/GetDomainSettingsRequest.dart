@@ -50,18 +50,18 @@ class GetDomainSettingsRequest extends AutodiscoverRequest {
       EwsUtilities.AutodiscoverSoapNamespace +
           "/Autodiscover/GetDomainSettings";
 
-  List<String> _domains;
+  List<String>? _domains;
 
-  List<DomainSettingName> _settings;
+  List<DomainSettingName>? _settings;
 
-  ExchangeVersion _requestedVersion;
+  ExchangeVersion? _requestedVersion;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetDomainSettingsRequest"/> class.
   /// </summary>
   /// <param name="service">Autodiscover service associated with this request.</param>
   /// <param name="url">URL of Autodiscover service.</param>
-  GetDomainSettingsRequest(AutodiscoverService service, Uri url)
+  GetDomainSettingsRequest(AutodiscoverService service, Uri? url)
       : super(service, url) {}
 
   /// <summary>
@@ -74,17 +74,17 @@ class GetDomainSettingsRequest extends AutodiscoverRequest {
     EwsUtilities.ValidateParam(this.Domains, "domains");
     EwsUtilities.ValidateParam(this.Settings, "settings");
 
-    if (this.Settings.length == 0) {
+    if (this.Settings!.length == 0) {
       throw new ServiceValidationException(
           "Strings.InvalidAutodiscoverSettingsCount");
     }
 
-    if (_domains.length == 0) {
+    if (_domains!.length == 0) {
       throw new ServiceValidationException(
           "Strings.InvalidAutodiscoverDomainsCount");
     }
 
-    for (String domain in this._domains) {
+    for (String domain in this._domains!) {
       if (StringUtils.IsNullOrEmpty(domain)) {
         throw new ServiceValidationException(
             "Strings.InvalidAutodiscoverDomain");
@@ -113,7 +113,7 @@ class GetDomainSettingsRequest extends AutodiscoverRequest {
   void PostProcessResponses(GetDomainSettingsResponseCollection responses) {
     // Note:The response collection may not include all of the requested domains if the request has been throttled.
     for (int index = 0; index < responses.Count; index++) {
-      responses[index].Domain = this.Domains[index];
+      responses[index].Domain = this.Domains![index];
     }
   }
 
@@ -177,7 +177,7 @@ class GetDomainSettingsRequest extends AutodiscoverRequest {
     writer.WriteStartElement(
         XmlNamespace.Autodiscover, XmlElementNames.Domains);
 
-    for (String domain in this.Domains) {
+    for (String domain in this.Domains!) {
       if (!StringUtils.IsNullOrEmpty(domain)) {
         writer.WriteElementValueWithNamespace(
             XmlNamespace.Autodiscover, XmlElementNames.Domain, domain);
@@ -187,7 +187,7 @@ class GetDomainSettingsRequest extends AutodiscoverRequest {
 
     writer.WriteStartElement(
         XmlNamespace.Autodiscover, XmlElementNames.RequestedSettings);
-    for (DomainSettingName setting in _settings) {
+    for (DomainSettingName setting in _settings!) {
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Autodiscover, XmlElementNames.Setting, setting);
     }
@@ -205,21 +205,21 @@ class GetDomainSettingsRequest extends AutodiscoverRequest {
   /// <summary>
   /// Gets or sets the domains.
   /// </summary>
-  List<String> get Domains => this._domains;
+  List<String>? get Domains => this._domains;
 
-  set Domains(List<String> value) => this._domains = value;
+  set Domains(List<String>? value) => this._domains = value;
 
   /// <summary>
   /// Gets or sets the settings.
   /// </summary>
-  List<DomainSettingName> get Settings => this._settings;
+  List<DomainSettingName>? get Settings => this._settings;
 
-  set Settings(List<DomainSettingName> value) => this._settings = value;
+  set Settings(List<DomainSettingName>? value) => this._settings = value;
 
   /// <summary>
   /// Gets or sets the RequestedVersion.
   /// </summary>
-  ExchangeVersion get RequestedVersion => this._requestedVersion;
+  ExchangeVersion? get RequestedVersion => this._requestedVersion;
 
-  set RequestedVersion(ExchangeVersion value) => this._requestedVersion = value;
+  set RequestedVersion(ExchangeVersion? value) => this._requestedVersion = value;
 }

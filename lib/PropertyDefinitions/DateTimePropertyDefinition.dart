@@ -89,7 +89,7 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   @override
   void LoadPropertyValueFromXml(
       EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    String value = reader.ReadElementValueWithNamespace(
+    String? value = reader.ReadElementValueWithNamespace(
         XmlNamespace.Types, this.XmlElementName);
 
     propertyBag[this] =
@@ -136,7 +136,7 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    Object value = propertyBag[this];
+    Object? value = propertyBag[this];
 
     if (value != null) {
       writer.WriteStartElement(XmlNamespace.Types, this.XmlElementName);
@@ -159,11 +159,11 @@ class DateTimePropertyDefinition extends PropertyDefinition {
   /// <param name="isUpdateOperation">if set to <c>true</c> [is update operation].</param>
   /// <param name="value">The value.</param>
   /// <returns></returns>
-  DateTime _GetConvertedDateTime(ExchangeServiceBase service,
+  DateTime _GetConvertedDateTime(ExchangeServiceBase? service,
       PropertyBag propertyBag, bool isUpdateOperation, Object value) {
     // TODO : fix GetConvertedDateTime
     print(".. used incorect GetConvertedDateTime");
-    DateTime dateTime = value;
+    DateTime dateTime = value as core.DateTime;
 
     return dateTime;
 //            DateTime convertedDateTime;

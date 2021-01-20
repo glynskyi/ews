@@ -63,12 +63,12 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
   /// <summary>
   /// Gets or sets the address used to refer to the user mailbox.
   /// </summary>
-  String Address;
+  String? Address;
 
   /// <summary>
   /// Gets or sets the routing type of the address used to refer to the user mailbox.
   /// </summary>
-  String RoutingType;
+  String? RoutingType;
 
   /// <summary>
   /// Defines an implicit conversion between a String representing an SMTP address and Mailbox.
@@ -116,7 +116,7 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
   /// </summary>
   /// <returns>String representation of instance.</returns>
   @override
-  String GetSearchString() {
+  String? GetSearchString() {
     return this.Address;
   }
 
@@ -144,7 +144,7 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
     if (identical(this, obj)) {
       return true;
     } else {
-      Mailbox other = obj is Mailbox ? obj : null;
+      Mailbox? other = obj is Mailbox ? obj : null;
 
       if (other == null) {
         return false;
@@ -190,9 +190,9 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
     if (!this.IsValid) {
       return "";
     } else if (!StringUtils.IsNullOrEmpty(this.RoutingType)) {
-      return this.RoutingType + ":" + this.Address;
+      return this.RoutingType! + ":" + this.Address!;
     } else {
-      return this.Address;
+      return this.Address!;
     }
   }
 }

@@ -35,10 +35,10 @@ import 'package:ews/Enumerations/ExchangeVersion.dart';
 /// </summary>
 class AcceptMeetingInvitationMessage
     extends CalendarResponseMessage<MeetingResponse> {
-  /* private */ bool tentative;
+  /* private */ bool? tentative;
 
   @override
-  ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute() {
+  ServiceObjectDefinitionAttribute? getServiceObjectDefinitionAttribute() {
     return null;
   }
 
@@ -68,7 +68,7 @@ class AcceptMeetingInvitationMessage
   /// </remarks>
   @override
   String GetXmlElementNameOverride() {
-    if (this.tentative) {
+    if (this.tentative!) {
       return XmlElementNames.TentativelyAcceptItem;
     } else {
       return XmlElementNames.AcceptItem;
@@ -87,5 +87,5 @@ class AcceptMeetingInvitationMessage
   /// <summary>
   /// Gets a value indicating whether the associated meeting is tentatively accepted.
   /// </summary>
-  bool get Tentative => this.tentative;
+  bool? get Tentative => this.tentative;
 }

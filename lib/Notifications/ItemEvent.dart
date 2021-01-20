@@ -37,21 +37,21 @@ class ItemEvent extends NotificationEvent {
   /// <summary>
   /// Id of the item this event applies to.
   /// </summary>
-  complex.ItemId _itemId;
+  complex.ItemId? _itemId;
 
   /// <summary>
   /// Id of the item that moved or copied. This is only meaningful when EventType
   /// is equal to either EventType.Moved or EventType.Copied. For all other event
   /// types, it's null.
   /// </summary>
-  complex.ItemId _oldItemId;
+  complex.ItemId? _oldItemId;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ItemEvent"/> class.
   /// </summary>
   /// <param name="eventType">Type of the event.</param>
   /// <param name="timestamp">The event timestamp.</param>
-  ItemEvent(EventType eventType, DateTime timestamp)
+  ItemEvent(EventType? eventType, DateTime? timestamp)
       : super(eventType, timestamp) {}
 
   /// <summary>
@@ -63,12 +63,12 @@ class ItemEvent extends NotificationEvent {
     super.InternalLoadFromXml(reader);
 
     this._itemId = new complex.ItemId();
-    this._itemId.LoadFromXml(reader, reader.LocalName);
+    this._itemId!.LoadFromXml(reader, reader.LocalName);
 
     reader.Read();
 
     this.ParentFolderId = new FolderId();
-    this.ParentFolderId.LoadFromXml(reader, XmlElementNames.ParentFolderId);
+    this.ParentFolderId!.LoadFromXml(reader, XmlElementNames.ParentFolderId);
 
     switch (this.EventType) {
       case EventType.Moved:
@@ -76,12 +76,12 @@ class ItemEvent extends NotificationEvent {
         reader.Read();
 
         this._oldItemId = new complex.ItemId();
-        this._oldItemId.LoadFromXml(reader, reader.LocalName);
+        this._oldItemId!.LoadFromXml(reader, reader.LocalName);
 
         reader.Read();
 
         this.OldParentFolderId = new FolderId();
-        this.OldParentFolderId.LoadFromXml(reader, reader.LocalName);
+        this.OldParentFolderId!.LoadFromXml(reader, reader.LocalName);
         break;
 
       default:
@@ -92,12 +92,12 @@ class ItemEvent extends NotificationEvent {
   /// <summary>
   /// Gets the Id of the item this event applies to.
   /// </summary>
-  complex.ItemId get ItemId => this._itemId;
+  complex.ItemId? get ItemId => this._itemId;
 
   /// <summary>
   /// Gets the Id of the item that was moved or copied. OldItemId is only meaningful
   /// when EventType is equal to either EventType.Moved or EventType.Copied. For
   /// all other event types, OldItemId is null.
   /// </summary>
-  complex.ItemId get OldItemId => this._oldItemId;
+  complex.ItemId? get OldItemId => this._oldItemId;
 }

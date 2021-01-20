@@ -41,15 +41,15 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents a file attachment.
 /// </summary>
 class FileAttachment extends Attachment {
-  String _fileName;
+  String? _fileName;
 
-  Stream _contentStream;
+  Stream? _contentStream;
 
-  Uint8List _content;
+  Uint8List? _content;
 
-  Stream<Uint8List> _loadToStream;
+  Stream<Uint8List>? _loadToStream;
 
-  bool _isContactPhoto = false;
+  bool? _isContactPhoto = false;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FileAttachment"/> class.
@@ -107,7 +107,7 @@ class FileAttachment extends Attachment {
           // load the content into a byte array.
           // TODO: Should we mark the attachment to indicate that content is stored elsewhere?
           if (reader.Service.FileAttachmentContentHandler != null) {
-            Stream outputStream = reader.Service.FileAttachmentContentHandler
+            Stream outputStream = reader.Service.FileAttachmentContentHandler!
                 .GetOutputStream(this.Id);
 
             if (outputStream != null) {
@@ -162,7 +162,7 @@ class FileAttachment extends Attachment {
       throw UnsupportedError("Can't send attachment with a stream");
 //                writer.WriteBase64ElementValue(this.ContentStream);
     } else if (this.Content != null) {
-      writer.WriteBase64ElementValue(this.Content);
+      writer.WriteBase64ElementValue(this.Content!);
     } else {
       EwsUtilities.Assert(false, "FileAttachment.WriteElementsToXml",
           "The attachment's content is not set.");
@@ -176,7 +176,7 @@ class FileAttachment extends Attachment {
   /// </summary>
   /// <param name="stream">The stream to load the content of the attachment into.</param>
   Future<void> LoadWithStream(Stream stream) {
-    this._loadToStream = stream;
+    this._loadToStream = stream as Stream<Uint8List>?;
 
     try {
       return this.Load();
@@ -211,9 +211,9 @@ class FileAttachment extends Attachment {
   /// <summary>
   /// Gets the name of the file the attachment is linked to.
   /// </summary>
-  String get FileName => this._fileName;
+  String? get FileName => this._fileName;
 
-  set FileName(String value) {
+  set FileName(String? value) {
     this.ThrowIfThisIsNotNew();
 
     this._fileName = value;
@@ -225,9 +225,10 @@ class FileAttachment extends Attachment {
   /// Gets or sets the content stream.
   /// </summary>
   /// <value>The content stream.</value>
-  Stream<List<int>> get ContentStream => this._contentStream;
+  Stream<List<int>>? get ContentStream =>
+      this._contentStream as Stream<List<int>>?;
 
-  set ContentStream(Stream<List<int>> value) {
+  set ContentStream(Stream<List<int>>? value) {
     this.ThrowIfThisIsNotNew();
 
     this._contentStream = value;
@@ -238,9 +239,9 @@ class FileAttachment extends Attachment {
   /// <summary>
   /// Gets the content of the attachment into memory. Content is set only when Load() is called.
   /// </summary>
-  Uint8List get Content => this._content;
+  Uint8List? get Content => this._content;
 
-  set Content(Uint8List value) {
+  set Content(Uint8List? value) {
     this.ThrowIfThisIsNotNew();
 
     this._content = value;
@@ -251,13 +252,13 @@ class FileAttachment extends Attachment {
   /// <summary>
   /// Gets or sets a value indicating whether this attachment is a contact photo.
   /// </summary>
-  bool get IsContactPhoto {
+  bool? get IsContactPhoto {
     EwsUtilities.ValidatePropertyVersion(
         this.Service, ExchangeVersion.Exchange2010, "IsContactPhoto");
     return this._isContactPhoto;
   }
 
-  set IsContactPhoto(bool value) {
+  set IsContactPhoto(bool? value) {
     EwsUtilities.ValidatePropertyVersion(
         this.Service, ExchangeVersion.Exchange2010, "IsContactPhoto");
     this.ThrowIfThisIsNotNew();

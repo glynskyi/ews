@@ -35,50 +35,50 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents SoapFault details.
 /// </summary>
 class SoapFaultDetails {
-  /* private */ String faultCode;
+  /* private */ String? faultCode;
 
   /* private */
-  String faultString;
+  String? faultString;
 
   /* private */
-  String faultActor;
+  String? faultActor;
 
   /// <summary>
   /// Response code returned by EWS requests.
   /// Default to InternalServerError.
   /// </summary>
   /* private */
-  ServiceError responseCode = ServiceError.ErrorInternalServerError;
+  ServiceError? responseCode = ServiceError.ErrorInternalServerError;
 
   /// <summary>
   /// Message text of the error.
   /// </summary>
   /* private */
-  String message;
+  String? message;
 
   /// <summary>
   /// This is returned by Availability requests.
   /// </summary>
   /* private */
-  ServiceError errorCode = ServiceError.NoError;
+  ServiceError? errorCode = ServiceError.NoError;
 
   /// <summary>
   /// This is returned by UM requests. It's the name of the exception that was raised.
   /// </summary>
   /* private */
-  String exceptionType;
+  String? exceptionType;
 
   /// <summary>
   /// When a schema validation error is returned, this is the line number in the request where the error occurred.
   /// </summary>
   /* private */
-  int lineNumber;
+  int? lineNumber;
 
   /// <summary>
   /// When a schema validation error is returned, this is the offset into the line of the request where the error occurred.
   /// </summary>
   /* private */
-  int positionWithinLine;
+  int? positionWithinLine;
 
   /// <summary>
   /// Dictionary of key/value pairs from the MessageXml node in the fault. Usually empty but there are
@@ -86,7 +86,7 @@ class SoapFaultDetails {
   /// BackoffTime value).
   /// </summary>
   /* private */
-  Map<String, String> errorDetails = {};
+  Map<String?, String?> errorDetails = {};
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SoapFaultDetails"/> class.
@@ -231,9 +231,9 @@ class SoapFaultDetails {
   /// Gets or sets the SOAP fault code.
   /// </summary>
   /// <value>The SOAP fault code.</value>
-  String get FaultCode => this.faultCode;
+  String? get FaultCode => this.faultCode;
 
-  set FaultCode(String value) {
+  set FaultCode(String? value) {
     this.faultCode = value;
   }
 
@@ -241,9 +241,9 @@ class SoapFaultDetails {
   /// Gets or sets the SOAP fault string.
   /// </summary>
   /// <value>The fault string.</value>
-  String get FaultString => this.faultString;
+  String? get FaultString => this.faultString;
 
-  set FaultString(String value) {
+  set FaultString(String? value) {
     this.faultString = value;
   }
 
@@ -251,9 +251,9 @@ class SoapFaultDetails {
   /// Gets or sets the SOAP fault actor.
   /// </summary>
   /// <value>The fault actor.</value>
-  String get FaultActor => this.faultActor;
+  String? get FaultActor => this.faultActor;
 
-  set FaultActor(String value) {
+  set FaultActor(String? value) {
     this.faultActor = value;
   }
 
@@ -261,9 +261,9 @@ class SoapFaultDetails {
   /// Gets or sets the response code.
   /// </summary>
   /// <value>The response code.</value>
-  ServiceError get ResponseCode => this.responseCode;
+  ServiceError? get ResponseCode => this.responseCode;
 
-  set ResponseCode(ServiceError value) {
+  set ResponseCode(ServiceError? value) {
     this.responseCode = value;
   }
 
@@ -271,9 +271,9 @@ class SoapFaultDetails {
   /// Gets or sets the message.
   /// </summary>
   /// <value>The message.</value>
-  String get Message => this.message;
+  String? get Message => this.message;
 
-  set Message(String value) {
+  set Message(String? value) {
     this.message = value;
   }
 
@@ -281,9 +281,9 @@ class SoapFaultDetails {
   /// Gets or sets the error code.
   /// </summary>
   /// <value>The error code.</value>
-  ServiceError get ErrorCode => this.errorCode;
+  ServiceError? get ErrorCode => this.errorCode;
 
-  set ErrorCode(ServiceError value) {
+  set ErrorCode(ServiceError? value) {
     this.errorCode = value;
   }
 
@@ -291,9 +291,9 @@ class SoapFaultDetails {
   /// Gets or sets the type of the exception.
   /// </summary>
   /// <value>The type of the exception.</value>
-  String get ExceptionType => this.exceptionType;
+  String? get ExceptionType => this.exceptionType;
 
-  set ExceptionType(String value) {
+  set ExceptionType(String? value) {
     this.exceptionType = value;
   }
 
@@ -301,9 +301,9 @@ class SoapFaultDetails {
   /// Gets or sets the line number.
   /// </summary>
   /// <value>The line number.</value>
-  int get LineNumber => this.lineNumber;
+  int? get LineNumber => this.lineNumber;
 
-  set LineNumber(int value) {
+  set LineNumber(int? value) {
     this.lineNumber = value;
   }
 
@@ -311,9 +311,9 @@ class SoapFaultDetails {
   /// Gets or sets the position within line.
   /// </summary>
   /// <value>The position within line.</value>
-  int get PositionWithinLine => this.positionWithinLine;
+  int? get PositionWithinLine => this.positionWithinLine;
 
-  set PositionWithinLine(int value) {
+  set PositionWithinLine(int? value) {
     this.positionWithinLine = value;
   }
 
@@ -321,9 +321,9 @@ class SoapFaultDetails {
   /// Gets or sets the error details dictionary.
   /// </summary>
   /// <value>The error details dictionary.</value>
-  Map<String, String> get ErrorDetails => this.errorDetails;
+  Map<String?, String?> get ErrorDetails => this.errorDetails;
 
-  set ErrorDetails(Map<String, String> value) {
+  set ErrorDetails(Map<String?, String?> value) {
     this.errorDetails = value;
   }
 }

@@ -1,3 +1,14 @@
+## 1.2.0-nullsafety.1
+
+* Made the complex property fields non-nullable
+* Made the Service property non-nullable
+* Made the Item property non-nullable
+
+## 1.2.0-nullsafety.0
+
+* **BREAKING**: opt into the null safety
+* Upgraded the Dart SDK constraints to `>=2.12.0-0 <3.0.0`
+
 ## 1.1.8
 
 * Upgraded the Dart SDK to 2.10

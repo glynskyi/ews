@@ -44,7 +44,7 @@ class ItemAttachment extends Attachment {
   /// <summary>
   /// The item associated with the attachment.
   /// </summary>
-  /* private */ items.Item item;
+  items.Item? _item;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ItemAttachment"/> class.
@@ -62,17 +62,17 @@ class ItemAttachment extends Attachment {
   /// <summary>
   /// Gets the item associated with the attachment.
   /// </summary>
-  items.Item get Item => this.item;
+  items.Item? get Item => this._item;
 
   set(items.Item value) {
     this.ThrowIfThisIsNotNew();
 
-    if (this.item != null) {
-      this.item.onChange.remove(this.ItemChanged);
+    if (this._item != null) {
+      this._item!.onChange.remove(this.ItemChanged);
     }
-    this.item = value;
-    if (this.item != null) {
-      this.item.onChange.add(this.ItemChanged);
+    this._item = value;
+    if (this._item != null) {
+      this._item!.onChange.add(this.ItemChanged);
     }
   }
 
@@ -83,7 +83,7 @@ class ItemAttachment extends Attachment {
   /* private */
   void ItemChanged(ServiceObject serviceObject) {
     if (this.Owner != null) {
-      this.Owner.PropertyBag.Changed();
+      this.Owner!.PropertyBag.Changed();
     }
   }
 
@@ -106,11 +106,11 @@ class ItemAttachment extends Attachment {
     bool result = super.TryReadElementFromXml(reader);
 
     if (!result) {
-      this.item =
+      this._item =
           EwsUtilities.CreateItemFromXmlElementName(this, reader.LocalName);
 
-      if (this.item != null) {
-        this.item.LoadFromXml(reader, true /* clearPropertyBag */);
+      if (this._item != null) {
+        this._item!.LoadFromXml(reader, true /* clearPropertyBag */);
       }
     }
 
@@ -128,15 +128,15 @@ class ItemAttachment extends Attachment {
     super.TryReadElementFromXml(reader);
 
     reader.Read();
-    Type itemClass =
+    Type? itemClass =
         EwsUtilities.GetItemTypeFromXmlElementName(reader.LocalName);
 
     if (itemClass != null) {
-      if (this.item == null || this.item.runtimeType != itemClass) {
+      if (this._item == null || this._item.runtimeType != itemClass) {
         throw new ServiceLocalException("Strings.AttachmentItemTypeMismatch");
       }
 
-      this.item.LoadFromXml(reader, false /* clearPropertyBag */);
+      this._item!.LoadFromXml(reader, false /* clearPropertyBag */);
       return true;
     }
 
@@ -151,7 +151,7 @@ class ItemAttachment extends Attachment {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     super.WriteElementsToXml(writer);
 
-    this.Item.WriteToXml(writer);
+    this.Item!.WriteToXml(writer);
   }
 
   /// <summary>
@@ -166,7 +166,7 @@ class ItemAttachment extends Attachment {
     }
 
     // Recurse through any items attached to item attachment.
-    this.Item.Attachments.Validate();
+    this.Item!.Attachments.Validate();
   }
 
   /// <summary>

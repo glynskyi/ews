@@ -56,8 +56,8 @@ class PermissionSetPropertyDefinition extends ComplexPropertyDefinitionBase {
   /// <param name="owner">The owner.</param>
   /// <returns>ComplexProperty.</returns>
   @override
-  ComplexProperty CreatePropertyInstance(ServiceObject owner) {
-    Folder folder = owner as Folder;
+  ComplexProperty CreatePropertyInstance(ServiceObject? owner) {
+    Folder? folder = owner as Folder?;
 
     EwsUtilities.Assert(
         folder != null,

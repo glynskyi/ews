@@ -38,7 +38,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a time zone period transition that occurs on a fixed (absolute) date.
 /// </summary>
 class AbsoluteDateTransition extends TimeZoneTransition {
-  core.DateTime _dateTime;
+  core.DateTime? _dateTime;
 
 //        /// <summary>
 //        /// Initializes this transition based on the specified transition time.
@@ -70,7 +70,7 @@ class AbsoluteDateTransition extends TimeZoneTransition {
 
     if (!result) {
       if (reader.LocalName == XmlElementNames.DateTime) {
-        this._dateTime = core.DateTime.parse(reader.ReadElementValue<String>());
+        this._dateTime = core.DateTime.parse(reader.ReadElementValue<String>()!);
 
         result = true;
       }
@@ -95,7 +95,7 @@ class AbsoluteDateTransition extends TimeZoneTransition {
   /// Initializes a new instance of the <see cref="AbsoluteDateTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition the transition will belong to.</param>
-  AbsoluteDateTransition(TimeZoneDefinition timeZoneDefinition)
+  AbsoluteDateTransition(TimeZoneDefinition? timeZoneDefinition)
       : super(timeZoneDefinition) {}
 
   /// <summary>
@@ -111,7 +111,7 @@ class AbsoluteDateTransition extends TimeZoneTransition {
   /// <summary>
   /// Gets or sets the absolute date and time when the transition occurs.
   /// </summary>
-  core.DateTime get DateTime => this._dateTime;
+  core.DateTime? get DateTime => this._dateTime;
 
-  set DateTime(core.DateTime value) => this._dateTime = value;
+  set DateTime(core.DateTime? value) => this._dateTime = value;
 }

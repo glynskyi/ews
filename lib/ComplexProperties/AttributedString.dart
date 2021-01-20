@@ -39,17 +39,17 @@ class AttributedString extends ComplexProperty {
   /// <summary>
   /// attribution store
   /// </summary>
-  List<String> _attributionList;
+  late List<String?> _attributionList;
 
   /// <summary>
   /// String value
   /// </summary>
-  String Value;
+  String? Value;
 
   /// <summary>
   /// Attribution values
   /// </summary>
-  List<String> Attributions;
+  List<String?>? Attributions;
 
   /// <summary>
   /// Default constructor
@@ -119,13 +119,13 @@ class AttributedString extends ComplexProperty {
   bool LoadAttributionsFromXml(EwsServiceXmlReader reader) {
     if (!reader.IsEmptyElement) {
       String localName = reader.LocalName;
-      this._attributionList = <String>[];
+      this._attributionList = <String?>[];
 
       do {
         reader.Read();
         if (reader.NodeType == XmlNodeType.Element &&
             reader.LocalName == XmlElementNames.Attribution) {
-          String s = reader.ReadElementValue<String>();
+          String? s = reader.ReadElementValue<String>();
           if (!StringUtils.IsNullOrEmpty(s)) {
             this._attributionList.add(s);
           }

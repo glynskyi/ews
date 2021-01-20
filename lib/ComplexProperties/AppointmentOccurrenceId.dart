@@ -36,7 +36,7 @@ class AppointmentOccurrenceId extends ItemId {
   /// <summary>
   /// Index of the occurrence.
   /// </summary>
-  /* private */ int occurrenceIndex;
+  /* private */ late int occurrenceIndex;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AppointmentOccurrenceId"/> class.

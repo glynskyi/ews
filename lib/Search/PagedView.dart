@@ -71,7 +71,7 @@ abstract class PagedView extends ViewBase {
   /// <param name="groupBy">The group by clause.</param>
   @override
   void InternalWriteSearchSettingsToXml(
-      EwsServiceXmlWriter writer, Grouping groupBy) {
+      EwsServiceXmlWriter writer, Grouping? groupBy) {
     if (groupBy != null) {
       groupBy.WriteToXml(writer);
     }

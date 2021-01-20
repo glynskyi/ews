@@ -51,7 +51,7 @@ class GetAttachmentRequest
   List<PropertyDefinitionBase> _additionalProperties =
       <PropertyDefinitionBase>[];
 
-  enumerations.BodyType _bodyType;
+  enumerations.BodyType? _bodyType;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetAttachmentRequest"/> class.
@@ -205,9 +205,9 @@ class GetAttachmentRequest
   /// Gets or sets the type of the body.
   /// </summary>
   /// <value>The type of the body.</value>
-  enumerations.BodyType get BodyType => this._bodyType;
+  enumerations.BodyType? get BodyType => this._bodyType;
 
-  set BodyType(enumerations.BodyType value) => this._bodyType = value;
+  set BodyType(enumerations.BodyType? value) => this._bodyType = value;
 
   /// <summary>
   /// Gets a value indicating whether the TimeZoneContext SOAP header should be emitted.
@@ -231,7 +231,7 @@ class GetAttachmentRequest
   /// </summary>
   /// <param name="writer">The writer.</param>
   /// <param name="attachmentId">The attachment id.</param>
-  void _WriteAttachmentIdXml(EwsServiceXmlWriter writer, String attachmentId) {
+  void _WriteAttachmentIdXml(EwsServiceXmlWriter writer, String? attachmentId) {
     writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.AttachmentId);
     writer.WriteAttributeValue(XmlAttributeNames.Id, attachmentId);
     writer.WriteEndElement();

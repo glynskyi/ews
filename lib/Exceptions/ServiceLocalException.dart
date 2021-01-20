@@ -28,9 +28,9 @@
 /// </summary>
 //    [Serializable]
 class ServiceLocalException implements Exception {
-  final String message;
-  final Exception innerException;
-  final StackTrace innerStackTrace;
+  final String? message;
+  final Exception? innerException;
+  final StackTrace? innerStackTrace;
 
   /// <summary>
   /// ServiceLocalException Constructor.

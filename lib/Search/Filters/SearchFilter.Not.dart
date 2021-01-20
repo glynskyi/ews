@@ -41,7 +41,7 @@ import 'package:ews/Search/Filters/SearchFilter.dart' as search;
 /// conditions such as "NOT(other filter)".
 /// </summary>
 class Not extends SearchFilter {
-  /* private */ search.SearchFilter searchFilter;
+  /* private */ search.SearchFilter? searchFilter;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="Not"/> class.
@@ -101,18 +101,18 @@ class Not extends SearchFilter {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.SearchFilter.WriteToXmlWithWriter(writer);
+    this.SearchFilter!.WriteToXmlWithWriter(writer);
   }
 
   /// <summary>
   /// Gets or sets the search filter to negate. Available search filter classes include
   /// SearchFilter.IsEqualTo, SearchFilter.ContainsSubString and SearchFilter.SearchFilterCollection.
   /// </summary>
-  search.SearchFilter get SearchFilter => this.searchFilter;
+  search.SearchFilter? get SearchFilter => this.searchFilter;
 
-  set SearchFilter(search.SearchFilter value) {
+  set SearchFilter(search.SearchFilter? value) {
     if (this.searchFilter != null) {
-      this.searchFilter.removeChangeEvent(this.SearchFilterChanged);
+      this.searchFilter!.removeChangeEvent(this.SearchFilterChanged);
     }
 
     if (this.CanSetFieldValue(this.searchFilter, searchFilter)) {
@@ -121,7 +121,7 @@ class Not extends SearchFilter {
     }
 
     if (this.searchFilter != null) {
-      this.searchFilter.addOnChangeEvent(this.SearchFilterChanged);
+      this.searchFilter!.addOnChangeEvent(this.SearchFilterChanged);
     }
   }
 }

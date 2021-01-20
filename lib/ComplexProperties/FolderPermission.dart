@@ -193,9 +193,9 @@ class FolderPermission extends ComplexProperty {
     List<FolderPermission> results = <FolderPermission>[];
 
     FolderPermission permissionNone =
-        FolderPermission._defaultPermissions.Member[FolderPermissionLevel.None];
+        FolderPermission._defaultPermissions.Member![FolderPermissionLevel.None]!;
     FolderPermission permissionOwner = FolderPermission
-        ._defaultPermissions.Member[FolderPermissionLevel.Owner];
+        ._defaultPermissions.Member![FolderPermissionLevel.Owner]!;
 
     // PermissionLevelNoneOption1
     FolderPermission permission = permissionNone.Clone();
@@ -221,25 +221,25 @@ class FolderPermission extends ComplexProperty {
     return results;
   });
 
-  property.UserId _userId;
+  property.UserId? _userId;
 
-  bool _canCreateItems;
+  bool? _canCreateItems;
 
-  bool _canCreateSubFolders;
+  bool? _canCreateSubFolders;
 
-  bool _isFolderOwner;
+  bool? _isFolderOwner;
 
-  bool _isFolderVisible;
+  bool? _isFolderVisible;
 
-  bool _isFolderContact;
+  bool? _isFolderContact;
 
-  PermissionScope _editItems;
+  PermissionScope? _editItems;
 
-  PermissionScope _deleteItems;
+  PermissionScope? _deleteItems;
 
-  FolderPermissionReadAccess _readItems;
+  FolderPermissionReadAccess? _readItems;
 
-  FolderPermissionLevel _permissionLevel;
+  FolderPermissionLevel? _permissionLevel;
 
   /// <summary>
   /// Determines whether the specified folder permission is the same as this one. The comparison
@@ -277,7 +277,7 @@ class FolderPermission extends ComplexProperty {
   /// </summary>
   void _AdjustPermissionLevel() {
     for (MapEntry<FolderPermissionLevel, FolderPermission> keyValuePair
-        in _defaultPermissions.Member.entries) {
+        in _defaultPermissions.Member!.entries) {
       if (this._IsEqualTo(keyValuePair.value)) {
         this._permissionLevel = keyValuePair.key;
         return;
@@ -329,7 +329,7 @@ class FolderPermission extends ComplexProperty {
   /// <param name="primarySmtpAddress">The primary SMTP address of the user the permission applies to.</param>
   /// <param name="permissionLevel">The level of the permission.</param>
   FolderPermission.withSmtpAddress(
-      String primarySmtpAddress, FolderPermissionLevel permissionLevel) {
+      String? primarySmtpAddress, FolderPermissionLevel permissionLevel) {
     this.UserId = new property.UserId.withSmtpAddress(primarySmtpAddress);
     this.PermissionLevel = permissionLevel;
   }
@@ -357,7 +357,7 @@ class FolderPermission extends ComplexProperty {
   /// <param name="permissionIndex">Index of the permission.</param>
   void ValidateWithPermissionIndex(bool isCalendarFolder, int permissionIndex) {
     // Check property.UserId
-    if (!this._userId.IsValid()) {
+    if (!this._userId!.IsValid()) {
       throw new ServiceValidationException("""string.Format(
                         Strings.FolderPermissionHasInvalidproperty.UserId,
                         permissionIndex)""");
@@ -386,11 +386,11 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets the Id of the user the permission applies to.
   /// </summary>
-  property.UserId get UserId => this._userId;
+  property.UserId? get UserId => this._userId;
 
-  set UserId(property.UserId value) {
+  set UserId(property.UserId? value) {
     if (this._userId != null) {
-      this._userId.removeChangeEvent(this.PropertyChanged);
+      this._userId!.removeChangeEvent(this.PropertyChanged);
     }
 
     if (this.CanSetFieldValue(this._userId, value)) {
@@ -399,16 +399,16 @@ class FolderPermission extends ComplexProperty {
     }
 
     if (this.UserId != null) {
-      this.UserId.addOnChangeEvent(this.PropertyChanged);
+      this.UserId!.addOnChangeEvent(this.PropertyChanged);
     }
   }
 
   /// <summary>
   /// Gets or sets a value indicating whether the user can create new items.
   /// </summary>
-  bool get CanCreateItems => this._canCreateItems;
+  bool? get CanCreateItems => this._canCreateItems;
 
-  set CanCreateItems(bool value) {
+  set CanCreateItems(bool? value) {
     if (this.CanSetFieldValue(this._canCreateItems, value)) {
       this._canCreateItems = value;
       this.Changed();
@@ -419,9 +419,9 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating whether the user can create sub-folders.
   /// </summary>
-  bool get CanCreateSubFolders => this._canCreateSubFolders;
+  bool? get CanCreateSubFolders => this._canCreateSubFolders;
 
-  set CanCreateSubFolders(bool value) {
+  set CanCreateSubFolders(bool? value) {
     if (this.CanSetFieldValue(this._canCreateSubFolders, value)) {
       this._canCreateSubFolders = value;
       this.Changed();
@@ -432,9 +432,9 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating whether the user owns the folder.
   /// </summary>
-  bool get IsFolderOwner => this._isFolderOwner;
+  bool? get IsFolderOwner => this._isFolderOwner;
 
-  set IsFolderOwner(bool value) {
+  set IsFolderOwner(bool? value) {
     if (this.CanSetFieldValue(this._isFolderOwner, value)) {
       this._isFolderOwner = value;
       this.Changed();
@@ -445,9 +445,9 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating whether the folder is visible to the user.
   /// </summary>
-  bool get IsFolderVisible => this._isFolderVisible;
+  bool? get IsFolderVisible => this._isFolderVisible;
 
-  set IsFolderVisible(bool value) {
+  set IsFolderVisible(bool? value) {
     if (this.CanSetFieldValue(this._isFolderVisible, value)) {
       this._isFolderVisible = value;
       this.Changed();
@@ -458,9 +458,9 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating whether the user is a contact for the folder.
   /// </summary>
-  bool get IsFolderContact => this._isFolderContact;
+  bool? get IsFolderContact => this._isFolderContact;
 
-  set IsFolderContact(bool value) {
+  set IsFolderContact(bool? value) {
     if (this.CanSetFieldValue(this._isFolderContact, value)) {
       this._isFolderContact = value;
       this.Changed();
@@ -471,9 +471,9 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating if/how the user can edit existing items.
   /// </summary>
-  PermissionScope get EditItems => this._editItems;
+  PermissionScope? get EditItems => this._editItems;
 
-  set EditItems(PermissionScope value) {
+  set EditItems(PermissionScope? value) {
     if (this.CanSetFieldValue(this._editItems, value)) {
       this._editItems = value;
       this.Changed();
@@ -484,9 +484,9 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets a value indicating if/how the user can delete existing items.
   /// </summary>
-  PermissionScope get DeleteItems => this._deleteItems;
+  PermissionScope? get DeleteItems => this._deleteItems;
 
-  set DeleteItems(PermissionScope value) {
+  set DeleteItems(PermissionScope? value) {
     if (this.CanSetFieldValue(this._deleteItems, value)) {
       this._deleteItems = value;
       this.Changed();
@@ -494,12 +494,12 @@ class FolderPermission extends ComplexProperty {
     this._AdjustPermissionLevel();
   }
 
-  FolderPermissionReadAccess get ReadItems => this._readItems;
+  FolderPermissionReadAccess? get ReadItems => this._readItems;
 
   /// <summary>
   /// Gets or sets the read items access permission.
   /// </summary>
-  set ReadItems(FolderPermissionReadAccess value) {
+  set ReadItems(FolderPermissionReadAccess? value) {
     if (this.CanSetFieldValue(this._readItems, value)) {
       this._readItems = value;
       this.Changed();
@@ -510,16 +510,16 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets or sets the permission level.
   /// </summary>
-  FolderPermissionLevel get PermissionLevel => this._permissionLevel;
+  FolderPermissionLevel? get PermissionLevel => this._permissionLevel;
 
-  set PermissionLevel(FolderPermissionLevel value) {
+  set PermissionLevel(FolderPermissionLevel? value) {
     if (this._permissionLevel != value) {
       if (value == FolderPermissionLevel.Custom) {
         throw new ServiceLocalException(
             "Strings.CannotSetPermissionLevelToCustom");
       }
 
-      this._AssignIndividualPermissions(_defaultPermissions.Member[value]);
+      this._AssignIndividualPermissions(_defaultPermissions.Member![value!]!);
       if (this.CanSetFieldValue(this._permissionLevel, value)) {
         this._permissionLevel = value;
         this.Changed();
@@ -530,11 +530,11 @@ class FolderPermission extends ComplexProperty {
   /// <summary>
   /// Gets the permission level that Outlook would display for this folder permission.
   /// </summary>
-  FolderPermissionLevel get DisplayPermissionLevel {
+  FolderPermissionLevel? get DisplayPermissionLevel {
     // If permission level is set to Custom, see if there's a variant
     // that Outlook would map to the same permission level.
     if (this._permissionLevel == FolderPermissionLevel.Custom) {
-      for (FolderPermission variant in FolderPermission._levelVariants.Member) {
+      for (FolderPermission variant in FolderPermission._levelVariants.Member!) {
         if (this._IsEqualTo(variant)) {
           return variant.PermissionLevel;
         }
@@ -563,7 +563,7 @@ class FolderPermission extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.UserId:
         this.UserId = new property.UserId();
-        this.UserId.LoadFromXml(reader, reader.LocalName);
+        this.UserId!.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.CanCreateItems:
         this._canCreateItems = reader.ReadValue<bool>();
@@ -606,7 +606,7 @@ class FolderPermission extends ComplexProperty {
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
   void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String xmlElementName) {
+      XmlNamespace xmlNamespace, String? xmlElementName) {
     super.LoadFromXmlWithNamespace(reader, xmlNamespace, xmlElementName);
 
     this._AdjustPermissionLevel();
@@ -620,7 +620,7 @@ class FolderPermission extends ComplexProperty {
   void WriteElementsToXmlWithCalendar(
       EwsServiceXmlWriter writer, bool isCalendarFolder) {
     if (this._userId != null) {
-      this._userId.WriteToXml(writer, XmlElementNames.UserId);
+      this._userId!.WriteToXml(writer, XmlElementNames.UserId);
     }
 
     if (this.PermissionLevel == FolderPermissionLevel.Custom) {

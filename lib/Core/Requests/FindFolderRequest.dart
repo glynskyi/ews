@@ -52,7 +52,7 @@ class FindFolderRequest extends FindRequest<FindFolderResponse> {
   @override
   FindFolderResponse CreateServiceResponse(
       ExchangeService service, int responseIndex) {
-    return new FindFolderResponse(this.View.GetPropertySetOrDefault());
+    return new FindFolderResponse(this.View!.GetPropertySetOrDefault());
   }
 
   /// <summary>

@@ -114,7 +114,7 @@ abstract class ServiceObjectSchema
       new LazyMember<Map<String, PropertyDefinitionBase>>(() {
     Map<String, PropertyDefinitionBase> propDefDictionary =
         new Map<String, PropertyDefinitionBase>();
-    for (Type type in ServiceObjectSchema._allSchemaTypes.Member) {
+    for (Type type in ServiceObjectSchema._allSchemaTypes.Member!) {
       ServiceObjectSchema.AddSchemaPropertiesToDictionary(
           type, propDefDictionary);
     }
@@ -205,8 +205,8 @@ abstract class ServiceObjectSchema
   /// </summary>
   /// <param name="uri">The URI.</param>
   /// <returns>Property definition.</returns>
-  static PropertyDefinitionBase FindPropertyDefinition(String uri) {
-    return ServiceObjectSchema._allSchemaProperties.Member[uri];
+  static PropertyDefinitionBase? FindPropertyDefinition(String? uri) {
+    return ServiceObjectSchema._allSchemaProperties.Member![uri!];
   }
 
   /// <summary>
@@ -214,7 +214,7 @@ abstract class ServiceObjectSchema
   /// </summary>
   static void InitializeSchemaPropertyNames() {
     lock(lockObject) {
-      for (Type type in ServiceObjectSchema._allSchemaTypes.Member) {
+      for (Type type in ServiceObjectSchema._allSchemaTypes.Member!) {
 //                    ServiceObjectSchema.ForeachPublicStaticPropertyFieldInType(
 //                        type,
 //                        delegate(PropertyDefinition propDef, FieldInfo fieldInfo) { propDef.Name = fieldInfo.Name; });
@@ -238,8 +238,8 @@ abstract class ServiceObjectSchema
     return new ExtendedPropertyCollection();
   });
 
-  Map<String, PropertyDefinition> _properties =
-      new Map<String, PropertyDefinition>();
+  Map<String?, PropertyDefinition> _properties =
+      new Map<String?, PropertyDefinition>();
 
   List<PropertyDefinition> _visibleProperties = <PropertyDefinition>[];
 

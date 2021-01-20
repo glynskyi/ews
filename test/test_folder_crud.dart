@@ -34,7 +34,7 @@ void main() {
     final secondFolder = new Folder(service);
     secondFolder.DisplayName = duplicateName;
 
-    var expectedException = null;
+    dynamic expectedException = null;
     try {
       await secondFolder.SaveWithWellKnownFolderName(WellKnownFolderName.Notes);
     } on ServiceResponseException catch (e) {
@@ -49,7 +49,7 @@ void main() {
     final service = prepareExchangeService(primaryUserCredential);
     final view = new FolderView.withPageSize(100);
     view.PropertySet = new PropertySet.fromPropertySet(BasePropertySet.IdOnly);
-    view.PropertySet.Add(FolderSchema.DisplayName);
+    view.PropertySet!.Add(FolderSchema.DisplayName);
     SearchFilter searchFilter =
         new IsGreaterThan.withPropertyAndValue(FolderSchema.TotalCount, 0);
     view.Traversal = FolderTraversal.Deep;
@@ -72,7 +72,7 @@ void main() {
     final view = new FolderView.withPageSize(100);
     view.PropertySet =
         new PropertySet.fromPropertyDefinitions([meetingsFolderProperty]);
-    view.PropertySet.Add(FolderSchema.DisplayName);
+    view.PropertySet!.Add(FolderSchema.DisplayName);
     SearchFilter searchFilter =
         new IsEqualTo.withPropertyAndValue(FolderSchema.TotalCount, 0);
     view.Traversal = FolderTraversal.Deep;

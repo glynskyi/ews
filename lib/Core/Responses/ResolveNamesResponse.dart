@@ -24,7 +24,6 @@
  */
 
 import 'package:ews/Core/EwsServiceXmlReader.dart';
-import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/ExchangeService.dart';
 import 'package:ews/Core/Responses/ServiceResponse.dart';
 import 'package:ews/Enumerations/ServiceError.dart';
@@ -34,18 +33,15 @@ import 'package:ews/misc/NameResolutionCollection.dart';
 /// Represents the response to a name resolution operation.
 /// </summary>
 class ResolveNamesResponse extends ServiceResponse {
-  NameResolutionCollection _resolutions;
+  NameResolutionCollection? _resolutions;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ResolveNamesResponse"/> class.
   /// </summary>
   /// <param name="service">The service.</param>
-  ResolveNamesResponse(ExchangeService service) : super() {
-    EwsUtilities.Assert(
-        service != null, "ResolveNamesResponse.ctor", "service is null");
-
-    this._resolutions = new NameResolutionCollection(service);
-  }
+  ResolveNamesResponse(ExchangeService service)
+      : this._resolutions = new NameResolutionCollection(service),
+        super();
 
   /// <summary>
   /// Reads response elements from XML.
@@ -55,7 +51,7 @@ class ResolveNamesResponse extends ServiceResponse {
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    this.Resolutions.LoadFromXml(reader);
+    this.Resolutions!.LoadFromXml(reader);
   }
 
   /// <summary>
@@ -72,5 +68,5 @@ class ResolveNamesResponse extends ServiceResponse {
   /// <summary>
   /// Gets a list of name resolution suggestions.
   /// </summary>
-  NameResolutionCollection get Resolutions => this._resolutions;
+  NameResolutionCollection? get Resolutions => this._resolutions;
 }

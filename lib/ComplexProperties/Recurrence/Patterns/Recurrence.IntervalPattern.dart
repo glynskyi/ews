@@ -40,7 +40,7 @@ import 'package:timezone/standalone.dart';
 /// Represents a recurrence pattern where each occurrence happens at a specific interval after the previous one.
 /// </summary>
 abstract class IntervalPattern extends Recurrence {
-  int _interval = 1;
+  int? _interval = 1;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="IntervalPattern"/> class.
@@ -97,7 +97,7 @@ abstract class IntervalPattern extends Recurrence {
   /// <summary>
   /// Gets or sets the interval between occurrences.
   /// </summary>
-  int get Interval => this._interval;
+  int get Interval => this._interval!;
 
   set Interval(int value) {
     if (value < 1) {

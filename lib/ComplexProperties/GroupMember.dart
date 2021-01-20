@@ -41,19 +41,19 @@ class GroupMember extends ComplexProperty {
   /// <summary>
   /// AddressInformation field.
   /// </summary>
-  /* private */ EmailAddress addressInformation;
+  /* private */ EmailAddress? addressInformation;
 
   /// <summary>
   /// Status field.
   /// </summary>
   /* private */
-  MemberStatus status;
+  MemberStatus? status;
 
   /// <summary>
   /// Member key field.
   /// </summary>
   /* private */
-  String key;
+  String? key;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GroupMember"/> class.
@@ -201,29 +201,29 @@ class GroupMember extends ComplexProperty {
   /// <summary>
   /// Gets the key of the member.
   /// </summary>
-  String get Key => this.key;
+  String? get Key => this.key;
 
   /// <summary>
   /// Gets the address information of the member.
   /// </summary>
-  EmailAddress get AddressInformation => this.addressInformation;
+  EmailAddress? get AddressInformation => this.addressInformation;
 
-  set AddressInformation(EmailAddress value) {
+  set AddressInformation(EmailAddress? value) {
     if (this.addressInformation != null) {
-      this.addressInformation.removeChangeEvent(this.AddressInformationChanged);
+      this.addressInformation!.removeChangeEvent(this.AddressInformationChanged);
     }
 
     this.addressInformation = value;
 
     if (this.addressInformation != null) {
-      this.addressInformation.addOnChangeEvent(this.AddressInformationChanged);
+      this.addressInformation!.addOnChangeEvent(this.AddressInformationChanged);
     }
   }
 
   /// <summary>
   /// Gets the status of the member.
   /// </summary>
-  MemberStatus get Status => this.status;
+  MemberStatus? get Status => this.status;
 
   /// <summary>
   /// Reads the member Key attribute from XML.
@@ -249,7 +249,7 @@ class GroupMember extends ComplexProperty {
 
       case XmlElementNames.Mailbox:
         this.AddressInformation = new EmailAddress();
-        this.AddressInformation.LoadFromXml(reader, reader.LocalName);
+        this.AddressInformation!.LoadFromXml(reader, reader.LocalName);
         return true;
 
       default:
@@ -275,7 +275,7 @@ class GroupMember extends ComplexProperty {
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
     // No need to write member Status back to server
     // Write only AddressInformation container element
-    this.AddressInformation.WriteToXmlWithNamespace(
+    this.AddressInformation!.WriteToXmlWithNamespace(
         writer, XmlNamespace.Types, XmlElementNames.Mailbox);
   }
 

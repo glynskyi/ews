@@ -37,7 +37,7 @@ class SyncFolderHierarchyResponse extends SyncResponse<Folder, FolderChange> {
   /// Initializes a new instance of the <see cref="SyncFolderHierarchyResponse"/> class.
   /// </summary>
   /// <param name="propertySet">Property set.</param>
-  SyncFolderHierarchyResponse(PropertySet propertySet) : super(propertySet) {}
+  SyncFolderHierarchyResponse(PropertySet? propertySet) : super(propertySet) {}
 
   /// <summary>
   /// Gets the name of the includes last in range XML element.

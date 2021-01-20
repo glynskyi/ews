@@ -32,9 +32,9 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents the email Protocol connection settings for pop/imap/smtp protocols.
 /// </summary>
 class ProtocolConnection {
-  String _encryptionMethod;
-  String _hostname;
-  int _port = 0;
+  String? _encryptionMethod;
+  String? _hostname;
+  int? _port = 0;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ProtocolConnection"/> class.
@@ -87,23 +87,23 @@ class ProtocolConnection {
   /// Gets or sets the encryption method.
   /// </summary>
   /// <value>The encryption method.</value>
-  String get EncryptionMethod => this._encryptionMethod;
+  String? get EncryptionMethod => this._encryptionMethod;
 
-  set EncryptionMethod(String value) => this._encryptionMethod = value;
+  set EncryptionMethod(String? value) => this._encryptionMethod = value;
 
   /// <summary>
   /// Gets or sets the Hostname.
   /// </summary>
   /// <value>The hostname.</value>
-  String get Hostname => this._hostname;
+  String? get Hostname => this._hostname;
 
-  set Hostname(String value) => this._hostname = value;
+  set Hostname(String? value) => this._hostname = value;
 
   /// <summary>
   /// Gets or sets the port number.
   /// </summary>
   /// <value>The port number.</value>
-  int get Port => this._port;
+  int? get Port => this._port;
 
-  set Port(int value) => this._port = value;
+  set Port(int? value) => this._port = value;
 }

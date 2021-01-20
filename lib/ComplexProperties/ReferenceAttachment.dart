@@ -39,44 +39,44 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// The AttachLongPathName of the attachment.
   /// </summary>
-  String _attachLongPathName;
+  String? _attachLongPathName;
 
   /// <summary>
   /// The ProviderType of the attachment.
   /// </summary>
-  String _providerType;
+  String? _providerType;
 
   /// <summary>
   /// The ProviderEndpointUrl of the attachment.
   /// </summary>
-  String _providerEndpointUrl;
+  String? _providerEndpointUrl;
 
   /// <summary>
   /// The AttachmentThumbnailUrl of the attachment.
   /// </summary>
-  String _attachmentThumbnailUrl;
+  String? _attachmentThumbnailUrl;
 
   /// <summary>
   /// The AttachmentPreviewUrl of the attachment.
   /// </summary>
-  String _attachmentPreviewUrl;
+  String? _attachmentPreviewUrl;
 
   /// <summary>
   /// The PermissionType of the attachment.
   /// </summary>
-  int _permissionType;
+  int? _permissionType;
 
   /// <summary>
   /// The AttachmentIsFolder of the attachment.
   /// </summary>
-  bool _attachmentIsFolder;
+  bool? _attachmentIsFolder;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ReferenceAttachment"/> class.
   /// </summary>
   /// <param name="owner">The owner.</param>
   ReferenceAttachment.withOwner(Item owner) : super.withOwner(owner) {
-    EwsUtilities.ValidateClassVersion(this.Owner.Service,
+    EwsUtilities.ValidateClassVersion(this.Owner!.Service,
         ExchangeVersion.Exchange2015, this.runtimeType.toString());
   }
 
@@ -175,9 +175,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets a fully-qualified path identifying the attachment.
   /// </summary>
-  String get AttachmentLongPathName => this._attachLongPathName;
+  String? get AttachmentLongPathName => this._attachLongPathName;
 
-  set AttachmentLongPathName(String value) {
+  set AttachmentLongPathName(String? value) {
     if (this.CanSetFieldValue(this._attachLongPathName, value)) {
       this._attachLongPathName = value;
       this.Changed();
@@ -187,9 +187,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets the type of the attachment provider.
   /// </summary>
-  String get ProviderType => this._providerType;
+  String? get ProviderType => this._providerType;
 
-  set ProviderType(String value) {
+  set ProviderType(String? value) {
     if (this.CanSetFieldValue(this._providerType, value)) {
       this._providerType = value;
       this.Changed();
@@ -199,9 +199,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets the URL of the attachment provider.
   /// </summary>
-  String get ProviderEndpointUrl => this._providerEndpointUrl;
+  String? get ProviderEndpointUrl => this._providerEndpointUrl;
 
-  set ProviderEndpointUrl(String value) {
+  set ProviderEndpointUrl(String? value) {
     if (this.CanSetFieldValue(this._providerEndpointUrl, value)) {
       this._providerEndpointUrl = value;
       this.Changed();
@@ -211,9 +211,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets the URL of the attachment thumbnail.
   /// </summary>
-  String get AttachmentThumbnailUrl => this._attachmentThumbnailUrl;
+  String? get AttachmentThumbnailUrl => this._attachmentThumbnailUrl;
 
-  set AttachmentThumbnailUrl(String value) {
+  set AttachmentThumbnailUrl(String? value) {
     if (this.CanSetFieldValue(this._attachmentThumbnailUrl, value)) {
       this._attachmentThumbnailUrl = value;
       this.Changed();
@@ -223,9 +223,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets the URL of the attachment preview.
   /// </summary>
-  String get AttachmentPreviewUrl => this._attachmentPreviewUrl;
+  String? get AttachmentPreviewUrl => this._attachmentPreviewUrl;
 
-  set AttachmentPreviewUrl(String value) {
+  set AttachmentPreviewUrl(String? value) {
     if (this.CanSetFieldValue(this._attachmentPreviewUrl, value)) {
       this._attachmentPreviewUrl = value;
       this.Changed();
@@ -235,9 +235,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets the permission of the attachment.
   /// </summary>
-  int get PermissionType => this._permissionType;
+  int? get PermissionType => this._permissionType;
 
-  set PermissionType(int value) {
+  set PermissionType(int? value) {
     if (this.CanSetFieldValue(this._permissionType, value)) {
       this._permissionType = value;
       this.Changed();
@@ -247,9 +247,9 @@ class ReferenceAttachment extends Attachment {
   /// <summary>
   /// Gets or sets a value indicating whether the attachment points to a folder.
   /// </summary>
-  bool get AttachmentIsFolder => this._attachmentIsFolder;
+  bool? get AttachmentIsFolder => this._attachmentIsFolder;
 
-  set AttachmentIsFolder(bool value) {
+  set AttachmentIsFolder(bool? value) {
     if (this.CanSetFieldValue(this._attachmentIsFolder, value)) {
       this._attachmentIsFolder = value;
       this.Changed();

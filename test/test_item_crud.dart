@@ -19,8 +19,8 @@ main() {
     taskItem.DueDate = new DateTime(2012, 04, 20, 10, 00, 00);
     taskItem.Recurrence = MonthlyPattern.withStartDateAndIntervalAndDayOfMonth(
         TZDateTime(kiev, 2012, 04, 11, 10, 0, 0), 1, 11);
-    taskItem.Recurrence.StartDate = TZDateTime(kiev, 2012, 04, 11, 10, 0, 0);
-    taskItem.Recurrence.NumberOfOccurrences = 5;
+    taskItem.Recurrence!.StartDate = TZDateTime(kiev, 2012, 04, 11, 10, 0, 0);
+    taskItem.Recurrence!.NumberOfOccurrences = 5;
 
     await taskItem.SaveWithWellKnownFolderName(WellKnownFolderName.Tasks);
 

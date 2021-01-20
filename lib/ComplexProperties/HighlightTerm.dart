@@ -34,13 +34,13 @@ class HighlightTerm extends ComplexProperty {
   /// <summary>
   /// Term scope.
   /// </summary>
-  /* private */ String scope;
+  /* private */ String? scope;
 
   /// <summary>
   /// Term value.
   /// </summary>
   /* private */
-  String value;
+  String? value;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="HighlightTerm"/> class.
@@ -50,12 +50,12 @@ class HighlightTerm extends ComplexProperty {
   /// <summary>
   /// Gets term scope.
   /// </summary>
-  String get Scope => this.scope;
+  String? get Scope => this.scope;
 
   /// <summary>
   /// Gets term value.
   /// </summary>
-  String get Value => this.value;
+  String? get Value => this.value;
 
   /// <summary>
   /// Tries to read element from XML.

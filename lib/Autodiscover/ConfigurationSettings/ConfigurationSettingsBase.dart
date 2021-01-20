@@ -35,7 +35,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents the base class for configuration settings.
 /// </summary>
 abstract class ConfigurationSettingsBase {
-  AutodiscoverError _error;
+  AutodiscoverError? _error;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ConfigurationSettingsBase"/> class.
@@ -98,13 +98,13 @@ abstract class ConfigurationSettingsBase {
   /// Gets the type of the response.
   /// </summary>
   /// <value>The type of the response.</value>
-  AutodiscoverResponseType get ResponseType;
+  AutodiscoverResponseType? get ResponseType;
 
   /// <summary>
   /// Gets the redirect target.
   /// </summary>
   /// <value>The redirect target.</value>
-  String get RedirectTarget;
+  String? get RedirectTarget;
 
   /// <summary>
   /// Convert ConfigurationSettings to GetUserSettings response.
@@ -119,5 +119,5 @@ abstract class ConfigurationSettingsBase {
   /// Gets the error.
   /// </summary>
   /// <value>The error.</value>
-  AutodiscoverError get Error => this._error;
+  AutodiscoverError? get Error => this._error;
 }

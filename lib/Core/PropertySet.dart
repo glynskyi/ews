@@ -80,7 +80,7 @@ class PropertySet
   /// <summary>
   /// The base property set this property set is based upon.
   /// </summary>
-  enumerations.BasePropertySet _basePropertySet;
+  enumerations.BasePropertySet? _basePropertySet;
 
   /// <summary>
   /// The list of additional properties included in this property set.
@@ -91,42 +91,42 @@ class PropertySet
   /// <summary>
   /// The requested body type for get and find operations. If null, the "best body" is returned.
   /// </summary>
-  BodyType _requestedBodyType;
+  BodyType? _requestedBodyType;
 
   /// <summary>
   /// The requested unique body type for get and find operations. If null, the should return the same value as body type.
   /// </summary>
-  BodyType _requestedUniqueBodyType;
+  BodyType? _requestedUniqueBodyType;
 
   /// <summary>
   /// The requested normalized body type for get and find operations. If null, the should return the same value as body type.
   /// </summary>
-  BodyType _requestedNormalizedBodyType;
+  BodyType? _requestedNormalizedBodyType;
 
   /// <summary>
   /// Value indicating whether or not the server should filter HTML content.
   /// </summary>
-  bool _filterHtml;
+  bool? _filterHtml;
 
   /// <summary>
   /// Value indicating whether or not the server should convert HTML code page to UTF8.
   /// </summary>
-  bool _convertHtmlCodePageToUTF8;
+  bool? _convertHtmlCodePageToUTF8;
 
   /// <summary>
   /// Value of the URL template to use for the src attribute of inline IMG elements.
   /// </summary>
-  String _inlineImageUrlTemplate;
+  String? _inlineImageUrlTemplate;
 
   /// <summary>
   /// Value indicating whether or not the server should block references to external images.
   /// </summary>
-  bool _blockExternalImages;
+  bool? _blockExternalImages;
 
   /// <summary>
   /// Value indicating whether or not to add a blank target attribute to anchor links.
   /// </summary>
-  bool _addTargetToLinks;
+  bool? _addTargetToLinks;
 
   /// <summary>
   /// Value indicating whether or not this PropertySet can be modified.
@@ -136,7 +136,7 @@ class PropertySet
   /// <summary>
   /// Value indicating the maximum body size to retrieve.
   /// </summary>
-  int _maximumBodySize;
+  int? _maximumBodySize;
 
   /// <summary>
   /// Initializes a new instance of PropertySet.
@@ -144,7 +144,7 @@ class PropertySet
   /// <param name="basePropertySet">The base property set to base the property set upon.</param>
   /// <param name="additionalProperties">Additional properties to include in the property set. Property definitions are available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)</param>
   PropertySet(enumerations.BasePropertySet basePropertySet,
-      Iterable<PropertyDefinitionBase> additionalProperties) {
+      Iterable<PropertyDefinitionBase>? additionalProperties) {
     this._basePropertySet = basePropertySet;
 
     if (additionalProperties != null) {
@@ -233,7 +233,7 @@ class PropertySet
   /// </summary>
   /// <param name="serviceObjectType">Type of the service object.</param>
   /// <returns>Shape name.</returns>
-  static String _GetShapeName(ServiceObjectType serviceObjectType) {
+  static String _GetShapeName(ServiceObjectType? serviceObjectType) {
     switch (serviceObjectType) {
       case ServiceObjectType.Item:
         return XmlElementNames.ItemShape;
@@ -283,9 +283,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets the base property set the property set is based upon.
   /// </summary>
-  enumerations.BasePropertySet get BasePropertySet => this._basePropertySet;
+  enumerations.BasePropertySet? get BasePropertySet => this._basePropertySet;
 
-  set BasePropertySet(enumerations.BasePropertySet value) {
+  set BasePropertySet(enumerations.BasePropertySet? value) {
     this._ThrowIfReadonly();
     this._basePropertySet = value;
   }
@@ -293,9 +293,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets type of body that should be loaded on items. If RequestedBodyType is null, body is returned as HTML if available, plain text otherwise.
   /// </summary>
-  BodyType get RequestedBodyType => this._requestedBodyType;
+  BodyType? get RequestedBodyType => this._requestedBodyType;
 
-  set RequestedBodyType(BodyType value) {
+  set RequestedBodyType(BodyType? value) {
     this._ThrowIfReadonly();
     this._requestedBodyType = value;
   }
@@ -303,9 +303,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets type of body that should be loaded on items. If null, the should return the same value as body type.
   /// </summary>
-  BodyType get RequestedUniqueBodyType => this._requestedUniqueBodyType;
+  BodyType? get RequestedUniqueBodyType => this._requestedUniqueBodyType;
 
-  set RequestedUniqueBodyType(BodyType value) {
+  set RequestedUniqueBodyType(BodyType? value) {
     this._ThrowIfReadonly();
     this._requestedUniqueBodyType = value;
   }
@@ -313,9 +313,10 @@ class PropertySet
   /// <summary>
   /// Gets or sets type of normalized body that should be loaded on items. If null, the should return the same value as body type.
   /// </summary>
-  BodyType get RequestedNormalizedBodyType => this._requestedNormalizedBodyType;
+  BodyType? get RequestedNormalizedBodyType =>
+      this._requestedNormalizedBodyType;
 
-  set RequestedNormalizedBodyType(BodyType value) {
+  set RequestedNormalizedBodyType(BodyType? value) {
     this._ThrowIfReadonly();
     this._requestedNormalizedBodyType = value;
   }
@@ -328,9 +329,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets value indicating whether or not to filter potentially unsafe HTML content from message bodies.
   /// </summary>
-  bool get FilterHtmlContent => this._filterHtml;
+  bool? get FilterHtmlContent => this._filterHtml;
 
-  set FilterHtmlContent(bool value) {
+  set FilterHtmlContent(bool? value) {
     this._ThrowIfReadonly();
     this._filterHtml = value;
   }
@@ -338,9 +339,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets value indicating whether or not to convert HTML code page to UTF8 encoding.
   /// </summary>
-  bool get ConvertHtmlCodePageToUTF8 => this._convertHtmlCodePageToUTF8;
+  bool? get ConvertHtmlCodePageToUTF8 => this._convertHtmlCodePageToUTF8;
 
-  set ConvertHtmlCodePageToUTF8(bool value) {
+  set ConvertHtmlCodePageToUTF8(bool? value) {
     this._ThrowIfReadonly();
     this._convertHtmlCodePageToUTF8 = value;
   }
@@ -348,9 +349,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets a value of the URL template to use for the src attribute of inline IMG elements.
   /// </summary>
-  String get InlineImageUrlTemplate => this._inlineImageUrlTemplate;
+  String? get InlineImageUrlTemplate => this._inlineImageUrlTemplate;
 
-  set InlineImageUrlTemplate(String value) {
+  set InlineImageUrlTemplate(String? value) {
     this._ThrowIfReadonly();
     this._inlineImageUrlTemplate = value;
   }
@@ -358,9 +359,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets value indicating whether or not to convert inline images to data URLs.
   /// </summary>
-  bool get BlockExternalImages => this._blockExternalImages;
+  bool? get BlockExternalImages => this._blockExternalImages;
 
-  set BlockExternalImages(bool value) {
+  set BlockExternalImages(bool? value) {
     this._ThrowIfReadonly();
     this._blockExternalImages = value;
   }
@@ -368,9 +369,9 @@ class PropertySet
   /// <summary>
   /// Gets or sets value indicating whether or not to add blank target attribute to anchor links.
   /// </summary>
-  bool get AddBlankTargetToLinks => this._addTargetToLinks;
+  bool? get AddBlankTargetToLinks => this._addTargetToLinks;
 
-  set AddBlankTargetToLinks(bool value) {
+  set AddBlankTargetToLinks(bool? value) {
     this._ThrowIfReadonly();
     this._addTargetToLinks = value;
   }
@@ -381,9 +382,9 @@ class PropertySet
   /// <value>
   /// The maximum size of the body to be retrieved.
   /// </value>
-  int get MaximumBodySize => this._maximumBodySize;
+  int? get MaximumBodySize => this._maximumBodySize;
 
-  set MaximumBodySize(int value) {
+  set MaximumBodySize(int? value) {
     this._ThrowIfReadonly();
     this._maximumBodySize = value;
   }
@@ -449,7 +450,7 @@ class PropertySet
       if (propDefBase is PropertyDefinition) {
         PropertyDefinition propertyDefinition =
             propDefBase as PropertyDefinition;
-        if (propertyDefinition.Version.index >
+        if (propertyDefinition.Version!.index >
             request.Service.RequestedServerVersion.index) {
           throw new ServiceVersionException("""string.Format(
                                 Strings.PropertyIncompatibleWithRequestVersion,
@@ -535,7 +536,7 @@ class PropertySet
   /// <param name="writer">The writer to write to.</param>
   /// <param name="serviceObjectType">The type of service object the property set is emitted for.</param>
   void WriteToXml(
-      EwsServiceXmlWriter writer, ServiceObjectType serviceObjectType) {
+      EwsServiceXmlWriter writer, ServiceObjectType? serviceObjectType) {
     String shapeElementName = _GetShapeName(serviceObjectType);
 
     writer.WriteStartElement(XmlNamespace.Messages, shapeElementName);
@@ -543,7 +544,7 @@ class PropertySet
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types,
         XmlElementNames.BaseShape,
-        _defaultPropertySetMap.Member[this.BasePropertySet]);
+        _defaultPropertySetMap.Member![this.BasePropertySet!]);
 
     if (serviceObjectType == ServiceObjectType.Item) {
       if (this.RequestedBodyType != null) {

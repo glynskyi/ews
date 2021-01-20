@@ -40,11 +40,11 @@ import 'package:ews/Search/ViewBase.dart';
 class CalendarView extends ViewBase {
   ItemTraversal _traversal = ItemTraversal.Shallow;
 
-  int _maxItemsReturned;
+  int? _maxItemsReturned;
 
-  DateTime _startDate;
+  DateTime? _startDate;
 
-  DateTime _endDate;
+  DateTime? _endDate;
 
   /// <summary>
   /// Writes the attributes to XML.
@@ -62,7 +62,7 @@ class CalendarView extends ViewBase {
   /// <param name="groupBy">The group by clause.</param>
   @override
   void InternalWriteSearchSettingsToXml(
-      EwsServiceXmlWriter writer, Grouping groupBy) {
+      EwsServiceXmlWriter writer, Grouping? groupBy) {
     // No search settings for calendar views.
   }
 
@@ -116,8 +116,8 @@ class CalendarView extends ViewBase {
     super.InternalValidate(request);
 
     // todo : review time comparision
-    if (this._endDate.millisecondsSinceEpoch <
-        this.StartDate.millisecondsSinceEpoch) {
+    if (this._endDate!.millisecondsSinceEpoch <
+        this.StartDate!.millisecondsSinceEpoch) {
       throw new ServiceValidationException(
           "Strings.EndDateMustBeGreaterThanStartDate");
     }
@@ -150,30 +150,30 @@ class CalendarView extends ViewBase {
   /// <returns>The maximum number of items the search operation should return.
   /// </returns>
   @override
-  int GetMaxEntriesReturned() {
+  int? GetMaxEntriesReturned() {
     return this.MaxItemsReturned;
   }
 
   /// <summary>
   /// Gets or sets the start date.
   /// </summary>
-  DateTime get StartDate => this._startDate;
+  DateTime? get StartDate => this._startDate;
 
-  set StartDate(DateTime value) => this._startDate = value;
+  set StartDate(DateTime? value) => this._startDate = value;
 
   /// <summary>
   /// Gets or sets the end date.
   /// </summary>
-  DateTime get EndDate => this._endDate;
+  DateTime? get EndDate => this._endDate;
 
-  set EndDate(DateTime value) => this._endDate = value;
+  set EndDate(DateTime? value) => this._endDate = value;
 
   /// <summary>
   /// The maximum number of items the search operation should return.
   /// </summary>
-  int get MaxItemsReturned => this._maxItemsReturned;
+  int? get MaxItemsReturned => this._maxItemsReturned;
 
-  set MaxItemsReturned(int value) {
+  set MaxItemsReturned(int? value) {
     if (value != null) {
       if (value <= 0) {
         throw new ArgumentException("Strings.ValueMustBeGreaterThanZero");

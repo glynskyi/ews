@@ -46,8 +46,11 @@ main() {
 
     for (Appointment a in appointments) {
       if (a.ExtendedProperties.isNotEmpty) {
-        final specialPropertyValue = a.ExtendedProperties.first;
-        print("3: " + base64.encode(specialPropertyValue.Value) + " ");
+        final ExtendedProperty specialPropertyValue =
+            a.ExtendedProperties.first;
+        print("3: " +
+            base64.encode(specialPropertyValue.Value as List<int>) +
+            " ");
       }
 //      print("ICalUid: " + a.ICalUid.toString() + " ");
       print("Subject: " + a.Subject.toString() + " ");
@@ -55,7 +58,7 @@ main() {
       print("End: " + a.End.toString());
       print("Duration: " + a.Duration.toString());
 //      print("IsCancelled: " + (a.IsCancelled ?? false).toString());
-      print("Appointment Type: " + EnumToString.parse(a.AppointmentType));
+      print("Appointment Type: " + EnumToString.parse(a.AppointmentType)!);
 
 //      final fullAppointment = await Appointment
 //          .BindWithItemIdAndPropertySet(service, a.Id, new PropertySet.fromPropertyDefinitions([AppointmentSchema.RequiredAttendees, AppointmentSchema.OptionalAttendees]));

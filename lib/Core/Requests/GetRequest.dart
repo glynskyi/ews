@@ -41,7 +41,7 @@ import 'package:ews/Enumerations/ServiceObjectType.dart';
 abstract class GetRequest<TServiceObject extends ServiceObject,
         TResponse extends ServiceResponse>
     extends MultiResponseServiceRequest<TResponse> {
-  core.PropertySet _propertySet;
+  core.PropertySet? _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetRequest&lt;TServiceObject, TResponse&gt;"/> class.
@@ -58,7 +58,7 @@ abstract class GetRequest<TServiceObject extends ServiceObject,
   void Validate() {
     super.Validate();
     EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
-    this.PropertySet.ValidateForRequest(this, false /*summaryPropertiesOnly*/);
+    this.PropertySet!.ValidateForRequest(this, false /*summaryPropertiesOnly*/);
   }
 
   /// <summary>
@@ -73,16 +73,16 @@ abstract class GetRequest<TServiceObject extends ServiceObject,
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this._propertySet.WriteToXml(writer, this.GetServiceObjectType());
+    this._propertySet!.WriteToXml(writer, this.GetServiceObjectType());
   }
 
   /// <summary>
   /// Gets or sets the property set.
   /// </summary>
   /// <value>The property set.</value>
-  core.PropertySet get PropertySet => this._propertySet;
+  core.PropertySet? get PropertySet => this._propertySet;
 
-  set PropertySet(core.PropertySet value) {
+  set PropertySet(core.PropertySet? value) {
     this._propertySet = value;
   }
 }

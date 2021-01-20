@@ -35,13 +35,13 @@ import 'package:ews/PropertyDefinitions/ServiceObjectPropertyDefinition.dart';
 /// Represents the definition of a folder or item property.
 /// </summary>
 abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
-  String _xmlElementName;
+  String? _xmlElementName;
 
-  List<PropertyDefinitionFlags> _flags;
+  late List<PropertyDefinitionFlags> _flags;
 
-  String _name;
+  String? _name;
 
-  ExchangeVersion _version;
+  ExchangeVersion? _version;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="PropertyDefinition"/> class.
@@ -137,7 +137,7 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// </summary>
   /// <value>The version.</value>
   @override
-  ExchangeVersion get Version => this._version;
+  ExchangeVersion? get Version => this._version;
 
   /// <summary>
   /// Gets a value indicating whether this property definition is for a nullable type (ref, int?, bool?...).
@@ -165,20 +165,20 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// Gets the name of the XML element.
   /// </summary>
   /// <value>The name of the XML element.</value>
-  String get XmlElementName => this._xmlElementName;
+  String? get XmlElementName => this._xmlElementName;
 
   /// <summary>
   /// Gets the name of the property.
   /// </summary>
-  String get Name {
-    if (this._name == null || this._name.isEmpty) {
+  String? get Name {
+    if (this._name == null || this._name!.isEmpty) {
       ServiceObjectSchema.InitializeSchemaPropertyNames();
     }
 
     return this._name;
   }
 
-  void set Name(String value) {
+  void set Name(String? value) {
     this._name = value;
   }
 
@@ -189,7 +189,7 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// The property definition's printable name.
   /// </returns>
   @override
-  String GetPrintableName() {
+  String? GetPrintableName() {
     return this.Name;
   }
 }

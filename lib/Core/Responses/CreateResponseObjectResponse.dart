@@ -39,7 +39,7 @@ class CreateResponseObjectResponse extends CreateItemResponseBase {
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
   @override
-  Item GetObjectInstance(ExchangeService service, String xmlElementName) {
+  Item GetObjectInstance(ExchangeService? service, String xmlElementName) {
     return EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
         service, xmlElementName);
   }

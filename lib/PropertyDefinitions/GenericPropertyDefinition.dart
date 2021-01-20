@@ -81,7 +81,7 @@ class GenericPropertyDefinition<TPropertyValue>
   /// <param name="value">The value.</param>
   /// <returns>Value of string.</returns>
   @override
-  Object Parse(String value) {
+  Object? Parse(String? value) {
     return EwsUtilities.Parse<TPropertyValue>(value);
   }
 

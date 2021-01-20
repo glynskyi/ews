@@ -72,7 +72,7 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// The binary secret.
   /// </summary>
-  static Uint8List _binarySecret;
+  static Uint8List? _binarySecret;
 
   /// <summary>
   /// Default UserAgent
@@ -90,7 +90,7 @@ abstract class ExchangeServiceBase {
 // event ResponseHeadersCapturedHandler OnResponseHeadersCaptured;
   List<ResponseHeadersCapturedHandler> OnResponseHeadersCaptured = [];
 
-  ExchangeCredentials _credentials;
+  ExchangeCredentials? _credentials;
   bool _useDefaultCredentials = false;
   int _timeout = 100000;
   bool _traceEnabled = false;
@@ -101,25 +101,25 @@ abstract class ExchangeServiceBase {
   String _userAgent = _defaultUserAgent;
   bool _acceptGzipEncoding = true;
   bool _keepAlive = true;
-  String _connectionGroupName;
-  String _clientRequestId;
+  String? _connectionGroupName;
+  String? _clientRequestId;
   bool _returnClientRequestId = false;
   http.CookieContainer _cookieContainer = new http.CookieContainer();
-  datetime.TimeZone _timeZone;
-  TimeZoneDefinition _timeZoneDefinition;
-  ExchangeServerInfo _serverInfo;
-  IWebProxy _webProxy;
+  datetime.TimeZone? _timeZone;
+  TimeZoneDefinition? _timeZoneDefinition;
+  ExchangeServerInfo? _serverInfo;
+  IWebProxy? _webProxy;
   Map<String, String> _httpHeaders = new Map<String, String>();
-  Map<String, String> _httpResponseHeaders = new Map<String, String>();
+  Map<String, String?> _httpResponseHeaders = new Map<String, String?>();
   IEwsHttpWebRequestFactory _ewsHttpWebRequestFactory =
       new EwsHttpWebRequestFactory();
-  HttpClient httpClient;
+  HttpClient? httpClient;
 
   /// <summary>
   /// Calls the custom SOAP header serialization event handlers, if defined.
   /// </summary>
   /// <param name="writer">The XmlWriter to which to write the custom SOAP headers.</param>
-  void DoOnSerializeCustomSoapHeaders(XmlWriter writer) {
+  void DoOnSerializeCustomSoapHeaders(XmlWriter? writer) {
     EwsUtilities.Assert(writer != null,
         "ExchangeService.DoOnSerializeCustomSoapHeaders", "writer is null");
     this.OnSerializeCustomSoapHeaders.forEach((delegate) => delegate(writer));
@@ -156,13 +156,13 @@ abstract class ExchangeServiceBase {
     request.ConnectionGroupName = this._connectionGroupName;
 
     if (acceptGzipEncoding) {
-      request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+      request.Headers!.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
     }
 
     if (!StringUtils.IsNullOrEmpty(this._clientRequestId)) {
-      request.Headers.Add("client-request-id", this._clientRequestId);
+      request.Headers!.Add("client-request-id", this._clientRequestId);
       if (this._returnClientRequestId) {
-        request.Headers.Add("return-client-request-id", "true");
+        request.Headers!.Add("return-client-request-id", "true");
       }
     }
 
@@ -174,12 +174,12 @@ abstract class ExchangeServiceBase {
       this
           .HttpHeaders
           .entries
-          .forEach((kv) => request.Headers[kv.key] = kv.value);
+          .forEach((kv) => request.Headers![kv.key] = kv.value);
     }
 
     request.UseDefaultCredentials = this.UseDefaultCredentials;
-    if (!request.UseDefaultCredentials) {
-      ExchangeCredentials serviceCredentials = this.Credentials;
+    if (!request.UseDefaultCredentials!) {
+      ExchangeCredentials? serviceCredentials = this.Credentials;
       if (serviceCredentials == null) {
         throw new ServiceLocalException("Strings.CredentialsRequired");
       }
@@ -348,7 +348,7 @@ abstract class ExchangeServiceBase {
 
       if (this._httpResponseHeaders.containsKey(key)) {
         this._httpResponseHeaders[key] =
-            existingValue.param + "," + headers[key];
+            existingValue.param! + "," + headers[key]!;
       } else {
         this._httpResponseHeaders[key] = headers[key];
       }
@@ -362,12 +362,12 @@ abstract class ExchangeServiceBase {
   /// </summary>
   /// <param name="value">The value.</param>
   /// <returns>DateTime</returns>
-  DateTime ConvertUniversalDateTimeStringToLocalDateTime(String value) {
+  DateTime? ConvertUniversalDateTimeStringToLocalDateTime(String? value) {
 //          throw NotImplementedException("ConvertUniversalDateTimeStringToLocalDateTime($value)")
     if (StringUtils.IsNullOrEmpty(value)) {
       return null;
     } else {
-      return DateTime.parse(value);
+      return DateTime.parse(value!);
     }
 //            if (StringUtils.IsNullOrEmpty(value))
 //            {
@@ -413,13 +413,13 @@ abstract class ExchangeServiceBase {
   /// </summary>
   /// <param name="value">The String value to parse.</param>
   /// <returns>The parsed DateTime value.</returns>
-  DateTime ConvertStartDateToUnspecifiedDateTime(String value) {
+  DateTime? ConvertStartDateToUnspecifiedDateTime(String? value) {
     // TODO : check unspecified date
     print(".. uses unsafe ConvertStartDateToUnspecifiedDateTime");
     if (StringUtils.IsNullOrEmpty(value)) {
       return null;
     } else {
-      return DateTime.parse(value);
+      return DateTime.parse(value!);
     }
 //            if (StringUtils.IsNullOrEmpty(value))
 //            {
@@ -587,7 +587,7 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// Gets the time zone this service is scoped to.
   /// </summary>
-  datetime.TimeZone get TimeZone => this._timeZone;
+  datetime.TimeZone? get TimeZone => this._timeZone;
 
   /// <summary>
   /// Gets a time zone definition generated from the time zone info to which this service is scoped.
@@ -648,9 +648,9 @@ abstract class ExchangeServiceBase {
   /// Gets or sets the credentials used to authenticate with the Exchange Web Services. Setting the Credentials property
   /// automatically sets the UseDefaultCredentials to false.
   /// </summary>
-  ExchangeCredentials get Credentials => this._credentials;
+  ExchangeCredentials? get Credentials => this._credentials;
 
-  set Credentials(ExchangeCredentials value) {
+  set Credentials(ExchangeCredentials? value) {
     this._credentials = value;
     this._useDefaultCredentials = false;
     this._cookieContainer = new http
@@ -730,9 +730,9 @@ abstract class ExchangeServiceBase {
   /// Gets information associated with the server that processed the last request.
   /// Will be null if no requests have been processed.
   /// </summary>
-  ExchangeServerInfo get ServerInfo => this._serverInfo;
+  ExchangeServerInfo? get ServerInfo => this._serverInfo;
 
-  set ServerInfo(ExchangeServerInfo value) {
+  set ServerInfo(ExchangeServerInfo? value) {
     this._serverInfo = value;
   }
 
@@ -740,7 +740,7 @@ abstract class ExchangeServiceBase {
   /// Gets or sets the web proxy that should be used when sending requests to EWS.
   /// Set this property to null to use the default web proxy.
   /// </summary>
-  IWebProxy get WebProxy => this._webProxy;
+  IWebProxy? get WebProxy => this._webProxy;
 
   set WebProxt(IWebProxy value) {
     this._webProxy = value;
@@ -758,18 +758,18 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// Gets or sets the name of the connection group for the request.
   /// </summary>
-  String get ConnectionGroupName => this._connectionGroupName;
+  String? get ConnectionGroupName => this._connectionGroupName;
 
-  set ConnectionGroupName(String value) {
+  set ConnectionGroupName(String? value) {
     this._connectionGroupName = value;
   }
 
   /// <summary>
   /// Gets or sets the request id for the request.
   /// </summary>
-  String get ClientRequestId => this._clientRequestId;
+  String? get ClientRequestId => this._clientRequestId;
 
-  set ClientRequestId(String value) {
+  set ClientRequestId(String? value) {
     this._clientRequestId = value;
   }
 
@@ -791,18 +791,18 @@ abstract class ExchangeServiceBase {
   /// <summary>
   /// Gets a collection of HTTP headers from the last response.
   /// </summary>
-  Map<String, String> get HttpResponseHeaders => this._httpResponseHeaders;
+  Map<String, String?> get HttpResponseHeaders => this._httpResponseHeaders;
 
   /// <summary>
   /// Gets the session key.
   /// </summary>
-  static Uint8List get SessionKey {
+  static Uint8List? get SessionKey {
     // this has to be computed only once.
     if (ExchangeServiceBase._binarySecret == null) {
       Random randomNumberGenerator = Random();
       ExchangeServiceBase._binarySecret = Uint8List(256 ~/ 8);
-      for (int i = 0; i < ExchangeServiceBase._binarySecret.length; i++) {
-        ExchangeServiceBase._binarySecret[i] =
+      for (int i = 0; i < ExchangeServiceBase._binarySecret!.length; i++) {
+        ExchangeServiceBase._binarySecret![i] =
             randomNumberGenerator.nextInt(256);
       }
     }

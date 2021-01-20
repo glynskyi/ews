@@ -36,7 +36,7 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a time zone period transition that occurs on a specific day of a specific month.
 /// </summary>
 class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
-  /* private */ int dayOfMonth;
+  /* private */ int? dayOfMonth;
 
   /// <summary>
   /// Gets the XML element name associated with the transition.
@@ -86,7 +86,7 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
         this.dayOfMonth = reader.ReadElementValue<int>();
 
         EwsUtilities.Assert(
-            this.dayOfMonth > 0 && this.dayOfMonth <= 31,
+            this.dayOfMonth! > 0 && this.dayOfMonth! <= 31,
             "AbsoluteDayOfMonthTransition.TryReadElementFromXml",
             "dayOfMonth is not in the valid 1 - 31 range.");
 
@@ -113,7 +113,7 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
   /// Initializes a new instance of the <see cref="AbsoluteDayOfMonthTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-  AbsoluteDayOfMonthTransition(TimeZoneDefinition timeZoneDefinition)
+  AbsoluteDayOfMonthTransition(TimeZoneDefinition? timeZoneDefinition)
       : super(timeZoneDefinition) {}
 
   /// <summary>
@@ -128,5 +128,5 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
   /// <summary>
   /// Gets the day of then month when this transition occurs.
   /// </summary>
-  int get DayOfMonth => this.dayOfMonth;
+  int? get DayOfMonth => this.dayOfMonth;
 }

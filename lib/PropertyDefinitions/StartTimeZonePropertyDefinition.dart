@@ -71,12 +71,12 @@ class StartTimeZonePropertyDefinition extends TimeZonePropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    Object value = propertyBag[this];
+    Object? value = propertyBag[this];
 
     if (value != null) {
       if (writer.Service.RequestedServerVersion ==
           ExchangeVersion.Exchange2007_SP1) {
-        ExchangeService service = writer.Service as ExchangeService;
+        ExchangeService? service = writer.Service as ExchangeService?;
         if (service != null && service.Exchange2007CompatibilityMode == false) {
           MeetingTimeZone meetingTimeZone =
               new MeetingTimeZone.fromTimeZone(value as TimeZone);

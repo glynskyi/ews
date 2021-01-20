@@ -56,9 +56,9 @@ import '../EwsUtilities.dart';
 /// </summary>
 abstract class ServiceObject {
   final _lockObject = new Lock();
-  ExchangeService _service;
-  core.PropertyBag _propertyBag;
-  String _xmlElementName;
+  late ExchangeService _service;
+  late core.PropertyBag _propertyBag;
+  String? _xmlElementName;
 
   /// <summary>
   /// Triggers dispatch of the change event.
@@ -101,18 +101,18 @@ abstract class ServiceObject {
   /// Item and folder classes that can be returned by EWS MUST rely on the EwsObjectDefinition
   /// attribute for XML element name determination.
   /// </remarks>
-  String GetXmlElementNameOverride() {
+  String? GetXmlElementNameOverride() {
     return null;
   }
 
-  ServiceObjectDefinitionAttribute getServiceObjectDefinitionAttribute();
+  ServiceObjectDefinitionAttribute? getServiceObjectDefinitionAttribute();
 
   /// <summary>
   /// GetXmlElementName retrieves the XmlElementName of this type based on the
   /// EwsObjectDefinition attribute that decorates it, if present.
   /// </summary>
   /// <returns>The XML element name associated with this type.</returns>
-  String GetXmlElementName() {
+  String? GetXmlElementName() {
     if (StringUtils.IsNullOrEmpty(this._xmlElementName)) {
       this._xmlElementName = this.GetXmlElementNameOverride();
 
@@ -120,7 +120,7 @@ abstract class ServiceObject {
         this._lockObject.synchronized(() {
 //                        for (Attribute attribute in this.GetType().GetCustomAttributes(false))
 //                        {
-          ServiceObjectDefinitionAttribute definitionAttribute =
+          ServiceObjectDefinitionAttribute? definitionAttribute =
               getServiceObjectDefinitionAttribute(); // attribute as ServiceObjectDefinitionAttribute;
 
           if (definitionAttribute != null) {
@@ -248,7 +248,7 @@ abstract class ServiceObject {
   void LoadFromXmlWithPropertySet(
       EwsServiceXmlReader reader,
       bool clearPropertyBag,
-      PropertySet requestedPropertySet,
+      PropertySet? requestedPropertySet,
       bool summaryPropertiesOnly) {
     this.PropertyBag.LoadFromXml(
         reader, clearPropertyBag, requestedPropertySet, summaryPropertiesOnly);
@@ -315,8 +315,8 @@ abstract class ServiceObject {
   /// <param name="propertyDefinition">Definition of the property to get.</param>
   /// <exception cref="ServiceVersionException">Raised if this property requires a later version of Exchange.</exception>
   /// <exception cref="PropertyException">Raised if this property hasn't been assigned or loaded. Raised for set if property cannot be updated or deleted.</exception>
-  Object operator [](PropertyDefinitionBase propertyDefinition) {
-    Object propertyValue;
+  Object? operator [](PropertyDefinitionBase propertyDefinition) {
+    Object? propertyValue;
 
     PropertyDefinition propDef = propertyDefinition as PropertyDefinition;
     if (propDef != null) {
@@ -352,7 +352,7 @@ abstract class ServiceObject {
   /// <returns>True if property retrieved, false otherwise.</returns>
   bool TryGetExtendedProperty<T>(ExtendedPropertyDefinition propertyDefinition,
       OutParam<T> propertyValueOutParam) {
-    ExtendedPropertyCollection propertyCollection =
+    ExtendedPropertyCollection? propertyCollection =
         this.GetExtendedProperties();
 
     if ((propertyCollection != null) &&
@@ -410,14 +410,14 @@ abstract class ServiceObject {
   /// Gets the collection of loaded property definitions.
   /// </summary>
   /// <returns>Collection of property definitions.</returns>
-  List<PropertyDefinitionBase> GetLoadedPropertyDefinitions() {
-    List<PropertyDefinitionBase> propDefs = <PropertyDefinitionBase>[];
+  List<PropertyDefinitionBase?> GetLoadedPropertyDefinitions() {
+    List<PropertyDefinitionBase?> propDefs = <PropertyDefinitionBase?>[];
     for (PropertyDefinition propDef in this.PropertyBag.Properties.keys) {
       propDefs.add(propDef);
     }
 
     if (this.GetExtendedProperties() != null) {
-      for (ExtendedProperty extProp in this.GetExtendedProperties()) {
+      for (ExtendedProperty extProp in this.GetExtendedProperties()!) {
         propDefs.add(extProp.PropertyDefinition);
       }
     }
@@ -436,7 +436,7 @@ abstract class ServiceObject {
   /// The property definition for the Id of this object.
   /// </summary>
   /// <returns>A PropertyDefinition instance.</returns>
-  PropertyDefinition GetIdPropertyDefinition() {
+  PropertyDefinition? GetIdPropertyDefinition() {
     return null;
   }
 
@@ -444,8 +444,8 @@ abstract class ServiceObject {
   /// The unique Id of this object.
   /// </summary>
   /// <returns>A ServiceId instance.</returns>
-  ServiceId GetId() {
-    PropertyDefinition idPropertyDefinition = this.GetIdPropertyDefinition();
+  ServiceId? GetId() {
+    PropertyDefinition? idPropertyDefinition = this.GetIdPropertyDefinition();
 
     OutParam<Object> serviceIdOutParam = new OutParam();
 
@@ -453,7 +453,7 @@ abstract class ServiceObject {
       this.PropertyBag.TryGetValue(idPropertyDefinition, serviceIdOutParam);
     }
 
-    return serviceIdOutParam.param;
+    return serviceIdOutParam.param as ServiceId?;
   }
 
   /// <summary>
@@ -461,7 +461,7 @@ abstract class ServiceObject {
   /// that has yet to be saved.
   /// </summary>
   bool get IsNew {
-    ServiceId id = this.GetId();
+    ServiceId? id = this.GetId();
 
     return id == null ? true : !id.IsValid;
   }
@@ -477,7 +477,7 @@ abstract class ServiceObject {
   /// Gets the extended properties collection.
   /// </summary>
   /// <returns>Extended properties collection.</returns>
-  ExtendedPropertyCollection GetExtendedProperties() {
+  ExtendedPropertyCollection? GetExtendedProperties() {
     return null;
   }
 

@@ -41,10 +41,10 @@ class OutlookUser {
   /// Converters to translate Outlook user settings.
   /// Each entry maps to a lambda expression used to get the matching property from the OutlookUser instance.
   /// </summary>
-  static LazyMember<Map<UserSettingName, Func<OutlookUser, String>>>
+  static LazyMember<Map<UserSettingName, Func<OutlookUser, String?>>>
       _converterDictionary =
-      new LazyMember<Map<UserSettingName, Func<OutlookUser, String>>>(() {
-    var results = new Map<UserSettingName, Func<OutlookUser, String>>();
+      new LazyMember<Map<UserSettingName, Func<OutlookUser, String?>>>(() {
+    Map<UserSettingName, String? Function(OutlookUser)> results = new Map<UserSettingName, Func<OutlookUser, String>>();
     results[UserSettingName.UserDisplayName] = (u) => u._displayName;
     results[UserSettingName.UserDN] = (u) => u._legacyDN;
     results[UserSettingName.UserDeploymentId] = (u) => u._deploymentId;
@@ -53,10 +53,10 @@ class OutlookUser {
     return results;
   });
 
-  String _displayName;
-  String _legacyDN;
-  String _deploymentId;
-  String _autodiscoverAMTPAddress;
+  String? _displayName;
+  String? _legacyDN;
+  String? _deploymentId;
+  String? _autodiscoverAMTPAddress;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="OutlookUser"/> class.
@@ -103,15 +103,15 @@ class OutlookUser {
       GetUserSettingsResponse response) {
     // In English: collect converters that are contained in the requested settings.
 
-    var converterQuery = _converterDictionary.Member.entries
+    var converterQuery = _converterDictionary.Member!.entries
         .where((converter) => requestedSettings.contains(converter.key));
 //            var converterQuery = from converter in _converterDictionary.Member
 //                                 where requestedSettings.Contains(converter.Key)
 //                                 select converter;
 
-    for (MapEntry<UserSettingName, Func<OutlookUser, String>> kv
+    for (MapEntry<UserSettingName, Func<OutlookUser, String?>> kv
         in converterQuery) {
-      String value = kv.value(this);
+      String? value = kv.value(this);
       if (!StringUtils.IsNullOrEmpty(value)) {
         response.Settings[kv.key] = value;
       }
@@ -123,5 +123,5 @@ class OutlookUser {
   /// </summary>
   /// <value>The available user settings.</value>
   static Iterable<UserSettingName> get AvailableUserSettings =>
-      _converterDictionary.Member.keys;
+      _converterDictionary.Member!.keys;
 }

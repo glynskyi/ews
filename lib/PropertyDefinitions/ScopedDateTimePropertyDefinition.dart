@@ -45,7 +45,7 @@ typedef PropertyDefinition GetPropertyDefinitionCallback(
 /// Represents a property definition for DateTime values scoped to a specific time zone property.
 /// </summary>
 class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
-  GetPropertyDefinitionCallback _getPropertyDefinitionCallback;
+  late GetPropertyDefinitionCallback _getPropertyDefinitionCallback;
 
   /// <summary>
   /// Gets the time zone property to which to scope times.
@@ -99,7 +99,7 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
   @override
   DateTime ScopeToTimeZone(ExchangeServiceBase service, DateTime dateTime,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    if (!propertyBag.Owner.GetIsCustomDateTimeScopingRequired()) {
+    if (!propertyBag.Owner!.GetIsCustomDateTimeScopingRequired()) {
       // Most item types do not require a custom scoping mechanism. For those item types,
       // use the default scoping mechanism.
       return super
@@ -109,7 +109,7 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
       // associated time zone property.
       PropertyDefinition timeZoneProperty =
           this.GetTimeZoneProperty(service.RequestedServerVersion);
-      Object timeZonePropertyValue = null;
+      Object? timeZonePropertyValue = null;
 
       // todo : uncomment
 //                bool timeZonePropertyIsSet = propertyBag.TryGetProperty(timeZoneProperty, out timeZonePropertyValue);

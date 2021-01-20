@@ -34,22 +34,22 @@ import 'package:ews/Notifications/NotificationEvent.dart';
 /// Represents an event that applies to a folder.
 /// </summary>
 class FolderEvent extends NotificationEvent {
-  complex.FolderId _folderId;
+  complex.FolderId? _folderId;
 
-  complex.FolderId _oldFolderId;
+  complex.FolderId? _oldFolderId;
 
   /// <summary>
   /// The new number of unread messages. This is is only meaningful when EventType
   /// is equal to EventType.Modified. For all other event types, it's null.
   /// </summary>
-  int _unreadCount;
+  int? _unreadCount;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FolderEvent"/> class.
   /// </summary>
   /// <param name="eventType">Type of the event.</param>
   /// <param name="timestamp">The event timestamp.</param>
-  FolderEvent(EventType eventType, DateTime timestamp)
+  FolderEvent(EventType? eventType, DateTime? timestamp)
       : super(eventType, timestamp) {}
 
   /// <summary>
@@ -61,12 +61,12 @@ class FolderEvent extends NotificationEvent {
     super.InternalLoadFromXml(reader);
 
     this._folderId = new complex.FolderId();
-    this._folderId.LoadFromXml(reader, reader.LocalName);
+    this._folderId!.LoadFromXml(reader, reader.LocalName);
 
     reader.Read();
 
     this.ParentFolderId = new complex.FolderId();
-    this.ParentFolderId.LoadFromXml(reader, XmlElementNames.ParentFolderId);
+    this.ParentFolderId!.LoadFromXml(reader, XmlElementNames.ParentFolderId);
 
     switch (this.EventType) {
       case EventType.Moved:
@@ -74,12 +74,12 @@ class FolderEvent extends NotificationEvent {
         reader.Read();
 
         this._oldFolderId = new complex.FolderId();
-        this._oldFolderId.LoadFromXml(reader, reader.LocalName);
+        this._oldFolderId!.LoadFromXml(reader, reader.LocalName);
 
         reader.Read();
 
         this.OldParentFolderId = new complex.FolderId();
-        this.OldParentFolderId.LoadFromXml(reader, reader.LocalName);
+        this.OldParentFolderId!.LoadFromXml(reader, reader.LocalName);
         break;
 
       case EventType.Modified:
@@ -99,19 +99,19 @@ class FolderEvent extends NotificationEvent {
   /// <summary>
   /// Gets the Id of the folder this event applies to.
   /// </summary>
-  complex.FolderId get FolderId => this._folderId;
+  complex.FolderId? get FolderId => this._folderId;
 
   /// <summary>
   /// Gets the Id of the folder that was moved or copied. OldFolderId is only meaningful
   /// when EventType is equal to either EventType.Moved or EventType.Copied. For all
   /// other event types, OldFolderId is null.
   /// </summary>
-  complex.FolderId get OldFolderId => this._oldFolderId;
+  complex.FolderId? get OldFolderId => this._oldFolderId;
 
   /// <summary>
   /// Gets the new number of unread messages. This is is only meaningful when
   /// EventType is equal to EventType.Modified. For all other event types,
   /// UnreadCount is null.
   /// </summary>
-  int get UnreadCount => this._unreadCount;
+  int? get UnreadCount => this._unreadCount;
 }

@@ -37,17 +37,15 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// </summary>
 class FolderPermissionCollection
     extends ComplexPropertyCollection<FolderPermission> {
-  /* private */ bool isCalendarFolder;
-
-  /* private */
-  List<String> unknownEntries = List<String>();
+  bool _isCalendarFolder = false;
+  List<String?> _unknownEntries = <String?>[];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.
   /// </summary>
   /// <param name="owner">The folder owner.</param>
-  FolderPermissionCollection(Folder owner) : super() {
-    this.isCalendarFolder = owner is CalendarFolder;
+  FolderPermissionCollection(Folder? owner) : super() {
+    this._isCalendarFolder = owner is CalendarFolder;
   }
 
   /// <summary>
@@ -55,7 +53,7 @@ class FolderPermissionCollection
   /// </summary>
   /// <value>XML element name.</value>
   /* private */
-  String get InnerCollectionXmlElementName => this.isCalendarFolder
+  String get InnerCollectionXmlElementName => this._isCalendarFolder
       ? XmlElementNames.CalendarPermissions
       : XmlElementNames.Permissions;
 
@@ -64,7 +62,7 @@ class FolderPermissionCollection
   /// </summary>
   /// <value>XML element name.</value>
   /* private */
-  String get CollectionItemXmlElementName => this.isCalendarFolder
+  String get CollectionItemXmlElementName => this._isCalendarFolder
       ? XmlElementNames.CalendarPermission
       : XmlElementNames.Permission;
 
@@ -84,7 +82,7 @@ class FolderPermissionCollection
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String localElementName) {
+  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, localElementName);
 
@@ -103,7 +101,7 @@ class FolderPermissionCollection
 
         if (reader.IsStartElementWithNamespace(
             XmlNamespace.Types, XmlElementNames.UnknownEntry)) {
-          this.unknownEntries.add(reader.ReadElementValue<String>());
+          this._unknownEntries.add(reader.ReadElementValue<String>());
         }
       } while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Types, XmlElementNames.UnknownEntries));
@@ -119,7 +117,7 @@ class FolderPermissionCollection
         permissionIndex++) {
       FolderPermission permission = this.Items[permissionIndex];
       permission.ValidateWithPermissionIndex(
-          this.isCalendarFolder, permissionIndex);
+          this._isCalendarFolder, permissionIndex);
     }
   }
 
@@ -135,7 +133,7 @@ class FolderPermissionCollection
       folderPermission.WriteToXmlWithElementNameAndCalendar(
           writer,
           this.GetCollectionItemXmlElementName(folderPermission),
-          this.isCalendarFolder);
+          this._isCalendarFolder);
     }
     writer.WriteEndElement(); // this.InnerCollectionXmlElementName
   }
@@ -197,5 +195,5 @@ class FolderPermissionCollection
   /// <summary>
   /// Gets a list of unknown user Ids in the collection.
   /// </summary>
-  List<String> get UnknownEntries => this.unknownEntries;
+  List<String?> get UnknownEntries => this._unknownEntries;
 }

@@ -63,13 +63,13 @@ class MimeContent extends MimeContentBase {
         // return the Base64 representation of the content.
         // Note: Encoding.GetString can throw DecoderFallbackException which is a subclass
         // of ArgumentException.
-        String charSet = StringUtils.IsNullOrEmpty(this.CharacterSet)
+        String? charSet = StringUtils.IsNullOrEmpty(this.CharacterSet)
             ? utf8.name
             : this.CharacterSet;
-        Encoding encoding = Encoding.getByName(charSet);
-        return encoding.decode(this.Content);
+        Encoding encoding = Encoding.getByName(charSet)!;
+        return encoding.decode(this.Content!);
       } catch (ArgumentException) {
-        return base64.encode(this.Content);
+        return base64.encode(this.Content!);
       }
     }
   }

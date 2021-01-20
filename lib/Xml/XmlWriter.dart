@@ -22,23 +22,23 @@ const String xmlns = 'xmlns';
 
 class XmlWriter {
   final builder = XmlBuilder();
-  final StreamConsumer<List<int>> _output;
+  final StreamConsumer<List<int>>? _output;
 
   XmlWriter(this._output) {
     builder.processing('xml', 'version="1.0" encoding="utf-8"');
   }
 
   Future<void> Close() {
-    return _output.close();
+    return _output!.close();
   }
 
   Future<void> Flush() async {
     final xml = builder.build().toString();
     List<int> data = utf8.encode(xml);
-    await _output.addStream(Stream.fromIterable([data]));
+    await _output!.addStream(Stream.fromIterable([data]));
   }
 
-  void WriteStartElement({String prefix, String localName, String ns}) {
+  void WriteStartElement({String? prefix, String? localName, String? ns}) {
     builder.startElement("$prefix:$localName", namespaces: {ns: prefix});
   }
 
@@ -46,16 +46,16 @@ class XmlWriter {
     builder.endElement();
   }
 
-  void WriteValue(String value) {
+  void WriteValue(String? value) {
     builder.text(value);
   }
 
   void WriteAttributeString(
-      {String prefix, String localName, String ns, String value}) {
+      {String? prefix, String? localName, String? ns, String? value}) {
     builder.attribute("$prefix:$localName", value, namespace: ns);
   }
 
-  void WriteAttributeStringJust(String localName, String stringValue) {
+  void WriteAttributeStringJust(String localName, String? stringValue) {
     builder.attribute(localName, stringValue);
   }
 }
@@ -89,7 +89,7 @@ class XmlBuilder {
   ///
   ///     builder.text('Hello World');
   ///
-  void text(Object text) {
+  void text(Object? text) {
     final children = _stack.last.children;
     if (children.isNotEmpty && children.last is XmlText) {
       // Merge consecutive text nodes into one
@@ -163,11 +163,11 @@ class XmlBuilder {
   ///     });
   ///
   void startElement(String name,
-      {String namespace,
-      Map<String, String> namespaces = const {},
+      {String? namespace,
+      Map<String?, String?> namespaces = const {},
       Map<String, String> attributes = const {},
       bool isSelfClosing = true,
-      Object nest}) {
+      Object? nest}) {
     final element = XmlElementBuilder();
     element.name = _buildName(name, namespace);
     element.isSelfClosing = isSelfClosing;
@@ -177,7 +177,7 @@ class XmlBuilder {
   }
 
   void endElement() {
-    XmlElementBuilder element = _stack.last;
+    XmlElementBuilder element = _stack.last as XmlElementBuilder;
     if (optimizeNamespaces) {
       // Remove unused namespaces: The reason we first add them and then remove
       // them again is to keep the order in which they have been added.
@@ -206,8 +206,8 @@ class XmlBuilder {
   ///        builder.attribute('lang', 'en');
   ///     });
   ///
-  void attribute(String name, Object value,
-      {String namespace, XmlAttributeType attributeType}) {
+  void attribute(String name, Object? value,
+      {String? namespace, XmlAttributeType? attributeType}) {
     if (!_stack.last.attributes.any((attr) => attr.name.qualified == name)) {
       final attribute = XmlAttribute(_buildName(name, namespace),
           value.toString(), attributeType ?? XmlAttributeType.DOUBLE_QUOTE);
@@ -218,14 +218,14 @@ class XmlBuilder {
   /// Binds a namespace [prefix] to the provided [uri]. The [prefix] can be
   /// omitted to declare a default namespace. Throws an [ArgumentException] if
   /// the [prefix] is invalid or conflicts with an existing declaration.
-  void namespace(String uri, [String prefix]) {
+  void namespace(String? uri, [String? prefix]) {
     if (prefix == xmlns || prefix == xml) {
       throw ArgumentException('The "$prefix" prefix cannot be bound.');
     }
     if (optimizeNamespaces &&
         _stack.any((builder) =>
             builder.namespaces.containsKey(uri) &&
-            builder.namespaces[uri].prefix == prefix)) {
+            builder.namespaces[uri]!.prefix == prefix)) {
       // namespace prefix already correctly specified in an ancestor
       return;
     }
@@ -235,7 +235,7 @@ class XmlBuilder {
     }
     final meta = NamespaceData(prefix, false);
     _stack.last.attributes
-        .add(XmlAttribute(meta.name, uri, XmlAttributeType.DOUBLE_QUOTE));
+        .add(XmlAttribute(meta.name, uri!, XmlAttributeType.DOUBLE_QUOTE));
     _stack.last.namespaces[uri] = meta;
   }
 
@@ -243,9 +243,9 @@ class XmlBuilder {
   XmlNode build() => _stack.last.build();
 
   // Internal method to build a name.
-  XmlName _buildName(String name, String uri) {
+  XmlName _buildName(String name, String? uri) {
     if (uri != null && uri.isNotEmpty) {
-      final meta = _lookup(uri);
+      final meta = _lookup(uri)!;
       meta.used = true;
       return XmlName(name, meta.prefix);
     } else {
@@ -254,10 +254,10 @@ class XmlBuilder {
   }
 
   // Internal method to lookup an namespace prefix.
-  NamespaceData _lookup(String uri) {
+  NamespaceData? _lookup(String uri) {
     final builder = _stack.lastWhere(
         (builder) => builder.namespaces.containsKey(uri),
-        orElse: () => throw ArgumentException('Undefined namespace: $uri'));
+        orElse: (() => throw ArgumentException('Undefined namespace: $uri')) as XmlNodeBuilder Function()?);
     return builder.namespaces[uri];
   }
 
@@ -266,7 +266,7 @@ class XmlBuilder {
     if (value is Function) {
       value();
     } else if (value is Iterable) {
-      value.forEach(_insert);
+      value.forEach(_insert as void Function(dynamic));
     } else if (value is XmlNode) {
       if (value is XmlText) {
         // Text nodes need to be unwrapped for merging.
@@ -291,18 +291,18 @@ class XmlBuilder {
 }
 
 class NamespaceData {
-  final String prefix;
+  final String? prefix;
   bool used;
 
   NamespaceData(this.prefix, [this.used = false]);
 
-  XmlName get name => prefix == null || prefix.isEmpty
+  XmlName get name => prefix == null || prefix!.isEmpty
       ? XmlName(xmlns)
-      : XmlName(prefix, xmlns);
+      : XmlName(prefix!, xmlns);
 }
 
 abstract class XmlNodeBuilder {
-  Map<String, NamespaceData> get namespaces;
+  Map<String?, NamespaceData> get namespaces;
 
   List<XmlAttribute> get attributes;
 
@@ -313,7 +313,7 @@ abstract class XmlNodeBuilder {
 
 class XmlDocumentBuilder extends XmlNodeBuilder {
   @override
-  final Map<String, NamespaceData> namespaces = {xmlUri: xmlData};
+  final Map<String?, NamespaceData> namespaces = {xmlUri: xmlData};
 
   @override
   List<XmlAttribute> get attributes {
@@ -330,7 +330,7 @@ class XmlDocumentBuilder extends XmlNodeBuilder {
 
 class XmlElementBuilder extends XmlNodeBuilder {
   @override
-  final Map<String, NamespaceData> namespaces = {};
+  final Map<String?, NamespaceData> namespaces = {};
 
   @override
   final List<XmlAttribute> attributes = [];
@@ -340,7 +340,7 @@ class XmlElementBuilder extends XmlNodeBuilder {
 
   bool isSelfClosing = true;
 
-  XmlName name;
+  late XmlName name;
 
   @override
   XmlNode build() => XmlElement(name, attributes, children, isSelfClosing);

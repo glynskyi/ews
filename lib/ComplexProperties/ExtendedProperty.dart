@@ -38,9 +38,9 @@ import 'StringList.dart';
 /// Represents an extended property.
 /// </summary>
 class ExtendedProperty extends ComplexProperty {
-  ExtendedPropertyDefinition _propertyDefinition;
+  ExtendedPropertyDefinition? _propertyDefinition;
 
-  Object _value;
+  Object? _value;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExtendedProperty"/> class.
@@ -65,7 +65,7 @@ class ExtendedProperty extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.ExtendedFieldURI:
         this._propertyDefinition = new ExtendedPropertyDefinition();
-        this._propertyDefinition.LoadFromXml(reader);
+        this._propertyDefinition!.LoadFromXml(reader);
         return true;
       case XmlElementNames.Value:
         EwsUtilities.Assert(
@@ -73,9 +73,9 @@ class ExtendedProperty extends ComplexProperty {
             "ExtendedProperty.TryReadElementFromXml",
             "PropertyDefintion is missing");
 
-        String stringValue = reader.ReadElementValue<String>();
+        String? stringValue = reader.ReadElementValue<String>();
         this._value = MapiTypeConverter.ConvertToValueWithStringValue(
-            this.PropertyDefinition.MapiType, stringValue);
+            this.PropertyDefinition!.MapiType, stringValue);
         return true;
       case XmlElementNames.Values:
         EwsUtilities.Assert(
@@ -87,7 +87,7 @@ class ExtendedProperty extends ComplexProperty {
             new StringList.fromElementName(XmlElementNames.Value);
         stringList.LoadFromXml(reader, reader.LocalName);
         this._value = MapiTypeConverter.ConvertToValue(
-            this.PropertyDefinition.MapiType, stringList);
+            this.PropertyDefinition!.MapiType, stringList);
         return true;
       default:
         return false;
@@ -100,9 +100,9 @@ class ExtendedProperty extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.PropertyDefinition.WriteToXml(writer);
+    this.PropertyDefinition!.WriteToXml(writer);
 
-    if (MapiTypeConverter.IsArrayType(this.PropertyDefinition.MapiType)) {
+    if (MapiTypeConverter.IsArrayType(this.PropertyDefinition!.MapiType)) {
       List array = this.Value as List;
       writer.WriteStartElement(XmlNamespace.Types, XmlElementNames.Values);
       for (int index = 0; index < array.length; index++) {
@@ -110,7 +110,7 @@ class ExtendedProperty extends ComplexProperty {
             XmlNamespace.Types,
             XmlElementNames.Value,
             MapiTypeConverter.ConvertToString(
-                this.PropertyDefinition.MapiType, array[index]));
+                this.PropertyDefinition!.MapiType, array[index]));
       }
       writer.WriteEndElement();
     } else {
@@ -118,24 +118,24 @@ class ExtendedProperty extends ComplexProperty {
           XmlNamespace.Types,
           XmlElementNames.Value,
           MapiTypeConverter.ConvertToString(
-              this.PropertyDefinition.MapiType, this.Value));
+              this.PropertyDefinition!.MapiType, this.Value));
     }
   }
 
   /// <summary>
   /// Gets the definition of the extended property.
   /// </summary>
-  ExtendedPropertyDefinition get PropertyDefinition => this._propertyDefinition;
+  ExtendedPropertyDefinition? get PropertyDefinition => this._propertyDefinition;
 
   /// <summary>
   /// Gets or sets the value of the extended property.
   /// </summary>
-  Object get Value => this._value;
+  Object? get Value => this._value;
 
-  set Value(Object value) {
+  set Value(Object? value) {
     EwsUtilities.ValidateParam(value, "value");
     final mapiValue =
-        MapiTypeConverter.ChangeType(this.PropertyDefinition.MapiType, value);
+        MapiTypeConverter.ChangeType(this.PropertyDefinition!.MapiType, value);
     if (this.CanSetFieldValue(this._value, mapiValue)) {
       this._value = mapiValue;
       this.Changed();
@@ -147,8 +147,8 @@ class ExtendedProperty extends ComplexProperty {
   /// </summary>
   /// <returns>Value as string.</returns>
   String _GetStringValue() {
-    if (MapiTypeConverter.IsArrayType(this.PropertyDefinition.MapiType)) {
-      List array = this.Value as List;
+    if (MapiTypeConverter.IsArrayType(this.PropertyDefinition!.MapiType)) {
+      List? array = this.Value as List?;
       if (array == null) {
         return "";
       } else {
@@ -156,7 +156,7 @@ class ExtendedProperty extends ComplexProperty {
         sb.write("[");
         for (int index = 0; index <= array.length; index++) {
           sb.write(MapiTypeConverter.ConvertToString(
-              this.PropertyDefinition.MapiType, array[index]));
+              this.PropertyDefinition!.MapiType, array[index]));
           sb.write(",");
         }
         sb.write("]");
@@ -165,7 +165,7 @@ class ExtendedProperty extends ComplexProperty {
       }
     } else {
       return MapiTypeConverter.ConvertToString(
-          this.PropertyDefinition.MapiType, this.Value);
+          this.PropertyDefinition!.MapiType, this.Value);
     }
   }
 
@@ -179,7 +179,7 @@ class ExtendedProperty extends ComplexProperty {
   /// <exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception>
   @override
   bool operator ==(obj) {
-    ExtendedProperty other = obj is ExtendedProperty ? obj : null;
+    ExtendedProperty? other = obj is ExtendedProperty ? obj : null;
     if ((other != null) &&
         other.PropertyDefinition == this.PropertyDefinition) {
       return this._GetStringValue() == other._GetStringValue();
@@ -191,7 +191,7 @@ class ExtendedProperty extends ComplexProperty {
   @override
   int get hashCode {
     final part1 = (this.PropertyDefinition != null)
-        ? this.PropertyDefinition.GetPrintableName()
+        ? this.PropertyDefinition!.GetPrintableName()
         : "";
     final part2 = this._GetStringValue();
     return (part1 + part2).hashCode;

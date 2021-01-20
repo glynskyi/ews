@@ -32,12 +32,12 @@ import 'package:ews/Xml/XmlNodeType.dart';
 /// Represents an alternate mailbox.
 /// </summary>
 class AlternateMailbox {
-  String _type;
-  String _displayName;
-  String _legacyDN;
-  String _server;
-  String _smtpAddress;
-  String _ownerSmtpAddress;
+  String? _type;
+  String? _displayName;
+  String? _legacyDN;
+  String? _server;
+  String? _smtpAddress;
+  String? _ownerSmtpAddress;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="AlternateMailbox"/> class.
@@ -89,43 +89,43 @@ class AlternateMailbox {
   /// Gets the alternate mailbox type.
   /// </summary>
   /// <value>The type.</value>
-  String get Type => this._type;
+  String? get Type => this._type;
 
-  set Type(String value) => this._type = value;
+  set Type(String? value) => this._type = value;
 
   /// <summary>
   /// Gets the alternate mailbox display name.
   /// </summary>
-  String get DisplayName => this._displayName;
+  String? get DisplayName => this._displayName;
 
-  set DisplayName(String value) => this._displayName = value;
+  set DisplayName(String? value) => this._displayName = value;
 
   /// <summary>
   /// Gets the alternate mailbox legacy DN.
   /// </summary>
-  String get LegacyDN => this._legacyDN;
+  String? get LegacyDN => this._legacyDN;
 
-  set LegacyDN(String value) => this._legacyDN = value;
+  set LegacyDN(String? value) => this._legacyDN = value;
 
   /// <summary>
   /// Gets the alernate mailbox server.
   /// </summary>
-  String get Server => this._server;
+  String? get Server => this._server;
 
-  set Server(String value) => this._server = value;
+  set Server(String? value) => this._server = value;
 
   /// <summary>
   /// Gets the alternate mailbox address.
   /// It has value only when Server and LegacyDN is empty.
   /// </summary>
-  String get SmtpAddress => this._smtpAddress;
+  String? get SmtpAddress => this._smtpAddress;
 
-  set SmtpAddress(String value) => this._smtpAddress = value;
+  set SmtpAddress(String? value) => this._smtpAddress = value;
 
   /// <summary>
   /// Gets the alternate mailbox owner SmtpAddress.
   /// </summary>
-  String get OwnerSmtpAddress => this._ownerSmtpAddress;
+  String? get OwnerSmtpAddress => this._ownerSmtpAddress;
 
-  set OwnerSmtpAddress(String value) => this._ownerSmtpAddress = value;
+  set OwnerSmtpAddress(String? value) => this._ownerSmtpAddress = value;
 }

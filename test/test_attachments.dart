@@ -16,7 +16,7 @@ void main() {
     final message = EmailMessage(service);
     message.Subject = messageSubject;
     message.Attachments.AddFileAttachmentWithContent(
-        "attachment.html", utf8.encode(attachmentContent));
+        "attachment.html", utf8.encode(attachmentContent) as Uint8List);
     await message.Save();
 
     final testMessage = await EmailMessage.Bind(
@@ -29,7 +29,7 @@ void main() {
 
     final testAttachment = testMessage.Attachments.first as FileAttachment;
     await testAttachment.Load();
-    final testContent = utf8.decode(testAttachment.Content);
+    final testContent = utf8.decode(testAttachment.Content!);
     expect(testContent, contains(attachmentSpan));
 
     await message.Delete(DeleteMode.HardDelete);
@@ -55,7 +55,7 @@ void main() {
 
     final testAttachment = testMessage.Attachments.first as FileAttachment;
     await testAttachment.Load();
-    final testContent = utf8.decode(testAttachment.Content);
+    final testContent = utf8.decode(testAttachment.Content!);
     expect(testContent, isEmpty);
 
     await message.Delete(DeleteMode.HardDelete);

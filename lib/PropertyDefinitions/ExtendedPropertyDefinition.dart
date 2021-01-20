@@ -56,17 +56,17 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
 
   static const _MapiTypeFieldName = "MapiType";
 
-  DefaultExtendedPropertySet _propertySet;
+  DefaultExtendedPropertySet? _propertySet;
 
-  Uuid _propertySetId;
+  Uuid? _propertySetId;
 
-  int _tag;
+  int? _tag;
 
-  String _name;
+  String? _name;
 
-  int _id;
+  int? _id;
 
-  MapiPropertyType _mapiType;
+  MapiPropertyType? _mapiType;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExtendedPropertyDefinition"/> class.
@@ -197,7 +197,7 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   void LoadFromXml(EwsServiceXmlReader reader) {
-    String attributeValue;
+    String? attributeValue;
 
     attributeValue =
         reader.ReadAttributeValue(XmlAttributeNames.DistinguishedPropertySetId);
@@ -213,14 +213,14 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertyTag);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this._tag = int.parse(attributeValue);
+      this._tag = int.parse(attributeValue!);
     }
 
     this._name = reader.ReadAttributeValue(XmlAttributeNames.PropertyName);
 
     attributeValue = reader.ReadAttributeValue(XmlAttributeNames.PropertyId);
     if (!StringUtils.IsNullOrEmpty(attributeValue)) {
-      this._id = int.parse(attributeValue);
+      this._id = int.parse(attributeValue!);
     }
 
     this._mapiType = reader.ReadAttributeValue<MapiPropertyType>(
@@ -261,13 +261,13 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   String GetPrintableName() {
     StringBuffer sb = new StringBuffer();
     sb.write("{");
-    sb.write(FormatField<String>(_NameFieldName, this.Name));
-    sb.write(FormatField<MapiPropertyType>(_MapiTypeFieldName, this.MapiType));
-    sb.write(FormatField<int>(_IdFieldName, this.Id));
-    sb.write(FormatField<DefaultExtendedPropertySet>(
+    sb.write(FormatField<String?>(_NameFieldName, this.Name));
+    sb.write(FormatField<MapiPropertyType?>(_MapiTypeFieldName, this.MapiType));
+    sb.write(FormatField<int?>(_IdFieldName, this.Id));
+    sb.write(FormatField<DefaultExtendedPropertySet?>(
         _PropertySetFieldName, this.PropertySet));
-    sb.write(FormatField<Uuid>(_PropertySetIdFieldName, this.PropertySetId));
-    sb.write(FormatField<int>(_TagFieldName, this.Tag));
+    sb.write(FormatField<Uuid?>(_PropertySetIdFieldName, this.PropertySetId));
+    sb.write(FormatField<int?>(_TagFieldName, this.Tag));
     sb.write("}");
     return sb.toString();
   }
@@ -286,37 +286,37 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// <summary>
   /// Gets the property set of the extended property.
   /// </summary>
-  DefaultExtendedPropertySet get PropertySet => this._propertySet;
+  DefaultExtendedPropertySet? get PropertySet => this._propertySet;
 
   /// <summary>
   /// Gets the property set Id or the extended property.
   /// </summary>
-  Uuid get PropertySetId => this._propertySetId;
+  Uuid? get PropertySetId => this._propertySetId;
 
   /// <summary>
   /// Gets the extended property's tag.
   /// </summary>
-  int get Tag => this._tag;
+  int? get Tag => this._tag;
 
   /// <summary>
   /// Gets the name of the extended property.
   /// </summary>
-  String get Name => this._name;
+  String? get Name => this._name;
 
   /// <summary>
   /// Gets the Id of the extended property.
   /// </summary>
-  int get Id => this._id;
+  int? get Id => this._id;
 
   /// <summary>
   /// Gets the MAPI type of the extended property.
   /// </summary>
-  MapiPropertyType get MapiType => this._mapiType;
+  MapiPropertyType? get MapiType => this._mapiType;
 
   /// <summary>
   /// Gets the property type.
   /// </summary>
   @override
-  core.Type get Type =>
-      MapiTypeConverter.MapiTypeConverterMap.Member[this.MapiType].Type;
+  core.Type? get Type =>
+      MapiTypeConverter.MapiTypeConverterMap.Member![this.MapiType!]!.Type;
 }

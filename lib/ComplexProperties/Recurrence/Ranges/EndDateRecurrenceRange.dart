@@ -30,12 +30,13 @@ import 'package:ews/Core/EwsServiceXmlWriter.dart';
 import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/XmlElementNames.dart';
 import 'package:ews/Enumerations/XmlNamespace.dart';
+import 'package:timezone/timezone.dart';
 
 /// <summary>
 /// Represents recurrent range with an end date.
 /// </summary>
 class EndDateRecurrenceRange extends RecurrenceRange {
-  /* private */ DateTime endDate;
+  /* private */ DateTime? endDate;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="EndDateRecurrenceRange"/> class.
@@ -48,7 +49,7 @@ class EndDateRecurrenceRange extends RecurrenceRange {
   /// <param name="startDate">The start date.</param>
   /// <param name="endDate">The end date.</param>
   EndDateRecurrenceRange.withStartAndEndDates(
-      DateTime startDate, DateTime endDate)
+      DateTime? startDate, DateTime? endDate)
       : super.withStartDate(startDate) {
     this.endDate = endDate;
   }
@@ -68,7 +69,7 @@ class EndDateRecurrenceRange extends RecurrenceRange {
   void SetupRecurrence(Recurrence recurrence) {
     super.SetupRecurrence(recurrence);
 
-    recurrence.EndDate = this.EndDate;
+    recurrence.EndDate = this.EndDate as TZDateTime?;
   }
 
   /// <summary>
@@ -80,7 +81,7 @@ class EndDateRecurrenceRange extends RecurrenceRange {
     super.WriteElementsToXml(writer);
 
     writer.WriteElementValueWithNamespace(XmlNamespace.Types,
-        XmlElementNames.EndDate, EwsUtilities.DateTimeToXSDate(this.EndDate));
+        XmlElementNames.EndDate, EwsUtilities.DateTimeToXSDate(this.EndDate!));
   }
 
   /// <summary>
@@ -107,9 +108,9 @@ class EndDateRecurrenceRange extends RecurrenceRange {
   /// Gets or sets the end date.
   /// </summary>
   /// <value>The end date.</value>
-  DateTime get EndDate => this.endDate;
+  DateTime? get EndDate => this.endDate;
 
-  set EndDate(DateTime value) {
+  set EndDate(DateTime? value) {
     if (this.CanSetFieldValue(this.endDate, value)) {
       this.endDate = value;
       Changed();

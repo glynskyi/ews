@@ -44,13 +44,13 @@ import 'package:ews/misc/ItemIdWrapperList.dart';
 /// </summary>
 class SyncFolderItemsRequest
     extends MultiResponseServiceRequest<SyncFolderItemsResponse> {
-  core.PropertySet _propertySet;
+  core.PropertySet? _propertySet;
 
-  FolderId _syncFolderId;
+  FolderId? _syncFolderId;
 
-  SyncFolderItemsScope _syncScope;
+  SyncFolderItemsScope? _syncScope;
 
-  String _syncState;
+  String? _syncState;
 
   ItemIdWrapperList _ignoredItemIds = new ItemIdWrapperList();
 
@@ -122,7 +122,7 @@ class SyncFolderItemsRequest
     EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
     EwsUtilities.ValidateParam(this.SyncFolderId, "SyncFolderId");
     this
-        .SyncFolderId
+        .SyncFolderId!
         .ValidateExchangeVersion(this.Service.RequestedServerVersion);
 
     // SyncFolderItemsScope enum was introduced with Exchange2010.  Only
@@ -148,7 +148,7 @@ class SyncFolderItemsRequest
     }
 
     // SyncFolderItems can only handle summary properties
-    this.PropertySet.ValidateForRequest(this, true /*summaryPropertiesOnly*/);
+    this.PropertySet!.ValidateForRequest(this, true /*summaryPropertiesOnly*/);
   }
 
   /// <summary>
@@ -157,11 +157,11 @@ class SyncFolderItemsRequest
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.PropertySet.WriteToXml(writer, ServiceObjectType.Item);
+    this.PropertySet!.WriteToXml(writer, ServiceObjectType.Item);
 
     writer.WriteStartElement(
         XmlNamespace.Messages, XmlElementNames.SyncFolderId);
-    this.SyncFolderId.WriteToXmlElemenetName(writer);
+    this.SyncFolderId!.WriteToXmlElemenetName(writer);
     writer.WriteEndElement();
 
     writer.WriteElementValueWithNamespace(
@@ -199,9 +199,9 @@ class SyncFolderItemsRequest
   /// Gets or sets the property set.
   /// </summary>
   /// <value>The property set.</value>
-  core.PropertySet get PropertySet => this._propertySet;
+  core.PropertySet? get PropertySet => this._propertySet;
 
-  set PropertySet(core.PropertySet value) {
+  set PropertySet(core.PropertySet? value) {
     this._propertySet = value;
   }
 
@@ -209,9 +209,9 @@ class SyncFolderItemsRequest
   /// Gets or sets the sync folder id.
   /// </summary>
   /// <value>The sync folder id.</value>
-  FolderId get SyncFolderId => this._syncFolderId;
+  FolderId? get SyncFolderId => this._syncFolderId;
 
-  set SyncFolderId(FolderId value) {
+  set SyncFolderId(FolderId? value) {
     this._syncFolderId = value;
   }
 
@@ -219,9 +219,9 @@ class SyncFolderItemsRequest
   /// Gets or sets the scope of the sync.
   /// </summary>
   /// <value>The scope of the sync.</value>
-  SyncFolderItemsScope get SyncScope => this._syncScope;
+  SyncFolderItemsScope? get SyncScope => this._syncScope;
 
-  set SyncScope(SyncFolderItemsScope value) {
+  set SyncScope(SyncFolderItemsScope? value) {
     this._syncScope = value;
   }
 
@@ -229,9 +229,9 @@ class SyncFolderItemsRequest
   /// Gets or sets the state of the sync.
   /// </summary>
   /// <value>The state of the sync.</value>
-  String get SyncState => this._syncState;
+  String? get SyncState => this._syncState;
 
-  set SyncState(String value) {
+  set SyncState(String? value) {
     this._syncState = value;
   }
 

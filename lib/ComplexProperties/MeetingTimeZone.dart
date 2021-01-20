@@ -38,10 +38,10 @@ import 'package:timezone/standalone.dart';
 /// Represents a time zone in which a meeting is defined.
 /// </summary>
 class MeetingTimeZone extends ComplexProperty {
-  String _name;
-  TimeSpan _baseOffset;
-  TimeChange _standard;
-  TimeChange _daylight;
+  String? _name;
+  TimeSpan? _baseOffset;
+  TimeChange? _standard;
+  TimeChange? _daylight;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="MeetingTimeZone"/> class.
@@ -78,15 +78,15 @@ class MeetingTimeZone extends ComplexProperty {
     switch (reader.LocalName) {
       case XmlElementNames.BaseOffset:
         this._baseOffset =
-            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>());
+            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>()!);
         return true;
       case XmlElementNames.Standard:
         this._standard = new TimeChange();
-        this._standard.LoadFromXml(reader, reader.LocalName);
+        this._standard!.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.Daylight:
         this._daylight = new TimeChange();
-        this._daylight.LoadFromXml(reader, reader.LocalName);
+        this._daylight!.LoadFromXml(reader, reader.LocalName);
         return true;
       default:
         return false;
@@ -121,15 +121,15 @@ class MeetingTimeZone extends ComplexProperty {
       writer.WriteElementValueWithNamespace(
           XmlNamespace.Types,
           XmlElementNames.BaseOffset,
-          EwsUtilities.TimeSpanToXSDuration(this.BaseOffset));
+          EwsUtilities.TimeSpanToXSDuration(this.BaseOffset!));
     }
 
     if (this.Standard != null) {
-      this.Standard.WriteToXml(writer, XmlElementNames.Standard);
+      this.Standard!.WriteToXml(writer, XmlElementNames.Standard);
     }
 
     if (this.Daylight != null) {
-      this.Daylight.WriteToXml(writer, XmlElementNames.Daylight);
+      this.Daylight!.WriteToXml(writer, XmlElementNames.Daylight);
     }
   }
 
@@ -166,9 +166,9 @@ class MeetingTimeZone extends ComplexProperty {
   /// <summary>
   /// Gets or sets the name of the time zone.
   /// </summary>
-  String get Name => this._name;
+  String? get Name => this._name;
 
-  set Name(String value) {
+  set Name(String? value) {
     if (this.CanSetFieldValue(this._name, value)) {
       this._name = value;
       this.Changed();
@@ -178,9 +178,9 @@ class MeetingTimeZone extends ComplexProperty {
   /// <summary>
   /// Gets or sets the base offset of the time zone from the UTC time zone.
   /// </summary>
-  TimeSpan get BaseOffset => this._baseOffset;
+  TimeSpan? get BaseOffset => this._baseOffset;
 
-  set BaseOffset(TimeSpan value) {
+  set BaseOffset(TimeSpan? value) {
     if (this.CanSetFieldValue(this._baseOffset, value)) {
       this._baseOffset = value;
       this.Changed();
@@ -190,9 +190,9 @@ class MeetingTimeZone extends ComplexProperty {
   /// <summary>
   /// Gets or sets a TimeChange defining when the time changes to Standard Time.
   /// </summary>
-  TimeChange get Standard => this._standard;
+  TimeChange? get Standard => this._standard;
 
-  set Standard(TimeChange value) {
+  set Standard(TimeChange? value) {
     if (this.CanSetFieldValue(this._standard, value)) {
       this._standard = value;
       this.Changed();
@@ -202,9 +202,9 @@ class MeetingTimeZone extends ComplexProperty {
   /// <summary>
   /// Gets or sets a TimeChange defining when the time changes to Daylight Saving Time.
   /// </summary>
-  TimeChange get Daylight => this._daylight;
+  TimeChange? get Daylight => this._daylight;
 
-  set Daylight(TimeChange value) {
+  set Daylight(TimeChange? value) {
     if (this.CanSetFieldValue(this._daylight, value)) {
       this._daylight = value;
       this.Changed();

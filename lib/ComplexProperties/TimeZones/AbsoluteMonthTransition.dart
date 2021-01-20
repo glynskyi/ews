@@ -37,10 +37,10 @@ import 'package:ews/misc/TimeSpan.dart';
 /// Represents the base class for all recurring time zone period transitions.
 /// </summary>
 abstract class AbsoluteMonthTransition extends TimeZoneTransition {
-  /* private */ TimeSpan timeOffset;
+  /* private */ TimeSpan? timeOffset;
 
   /* private */
-  int month;
+  int? month;
 
 //        /// <summary>
 //        /// Initializes this transition based on the specified transition time.
@@ -68,13 +68,13 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
       switch (reader.LocalName) {
         case XmlElementNames.TimeOffset:
           this.timeOffset =
-              EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>());
+              EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>()!);
           return true;
         case XmlElementNames.Month:
           this.month = reader.ReadElementValue<int>();
 
           EwsUtilities.Assert(
-              this.month > 0 && this.month <= 12,
+              this.month! > 0 && this.month! <= 12,
               "AbsoluteMonthTransition.TryReadElementFromXml",
               "month is not in the valid 1 - 12 range.");
 
@@ -96,7 +96,7 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types,
         XmlElementNames.TimeOffset,
-        EwsUtilities.TimeSpanToXSDuration(this.timeOffset));
+        EwsUtilities.TimeSpanToXSDuration(this.timeOffset!));
 
     writer.WriteElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.Month, this.month);
@@ -106,7 +106,7 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
   /// Initializes a new instance of the <see cref="AbsoluteMonthTransition"/> class.
   /// </summary>
   /// <param name="timeZoneDefinition">The time zone definition this transition belongs to.</param>
-  AbsoluteMonthTransition(TimeZoneDefinition timeZoneDefinition)
+  AbsoluteMonthTransition(TimeZoneDefinition? timeZoneDefinition)
       : super(timeZoneDefinition) {}
 
   /// <summary>
@@ -121,10 +121,10 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
   /// <summary>
   /// Gets the time offset from midnight when the transition occurs.
   /// </summary>
-  TimeSpan get TimeOffset => this.timeOffset;
+  TimeSpan? get TimeOffset => this.timeOffset;
 
   /// <summary>
   /// Gets the month when the transition occurs.
   /// </summary>
-  int get Month => this.month;
+  int? get Month => this.month;
 }

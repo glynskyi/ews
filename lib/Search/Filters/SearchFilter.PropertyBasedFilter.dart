@@ -39,7 +39,7 @@ import 'package:ews/misc/OutParam.dart';
 /// Represents a search filter where an item or folder property is involved.
 /// </summary>
 abstract class PropertyBasedFilter extends SearchFilter {
-  /* private */ PropertyDefinitionBase propertyDefinition;
+  /* private */ PropertyDefinitionBase? propertyDefinition;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="PropertyBasedFilter"/> class.
@@ -86,16 +86,16 @@ abstract class PropertyBasedFilter extends SearchFilter {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.PropertyDefinition.WriteToXml(writer);
+    this.PropertyDefinition!.WriteToXml(writer);
   }
 
   /// <summary>
   /// Gets or sets the definition of the property that is involved in the search filter. Property definitions are
   /// available as static members from schema classes (for example, EmailMessageSchema.Subject, AppointmentSchema.Start, ContactSchema.GivenName, etc.)
   /// </summary>
-  PropertyDefinitionBase get PropertyDefinition => this.propertyDefinition;
+  PropertyDefinitionBase? get PropertyDefinition => this.propertyDefinition;
 
-  set PropertyDefinition(PropertyDefinitionBase value) {
+  set PropertyDefinition(PropertyDefinitionBase? value) {
     this.propertyDefinition = value;
   }
 }

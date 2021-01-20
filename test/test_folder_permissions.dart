@@ -19,7 +19,7 @@ main() {
     await primaryFolder.Save(
         FolderId.fromWellKnownFolder(WellKnownFolderName.Notes));
 
-    await Folder.Bind(secondExchangeService, primaryFolder.Id);
+    await Folder.Bind(secondExchangeService, primaryFolder.Id!);
 
     await primaryFolder.Delete(DeleteMode.HardDelete);
   });
@@ -35,7 +35,7 @@ main() {
     await primaryFolder.Save(
         FolderId.fromWellKnownFolder(WellKnownFolderName.Notes));
 
-    expect(Folder.Bind(secondExchangeService, primaryFolder.Id),
+    expect(Folder.Bind(secondExchangeService, primaryFolder.Id!),
         throwsA(const TypeMatcher<ServiceResponseException>()));
 
     await primaryFolder.Delete(DeleteMode.HardDelete);

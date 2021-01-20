@@ -34,7 +34,7 @@ import 'package:ews/Notifications/SubscriptionBase.dart';
 /// <typeparam name="TSubscription">Subscription type.</typeparam>
 class SubscribeResponse<TSubscription extends SubscriptionBase>
     extends ServiceResponse {
-  TSubscription _subscription;
+  TSubscription? _subscription;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SubscribeResponse&lt;TSubscription&gt;"/> class.
@@ -55,11 +55,11 @@ class SubscribeResponse<TSubscription extends SubscriptionBase>
   void ReadElementsFromXml(EwsServiceXmlReader reader) {
     super.ReadElementsFromXml(reader);
 
-    this._subscription.LoadFromXml(reader);
+    this._subscription!.LoadFromXml(reader);
   }
 
   /// <summary>
   /// Gets the subscription that was created.
   /// </summary>
-  TSubscription get Subscription => this._subscription;
+  TSubscription? get Subscription => this._subscription;
 }

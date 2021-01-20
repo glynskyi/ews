@@ -50,7 +50,7 @@ class ComplexPropertyDefinition<TComplexProperty extends ComplexProperty>
     extends ComplexPropertyDefinitionBase //        where TComplexProperty : ComplexProperty
 {
   /* private */
-  ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate;
+  late ICreateComplexPropertyDelegate<TComplexProperty> propertyCreationDelegate;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ComplexPropertyDefinition&lt;TComplexProperty&gt;"/> class.
@@ -113,7 +113,7 @@ class ComplexPropertyDefinition<TComplexProperty extends ComplexProperty>
   /// <param name="owner">The owner.</param>
   /// <returns>ComplexProperty instance.</returns>
   @override
-  ComplexProperty CreatePropertyInstance(ServiceObject owner) {
+  ComplexProperty CreatePropertyInstance(ServiceObject? owner) {
     TComplexProperty complexProperty = this.propertyCreationDelegate();
 
     if (complexProperty is IOwnedProperty) {

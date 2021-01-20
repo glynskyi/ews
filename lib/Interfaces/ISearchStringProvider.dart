@@ -31,5 +31,5 @@ abstract class ISearchStringProvider {
 
   /// </summary>
   /// <returns>String representation of instance.</returns>
-  String GetSearchString();
+  String? GetSearchString();
 }

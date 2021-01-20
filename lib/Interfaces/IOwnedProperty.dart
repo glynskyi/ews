@@ -34,5 +34,5 @@ abstract class IOwnedProperty {
   /// Gets or sets the owner.
   /// </summary>
   /// <value>The owner.</value>
-  ServiceObject Owner;
+  ServiceObject? Owner;
 }

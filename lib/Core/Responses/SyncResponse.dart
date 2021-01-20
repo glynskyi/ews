@@ -45,13 +45,13 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
     TChange extends Change> extends ServiceResponse {
   ChangeCollection<TChange> _changes = new ChangeCollection<TChange>();
 
-  PropertySet _propertySet;
+  PropertySet? _propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SyncResponse&lt;TServiceObject, TChange&gt;"/> class.
   /// </summary>
   /// <param name="propertySet">Property set.</param>
-  SyncResponse(PropertySet propertySet) : super() {
+  SyncResponse(PropertySet? propertySet) : super() {
     this._propertySet = propertySet;
 
     EwsUtilities.Assert(this._propertySet != null, "SyncResponse.ctor",
@@ -92,7 +92,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
         XmlNamespace.Messages, XmlElementNames.SyncState);
     this.Changes.MoreChangesAvailable =
         !reader.ReadElementValueWithNamespace<bool>(
-            XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName());
+            XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName())!;
 
     reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Changes);
@@ -129,7 +129,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
               case ChangeType.Delete:
               case ChangeType.ReadFlagChange:
                 change.Id = change.CreateId();
-                change.Id.LoadFromXml(reader, change.Id.GetXmlElementName());
+                change.Id!.LoadFromXml(reader, change.Id!.GetXmlElementName());
 
                 if (change.ChangeType == ChangeType.ReadFlagChange) {
                   reader.Read();
@@ -153,7 +153,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
                     EwsUtilities.CreateEwsObjectFromXmlElementName<
                         TServiceObject>(reader.Service, reader.LocalName);
 
-                change.ServiceObject.LoadFromXmlWithPropertySet(
+                change.ServiceObject!.LoadFromXmlWithPropertySet(
                     reader,
                     true,
                     /* clearPropertyBag */

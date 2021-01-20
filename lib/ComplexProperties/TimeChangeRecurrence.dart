@@ -36,11 +36,11 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// Represents a recurrence pattern for a time change in a time zone.
 /// </summary>
 class TimeChangeRecurrence extends ComplexProperty {
-  enumerations.DayOfTheWeek _dayOfTheWeek;
+  enumerations.DayOfTheWeek? _dayOfTheWeek;
 
-  enumerations.DayOfTheWeekIndex _dayOfTheWeekIndex;
+  enumerations.DayOfTheWeekIndex? _dayOfTheWeekIndex;
 
-  enumerations.Month _month;
+  enumerations.Month? _month;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="TimeChangeRecurrence"/> class.
@@ -66,10 +66,10 @@ class TimeChangeRecurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the index of the day in the month at which the time change occurs.
   /// </summary>
-  enumerations.DayOfTheWeekIndex get DayOfTheWeekIndex =>
+  enumerations.DayOfTheWeekIndex? get DayOfTheWeekIndex =>
       this._dayOfTheWeekIndex;
 
-  set DayOfTheWeekIndex(enumerations.DayOfTheWeekIndex value) {
+  set DayOfTheWeekIndex(enumerations.DayOfTheWeekIndex? value) {
     if (this.CanSetFieldValue(this._dayOfTheWeekIndex, value)) {
       this._dayOfTheWeekIndex = value;
       this.Changed();
@@ -79,9 +79,9 @@ class TimeChangeRecurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the day of the week the time change occurs.
   /// </summary>
-  enumerations.DayOfTheWeek get DayOfTheWeek => this._dayOfTheWeek;
+  enumerations.DayOfTheWeek? get DayOfTheWeek => this._dayOfTheWeek;
 
-  set DayOfTheWeek(enumerations.DayOfTheWeek value) {
+  set DayOfTheWeek(enumerations.DayOfTheWeek? value) {
     if (this.CanSetFieldValue(this._dayOfTheWeek, value)) {
       this._dayOfTheWeek = value;
       this.Changed();
@@ -91,9 +91,9 @@ class TimeChangeRecurrence extends ComplexProperty {
   /// <summary>
   /// Gets or sets the month the time change occurs.
   /// </summary>
-  enumerations.Month get Month => this._month;
+  enumerations.Month? get Month => this._month;
 
-  set Month(enumerations.Month value) {
+  set Month(enumerations.Month? value) {
     if (this.CanSetFieldValue(this._month, value)) {
       this._month = value;
       this.Changed();

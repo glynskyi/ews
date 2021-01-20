@@ -43,7 +43,7 @@ class DeletedOccurrenceInfoCollection
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>OccurenceInfo instance.</returns>
   @override
-  DeletedOccurrenceInfo CreateComplexProperty(String xmlElementName) {
+  DeletedOccurrenceInfo? CreateComplexProperty(String xmlElementName) {
     if (xmlElementName == XmlElementNames.DeletedOccurrence) {
       return new DeletedOccurrenceInfo();
     } else {

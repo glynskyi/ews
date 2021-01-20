@@ -41,11 +41,11 @@ import 'package:ews/Enumerations/XmlNamespace.dart';
 /// </summary>
 class SyncFolderHierarchyRequest
     extends MultiResponseServiceRequest<SyncFolderHierarchyResponse> {
-  core.PropertySet _propertySet;
+  core.PropertySet? _propertySet;
 
-  FolderId _syncFolderId;
+  FolderId? _syncFolderId;
 
-  String _syncState;
+  String? _syncState;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="SyncFolderHierarchyRequest"/> class.
@@ -111,11 +111,11 @@ class SyncFolderHierarchyRequest
     EwsUtilities.ValidateParam(this.PropertySet, "PropertySet");
     if (this.SyncFolderId != null) {
       this
-          .SyncFolderId
+          .SyncFolderId!
           .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
 
-    this.PropertySet.ValidateForRequest(this, false /*summaryPropertiesOnly*/);
+    this.PropertySet!.ValidateForRequest(this, false /*summaryPropertiesOnly*/);
   }
 
   /// <summary>
@@ -124,12 +124,12 @@ class SyncFolderHierarchyRequest
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    this.PropertySet.WriteToXml(writer, ServiceObjectType.Folder);
+    this.PropertySet!.WriteToXml(writer, ServiceObjectType.Folder);
 
     if (this.SyncFolderId != null) {
       writer.WriteStartElement(
           XmlNamespace.Messages, XmlElementNames.SyncFolderId);
-      this.SyncFolderId.WriteToXmlElemenetName(writer);
+      this.SyncFolderId!.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
 
@@ -150,9 +150,9 @@ class SyncFolderHierarchyRequest
   /// Gets or sets the property set.
   /// </summary>
   /// <value>The property set.</value>
-  core.PropertySet get PropertySet => this._propertySet;
+  core.PropertySet? get PropertySet => this._propertySet;
 
-  set PropertySet(core.PropertySet value) {
+  set PropertySet(core.PropertySet? value) {
     this._propertySet = value;
   }
 
@@ -160,9 +160,9 @@ class SyncFolderHierarchyRequest
   /// Gets or sets the sync folder id.
   /// </summary>
   /// <value>The sync folder id.</value>
-  FolderId get SyncFolderId => this._syncFolderId;
+  FolderId? get SyncFolderId => this._syncFolderId;
 
-  set SyncFolderId(FolderId value) {
+  set SyncFolderId(FolderId? value) {
     this._syncFolderId = value;
   }
 
@@ -170,9 +170,9 @@ class SyncFolderHierarchyRequest
   /// Gets or sets the state of the sync.
   /// </summary>
   /// <value>The state of the sync.</value>
-  String get SyncState => this._syncState;
+  String? get SyncState => this._syncState;
 
-  set SyncState(String value) {
+  set SyncState(String? value) {
     this._syncState = value;
   }
 }

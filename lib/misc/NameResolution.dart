@@ -25,7 +25,6 @@
 
 import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/Core/EwsServiceXmlReader.dart';
-import 'package:ews/Core/EwsUtilities.dart';
 import 'package:ews/Core/PropertySet.dart';
 import 'package:ews/Core/ServiceObjects/Items/Contact.dart' as items;
 import 'package:ews/Core/XmlElementNames.dart';
@@ -38,17 +37,13 @@ import 'package:ews/misc/NameResolutionCollection.dart';
 class NameResolution {
   NameResolutionCollection _owner;
   EmailAddress _mailbox = new EmailAddress();
-  items.Contact _contact;
+  items.Contact? _contact;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NameResolution"/> class.
   /// </summary>
   /// <param name="owner">The owner.</param>
-  NameResolution(NameResolutionCollection owner) {
-    EwsUtilities.Assert(owner != null, "NameResolution.ctor", "owner is null.");
-
-    this._owner = owner;
-  }
+  NameResolution(this._owner);
 
   /// <summary>
   /// Loads from XML.
@@ -65,10 +60,10 @@ class NameResolution {
     reader.Read();
     if (reader.IsStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Contact)) {
-      this._contact = new items.Contact(this._owner.Session);
+      this._contact = new items.Contact(this._owner.Session!);
 
       // Contacts returned by ResolveNames should behave like Contact.Load with FirstClassPropertySet specified.
-      this._contact.LoadFromXmlWithPropertySet(
+      this._contact!.LoadFromXmlWithPropertySet(
           reader,
           true,
           /* clearPropertyBag */
@@ -92,5 +87,5 @@ class NameResolution {
   /// Gets the contact information of the suggested resolved name. This property is only available when
   /// ResolveName is called with returnContactDetails = true.
   /// </summary>
-  items.Contact get Contact => this._contact;
+  items.Contact? get Contact => this._contact;
 }

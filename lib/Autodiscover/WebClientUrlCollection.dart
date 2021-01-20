@@ -34,7 +34,7 @@ import 'WebClientUrl.dart';
 /// Represents a user setting that is a collection of Exchange web client URLs.
 /// </summary>
 class WebClientUrlCollection {
-  List<WebClientUrl> _urls;
+  List<WebClientUrl>? _urls;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="WebClientUrlCollection"/> class.
@@ -55,7 +55,7 @@ class WebClientUrlCollection {
 
       if ((reader.NodeType == XmlNodeType.Element) &&
           (reader.LocalName == XmlElementNames.WebClientUrl)) {
-        instance.Urls.add(WebClientUrl.LoadFromXml(reader));
+        instance.Urls!.add(WebClientUrl.LoadFromXml(reader));
       }
     } while (!reader.IsEndElementWithNamespace(
         XmlNamespace.Autodiscover, XmlElementNames.WebClientUrls));
@@ -66,5 +66,5 @@ class WebClientUrlCollection {
   /// <summary>
   /// Gets the URLs.
   /// </summary>
-  List<WebClientUrl> get Urls => this._urls;
+  List<WebClientUrl>? get Urls => this._urls;
 }

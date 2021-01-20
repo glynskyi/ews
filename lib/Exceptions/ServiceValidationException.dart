@@ -35,7 +35,7 @@ class ServiceValidationException extends ServiceLocalException {
   /// </summary>
   /// <param name="message">Error message text.</param>
   ServiceValidationException(String message,
-      [Exception innerException, StackTrace innerStackTrace])
+      [Exception? innerException, StackTrace? innerStackTrace])
       : super(message, innerException, innerStackTrace);
 
   @override

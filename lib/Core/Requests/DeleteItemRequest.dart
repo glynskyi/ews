@@ -44,9 +44,9 @@ import 'package:ews/misc/ItemIdWrapperList.dart';
 class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   ItemIdWrapperList _itemIds = new ItemIdWrapperList();
 
-  enumerations.AffectedTaskOccurrence _affectedTaskOccurrences;
+  enumerations.AffectedTaskOccurrence? _affectedTaskOccurrences;
 
-  enumerations.SendCancellationsMode _sendCancellationsMode;
+  enumerations.SendCancellationsMode? _sendCancellationsMode;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteItemRequest"/> class.
@@ -176,10 +176,10 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// Gets or sets the affected task occurrences.
   /// </summary>
   /// <value>The affected task occurrences.</value>
-  enumerations.AffectedTaskOccurrence get AffectedTaskOccurrences =>
+  enumerations.AffectedTaskOccurrence? get AffectedTaskOccurrences =>
       this._affectedTaskOccurrences;
 
-  set AffectedTaskOccurrences(enumerations.AffectedTaskOccurrence value) {
+  set AffectedTaskOccurrences(enumerations.AffectedTaskOccurrence? value) {
     this._affectedTaskOccurrences = value;
   }
 
@@ -187,10 +187,10 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// Gets or sets the send cancellations.
   /// </summary>
   /// <value>The send cancellations.</value>
-  enumerations.SendCancellationsMode get SendCancellationsMode =>
+  enumerations.SendCancellationsMode? get SendCancellationsMode =>
       this._sendCancellationsMode;
 
-  set SendCancellationsMode(enumerations.SendCancellationsMode value) {
+  set SendCancellationsMode(enumerations.SendCancellationsMode? value) {
     this._sendCancellationsMode = value;
   }
 
@@ -198,5 +198,5 @@ class DeleteItemRequest extends DeleteRequest<ServiceResponse> {
   /// Gets or sets whether to suppress read receipts
   /// </summary>
   /// <value>Whether to suppress read receipts</value>
-  bool SuppressReadReceipts;
+  late bool SuppressReadReceipts;
 }

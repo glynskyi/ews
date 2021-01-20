@@ -69,7 +69,7 @@ class FolderIdWrapperList
   /// Adds the specified folder id.
   /// </summary>
   /// <param name="folderId">The folder id.</param>
-  void AddFolderId(FolderId folderId) {
+  void AddFolderId(FolderId? folderId) {
     this._ids.add(new FolderIdWrapper(folderId));
   }
 
@@ -77,9 +77,9 @@ class FolderIdWrapperList
   /// Adds the range of folder ids.
   /// </summary>
   /// <param name="folderIds">The folder ids.</param>
-  void AddRangeFolderIds(Iterable<FolderId> folderIds) {
+  void AddRangeFolderIds(Iterable<FolderId?>? folderIds) {
     if (folderIds != null) {
-      for (FolderId folderId in folderIds) {
+      for (FolderId? folderId in folderIds) {
         this.AddFolderId(folderId);
       }
     }

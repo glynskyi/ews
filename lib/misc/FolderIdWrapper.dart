@@ -36,13 +36,13 @@ class FolderIdWrapper extends AbstractFolderIdWrapper {
   /// <summary>
   /// The FolderId object providing the Id.
   /// </summary>
-  FolderId _folderId;
+  FolderId? _folderId;
 
   /// <summary>
   /// Initializes a new instance of FolderIdWrapper.
   /// </summary>
   /// <param name="folderId">The FolderId object providing the Id.</param>
-  FolderIdWrapper(FolderId folderId) {
+  FolderIdWrapper(FolderId? folderId) {
     EwsUtilities.Assert(
         folderId != null, "FolderIdWrapper.ctor", "folderId is null");
 
@@ -55,7 +55,7 @@ class FolderIdWrapper extends AbstractFolderIdWrapper {
   /// <param name="writer">The writer to write the Id to.</param>
   @override
   void WriteToXml(EwsServiceXmlWriter writer) {
-    this._folderId.WriteToXmlElemenetName(writer);
+    this._folderId!.WriteToXmlElemenetName(writer);
   }
 
   /// <summary>
@@ -64,6 +64,6 @@ class FolderIdWrapper extends AbstractFolderIdWrapper {
   /// <param name="version">The version.</param>
   @override
   void Validate(ExchangeVersion version) {
-    this._folderId.ValidateExchangeVersion(version);
+    this._folderId!.ValidateExchangeVersion(version);
   }
 }

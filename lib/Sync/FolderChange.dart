@@ -51,10 +51,10 @@ class FolderChange extends Change {
   /// ChangeType.Delete. In that case, use the FolderId property to retrieve the Id of
   /// the folder that was deleted.
   /// </summary>
-  core.Folder get Folder => this.ServiceObject;
+  core.Folder? get Folder => this.ServiceObject as core.Folder?;
 
   /// <summary>
   /// Gets the Id of the folder the change applies to.
   /// </summary>
-  complex.FolderId get FolderId => this.Id;
+  complex.FolderId? get FolderId => this.Id as complex.FolderId?;
 }

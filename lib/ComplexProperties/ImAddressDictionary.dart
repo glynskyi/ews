@@ -57,16 +57,16 @@ class ImAddressDictionary
   /// </summary>
   /// <param name="key">The key of the Instant Messaging address to get or set.</param>
   /// <returns>The Instant Messaging address at the specified key.</returns>
-  String operator [](ImAddressKey key) {
-    return this.Entries[key].ImAddress;
+  String? operator [](ImAddressKey key) {
+    return this.Entries[key]!.ImAddress;
   }
 
-  operator []=(ImAddressKey key, String value) {
+  operator []=(ImAddressKey key, String? value) {
     if (value == null) {
       this.InternalRemove(key);
     } else {
       if (this.Entries.containsKey(key)) {
-        ImAddressEntry entry = this.Entries[key];
+        ImAddressEntry entry = this.Entries[key]!;
         entry.ImAddress = value;
         this.Changed();
       } else {
@@ -88,11 +88,11 @@ class ImAddressDictionary
   /// true if the Dictionary contains an IM address associated with the specified key; otherwise, false.
   /// </returns>
   bool TryGetValue(ImAddressKey key, OutParam<String> imAddressOutParam) {
-    ImAddressEntry entry = null;
+    ImAddressEntry? entry = null;
 
     if (this.Entries.containsKey(key)) {
       entry = this.Entries[key];
-      imAddressOutParam.param = entry.ImAddress;
+      imAddressOutParam.param = entry!.ImAddress;
 
       return true;
     } else {

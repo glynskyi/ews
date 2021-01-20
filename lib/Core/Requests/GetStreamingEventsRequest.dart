@@ -41,10 +41,10 @@ class GetStreamingEventsRequest extends HangingServiceRequestBase {
   static int heartbeatFrequency = HeartbeatFrequencyDefault;
 
   /* private */
-  Iterable<String> subscriptionIds;
+  late Iterable<String> subscriptionIds;
 
   /* private */
-  int connectionTimeout;
+  int? connectionTimeout;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="GetStreamingEventsRequest"/> class.

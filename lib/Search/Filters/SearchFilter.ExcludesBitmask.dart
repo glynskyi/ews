@@ -41,7 +41,7 @@ import 'package:ews/Search/Filters/SearchFilter.PropertyBasedFilter.dart';
 /// conditions such as "(OrdinalField and 0x0010) != 0x0010"
 /// </summary>
 class ExcludesBitmask extends PropertyBasedFilter {
-  /* private */ int bitmask;
+  /* private */ int? bitmask;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ExcludesBitmask"/> class.
@@ -105,8 +105,8 @@ class ExcludesBitmask extends PropertyBasedFilter {
   /// <summary>
   /// Gets or sets the bitmask to compare the property with.
   /// </summary>
-  int get Bitmask => this.bitmask;
+  int? get Bitmask => this.bitmask;
 
-  set Bitmask(int value) => this.bitmask = value;
+  set Bitmask(int? value) => this.bitmask = value;
 }
 //    }

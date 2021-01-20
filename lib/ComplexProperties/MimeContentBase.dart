@@ -38,13 +38,13 @@ abstract class MimeContentBase extends ComplexProperty {
   /// <summary>
   /// characterSet returned
   /// </summary>
-  /* private */ String characterSet;
+  /* private */ String? characterSet;
 
   /// <summary>
   /// content received
   /// </summary>
   /* private */
-  Uint8List content;
+  Uint8List? content;
 
   /// <summary>
   /// Reads attributes from XML.
@@ -82,17 +82,17 @@ abstract class MimeContentBase extends ComplexProperty {
   /// <param name="writer">The writer.</param>
   @override
   void WriteElementsToXml(EwsServiceXmlWriter writer) {
-    if (this.Content != null && this.Content.length > 0) {
-      writer.WriteBase64ElementValue(this.Content);
+    if (this.Content != null && this.Content!.length > 0) {
+      writer.WriteBase64ElementValue(this.Content!);
     }
   }
 
   /// <summary>
   /// Gets or sets the character set of the content.
   /// </summary>
-  String get CharacterSet => this.characterSet;
+  String? get CharacterSet => this.characterSet;
 
-  set CharacterSet(String value) {
+  set CharacterSet(String? value) {
     if (this.CanSetFieldValue(this.characterSet, value)) {
       this.characterSet = value;
       this.Changed();
@@ -102,9 +102,9 @@ abstract class MimeContentBase extends ComplexProperty {
   /// <summary>
   /// Gets or sets the content.
   /// </summary>
-  Uint8List get Content => this.content;
+  Uint8List? get Content => this.content;
 
-  set Content(Uint8List value) {
+  set Content(Uint8List? value) {
     if (this.CanSetFieldValue(this.content, value)) {
       this.content = value;
       this.Changed();

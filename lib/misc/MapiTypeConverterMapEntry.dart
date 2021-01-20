@@ -43,9 +43,9 @@ class MapiTypeConverterMapEntry {
   /// Map CLR types used for MAPI properties to matching default values.
   /// </summary>
   /* private */
-  static LazyMember<Map<core.Type, Object>> defaultValueMap =
-      new LazyMember<Map<core.Type, Object>>(() {
-    Map<core.Type, Object> map = new Map<core.Type, Object>();
+  static LazyMember<Map<core.Type, Object?>> defaultValueMap =
+      new LazyMember<Map<core.Type, Object?>>(() {
+    Map<core.Type, Object?> map = new Map<core.Type, Object?>();
 
     map[bool] = false;
 //                map.Add(typeof(Uint8List), null);
@@ -76,7 +76,7 @@ class MapiTypeConverterMapEntry {
   /// </remarks>
   MapiTypeConverterMapEntry(core.Type type) {
     EwsUtilities.Assert(
-      defaultValueMap.Member.containsKey(type),
+      defaultValueMap.Member!.containsKey(type),
       "MapiTypeConverterMapEntry ctor",
       "No default value entry for type ${type.toString()}",
     );
@@ -100,7 +100,7 @@ class MapiTypeConverterMapEntry {
    * @return New value.
    * @throws Exception the exception
    */
-  Object ChangeType(Object value) {
+  Object? ChangeType(Object? value) {
     if (this.IsArray) {
       this.ValidateValueAsArray(value);
       return value;
@@ -109,7 +109,7 @@ class MapiTypeConverterMapEntry {
     } else {
       try {
         if (this.Type is int) {
-          Object o = null;
+          Object? o = null;
           o = int.parse(value.toString());
           return o;
         } else if (this.Type == DateTime) {
@@ -177,7 +177,7 @@ class MapiTypeConverterMapEntry {
   /// </summary>
   /// <param name="stringValue">String to convert to a value.</param>
   /// <returns>Value.</returns>
-  Object ConvertToValue(String stringValue) {
+  Object? ConvertToValue(String? stringValue) {
 //            try
 //            {
     return this.Parse(stringValue);
@@ -226,7 +226,7 @@ class MapiTypeConverterMapEntry {
   /// Validates array value.
   /// </summary>
   /// <param name="value">The value.</param>
-  void ValidateValueAsArray(Object value) {
+  void ValidateValueAsArray(Object? value) {
     if (value == null) {
       throw new ArgumentNullException("value");
     }
@@ -275,7 +275,7 @@ class MapiTypeConverterMapEntry {
   /// Gets or sets the String parser.
   /// </summary>
   /// <remarks>For array types, this method is called for each array element.</remarks>
-  Func<String, Object> Parse;
+  late Func<String?, Object?> Parse;
 
 //        Func<string, object> Parse
 //        {
@@ -286,7 +286,7 @@ class MapiTypeConverterMapEntry {
   /// Gets or sets the String to object converter.
   /// </summary>
   /// <remarks>For array types, this method is called for each array element.</remarks>
-  Func<Object, String> ConvertToString;
+  late Func<Object, String> ConvertToString;
 
 //        Func<object, string> ConvertToString
 //        {
@@ -297,7 +297,7 @@ class MapiTypeConverterMapEntry {
   /// Gets or sets the type.
   /// </summary>
   /// <remarks>For array types, this is the type of an element.</remarks>
-  core.Type Type;
+  core.Type? Type;
 
   /// <summary>
   /// Gets or sets a value indicating whether this instance is array.
@@ -308,5 +308,5 @@ class MapiTypeConverterMapEntry {
   /// <summary>
   /// Gets the default value for the type.
   /// </summary>
-  Object get DefaultValue => defaultValueMap.Member[this.Type];
+  Object? get DefaultValue => defaultValueMap.Member![this.Type!];
 }

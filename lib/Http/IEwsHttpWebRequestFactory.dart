@@ -10,7 +10,7 @@ abstract class IEwsHttpWebRequestFactory {
 
   IEwsHttpWebRequest CreateRequestWithExchangeServiceAndUrl(ExchangeServiceBase exchangeService, Uri url);
 
-  IEwsHttpWebRequest CreateRequestWithUrl(HttpClient httpClient, Uri url);
+  IEwsHttpWebRequest CreateRequestWithUrl(HttpClient? httpClient, Uri url);
 
   IEwsHttpWebResponse CreateExceptionResponse(WebException e);
 }

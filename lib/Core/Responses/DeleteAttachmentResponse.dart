@@ -36,13 +36,13 @@ import 'package:ews/misc/StringUtils.dart';
 /// Represents the response to an individual attachment deletion operation.
 /// </summary>
 class DeleteAttachmentResponse extends ServiceResponse {
-  complex.Attachment _attachment;
+  complex.Attachment? _attachment;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DeleteAttachmentResponse"/> class.
   /// </summary>
   /// <param name="attachment">The attachment.</param>
-  DeleteAttachmentResponse(complex.Attachment attachment) : super() {
+  DeleteAttachmentResponse(complex.Attachment? attachment) : super() {
     EwsUtilities.Assert(attachment != null, "DeleteAttachmentResponse.ctor",
         "attachment is null");
 
@@ -60,11 +60,11 @@ class DeleteAttachmentResponse extends ServiceResponse {
     reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootItemId);
 
-    String changeKey =
+    String? changeKey =
         reader.ReadAttributeValue(XmlAttributeNames.RootItemChangeKey);
     if (!StringUtils.IsNullOrEmpty(changeKey) &&
-        this._attachment.Owner != null) {
-      this._attachment.Owner.RootItemId.ChangeKey = changeKey;
+        this._attachment!.Owner != null) {
+      this._attachment!.Owner!.RootItemId!.ChangeKey = changeKey;
     }
 
     reader.ReadEndElementIfNecessary(
@@ -74,5 +74,5 @@ class DeleteAttachmentResponse extends ServiceResponse {
   /// <summary>
   /// Gets the attachment that was deleted.
   /// </summary>
-  complex.Attachment get Attachment => this._attachment;
+  complex.Attachment? get Attachment => this._attachment;
 }

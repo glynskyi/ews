@@ -57,16 +57,16 @@ class EmailAddressDictionary
   /// </summary>
   /// <param name="key">The key of the e-mail address to get or set.</param>
   /// <returns>The e-mail address at the specified key.</returns>
-  EmailAddress operator [](EmailAddressKey key) {
-    return this.Entries[key].EmailAddress;
+  EmailAddress? operator [](EmailAddressKey key) {
+    return this.Entries[key]!.EmailAddress;
   }
 
-  operator []=(EmailAddressKey key, EmailAddress value) {
+  operator []=(EmailAddressKey key, EmailAddress? value) {
     if (value == null) {
       this.InternalRemove(key);
     } else {
       if (this.Entries.containsKey(key)) {
-        EmailAddressEntry entry = this.Entries[key];
+        EmailAddressEntry entry = this.Entries[key]!;
         entry.EmailAddress = value;
         this.Changed();
       } else {
@@ -91,7 +91,7 @@ class EmailAddressDictionary
   bool TryGetValue(
       EmailAddressKey key, OutParam<EmailAddress> emailAddressOutParam) {
     if (this.Entries.containsKey(key)) {
-      emailAddressOutParam.param = this.Entries[key].EmailAddress;
+      emailAddressOutParam.param = this.Entries[key]!.EmailAddress;
       return true;
     } else {
       emailAddressOutParam.param = null;

@@ -35,7 +35,7 @@ class ServiceObjectPropertyException extends PropertyException {
   /// <summary>
   /// The definition of the property that is at the origin of the exception.
   /// </summary>
-  /* private */ PropertyDefinitionBase propertyDefinition;
+  /* private */ PropertyDefinitionBase? propertyDefinition;
 
   /// <summary>
   /// ServiceObjectPropertyException constructor.

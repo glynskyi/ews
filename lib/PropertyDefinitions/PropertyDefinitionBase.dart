@@ -94,18 +94,18 @@ abstract class PropertyDefinitionBase {
   /// Gets the minimum Exchange version that supports this property.
   /// </summary>
   /// <value>The version.</value>
-  ExchangeVersion get Version;
+  ExchangeVersion? get Version;
 
   /// <summary>
   /// Gets the property definition's printable name.
   /// </summary>
   /// <returns>The property definition's printable name.</returns>
-  String GetPrintableName();
+  String? GetPrintableName();
 
   /// <summary>
   /// Gets the type of the property.
   /// </summary>
-  core.Type get Type;
+  core.Type? get Type;
 
   /// <summary>
   /// Writes to XML.
@@ -124,6 +124,6 @@ abstract class PropertyDefinitionBase {
   /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
   /// </returns>
   String toString() {
-    return this.GetPrintableName();
+    return this.GetPrintableName()!;
   }
 }

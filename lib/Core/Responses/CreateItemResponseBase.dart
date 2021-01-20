@@ -33,7 +33,7 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// Represents the base response class for item creation operations.
 /// </summary>
 abstract class CreateItemResponseBase extends ServiceResponse {
-  List<Item> _items;
+  List<Item>? _items;
 
   /// <summary>
   /// Gets Item instance.
@@ -41,7 +41,7 @@ abstract class CreateItemResponseBase extends ServiceResponse {
   /// <param name="service">The service.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <returns>Item.</returns>
-  Item GetObjectInstance(ExchangeService service, String xmlElementName);
+  Item GetObjectInstance(ExchangeService? service, String xmlElementName);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateItemResponseBase"/> class.
@@ -69,5 +69,5 @@ abstract class CreateItemResponseBase extends ServiceResponse {
   /// <summary>
   /// Gets the items.
   /// </summary>
-  List<Item> get Items => this._items;
+  List<Item?>? get Items => this._items;
 }

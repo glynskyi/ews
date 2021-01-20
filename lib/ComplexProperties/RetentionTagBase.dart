@@ -41,12 +41,12 @@ class RetentionTagBase extends ComplexProperty {
   /// <summary>
   /// Is explicit.
   /// </summary>
-  bool _isExplicit;
+  bool? _isExplicit;
 
   /// <summary>
   /// Retention id.
   /// </summary>
-  Uuid _retentionId;
+  Uuid? _retentionId;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="RetentionTagBase"/> class.
@@ -57,9 +57,9 @@ class RetentionTagBase extends ComplexProperty {
   /// <summary>
   /// Gets or sets if the tag is explicit.
   /// </summary>
-  bool get IsExplicit => this._isExplicit;
+  bool? get IsExplicit => this._isExplicit;
 
-  set IsExplicit(bool value) {
+  set IsExplicit(bool? value) {
     if (this.CanSetFieldValue(this._isExplicit, value)) {
       this._isExplicit = value;
       this.Changed();
@@ -69,9 +69,9 @@ class RetentionTagBase extends ComplexProperty {
   /// <summary>
   /// Gets or sets the retention id.
   /// </summary>
-  Uuid get RetentionId => this._retentionId;
+  Uuid? get RetentionId => this._retentionId;
 
-  set RetentionId(Uuid value) {
+  set RetentionId(Uuid? value) {
     if (this.CanSetFieldValue(this._retentionId, value)) {
       this._retentionId = value;
       this.Changed();

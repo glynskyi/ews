@@ -35,7 +35,7 @@ import 'package:ews/Search/Grouping.dart';
 /// Represents the base view class for search operations.
 /// </summary>
 abstract class ViewBase {
-  /* private */ core.PropertySet propertySet;
+  /* private */ core.PropertySet? propertySet;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ViewBase"/> class.
@@ -48,9 +48,9 @@ abstract class ViewBase {
 
   void InternalValidate(ServiceRequestBase request) {
     if (this.PropertySet != null) {
-      this.PropertySet.InternalValidate();
+      this.PropertySet!.InternalValidate();
       this
-          .PropertySet
+          .PropertySet!
           .ValidateForRequest(request, true /*summaryPropertiesOnly*/);
     }
   }
@@ -60,7 +60,7 @@ abstract class ViewBase {
   /// </summary>
   /// <param name="writer">The writer.</param>
   void InternalWriteViewToXml(EwsServiceXmlWriter writer) {
-    int maxEntriesReturned = this.GetMaxEntriesReturned();
+    int? maxEntriesReturned = this.GetMaxEntriesReturned();
 
     if (maxEntriesReturned != null) {
       writer.WriteAttributeValue(
@@ -74,7 +74,7 @@ abstract class ViewBase {
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by clause.</param>
   void InternalWriteSearchSettingsToXml(
-      EwsServiceXmlWriter writer, Grouping groupBy);
+      EwsServiceXmlWriter writer, Grouping? groupBy);
 
   /// <summary>
   /// Writes OrderBy property to XML.
@@ -92,13 +92,13 @@ abstract class ViewBase {
   /// Gets the maximum number of items or folders the search operation should return.
   /// </summary>
   /// <returns>The maximum number of items or folders that should be returned by the search operation.</returns>
-  int GetMaxEntriesReturned();
+  int? GetMaxEntriesReturned();
 
   /// <summary>
   /// Gets the type of service object this view applies to.
   /// </summary>
   /// <returns>A ServiceObjectType value.</returns>
-  ServiceObjectType GetServiceObjectType();
+  ServiceObjectType? GetServiceObjectType();
 
   /// <summary>
   /// Writes the attributes to XML.
@@ -111,7 +111,7 @@ abstract class ViewBase {
   /// </summary>
   /// <param name="writer">The writer.</param>
   /// <param name="groupBy">The group by clause.</param>
-  void WriteToXml(EwsServiceXmlWriter writer, Grouping groupBy) {
+  void WriteToXml(EwsServiceXmlWriter writer, Grouping? groupBy) {
     this
         .GetPropertySetOrDefault()
         .WriteToXml(writer, this.GetServiceObjectType());
@@ -140,7 +140,7 @@ abstract class ViewBase {
   /// all first class properties are loaded on found items.
   /// </summary>
 
-  core.PropertySet get PropertySet => this.propertySet;
+  core.PropertySet? get PropertySet => this.propertySet;
 
-  set PropertySet(core.PropertySet value) => this.propertySet = value;
+  set PropertySet(core.PropertySet? value) => this.propertySet = value;
 }

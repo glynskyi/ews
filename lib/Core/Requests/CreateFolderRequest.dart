@@ -55,7 +55,7 @@ class CreateFolderRequest extends CreateRequest<Folder, ServiceResponse> {
 //            EwsUtilities.ValidateParam(this.Folders, "Folders");
 
     // Validate each folder.
-    for (Folder folder in this.Folders) {
+    for (Folder folder in this.Folders!) {
       folder.Validate();
     }
   }
@@ -70,7 +70,7 @@ class CreateFolderRequest extends CreateRequest<Folder, ServiceResponse> {
   ServiceResponse CreateServiceResponse(
       ExchangeService service, int responseIndex) {
     return new CreateFolderResponse(
-        EwsUtilities.GetEnumeratedObjectAt(this.Folders, responseIndex));
+        EwsUtilities.GetEnumeratedObjectAt(this.Folders!, responseIndex) as Folder);
   }
 
   /// <summary>
@@ -131,9 +131,9 @@ class CreateFolderRequest extends CreateRequest<Folder, ServiceResponse> {
   /// Gets or sets the folders.
   /// </summary>
   /// <value>The folders.</value>
-  List<Folder> get Folders => this.Objects;
+  List<Folder>? get Folders => this.Objects as List<Folder>?;
 
-  set Folders(List<Folder> value) {
+  set Folders(List<Folder>? value) {
     this.Objects = value;
   }
 }

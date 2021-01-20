@@ -49,13 +49,13 @@ class UpdateItemRequest
     extends MultiResponseServiceRequest<UpdateItemResponse> {
   List<Item> _items = <Item>[];
 
-  FolderId _savedItemsDestinationFolder;
+  FolderId? _savedItemsDestinationFolder;
 
-  enumerations.ConflictResolutionMode _conflictResolutionMode;
+  enumerations.ConflictResolutionMode? _conflictResolutionMode;
 
-  enumerations.MessageDisposition _messageDisposition;
+  enumerations.MessageDisposition? _messageDisposition;
 
-  enumerations.SendInvitationsOrCancellationsMode
+  enumerations.SendInvitationsOrCancellationsMode?
       _sendInvitationsOrCancellationsMode;
 
   /// <summary>
@@ -105,7 +105,7 @@ class UpdateItemRequest
 
     if (this.SavedItemsDestinationFolder != null) {
       this
-          .SavedItemsDestinationFolder
+          .SavedItemsDestinationFolder!
           .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
 
@@ -208,7 +208,7 @@ class UpdateItemRequest
     if (this.SavedItemsDestinationFolder != null) {
       writer.WriteStartElement(
           XmlNamespace.Messages, XmlElementNames.SavedItemFolderId);
-      this.SavedItemsDestinationFolder.WriteToXmlElemenetName(writer);
+      this.SavedItemsDestinationFolder!.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
 
@@ -235,10 +235,10 @@ class UpdateItemRequest
   /// Gets or sets the message disposition.
   /// </summary>
   /// <value>The message disposition.</value>
-  enumerations.MessageDisposition get MessageDisposition =>
+  enumerations.MessageDisposition? get MessageDisposition =>
       this._messageDisposition;
 
-  set MessageDisposition(enumerations.MessageDisposition value) {
+  set MessageDisposition(enumerations.MessageDisposition? value) {
     this._messageDisposition = value;
   }
 
@@ -246,10 +246,10 @@ class UpdateItemRequest
   /// Gets or sets the conflict resolution mode.
   /// </summary>
   /// <value>The conflict resolution mode.</value>
-  enumerations.ConflictResolutionMode get ConflictResolutionMode =>
+  enumerations.ConflictResolutionMode? get ConflictResolutionMode =>
       this._conflictResolutionMode;
 
-  set ConflictResolutionMode(enumerations.ConflictResolutionMode value) {
+  set ConflictResolutionMode(enumerations.ConflictResolutionMode? value) {
     this._conflictResolutionMode = value;
   }
 
@@ -257,12 +257,12 @@ class UpdateItemRequest
   /// Gets or sets the send invitations or cancellations mode.
   /// </summary>
   /// <value>The send invitations or cancellations mode.</value>
-  enumerations.SendInvitationsOrCancellationsMode
+  enumerations.SendInvitationsOrCancellationsMode?
       get SendInvitationsOrCancellationsMode =>
           this._sendInvitationsOrCancellationsMode;
 
   set SendInvitationsOrCancellationsMode(
-      enumerations.SendInvitationsOrCancellationsMode value) {
+      enumerations.SendInvitationsOrCancellationsMode? value) {
     this._sendInvitationsOrCancellationsMode = value;
   }
 
@@ -270,7 +270,7 @@ class UpdateItemRequest
   /// Gets or sets whether to suppress read receipts
   /// </summary>
   /// <value>Whether to suppress read receipts</value>
-  bool SuppressReadReceipts;
+  late bool SuppressReadReceipts;
 
   /// <summary>
   /// Gets the items.
@@ -282,9 +282,10 @@ class UpdateItemRequest
   /// Gets or sets the saved items destination folder.
   /// </summary>
   /// <value>The saved items destination folder.</value>
-  FolderId get SavedItemsDestinationFolder => this._savedItemsDestinationFolder;
+  FolderId? get SavedItemsDestinationFolder =>
+      this._savedItemsDestinationFolder;
 
-  set SavedItemsDestinationFolder(FolderId value) {
+  set SavedItemsDestinationFolder(FolderId? value) {
     this._savedItemsDestinationFolder = value;
   }
 }

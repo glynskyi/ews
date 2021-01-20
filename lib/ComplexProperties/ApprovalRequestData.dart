@@ -31,16 +31,16 @@ import 'package:ews/Core/XmlElementNames.dart';
 /// Represents approval request information.
 /// </summary>
 class ApprovalRequestData extends ComplexProperty {
-  /* private */ bool isUndecidedApprovalRequest;
+  /* private */ bool? isUndecidedApprovalRequest;
 
   /* private */
-  int approvalDecision;
+  int? approvalDecision;
 
   /* private */
-  String approvalDecisionMaker;
+  String? approvalDecisionMaker;
 
   /* private */
-  DateTime approvalDecisionTime;
+  DateTime? approvalDecisionTime;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ApprovalRequestData"/> class.
@@ -75,20 +75,20 @@ class ApprovalRequestData extends ComplexProperty {
   /// <summary>
   /// Gets a value indicating whether this is an undecided approval request.
   /// </summary>
-  bool get IsUndecidedApprovalRequest => this.isUndecidedApprovalRequest;
+  bool? get IsUndecidedApprovalRequest => this.isUndecidedApprovalRequest;
 
   /// <summary>
   /// Gets the approval decision on the request.
   /// </summary>
-  int get ApprovalDecision => this.approvalDecision;
+  int? get ApprovalDecision => this.approvalDecision;
 
   /// <summary>
   /// Gets the name of the user who made the decision.
   /// </summary>
-  String get ApprovalDecisionMaker => this.approvalDecisionMaker;
+  String? get ApprovalDecisionMaker => this.approvalDecisionMaker;
 
   /// <summary>
   /// Gets the time at which the decision was made.
   /// </summary>
-  DateTime get ApprovalDecisionTime => this.approvalDecisionTime;
+  DateTime? get ApprovalDecisionTime => this.approvalDecisionTime;
 }

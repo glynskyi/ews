@@ -44,9 +44,9 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
         TResponse> //        where TServiceObject : ServiceObject
 //        where TResponse : ServiceResponse
 {
-  FolderId _parentFolderId;
+  FolderId? _parentFolderId;
 
-  Iterable<TServiceObject> _objects;
+  Iterable<TServiceObject>? _objects;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="CreateRequest&lt;TServiceObject, TResponse&gt;"/> class.
@@ -64,7 +64,7 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
     super.Validate();
     if (this.ParentFolderId != null) {
       this
-          .ParentFolderId
+          .ParentFolderId!
           .ValidateExchangeVersion(this.Service.RequestedServerVersion);
     }
   }
@@ -75,7 +75,7 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   /// <returns>Number of responses expected.</returns>
   @override
   int GetExpectedResponseMessageCount() {
-    return EwsUtilities.GetEnumeratedObjectCount(this._objects);
+    return EwsUtilities.GetEnumeratedObjectCount(this._objects!);
   }
 
   /// <summary>
@@ -99,13 +99,13 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
     if (this.ParentFolderId != null) {
       writer.WriteStartElement(
           XmlNamespace.Messages, this.GetParentFolderXmlElementName());
-      this.ParentFolderId.WriteToXmlElemenetName(writer);
+      this.ParentFolderId!.WriteToXmlElemenetName(writer);
       writer.WriteEndElement();
     }
 
     writer.WriteStartElement(
         XmlNamespace.Messages, this.GetObjectCollectionXmlElementName());
-    for (ServiceObject obj in this._objects) {
+    for (ServiceObject obj in this._objects!) {
       obj.WriteToXml(writer);
     }
     writer.WriteEndElement();
@@ -115,9 +115,9 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   /// Gets or sets the service objects.
   /// </summary>
   /// <value>The objects.</value>
-  Iterable<TServiceObject> get Objects => this._objects;
+  Iterable<TServiceObject>? get Objects => this._objects;
 
-  set Objects(Iterable<TServiceObject> value) {
+  set Objects(Iterable<TServiceObject>? value) {
     this._objects = value;
   }
 
@@ -125,9 +125,9 @@ abstract class CreateRequest<TServiceObject extends ServiceObject,
   /// Gets or sets the parent folder id.
   /// </summary>
   /// <value>The parent folder id.</value>
-  FolderId get ParentFolderId => this._parentFolderId;
+  FolderId? get ParentFolderId => this._parentFolderId;
 
-  set ParentFolderId(FolderId value) {
+  set ParentFolderId(FolderId? value) {
     this._parentFolderId = value;
   }
 }

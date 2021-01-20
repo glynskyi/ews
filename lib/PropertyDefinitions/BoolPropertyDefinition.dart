@@ -77,6 +77,6 @@ class BoolPropertyDefinition extends GenericPropertyDefinition<bool> {
   /// <returns>String representation of Boolean property.</returns>
   @override
   String toStringWithObject(Object value) {
-    return EwsUtilities.BoolToXSBool(value);
+    return EwsUtilities.BoolToXSBool(value as bool);
   }
 }

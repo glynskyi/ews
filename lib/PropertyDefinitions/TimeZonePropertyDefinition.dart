@@ -73,7 +73,7 @@ class TimeZonePropertyDefinition extends PropertyDefinition {
   @override
   void WritePropertyValueToXml(EwsServiceXmlWriter writer,
       PropertyBag propertyBag, bool isUpdateOperation) {
-    TimeZone value = propertyBag[this];
+    TimeZone? value = propertyBag[this] as TimeZone?;
 
     if (value != null) {
       // We emit time zone properties only if we have not emitted the time zone SOAP header
