@@ -49,7 +49,7 @@ main() {
   test('resolves name with contacts', () async {
     final exchangeService = prepareExchangeService(primaryUserCredential);
     await exchangeService.ResolveName(
-        secondaryUserCredential.user!.substring(0, 2),
+        secondaryUserCredential.userName.substring(0, 2),
         null,
         ResolveNameSearchLocation.ContactsThenDirectory,
         true,
@@ -60,7 +60,7 @@ main() {
     final exchangeService = prepareExchangeService(
         primaryUserCredential, ExchangeVersion.Exchange2010_SP1);
     final response = await exchangeService.ResolveName(
-        secondaryUserCredential.user,
+        secondaryUserCredential.userName,
         null,
         ResolveNameSearchLocation.ContactsThenDirectory,
         true,

@@ -11,7 +11,7 @@ main() {
         prepareExchangeService(secondaryUserCredential);
 
     FolderPermission reviewerPermission = new FolderPermission.withSmtpAddress(
-        secondaryUserCredential.user, FolderPermissionLevel.Reviewer);
+        secondaryUserCredential.userName, FolderPermissionLevel.Reviewer);
 
     final primaryFolder = Folder(primaryExchangeService);
     primaryFolder.DisplayName = randomString().toString();

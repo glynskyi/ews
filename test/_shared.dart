@@ -8,14 +8,14 @@ import 'package:ews/Enumerations/TraceFlags.dart';
 import 'package:ews/Http/WebCredentials.dart';
 
 WebCredentials primaryUserCredential = WebCredentials(
-  Platform.environment["USER_NAME"],
-  Platform.environment["USER_PASSWORD"],
+  Platform.environment["USER_NAME"]!,
+  Platform.environment["USER_PASSWORD"]!,
   null,
 );
 
 WebCredentials secondaryUserCredential = WebCredentials(
-  Platform.environment["USER_NAME_SECONDARY"],
-  Platform.environment["USER_PASSWORD_SECONDARY"],
+  Platform.environment["USER_NAME_SECONDARY"]!,
+  Platform.environment["USER_PASSWORD_SECONDARY"]!,
   null,
 );
 

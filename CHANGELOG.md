@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.2
+
+* Added OAuth2 credentials
+
 ## 1.2.0-nullsafety.1
 
 * Made the complex property fields non-nullable

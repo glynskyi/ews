@@ -7,6 +7,7 @@ import 'package:ews/Http/CookieContainer.dart' as http;
 import 'package:ews/Http/EwsHttpWebResponse.dart';
 import 'package:ews/Http/ICredentials.dart';
 import 'package:ews/Http/IWebProxy.dart';
+import 'package:ews/Http/OAuthCredentials.dart';
 import 'package:ews/Http/WebCredentials.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebExceptionStatus.dart';
@@ -100,10 +101,18 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
       _request!.followRedirects = AllowAutoRedirect!;
 
       if (Credentials != null) {
-        final user = (Credentials as WebCredentials).user;
-        String? password = (Credentials as WebCredentials).pwd;
-        String auth = 'Basic ' + base64Encode(utf8.encode('$user:$password'));
-        _request!.headers.add("Authorization", auth);
+        final credentials = Credentials;
+        if (credentials is WebCredentials) {
+          final secret = "${credentials.userName}:${credentials.password}}";
+          final encodedSecret = base64Encode(utf8.encode(secret));
+          _request!.headers.add("Authorization", "Basic $encodedSecret");
+        } else if (credentials is OAuthCredentials) {
+          final token = credentials.accessToken;
+          _request!.headers.add("Authorization", "Bearer $token");
+        } else {
+          throw ArgumentError.value(
+              credentials, "Credentials", "Unknown credentials type");
+        }
       }
 
       if (this.Accept != null) {
