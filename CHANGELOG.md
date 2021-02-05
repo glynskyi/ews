@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.3
+
+* Fixed the basic authorization
+
 ## 1.2.0-nullsafety.2
 
 * Added OAuth2 credentials

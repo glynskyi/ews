@@ -103,15 +103,14 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
       if (Credentials != null) {
         final credentials = Credentials;
         if (credentials is WebCredentials) {
-          final secret = "${credentials.userName}:${credentials.password}}";
+          final secret = "${credentials.userName}:${credentials.password}";
           final encodedSecret = base64Encode(utf8.encode(secret));
           _request!.headers.add("Authorization", "Basic $encodedSecret");
         } else if (credentials is OAuthCredentials) {
           final token = credentials.accessToken;
           _request!.headers.add("Authorization", "Bearer $token");
         } else {
-          throw ArgumentError.value(
-              credentials, "Credentials", "Unknown credentials type");
+          throw ArgumentError.value(credentials, "Credentials", "Unknown credentials type");
         }
       }
 
@@ -137,8 +136,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(
-          WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }
