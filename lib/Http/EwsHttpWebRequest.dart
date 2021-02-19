@@ -84,7 +84,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
   Future<HttpClientRequest> _InternalGetRequest() async {
     if (_request == null) {
       if (this.Timeout != null) {
-        // _httpClient!.connectionTimeout = Duration(milliseconds: this.Timeout!);
+        _httpClient!.connectionTimeout = Duration(milliseconds: this.Timeout!);
       }
 
       if (this.UserAgent != null) {

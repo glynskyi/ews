@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.4
+
+* Fixed the timeout exception
+
 ## 1.2.0-nullsafety.3
 
 * Fixed the basic authorization
