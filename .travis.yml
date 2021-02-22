@@ -11,12 +11,12 @@ install:
 jobs:
   include:
     - stage: analyze
-      script: dartanalyzer --fatal-warnings .
+      script: ./flutter/bin/cache/dart-sdk/bin/dartanalyzer --fatal-warnings .
     - stage: unit_test
-      script: pub run test test/test_all.dart --platform vm
+      script: ./flutter/bin/cache/dart-sdk/bin/pub run test test/test_all.dart --platform vm
     - stage: coverage
       script:
-        - pub global activate dart_coveralls
+        - ./flutter/bin/cache/dart-sdk/bin/pub global activate dart_coveralls
         - dart_coveralls report --token $COVERALLS_TOKEN test/test_all.dart
 after_success:
   - coveralls-lcov coverage/lcov.info
