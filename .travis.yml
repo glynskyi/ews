@@ -15,7 +15,7 @@ jobs:
     - stage: pub_get
       script: ./flutter/bin/cache/dart-sdk/bin/pub get
     - stage: unit_test
-      script: ./flutter/bin/cache/dart-sdk/bin/pub run test test/test_all.dart --platform vm
+      script: ./flutter/bin/cache/dart-sdk/bin/pub run test ./test/test_all.dart --platform vm
     - stage: coverage
       script:
         - ./flutter/bin/cache/dart-sdk/bin/pub global activate dart_coveralls
