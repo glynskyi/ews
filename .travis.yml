@@ -1,27 +1,20 @@
 language: dart
-dist: xenial
-addons:
-  apt:
-    packages:
-      - lib32stdc++6
-install:
-  - git clone https://github.com/flutter/flutter.git -b master
-  - ./flutter/bin/flutter doctor
-  - gem install coveralls-lcov
+dart: beta
 jobs:
   include:
-#    - stage: analyze
-#      script: ./flutter/bin/cache/dart-sdk/bin/dartanalyzer --fatal-warnings .
-    - stage: pub_get
-      script: ./flutter/bin/cache/dart-sdk/bin/pub get
+    - stage: analyze
+      script: dartanalyzer --fatal-warnings .
     - stage: unit_test
-      script: ./flutter/bin/cache/dart-sdk/bin/pub run test ./test/test_all.dart --platform vm
+      script: pub run test test/test_all.dart --platform vm
     - stage: coverage
       script:
-        - ./flutter/bin/cache/dart-sdk/bin/pub global activate dart_coveralls
+        - pub global activate dart_coveralls
         - dart_coveralls report --token $COVERALLS_TOKEN test/test_all.dart
-after_success:
-  - coveralls-lcov coverage/lcov.info
+stages:
+  - analyze
+  - unit_test
+  - coverage
+sudo: required
 cache:
   directories:
     - "$HOME/.pub-cache"
