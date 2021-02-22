@@ -1,7 +1,7 @@
 # EWS
 
 [![pub](https://img.shields.io/pub/v/ews)](https://pub.dartlang.org/packages/ews)
-[![build](https://www.travis-ci.com/glynskyi/ews.svg?branch=master)](https://travis-ci.com/dmytro-glynskyi/ews)
+[![build](https://www.travis-ci.com/glynskyi/ews.svg?branch=master)](https://travis-ci.com/glynskyi/ews)
 [![coverage](https://coveralls.io/repos/github/dmytro-glynskyi/ews/badge.svg?branch=master)](https://coveralls.io/github/dmytro-glynskyi/ews?branch=master)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/renggli/dart-xml/master/LICENSE)
 
