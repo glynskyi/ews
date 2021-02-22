@@ -12,6 +12,8 @@ jobs:
   include:
 #    - stage: analyze
 #      script: ./flutter/bin/cache/dart-sdk/bin/dartanalyzer --fatal-warnings .
+    - stage: pub_get
+      script: ./flutter/bin/cache/dart-sdk/bin/pub get
     - stage: unit_test
       script: ./flutter/bin/cache/dart-sdk/bin/pub run test test/test_all.dart --platform vm
     - stage: coverage
