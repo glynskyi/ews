@@ -1,3 +1,7 @@
+## 1.2.0-nullsafety.5
+
+* extracted the http client to the http web request
+
 ## 1.2.0-nullsafety.4
 
 * Fixed the timeout exception

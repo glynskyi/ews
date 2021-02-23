@@ -23,7 +23,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -80,10 +79,6 @@ abstract class ExchangeServiceBase {
   static String _defaultUserAgent =
       "ExchangeServicesClient/" + EwsUtilities.BuildVersion;
 
-  _initializeHttpClient() {
-    httpClient = HttpClient();
-  }
-
   /// <summary>
   /// Occurs when the http response headers of a server call is captured.
   /// </summary>
@@ -113,7 +108,6 @@ abstract class ExchangeServiceBase {
   Map<String, String?> _httpResponseHeaders = new Map<String, String?>();
   IEwsHttpWebRequestFactory _ewsHttpWebRequestFactory =
       new EwsHttpWebRequestFactory();
-  HttpClient? httpClient;
 
   /// <summary>
   /// Calls the custom SOAP header serialization event handlers, if defined.
@@ -518,7 +512,6 @@ abstract class ExchangeServiceBase {
   //: this(requestedServerVersion, TimeZoneInfo.Local)
   {
     this._requestedServerVersion = requestedServerVersion;
-    _initializeHttpClient();
   }
 
   /// <summary>
@@ -557,7 +550,6 @@ abstract class ExchangeServiceBase {
     this._httpHeaders = service._httpHeaders;
     this._ewsHttpWebRequestFactory = service._ewsHttpWebRequestFactory;
     this._webProxy = service._webProxy;
-    _initializeHttpClient();
   }
 
   /// <summary>

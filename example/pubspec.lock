@@ -21,7 +21,7 @@ packages:
       name: ews
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0-nullsafety.2"
+    version: "1.2.0-nullsafety.4"
   intl:
     dependency: transitive
     description:
@@ -49,14 +49,14 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0-nullsafety.1"
+    version: "4.0.2"
   synchronized:
     dependency: transitive
     description:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0-nullsafety.1"
+    version: "3.0.0"
   timezone:
     dependency: transitive
     description:
@@ -70,6 +70,6 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0-nullsafety.1"
+    version: "5.0.2"
 sdks:
-  dart: ">=2.12.0-29 <3.0.0"
+  dart: ">=2.12.0-0 <3.0.0"

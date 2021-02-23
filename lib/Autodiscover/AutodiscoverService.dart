@@ -326,9 +326,8 @@ class AutodiscoverService extends ExchangeServiceBase {
     this.TraceMessage(enumerations.TraceFlags.AutodiscoverConfiguration,
         "Trying to get Autodiscover redirection URL from $url.");
 
-    IEwsHttpWebRequest request = this
-        .HttpWebRequestFactory
-        .CreateRequestWithUrl(httpClient, Uri.parse(url));
+    IEwsHttpWebRequest request =
+        this.HttpWebRequestFactory.CreateRequestWithUrl(Uri.parse(url));
 
     request.Method = "GET";
     request.AllowAutoRedirect = false;
@@ -1317,9 +1316,8 @@ class AutodiscoverService extends ExchangeServiceBase {
 
       endpointsOutParam.param = Set.of([AutodiscoverEndpoints.None]);
 
-      IEwsHttpWebRequest request = this
-          .HttpWebRequestFactory
-          .CreateRequestWithUrl(httpClient, autoDiscoverUrl);
+      IEwsHttpWebRequest request =
+          this.HttpWebRequestFactory.CreateRequestWithUrl(autoDiscoverUrl);
 
       request.Method = "GET";
       request.AllowAutoRedirect = false;

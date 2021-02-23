@@ -70,11 +70,11 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     // TODO: implement Abort
   }
 
-  HttpClient? _httpClient;
+  late HttpClient _httpClient;
 
   HttpClientRequest? _request;
 
-  EwsHttpWebRequest(this._httpClient);
+  EwsHttpWebRequest();
 
   @override
   Future<StreamConsumer<List<int>>> GetRequestStream() async {
@@ -83,18 +83,19 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
 
   Future<HttpClientRequest> _InternalGetRequest() async {
     if (_request == null) {
+      _httpClient = HttpClient();
       if (this.Timeout != null) {
-        _httpClient!.connectionTimeout = Duration(milliseconds: this.Timeout!);
+        _httpClient.connectionTimeout = Duration(milliseconds: this.Timeout!);
       }
 
       if (this.UserAgent != null) {
-        _httpClient!.userAgent = this.UserAgent;
+        _httpClient.userAgent = this.UserAgent;
       }
 
       if (Method == "POST") {
-        _request = await _httpClient!.postUrl(RequestUri!);
+        _request = await _httpClient.postUrl(RequestUri!);
       } else if (Method == "GET") {
-        _request = await _httpClient!.getUrl(RequestUri!);
+        _request = await _httpClient.getUrl(RequestUri!);
       } else {
         throw ArgumentException("Method: $Method, Unknown HTTP method");
       }
@@ -110,7 +111,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
           final token = credentials.accessToken;
           _request!.headers.add("Authorization", "Bearer $token");
         } else {
-          throw ArgumentError.value(credentials, "Credentials", "Unknown credentials type");
+          throw ArgumentError.value(
+              credentials, "Credentials", "Unknown credentials type");
         }
       }
 
@@ -136,7 +138,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     final HttpClientResponse response = await request.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(
+          WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }
