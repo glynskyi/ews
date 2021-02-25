@@ -1,6 +1,6 @@
 name: ews
 description: A Dart client library to access Microsoft Exchange web services. The library works against Office 365 Exchange Online as well as on premises Exchange.
-version: 1.2.0-nullsafety.5
+version: 1.2.0-nullsafety.6
 author: Dmytro Glynskyi <dmytro.glynskyi@gmail.com>
 homepage: https://github.com/glynskyi/ews
 
@@ -15,5 +15,5 @@ dependencies:
   collection: ^1.15.0
 
 dev_dependencies:
-  test: ^1.16.3
+  test: ^1.16.4
   pedantic: ^1.10.0

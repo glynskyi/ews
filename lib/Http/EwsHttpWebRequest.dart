@@ -136,6 +136,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
   Future<IEwsHttpWebResponse> GetResponse() async {
     final request = await _InternalGetRequest();
     final HttpClientResponse response = await request.close();
+    _httpClient.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw new WebException(
