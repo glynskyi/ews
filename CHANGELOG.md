@@ -1,10 +1,14 @@
+## 1.2.0
+
+* Migrated to the stable Dart 2.12
+
 ## 1.2.0-nullsafety.6
 
-* fixed the http client lifecycle
+* Fixed the http client lifecycle
 
 ## 1.2.0-nullsafety.5
 
-* extracted the http client to the http web request
+* Extracted the http client to the http web request
 
 ## 1.2.0-nullsafety.4
 
