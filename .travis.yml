@@ -1,5 +1,5 @@
 language: dart
-dart: beta
+dart: "2.12.0"
 jobs:
   include:
     - stage: analyze
