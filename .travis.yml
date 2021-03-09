@@ -14,11 +14,11 @@ stages:
   - analyze
   - unit_test
   - coverage
-sudo: required
-cache:
-  directories:
-    - "$HOME/.pub-cache"
-    - ".dart_tool/build"
+#sudo: required
+#cache:
+#  directories:
+#    - "$HOME/.pub-cache"
+#    - ".dart_tool/build"
 env:
   global:
     - secure: mVSpkX88a6ABeMCvR/3GsNXeQU7CfwxhHe6DJ7cbKErFW/pEz6B2X6ZZVMqOhgSuXmJNHNCW7vKIjM9+iSivD/oB92pZKHkYxwPiZYWxIXJSe+rkTB6HnUyubtk0uUmvQbVz+pozOhvPq0Bim+wIcR6Mn1vAV1yIQT5WMpWs+mCrx1CeXZFoKYd4AQOfk3IKvZRbqqySF4CmvBiUhkjuQGBzNsNzhMJDh6Xr/ZplMCpoEASBOHhGzdgBph/N7QhqeaKNYLUMttmkMBrPRaSqe8I62T9tm+Tdwg9IOaiRCAWlxO/cw9JrGR67JgMzeMjLKlu+yZ8ny4NE6/FZI4+rcQfnRGapC+umnk4MnO8bmVliRocyvqYpJumLXOYTpDweSFND5W7XxiaJsiFwZVKwKKezrLQeQEpcNp89eUTWzIgUpH4WLdbRXa6YMqLTc08VcP97+On8PMTzjV/WNKitOJzHUCS0r+KN2NlAILOn/ObN0kr6qhDfcmhGVFI1z42i0GPI49BeU8XMen3kV6Nc7sL0Lw8+lxItvW3VDfNSBTJHltBLUqEiPFBvoGUKgT40vHBmkCedptW7hOQnfwQkW1ZtJRiWkPS7T018hixBkH/RLlLz1159HhTo1wUbvBsJ1SzcR+2i8fCVM009+geo5SDiO2ed3pMyz69npluInyc=
