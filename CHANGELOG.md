@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Fixed the pre authentication flow
+
 ## 1.2.0
 
 * Migrated to the stable Dart 2.12

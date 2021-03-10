@@ -97,8 +97,9 @@ abstract class AutodiscoverRequest {
     this.Validate();
 
     try {
-      IEwsHttpWebRequest request =
-          this.Service.PrepareHttpWebRequestForUrl(this.Url!, false, false);
+      IEwsHttpWebRequest request = await this
+          .Service
+          .PrepareHttpWebRequestForUrl(this.Url!, false, false);
 
       this.Service.TraceHttpRequestHeaders(
           TraceFlags.AutodiscoverRequestHttpHeaders, request);

@@ -127,8 +127,8 @@ abstract class ExchangeServiceBase {
   /// <param name="acceptGzipEncoding">If true, ask server for GZip compressed content.</param>
   /// <param name="allowAutoRedirect">If true, redirection responses will be automatically followed.</param>
   /// <returns>A initialized instance of HttpWebRequest.</returns>
-  IEwsHttpWebRequest PrepareHttpWebRequestForUrl(
-      Uri url, bool acceptGzipEncoding, bool allowAutoRedirect) {
+  Future<IEwsHttpWebRequest> PrepareHttpWebRequestForUrl(
+      Uri url, bool acceptGzipEncoding, bool allowAutoRedirect) async {
     // Verify that the protocol is something that we can handle
     // todo("add service local exception")
     if ((url.scheme != "http") && (url.scheme != "https")) {
@@ -150,13 +150,13 @@ abstract class ExchangeServiceBase {
     request.ConnectionGroupName = this._connectionGroupName;
 
     if (acceptGzipEncoding) {
-      request.Headers!.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+      request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
     }
 
     if (!StringUtils.IsNullOrEmpty(this._clientRequestId)) {
-      request.Headers!.Add("client-request-id", this._clientRequestId);
+      request.Headers.Add("client-request-id", this._clientRequestId);
       if (this._returnClientRequestId) {
-        request.Headers!.Add("return-client-request-id", "true");
+        request.Headers.Add("return-client-request-id", "true");
       }
     }
 
@@ -168,7 +168,7 @@ abstract class ExchangeServiceBase {
       this
           .HttpHeaders
           .entries
-          .forEach((kv) => request.Headers![kv.key] = kv.value);
+          .forEach((kv) => request.Headers[kv.key] = kv.value);
     }
 
     request.UseDefaultCredentials = this.UseDefaultCredentials;
@@ -179,7 +179,7 @@ abstract class ExchangeServiceBase {
       }
 
       // Make sure that credentials have been authenticated if required
-      serviceCredentials.PreAuthenticate();
+      await serviceCredentials.PreAuthenticate();
 
       // Apply credentials to the request
       serviceCredentials.PrepareWebRequest(request);

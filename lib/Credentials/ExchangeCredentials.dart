@@ -93,7 +93,7 @@ abstract class ExchangeCredentials implements ICredentials {
   /// <summary>
   /// This method is called to pre-authenticate credentials before a service request is made.
   /// </summary>
-  void PreAuthenticate() {
+  Future<void> PreAuthenticate() async {
     // do nothing by default.
   }
 

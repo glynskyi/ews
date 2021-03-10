@@ -5604,7 +5604,7 @@ class ExchangeService extends ExchangeServiceBase {
   /// <returns>
   /// An initialized instance of HttpWebRequest.
   /// </returns>
-  IEwsHttpWebRequest PrepareHttpWebRequest(String methodName) {
+  Future<IEwsHttpWebRequest> PrepareHttpWebRequest(String methodName) async {
     Uri endpoint = this.Url!;
     // todo("fix RegisterCustomBasicAuthModule")
     // print(".. fix RegisterCustomBasicAuthModule");
@@ -5612,11 +5612,11 @@ class ExchangeService extends ExchangeServiceBase {
 //
 //    endpoint = this.AdjustServiceUriFromCredentials(endpoint);
 
-    IEwsHttpWebRequest request = this
+    IEwsHttpWebRequest request = await this
         .PrepareHttpWebRequestForUrl(endpoint, this.AcceptGzipEncoding, true);
 
     if (!StringUtils.IsNullOrEmpty(this.TargetServerVersion)) {
-      request.Headers!.Set(ExchangeService.TargetServerVersionHeaderName,
+      request.Headers.Set(ExchangeService.TargetServerVersionHeaderName,
           this.TargetServerVersion);
     }
 

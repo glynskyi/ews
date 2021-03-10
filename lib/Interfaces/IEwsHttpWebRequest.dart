@@ -134,7 +134,7 @@ abstract class IEwsHttpWebRequest {
   /// Specifies a collection of the name/value pairs that make up the HTTP headers.
   /// </summary>
   /// <returns>A <see cref="T:System.Net.WebHeaderCollection"/> that contains the name/value pairs that make up the headers for the HTTP request.</returns>
-  WebHeaderCollection? Headers;
+  WebHeaderCollection get Headers;
 
   /// <summary>
   /// Gets or sets the method for the request.

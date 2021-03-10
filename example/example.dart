@@ -1,7 +1,7 @@
 import 'package:ews/ews.dart';
 
 void main() async {
-  final credentials = WebCredentials(
+  final credentials = BasicCredentials(
     "---username---",
     "---password---",
     "---domain---",

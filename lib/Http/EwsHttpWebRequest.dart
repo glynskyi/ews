@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:ews/Exceptions/ArgumentException.dart';
@@ -7,8 +6,6 @@ import 'package:ews/Http/CookieContainer.dart' as http;
 import 'package:ews/Http/EwsHttpWebResponse.dart';
 import 'package:ews/Http/ICredentials.dart';
 import 'package:ews/Http/IWebProxy.dart';
-import 'package:ews/Http/OAuthCredentials.dart';
-import 'package:ews/Http/WebCredentials.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebExceptionStatus.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
@@ -39,7 +36,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
   ICredentials? Credentials;
 
   @override
-  WebHeaderCollection? Headers = WebHeaderCollection();
+  WebHeaderCollection Headers = WebHeaderCollection();
 
   @override
   bool? KeepAlive;
@@ -101,19 +98,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
       }
       _request!.followRedirects = AllowAutoRedirect!;
 
-      if (Credentials != null) {
-        final credentials = Credentials;
-        if (credentials is WebCredentials) {
-          final secret = "${credentials.userName}:${credentials.password}";
-          final encodedSecret = base64Encode(utf8.encode(secret));
-          _request!.headers.add("Authorization", "Basic $encodedSecret");
-        } else if (credentials is OAuthCredentials) {
-          final token = credentials.accessToken;
-          _request!.headers.add("Authorization", "Bearer $token");
-        } else {
-          throw ArgumentError.value(
-              credentials, "Credentials", "Unknown credentials type");
-        }
+      for (final headerKey in Headers.AllKeys) {
+        _request!.headers.add(headerKey, Headers[headerKey] as String);
       }
 
       if (this.Accept != null) {
@@ -139,8 +125,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     _httpClient.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(
-          WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }

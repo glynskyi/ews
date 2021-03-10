@@ -694,7 +694,8 @@ abstract class ServiceRequestBase {
   Future<IEwsHttpWebRequest> BuildEwsHttpWebRequest() async {
     IEwsHttpWebRequest? request = null;
     try {
-      request = this.Service.PrepareHttpWebRequest(this.GetXmlElementName());
+      request =
+          await this.Service.PrepareHttpWebRequest(this.GetXmlElementName());
 
       this
           .Service

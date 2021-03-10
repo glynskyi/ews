@@ -636,7 +636,7 @@ class EwsUtilities {
   static String FormatHttpRequestHeaders(IEwsHttpWebRequest request) {
     StringBuffer sb = new StringBuffer();
     sb.write("${request.Method} ${request.RequestUri!.path} HTTP/1.1\n");
-    EwsUtilities.FormatHttpHeadersWithBuffer(sb, request.Headers!);
+    EwsUtilities.FormatHttpHeadersWithBuffer(sb, request.Headers);
     sb.write("\n");
 
     return sb.toString();
