@@ -52,7 +52,7 @@ class MeetingTimeZone extends ComplexProperty {
     // supported by TimeZoneInfo. That leaves us unable to accurately convert TimeZoneInfo
     // into MeetingTimeZone. So we don't... Instead, we emit the time zone's Id and
     // hope the server will find a match (which it should).
-    this.Name = timeZone.abbr;
+    this.Name = timeZone.abbreviation;
   }
 
   /// <summary>
@@ -77,8 +77,8 @@ class MeetingTimeZone extends ComplexProperty {
   bool TryReadElementFromXml(EwsServiceXmlReader reader) {
     switch (reader.LocalName) {
       case XmlElementNames.BaseOffset:
-        this._baseOffset =
-            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>()!);
+        this._baseOffset = EwsUtilities.XSDurationToTimeSpan(
+            reader.ReadElementValue<String>()!);
         return true;
       case XmlElementNames.Standard:
         this._standard = new TimeChange();

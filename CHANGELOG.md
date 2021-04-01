@@ -1,3 +1,7 @@
+## 1.2.2
+
+* Fixed the `abbreviation` field for the latest time zone package
+
 ## 1.2.1
 
 * Fixed the pre authentication flow
