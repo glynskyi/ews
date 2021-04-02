@@ -1,3 +1,7 @@
+## 1.2.3
+
+* Added the `IHttpClientFactory` to provide ability to configure the HttpClient before request
+
 ## 1.2.2
 
 * Fixed the `abbreviation` field for the latest time zone package

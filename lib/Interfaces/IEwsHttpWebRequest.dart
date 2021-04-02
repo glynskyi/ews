@@ -27,6 +27,7 @@ import 'dart:async';
 
 import 'package:ews/Http/CookieContainer.dart' as http;
 import 'package:ews/Http/ICredentials.dart';
+import 'package:ews/Http/IHttpClientFactory.dart';
 import 'package:ews/Http/IWebProxy.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
 import 'package:ews/Http/X509CertificateCollection.dart';
@@ -187,4 +188,9 @@ abstract class IEwsHttpWebRequest {
   /// Gets or sets the name of the connection group for the request.
   /// </summary>
   String? ConnectionGroupName;
+
+  /// <summary>
+  /// Gets or sets the http client factory.
+  /// </summary>
+  IHttpClientFactory? HttpClientFactory;
 }

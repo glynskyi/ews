@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Http/CookieContainer.dart' as http;
+import 'package:ews/Http/EwsHttpClientFactory.dart';
 import 'package:ews/Http/EwsHttpWebResponse.dart';
 import 'package:ews/Http/ICredentials.dart';
+import 'package:ews/Http/IHttpClientFactory.dart';
 import 'package:ews/Http/IWebProxy.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebExceptionStatus.dart';
@@ -63,6 +65,9 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
   String? UserAgent;
 
   @override
+  IHttpClientFactory? HttpClientFactory;
+
+  @override
   void Abort() {
     // TODO: implement Abort
   }
@@ -80,7 +85,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
 
   Future<HttpClientRequest> _InternalGetRequest() async {
     if (_request == null) {
-      _httpClient = HttpClient();
+      _httpClient = (await HttpClientFactory?.Create()) ??
+          (await EwsHttpClientFactory().Create());
       if (this.Timeout != null) {
         _httpClient.connectionTimeout = Duration(milliseconds: this.Timeout!);
       }
@@ -125,7 +131,8 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     _httpClient.close();
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw new WebException(WebExceptionStatus.ProtocolError, _request, response);
+      throw new WebException(
+          WebExceptionStatus.ProtocolError, _request, response);
     }
     return EwsHttpWebResponse(this, response);
   }
