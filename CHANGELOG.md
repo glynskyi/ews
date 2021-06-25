@@ -1,6 +1,8 @@
 ## 1.2.4
 
 * Updated dependencies
+* Fixed `PropertyDefinitionBase.toString` implementation
+
 ## 1.2.3
 
 * Added the `IHttpClientFactory` to provide ability to configure the HttpClient before request
