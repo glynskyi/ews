@@ -1,3 +1,6 @@
+## 1.2.4
+
+* Updated dependencies
 ## 1.2.3
 
 * Added the `IHttpClientFactory` to provide ability to configure the HttpClient before request
