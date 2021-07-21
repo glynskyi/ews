@@ -125,20 +125,15 @@ abstract class ServiceRequestBase {
 
   static Stream<List<int>> _WrapStream(
       Stream<List<int>> responseStream, String contentEncoding) {
-    // todo("implement gzip and deflate streams")
-    return responseStream;
-//            if (contentEncoding.toLowerCase().contains("gzip"))
-//            {
-//                return new GZipStream(responseStream, CompressionMode.Decompress);
-//            }
-//            else if (contentEncoding.ToLowerInvariant().Contains("deflate"))
-//            {
-//                return new DeflateStream(responseStream, CompressionMode.Decompress);
-//            }
-//            else
-//            {
-//                return responseStream;
-//            }
+    if (contentEncoding.toLowerCase().contains("gzip")) {
+      return GZipCodec().decoder.bind(responseStream);
+      // return new GZipStream(responseStream, CompressionMode.Decompress);
+    } else if (contentEncoding.toLowerCase().contains("deflate")) {
+      // return new DeflateStream(responseStream, CompressionMode.Decompress);
+      return ZLibDecoder().bind(responseStream);
+    } else {
+      return responseStream;
+    }
   }
 
   /// <summary>
