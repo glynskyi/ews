@@ -1,3 +1,8 @@
+## 1.2.5
+
+* Added gzip encoding support
+* Added deflate encoding support
+
 ## 1.2.4
 
 * Updated dependencies
