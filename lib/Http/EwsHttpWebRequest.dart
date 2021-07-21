@@ -87,6 +87,7 @@ class EwsHttpWebRequest implements IEwsHttpWebRequest {
     if (_request == null) {
       _httpClient = (await HttpClientFactory?.Create()) ??
           (await EwsHttpClientFactory().Create());
+      _httpClient.autoUncompress = false;
       if (this.Timeout != null) {
         _httpClient.connectionTimeout = Duration(milliseconds: this.Timeout!);
       }
