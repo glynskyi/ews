@@ -1,3 +1,7 @@
+## 1.2.6
+
+* Disabled the auto uncompress in the built-in HTTP client
+
 ## 1.2.5
 
 * Added gzip encoding support
