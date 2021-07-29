@@ -496,14 +496,15 @@ abstract class AutodiscoverRequest {
   /// <returns>ResponseStream</returns>
   static Stream GetResponseStream(IEwsHttpWebResponse response) {
     String contentEncoding = response.ContentEncoding;
-    Stream responseStream = response.GetResponseStream();
+    Stream<List<int>> responseStream = response.GetResponseStream();
 
     if (contentEncoding.toLowerCase().contains("gzip")) {
+      return GZipCodec().decoder.bind(responseStream);
       return responseStream;
 //                return responseStream.transform(gzip.decoder);
 //                return new GZipStream(responseStream, CompressionMode.Decompress);
     } else if (contentEncoding.toLowerCase().contains("deflate")) {
-      throw UnsupportedError("Unsupported deflate streams");
+      return ZLibDecoder().bind(responseStream);
 //                return new DeflateStream(responseStream, CompressionMode.Decompress);
     } else {
       return responseStream;

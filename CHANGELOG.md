@@ -1,3 +1,7 @@
+## 1.2.7
+
+* Fixed the autodiscovery response parsing with gzip/deflate encoding
+
 ## 1.2.6
 
 * Disabled the auto uncompress in the built-in HTTP client
