@@ -55,8 +55,8 @@ class PhoneNumberEntry extends DictionaryEntryProperty<PhoneNumberKey> {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this._phoneNumber = reader.ReadValue();
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {
+    this._phoneNumber = await reader.ReadValue();
   }
 
   /// <summary>

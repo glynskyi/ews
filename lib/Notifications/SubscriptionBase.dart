@@ -72,12 +72,12 @@ abstract class SubscriptionBase {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsServiceXmlReader reader) {
-    this._id = reader.ReadElementValueWithNamespace(
+  Future<void> LoadFromXml(EwsServiceXmlReader reader) async {
+    this._id = await reader.ReadElementValueWithNamespace(
         XmlNamespace.Messages, XmlElementNames.SubscriptionId);
 
     if (this.UsesWatermark) {
-      this._watermark = reader.ReadElementValueWithNamespace(
+      this._watermark = await reader.ReadElementValueWithNamespace(
           XmlNamespace.Messages, XmlElementNames.Watermark);
     }
   }

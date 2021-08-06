@@ -53,16 +53,16 @@ class CreateAttachmentResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Attachments);
 
-    reader.Read(nodeType: XmlNodeType.Element);
-    this.attachment!.LoadFromXml(reader, reader.LocalName);
+    await reader.Read(nodeType: XmlNodeType.Element);
+    await this.attachment!.LoadFromXml(reader, reader.LocalName);
 
-    reader.ReadEndElementWithNamespace(
+    await reader.ReadEndElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Attachments);
   }
 

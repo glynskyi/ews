@@ -72,7 +72,7 @@ abstract class PropertyBasedFilter extends SearchFilter {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     OutParam<PropertyDefinitionBase> outParam =
         new OutParam<PropertyDefinitionBase>();
     outParam.param = this.propertyDefinition;

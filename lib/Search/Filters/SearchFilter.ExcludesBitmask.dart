@@ -74,8 +74,8 @@ class ExcludesBitmask extends PropertyBasedFilter {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    bool result = super.TryReadElementFromXml(reader);
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    bool result = await super.TryReadElementFromXml(reader);
 
     if (!result) {
       if (reader.LocalName == XmlElementNames.Bitmask) {

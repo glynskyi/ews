@@ -109,37 +109,37 @@ class CompleteName extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Title:
-        this._title = reader.ReadElementValue<String>();
+        this._title = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.FirstName:
-        this._givenName = reader.ReadElementValue<String>();
+        this._givenName = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.MiddleName:
-        this._middleName = reader.ReadElementValue<String>();
+        this._middleName = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.LastName:
-        this._surname = reader.ReadElementValue<String>();
+        this._surname = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Suffix:
-        this._suffix = reader.ReadElementValue<String>();
+        this._suffix = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Initials:
-        this._initials = reader.ReadElementValue<String>();
+        this._initials = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.FullName:
-        this._fullName = reader.ReadElementValue<String>();
+        this._fullName = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.NickName:
-        this._nickname = reader.ReadElementValue<String>();
+        this._nickname = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.YomiFirstName:
-        this._yomiGivenName = reader.ReadElementValue<String>();
+        this._yomiGivenName = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.YomiLastName:
-        this._yomiSurname = reader.ReadElementValue<String>();
+        this._yomiSurname = await reader.ReadElementValue<String>();
         return true;
       default:
         return false;

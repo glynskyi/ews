@@ -47,15 +47,15 @@ class WebClientUrlCollection {
   /// Loads instance of WebClientUrlCollection from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  static WebClientUrlCollection LoadFromXml(EwsXmlReader reader) {
+  static Future<WebClientUrlCollection> LoadFromXml(EwsXmlReader reader) async {
     WebClientUrlCollection instance = new WebClientUrlCollection();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if ((reader.NodeType == XmlNodeType.Element) &&
           (reader.LocalName == XmlElementNames.WebClientUrl)) {
-        instance.Urls!.add(WebClientUrl.LoadFromXml(reader));
+        instance.Urls!.add(await WebClientUrl.LoadFromXml(reader));
       }
     } while (!reader.IsEndElementWithNamespace(
         XmlNamespace.Autodiscover, XmlElementNames.WebClientUrls));

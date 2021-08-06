@@ -87,7 +87,7 @@
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
 
                     if (reader.NodeType == XmlNodeType.Element)
                     {
@@ -108,36 +108,36 @@
                 while (!reader.IsEndElement(XmlNamespace.Messages, XmlElementNames.People));
             }
 
-            reader.Read();
+            await reader.Read();
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.TotalNumberOfPeopleInView) && !reader.IsEmptyElement)
             {
                 this.Results.TotalCount = reader.ReadElementValue<int>();
-                reader.Read();
+                await reader.Read();
             }
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.FirstMatchingRowIndex) && !reader.IsEmptyElement)
             {
                 this.Results.FirstMatchingRowIndex = reader.ReadElementValue<int>();
-                reader.Read();
+                await reader.Read();
             }
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.FirstLoadedRowIndex) && !reader.IsEmptyElement)
             {
                 this.Results.FirstLoadedRowIndex = reader.ReadElementValue<int>();
-                reader.Read();
+                await reader.Read();
             }
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.FindPeopleTransactionId) && !reader.IsEmptyElement)
             {
                 this.TransactionId = reader.ReadElementValue<string>();
-                reader.Read();
+                await reader.Read();
             }
 
             // Future proof by skipping any additional elements before returning
             while (!reader.IsEndElement(XmlNamespace.Messages, XmlElementNames.FindPeopleResponse))
             {
-                reader.Read();
+                await reader.Read();
             }
         }
     }

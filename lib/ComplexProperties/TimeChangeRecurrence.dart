@@ -128,18 +128,18 @@ class TimeChangeRecurrence extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.DaysOfWeek:
         this._dayOfTheWeek =
-            reader.ReadElementValue<enumerations.DayOfTheWeek>();
+            await reader.ReadElementValue<enumerations.DayOfTheWeek>();
         return true;
       case XmlElementNames.DayOfWeekIndex:
         this._dayOfTheWeekIndex =
-            reader.ReadElementValue<enumerations.DayOfTheWeekIndex>();
+            await reader.ReadElementValue<enumerations.DayOfTheWeekIndex>();
         return true;
       case XmlElementNames.Month:
-        this._month = reader.ReadElementValue<enumerations.Month>();
+        this._month = await reader.ReadElementValue<enumerations.Month>();
         return true;
       default:
         return false;

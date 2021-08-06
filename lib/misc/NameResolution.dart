@@ -49,28 +49,28 @@ class NameResolution {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> LoadFromXml(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Resolution);
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Mailbox);
-    this._mailbox.LoadFromXml(reader, XmlElementNames.Mailbox);
+    await this._mailbox.LoadFromXml(reader, XmlElementNames.Mailbox);
 
-    reader.Read();
+    await reader.Read();
     if (reader.IsStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Contact)) {
       this._contact = new items.Contact(this._owner.Session!);
 
       // Contacts returned by ResolveNames should behave like Contact.Load with FirstClassPropertySet specified.
-      this._contact!.LoadFromXmlWithPropertySet(
+      await this._contact!.LoadFromXmlWithPropertySet(
           reader,
           true,
           /* clearPropertyBag */
           PropertySet.FirstClassProperties,
           false); /* summaryPropertiesOnly */
 
-      reader.ReadEndElementWithNamespace(
+      await reader.ReadEndElementWithNamespace(
           XmlNamespace.Types, XmlElementNames.Resolution);
     } else {
       reader.EnsureCurrentNodeIsEndElement(

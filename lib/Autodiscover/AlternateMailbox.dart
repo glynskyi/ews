@@ -49,31 +49,32 @@ class AlternateMailbox {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>AlternateMailbox.</returns>
-  static AlternateMailbox LoadFromXml(EwsXmlReader reader) {
+  static Future<AlternateMailbox> LoadFromXml(EwsXmlReader reader) async {
     AlternateMailbox altMailbox = new AlternateMailbox._();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.Type:
-            altMailbox.Type = reader.ReadElementValue<String>();
+            altMailbox.Type = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DisplayName:
-            altMailbox.DisplayName = reader.ReadElementValue<String>();
+            altMailbox.DisplayName = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.LegacyDN:
-            altMailbox.LegacyDN = reader.ReadElementValue<String>();
+            altMailbox.LegacyDN = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Server:
-            altMailbox.Server = reader.ReadElementValue<String>();
+            altMailbox.Server = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SmtpAddress:
-            altMailbox.SmtpAddress = reader.ReadElementValue<String>();
+            altMailbox.SmtpAddress = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.OwnerSmtpAddress:
-            altMailbox.OwnerSmtpAddress = reader.ReadElementValue<String>();
+            altMailbox.OwnerSmtpAddress =
+                await reader.ReadElementValue<String>();
             break;
           default:
             break;

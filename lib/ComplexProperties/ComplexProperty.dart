@@ -31,7 +31,7 @@ import 'package:ews/Xml/XmlNodeType.dart';
 
 import 'IComplexPropertyChangedDelegate.dart';
 
-typedef bool ReadAction(EwsServiceXmlReader reader);
+typedef Future<bool> ReadAction(EwsServiceXmlReader reader);
 
 /// <summary>
 /// Represents a property that can be sent to or retrieved from EWS.
@@ -88,14 +88,14 @@ abstract class ComplexProperty implements ISelfValidate {
   /// Reads the text value from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {}
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {}
 
   /// <summary>
   /// Tries to read element from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     return false;
   }
 
@@ -104,7 +104,7 @@ abstract class ComplexProperty implements ISelfValidate {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
-  bool TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) async {
     return false;
   }
 
@@ -126,9 +126,9 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="reader">The reader.</param>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String? xmlElementName) {
-    this._InternalLoadFromXml(
+  Future<void> LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String? xmlElementName) async {
+    await this._InternalLoadFromXml(
         reader, xmlNamespace, xmlElementName, this.TryReadElementFromXml);
   }
 
@@ -151,11 +151,11 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   /// <param name="readAction"></param>
-  void _InternalLoadFromXml(
+  Future<void> _InternalLoadFromXml(
       EwsServiceXmlReader reader,
       XmlNamespace xmlNamespace,
       String? xmlElementName,
-      ReadAction readAction) {
+      ReadAction readAction) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         xmlNamespace, xmlElementName);
 
@@ -163,16 +163,16 @@ abstract class ComplexProperty implements ISelfValidate {
 
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         switch (reader.NodeType) {
           case XmlNodeType.Element:
-            if (!readAction(reader)) {
-              reader.SkipCurrentElement();
+            if (!await readAction(reader)) {
+              await reader.SkipCurrentElement();
             }
             break;
           case XmlNodeType.Text:
-            this.ReadTextValueFromXml(reader);
+            await this.ReadTextValueFromXml(reader);
             break;
           // todo("check other branches")
           case XmlNodeType.XmlDeclaration:
@@ -190,8 +190,9 @@ abstract class ComplexProperty implements ISelfValidate {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void LoadFromXml(EwsServiceXmlReader reader, String? xmlElementName) {
-    this.LoadFromXmlWithNamespace(reader, this.Namespace, xmlElementName);
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String? xmlElementName) async {
+    await this.LoadFromXmlWithNamespace(reader, this.Namespace, xmlElementName);
   }
 
   /// <summary>

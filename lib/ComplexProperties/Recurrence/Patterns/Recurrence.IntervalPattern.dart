@@ -80,13 +80,13 @@ abstract class IntervalPattern extends Recurrence {
   /// <param name="reader">The reader.</param>
   /// <returns>True if appropriate element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (super.TryReadElementFromXml(reader)) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    if (await super.TryReadElementFromXml(reader)) {
       return true;
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.Interval:
-          this._interval = reader.ReadElementValue<int>();
+          this._interval = await reader.ReadElementValue<int>();
           return true;
         default:
           return false;

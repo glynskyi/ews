@@ -70,15 +70,15 @@ abstract class AutodiscoverResponseCollection<
   /// <param name="reader">The reader.</param>
   /// <param name="endElementName">End element name.</param>
   @override
-  void LoadFromXml(EwsXmlReader reader, String endElementName) {
+  Future<void> LoadFromXml(EwsXmlReader reader, String endElementName) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         if (reader.LocalName == this.GetResponseCollectionXmlElementName()) {
-          this.LoadResponseCollectionFromXml(reader);
+          await this.LoadResponseCollectionFromXml(reader);
         } else {
-          super.LoadFromXml(reader, endElementName);
+          await super.LoadFromXml(reader, endElementName);
         }
       }
     } while (!reader.IsEndElementWithNamespace(
@@ -90,14 +90,14 @@ abstract class AutodiscoverResponseCollection<
   /// </summary>
   /// <param name="reader">The reader.</param>
   /* private */
-  void LoadResponseCollectionFromXml(EwsXmlReader reader) {
+  Future<void> LoadResponseCollectionFromXml(EwsXmlReader reader) async {
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == this.GetResponseInstanceXmlElementName())) {
           TResponse response = this.CreateResponseInstance();
-          response.LoadFromXml(
+          await response.LoadFromXml(
               reader, this.GetResponseInstanceXmlElementName());
           this.Responses!.add(response);
         }

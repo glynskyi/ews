@@ -246,16 +246,16 @@ class TimeZoneDefinition extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Periods:
         do {
-          reader.Read();
+          await reader.Read();
 
           if (reader.IsStartElementWithNamespace(
               XmlNamespace.Types, XmlElementNames.Period)) {
             TimeZonePeriod period = new TimeZonePeriod();
-            period.LoadFromXmlElementName(reader);
+            await period.LoadFromXmlElementName(reader);
 
             // OM:1648848 Bad timezone data from clients can include duplicate rules
             // for one year, with duplicate ID. In that case, let the first one win.
@@ -278,14 +278,14 @@ class TimeZoneDefinition extends ComplexProperty {
         return true;
       case XmlElementNames.TransitionsGroups:
         do {
-          reader.Read();
+          await reader.Read();
 
           if (reader.IsStartElementWithNamespace(
               XmlNamespace.Types, XmlElementNames.TransitionsGroup)) {
             TimeZoneTransitionGroup transitionGroup =
                 new TimeZoneTransitionGroup(this);
 
-            transitionGroup.LoadFromXmlElementName(reader);
+            await transitionGroup.LoadFromXmlElementName(reader);
 
             this._transitionGroups[transitionGroup.Id] = transitionGroup;
           }
@@ -295,13 +295,13 @@ class TimeZoneDefinition extends ComplexProperty {
         return true;
       case XmlElementNames.Transitions:
         do {
-          reader.Read();
+          await reader.Read();
 
           if (reader.IsStartElement()) {
             TimeZoneTransition transition =
                 TimeZoneTransition.Create(this, reader.LocalName);
 
-            transition.LoadFromXmlElementName(reader);
+            await transition.LoadFromXmlElementName(reader);
 
             this._transitions.add(transition);
           }
@@ -318,8 +318,8 @@ class TimeZoneDefinition extends ComplexProperty {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
-    this.LoadFromXml(reader, XmlElementNames.TimeZoneDefinition);
+  Future<void> LoadFromXmlElementName(EwsServiceXmlReader reader) async {
+    await this.LoadFromXml(reader, XmlElementNames.TimeZoneDefinition);
 
     this._transitions.sort(this._CompareTransitions);
   }

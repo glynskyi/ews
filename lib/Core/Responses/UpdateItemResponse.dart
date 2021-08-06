@@ -58,10 +58,10 @@ class UpdateItemResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    reader.ReadServiceObjectsCollectionFromXml<Item>(
+    await reader.ReadServiceObjectsCollectionFromXml<Item>(
         XmlElementNames.Items,
         this._GetObjectInstance,
         false,
@@ -72,11 +72,11 @@ class UpdateItemResponse extends ServiceResponse {
 
     // ConflictResults was only added in 2007 SP1 so if this was a 2007 RTM request we shouldn't expect to find the element
     if (!reader.Service.Exchange2007CompatibilityMode) {
-      reader.ReadStartElementWithNamespace(
+      await reader.ReadStartElementWithNamespace(
           XmlNamespace.Messages, XmlElementNames.ConflictResults);
-      this._conflictCount = reader.ReadElementValueWithNamespace<int>(
+      this._conflictCount = await reader.ReadElementValueWithNamespace<int>(
           XmlNamespace.Types, XmlElementNames.Count);
-      reader.ReadEndElementWithNamespace(
+      await reader.ReadEndElementWithNamespace(
           XmlNamespace.Messages, XmlElementNames.ConflictResults);
     }
 

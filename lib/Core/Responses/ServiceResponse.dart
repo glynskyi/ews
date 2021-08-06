@@ -81,10 +81,11 @@ class ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void LoadFromXml(EwsServiceXmlReader reader, String xmlElementName) {
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String xmlElementName) async {
     if (!reader.IsStartElementWithNamespace(
         XmlNamespace.Messages, xmlElementName)) {
-      reader.ReadStartElementWithNamespace(
+      await reader.ReadStartElementWithNamespace(
           XmlNamespace.Messages, xmlElementName);
     }
 
@@ -94,44 +95,48 @@ class ServiceResponse {
     if (this._result == ServiceResult.Success ||
         this._result == ServiceResult.Warning) {
       if (this._result == ServiceResult.Warning) {
-        this._errorMessage = reader.ReadElementValueWithNamespace(
+        this._errorMessage = await reader.ReadElementValueWithNamespace(
             XmlNamespace.Messages, XmlElementNames.MessageText);
       }
 
-      this._errorCode = reader.ReadElementValueWithNamespace<ServiceError>(
-          XmlNamespace.Messages, XmlElementNames.ResponseCode);
+      this._errorCode =
+          await reader.ReadElementValueWithNamespace<ServiceError>(
+              XmlNamespace.Messages, XmlElementNames.ResponseCode);
 
       if (this._result == ServiceResult.Warning) {
-        reader.ReadElementValueWithNamespace<int>(
+        await reader.ReadElementValueWithNamespace<int>(
             XmlNamespace.Messages, XmlElementNames.DescriptiveLinkKey);
       }
 
       // If batch processing stopped, EWS returns an empty element. Skip over it.
       if (this.BatchProcessingStopped) {
         do {
-          reader.Read();
+          await reader.Read();
         } while (!reader.IsEndElementWithNamespace(
             XmlNamespace.Messages, xmlElementName));
       } else {
-        this.ReadElementsFromXml(reader);
+        await this.ReadElementsFromXml(reader);
 
-        reader.ReadEndElementIfNecessary(XmlNamespace.Messages, xmlElementName);
+        await reader.ReadEndElementIfNecessary(
+            XmlNamespace.Messages, xmlElementName);
       }
     } else {
-      this._errorMessage = reader.ReadElementValueWithNamespace(
+      this._errorMessage = await reader.ReadElementValueWithNamespace(
           XmlNamespace.Messages, XmlElementNames.MessageText);
-      this._errorCode = reader.ReadElementValueWithNamespace<ServiceError>(
-          XmlNamespace.Messages, XmlElementNames.ResponseCode);
-      reader.ReadElementValueWithNamespace<int>(
+      this._errorCode =
+          await reader.ReadElementValueWithNamespace<ServiceError>(
+              XmlNamespace.Messages, XmlElementNames.ResponseCode);
+      await reader.ReadElementValueWithNamespace<int>(
           XmlNamespace.Messages, XmlElementNames.DescriptiveLinkKey);
 
       while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Messages, xmlElementName)) {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement()) {
-          if (!this.LoadExtraErrorDetailsFromXml(reader, reader.LocalName)) {
-            reader.SkipCurrentElement();
+          if (!await this
+              .LoadExtraErrorDetailsFromXml(reader, reader.LocalName)) {
+            await reader.SkipCurrentElement();
           }
         }
       }
@@ -147,16 +152,16 @@ class ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /* private */
-  void ParseMessageXml(EwsServiceXmlReader reader) {
+  Future<void> ParseMessageXml(EwsServiceXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.IsStartElement()) {
         switch (reader.LocalName) {
           case XmlElementNames.Value:
             this._errorDetails![
                     reader.ReadAttributeValue(XmlAttributeNames.Name)] =
-                reader.ReadElementValue<String>();
+                await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.FieldURI:
@@ -174,7 +179,7 @@ class ServiceResponse {
           case XmlElementNames.ExtendedFieldURI:
             ExtendedPropertyDefinition extendedPropDef =
                 new ExtendedPropertyDefinition();
-            extendedPropDef.LoadFromXml(reader);
+            await extendedPropDef.LoadFromXml(reader);
             this._errorProperties.add(extendedPropDef);
             break;
 
@@ -205,7 +210,7 @@ class ServiceResponse {
   /// Reads response elements from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {}
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {}
 
   /// <summary>
   /// Reads the headers from a HTTP response
@@ -222,12 +227,12 @@ class ServiceResponse {
   /// <param name="xmlElementName">The current element name of the extra error details.</param>
   /// <returns>True if the expected extra details is loaded;
   /// False if the element name does not match the expected element. </returns>
-  bool LoadExtraErrorDetailsFromXml(
-      EwsServiceXmlReader reader, String xmlElementName) {
+  Future<bool> LoadExtraErrorDetailsFromXml(
+      EwsServiceXmlReader reader, String xmlElementName) async {
     if (reader.IsStartElementWithNamespace(
             XmlNamespace.Messages, XmlElementNames.MessageXml) &&
         !reader.IsEmptyElement) {
-      this.ParseMessageXml(reader);
+      await this.ParseMessageXml(reader);
 
       return true;
     } else {

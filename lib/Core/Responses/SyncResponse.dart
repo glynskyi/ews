@@ -87,18 +87,19 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    this.Changes.SyncState = reader.ReadElementValueWithNamespace(
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    this.Changes.SyncState = await reader.ReadElementValueWithNamespace(
         XmlNamespace.Messages, XmlElementNames.SyncState);
     this.Changes.MoreChangesAvailable =
-        !reader.ReadElementValueWithNamespace<bool>(
-            XmlNamespace.Messages, this.GetIncludesLastInRangeXmlElementName())!;
+        !(await reader.ReadElementValueWithNamespace<bool>(
+            XmlNamespace.Messages,
+            this.GetIncludesLastInRangeXmlElementName()))!;
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Changes);
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement()) {
           TChange change = this.CreateChangeInstance();
@@ -117,22 +118,23 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
               change.ChangeType = ChangeType.ReadFlagChange;
               break;
             default:
-              reader.SkipCurrentElement();
+              await reader.SkipCurrentElement();
               break;
           }
 
           if (change != null) {
-            reader.Read();
+            await reader.Read();
             reader.EnsureCurrentNodeIsStartElement();
 
             switch (change.ChangeType) {
               case ChangeType.Delete:
               case ChangeType.ReadFlagChange:
                 change.Id = change.CreateId();
-                change.Id!.LoadFromXml(reader, change.Id!.GetXmlElementName());
+                await change.Id!
+                    .LoadFromXml(reader, change.Id!.GetXmlElementName());
 
                 if (change.ChangeType == ChangeType.ReadFlagChange) {
-                  reader.Read();
+                  await reader.Read();
                   reader.EnsureCurrentNodeIsStartElement();
 
                   ItemChange itemChange = change as ItemChange;
@@ -143,7 +145,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
                       "ReadFlagChange is only valid on ItemChange");
 
                   itemChange.IsRead =
-                      reader.ReadElementValueWithNamespace<bool>(
+                      await reader.ReadElementValueWithNamespace<bool>(
                           XmlNamespace.Types, XmlElementNames.IsRead);
                 }
 
@@ -153,7 +155,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
                     EwsUtilities.CreateEwsObjectFromXmlElementName<
                         TServiceObject>(reader.Service, reader.LocalName);
 
-                change.ServiceObject!.LoadFromXmlWithPropertySet(
+                await change.ServiceObject!.LoadFromXmlWithPropertySet(
                     reader,
                     true,
                     /* clearPropertyBag */
@@ -162,7 +164,7 @@ abstract class SyncResponse<TServiceObject extends ServiceObject,
                 break;
             }
 
-            reader.ReadEndElementIfNecessary(
+            await reader.ReadEndElementIfNecessary(
                 XmlNamespace.Types, EnumToString.parse(change.ChangeType));
 
             this._changes.Add(change);

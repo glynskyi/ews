@@ -130,16 +130,19 @@ class OnlineMeetingSettings extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.LobbyBypass:
-        this.lobbyBypass = reader.ReadElementValue<enumerations.LobbyBypass>();
+        this.lobbyBypass =
+            await reader.ReadElementValue<enumerations.LobbyBypass>();
         return true;
       case XmlElementNames.AccessLevel:
-        this.accessLevel = reader.ReadElementValue<OnlineMeetingAccessLevel>();
+        this.accessLevel =
+            await reader.ReadElementValue<OnlineMeetingAccessLevel>();
         return true;
       case XmlElementNames.Presenters:
-        this.presenters = reader.ReadElementValue<enumerations.Presenters>();
+        this.presenters =
+            await reader.ReadElementValue<enumerations.Presenters>();
         return true;
       default:
         return false;

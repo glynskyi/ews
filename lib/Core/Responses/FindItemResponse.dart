@@ -69,8 +69,8 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootFolder);
 
     int? totalItemsInView =
@@ -89,29 +89,31 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
       this._results!.TotalCount = totalItemsInView;
       this._results!.NextPageOffset = nextPageOffset;
       this._results!.MoreAvailable = moreItemsAvailable;
-      _InternalReadItemsFromXml(reader, this._propertySet, this._results!.Items);
+      await _InternalReadItemsFromXml(
+          reader, this._propertySet, this._results!.Items);
     } else {
       this._groupedFindResults = new GroupedFindItemsResults<TItem>();
       this._groupedFindResults!.TotalCount = totalItemsInView;
       this._groupedFindResults!.NextPageOffset = nextPageOffset;
       this._groupedFindResults!.MoreAvailable = moreItemsAvailable;
 
-      reader.ReadStartElementWithNamespace(
+      await reader.ReadStartElementWithNamespace(
           XmlNamespace.Types, XmlElementNames.Groups);
 
       if (!reader.IsEmptyElement) {
         do {
-          reader.Read();
+          await reader.Read();
 
           if (reader.IsStartElementWithNamespace(
               XmlNamespace.Types, XmlElementNames.GroupedItems)) {
-            String? groupIndex = reader.ReadElementValueWithNamespace(
+            String? groupIndex = await reader.ReadElementValueWithNamespace(
                 XmlNamespace.Types, XmlElementNames.GroupIndex);
 
             List<TItem> itemList = <TItem>[];
-            _InternalReadItemsFromXml(reader, this._propertySet, itemList);
+            await _InternalReadItemsFromXml(
+                reader, this._propertySet, itemList);
 
-            reader.ReadEndElementWithNamespace(
+            await reader.ReadEndElementWithNamespace(
                 XmlNamespace.Types, XmlElementNames.GroupedItems);
 
             this
@@ -124,21 +126,21 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
       }
     }
 
-    reader.ReadEndElementWithNamespace(
+    await reader.ReadEndElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootFolder);
 
-    reader.Read();
+    await reader.Read();
 
     if (reader.IsStartElementWithNamespace(
             XmlNamespace.Messages, XmlElementNames.HighlightTerms) &&
         !reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element) {
           HighlightTerm term = new HighlightTerm();
 
-          term.LoadFromXmlWithNamespace(
+          await term.LoadFromXmlWithNamespace(
               reader, XmlNamespace.Types, XmlElementNames.HighlightTerm);
           this._results!.HighlightTerms.add(term);
         }
@@ -153,29 +155,29 @@ class FindItemResponse<TItem extends Item> extends ServiceResponse {
   /// <param name="reader">The reader.</param>
   /// <param name="propertySet">The property set.</param>
   /// <param name="destinationList">The list in which to add the read items.</param>
-  static void _InternalReadItemsFromXml<TItem extends Item>(
+  static Future<void> _InternalReadItemsFromXml<TItem extends Item>(
       EwsServiceXmlReader reader,
       PropertySet? propertySet,
-      List<TItem> destinationList) {
+      List<TItem> destinationList) async {
     EwsUtilities.Assert(
         destinationList != null,
         "FindItemResponse.InternalReadItemsFromXml",
         "destinationList is null.");
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Items);
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element) {
           TItem item = EwsUtilities.CreateEwsObjectFromXmlElementName<TItem>(
               reader.Service, reader.LocalName);
 
           if (item == null) {
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
           } else {
-            item.LoadFromXmlWithPropertySet(
+            await item.LoadFromXmlWithPropertySet(
                 reader,
                 true,
                 /* clearPropertyBag */

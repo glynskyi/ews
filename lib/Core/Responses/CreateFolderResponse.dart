@@ -65,17 +65,18 @@ class CreateFolderResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    List<Folder> folders = reader.ReadServiceObjectsCollectionFromXml<Folder>(
-        XmlElementNames.Folders,
-        this._GetObjectInstance,
-        false,
-        /* clearPropertyBag */
-        null,
-        /* requestedPropertySet */
-        false); /* summaryPropertiesOnly */
+    List<Folder> folders =
+        await reader.ReadServiceObjectsCollectionFromXml<Folder>(
+            XmlElementNames.Folders,
+            this._GetObjectInstance,
+            false,
+            /* clearPropertyBag */
+            null,
+            /* requestedPropertySet */
+            false); /* summaryPropertiesOnly */
 
     this._folder = folders[0];
   }

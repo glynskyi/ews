@@ -52,10 +52,10 @@ class SubscribeResponse<TSubscription extends SubscriptionBase>
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    this._subscription!.LoadFromXml(reader);
+    await this._subscription!.LoadFromXml(reader);
   }
 
   /// <summary>

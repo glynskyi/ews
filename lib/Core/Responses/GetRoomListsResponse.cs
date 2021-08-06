@@ -63,13 +63,13 @@
             {
                 // Because we don't have an element for count of returned object,
                 // we have to test the element to determine if it is return object or EndElement
-                reader.Read();
+                await reader.Read();
                 while (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Address))
                 {
                     EmailAddress emailAddress = new EmailAddress();
                     emailAddress.LoadFromXml(reader, XmlElementNames.Address);
                     this.RoomLists.Add(emailAddress);
-                    reader.Read();
+                    await reader.Read();
                 }
                 reader.EnsureCurrentNodeIsEndElement(XmlNamespace.Messages, XmlElementNames.RoomLists);
             }

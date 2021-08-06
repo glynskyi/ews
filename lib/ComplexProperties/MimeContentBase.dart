@@ -62,8 +62,8 @@ abstract class MimeContentBase extends ComplexProperty {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this.content = base64.decode(reader.ReadValue());
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {
+    this.content = base64.decode(await reader.ReadValue());
   }
 
   /// <summary>

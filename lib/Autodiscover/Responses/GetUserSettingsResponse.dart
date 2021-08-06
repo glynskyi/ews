@@ -95,23 +95,23 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// <param name="reader">The reader.</param>
   /// <param name="endElementName">End element name.</param>
   @override
-  void LoadFromXml(EwsXmlReader reader, String endElementName) {
+  Future<void> LoadFromXml(EwsXmlReader reader, String endElementName) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.RedirectTarget:
-            this.RedirectTarget = reader.ReadElementValue<String>();
+            this.RedirectTarget = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.UserSettingErrors:
-            this._LoadUserSettingErrorsFromXml(reader);
+            await this._LoadUserSettingErrorsFromXml(reader);
             break;
           case XmlElementNames.UserSettings:
-            this.LoadUserSettingsFromXml(reader);
+            await this.LoadUserSettingsFromXml(reader);
             break;
           default:
-            super.LoadFromXml(reader, endElementName);
+            await super.LoadFromXml(reader, endElementName);
             break;
         }
       }
@@ -123,10 +123,10 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadUserSettingsFromXml(EwsXmlReader reader) {
+  Future<void> LoadUserSettingsFromXml(EwsXmlReader reader) async {
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == XmlElementNames.UserSetting)) {
@@ -139,7 +139,7 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
             case XmlElementNames.AlternateMailboxCollectionSetting:
             case XmlElementNames.ProtocolConnectionCollectionSetting:
             case XmlElementNames.DocumentSharingLocationCollectionSetting:
-              this._ReadSettingFromXml(reader);
+              await this._ReadSettingFromXml(reader);
               break;
 
             default:
@@ -159,20 +159,20 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// Reads user setting from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void _ReadSettingFromXml(EwsXmlReader reader) {
+  Future<void> _ReadSettingFromXml(EwsXmlReader reader) async {
     String? name = null;
     Object? value = null;
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.Name:
-            name = reader.ReadElementValue<String>();
+            name = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Value:
-            value = reader.ReadElementValue<String>();
+            value = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.WebClientUrls:
             value = WebClientUrlCollection.LoadFromXml(reader);
@@ -212,15 +212,15 @@ class GetUserSettingsResponse extends AutodiscoverResponse {
   /// Loads the user setting errors.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void _LoadUserSettingErrorsFromXml(EwsXmlReader reader) {
+  Future<void> _LoadUserSettingErrorsFromXml(EwsXmlReader reader) async {
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == XmlElementNames.UserSettingError)) {
           UserSettingError error = new UserSettingError();
-          error.LoadFromXml(reader);
+          await error.LoadFromXml(reader);
           this.UserSettingErrors.add(error);
         }
       } while (!reader.IsEndElementWithNamespace(

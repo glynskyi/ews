@@ -95,40 +95,41 @@ class GetEventsResults {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> LoadFromXml(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Notification);
 
-    this._subscriptionId = reader.ReadElementValueWithNamespace(
+    this._subscriptionId = await reader.ReadElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.SubscriptionId);
-    this._previousWatermark = reader.ReadElementValueWithNamespace(
+    this._previousWatermark = await reader.ReadElementValueWithNamespace(
         XmlNamespace.Types, XmlElementNames.PreviousWatermark);
-    this._moreEventsAvailable = reader.ReadElementValueWithNamespace<bool>(
-        XmlNamespace.Types, XmlElementNames.MoreEvents);
+    this._moreEventsAvailable =
+        await reader.ReadElementValueWithNamespace<bool>(
+            XmlNamespace.Types, XmlElementNames.MoreEvents);
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.IsStartElement()) {
         String eventElementName = reader.LocalName;
 
-        if (_xmlElementNameToEventTypeMap.Member!.containsKey(
-            eventElementName)) {
+        if (_xmlElementNameToEventTypeMap.Member!
+            .containsKey(eventElementName)) {
           EventType? eventType =
               _xmlElementNameToEventTypeMap.Member![eventElementName];
-          this._newWatermark = reader.ReadElementValueWithNamespace(
+          this._newWatermark = await reader.ReadElementValueWithNamespace(
               XmlNamespace.Types, XmlElementNames.Watermark);
 
           if (eventType == EventType.Status) {
             // We don't need to return status events
-            reader.ReadEndElementIfNecessary(
+            await reader.ReadEndElementIfNecessary(
                 XmlNamespace.Types, eventElementName);
           } else {
-            this._LoadNotificationEventFromXml(
+            await this._LoadNotificationEventFromXml(
                 reader, eventElementName, eventType);
           }
         } else {
-          reader.SkipCurrentElement();
+          await reader.SkipCurrentElement();
         }
       }
     } while (!reader.IsEndElementWithNamespace(
@@ -141,14 +142,14 @@ class GetEventsResults {
   /// <param name="reader">The reader.</param>
   /// <param name="eventElementName">Name of the event XML element.</param>
   /// <param name="eventType">Type of the event.</param>
-  void _LoadNotificationEventFromXml(EwsServiceXmlReader reader,
-      String eventElementName, EventType? eventType) {
-    DateTime? timestamp = reader.ReadElementValueWithNamespace<DateTime>(
+  Future<void> _LoadNotificationEventFromXml(EwsServiceXmlReader reader,
+      String eventElementName, EventType? eventType) async {
+    DateTime? timestamp = await reader.ReadElementValueWithNamespace<DateTime>(
         XmlNamespace.Types, XmlElementNames.TimeStamp);
 
     NotificationEvent notificationEvent;
 
-    reader.Read();
+    await reader.Read();
 
     if (reader.LocalName == XmlElementNames.FolderId) {
       notificationEvent = new FolderEvent(eventType, timestamp);
@@ -156,7 +157,7 @@ class GetEventsResults {
       notificationEvent = new ItemEvent(eventType, timestamp);
     }
 
-    notificationEvent.LoadFromXml(reader, eventElementName);
+    await notificationEvent.LoadFromXml(reader, eventElementName);
     this._events.add(notificationEvent);
   }
 
@@ -185,7 +186,8 @@ class GetEventsResults {
   /// </summary>
   /// <value>The folder events.</value>
   Iterable<FolderEvent> get FolderEvents =>
-      this._events.where((event) => event is FolderEvent) as Iterable<FolderEvent>;
+      this._events.where((event) => event is FolderEvent)
+          as Iterable<FolderEvent>;
 
   /// <summary>
   /// Gets the collection of item events.

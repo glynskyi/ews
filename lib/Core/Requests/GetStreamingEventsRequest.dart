@@ -117,15 +117,15 @@ class GetStreamingEventsRequest extends HangingServiceRequestBase {
   /// <param name="reader">The reader.</param>
   /// <returns>Response object.</returns>
   @override
-  Object ParseResponse(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<Object> ParseResponse(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.ResponseMessages);
 
     GetStreamingEventsResponse response = new GetStreamingEventsResponse(this);
-    response.LoadFromXml(
+    await response.LoadFromXml(
         reader, XmlElementNames.GetStreamingEventsResponseMessage);
 
-    reader.ReadEndElementIfNecessary(
+    await reader.ReadEndElementIfNecessary(
         XmlNamespace.Messages, XmlElementNames.ResponseMessages);
 
     return response;

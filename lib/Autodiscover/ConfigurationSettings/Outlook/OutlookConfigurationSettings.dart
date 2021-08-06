@@ -100,17 +100,17 @@ class OutlookConfigurationSettings extends ConfigurationSettingsBase {
   /// <param name="reader">The reader.</param>
   /// <returns>True is the current element was read, false otherwise.</returns>
   @override
-  bool TryReadCurrentXmlElement(EwsXmlReader reader) {
-    if (!super.TryReadCurrentXmlElement(reader)) {
+  Future<bool> TryReadCurrentXmlElement(EwsXmlReader reader) async {
+    if (!await super.TryReadCurrentXmlElement(reader)) {
       switch (reader.LocalName) {
         case XmlElementNames.User:
-          this._user.LoadFromXml(reader);
+          await this._user.LoadFromXml(reader);
           return true;
         case XmlElementNames.Account:
-          this._account!.LoadFromXml(reader);
+          await this._account!.LoadFromXml(reader);
           return true;
         default:
-          reader.SkipCurrentElement();
+          await reader.SkipCurrentElement();
           return false;
       }
     } else {

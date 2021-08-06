@@ -57,12 +57,12 @@
         {
             List<NonIndexableItemStatistic> results = new List<NonIndexableItemStatistic>();
 
-            reader.Read();
+            await reader.Read();
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.NonIndexableItemStatistics))
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
                     if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.NonIndexableItemStatistic))
                     {
                         String mailbox = reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.Mailbox);

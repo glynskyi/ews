@@ -196,7 +196,7 @@ class ExtendedPropertyDefinition extends PropertyDefinitionBase {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsServiceXmlReader reader) {
+  Future<void> LoadFromXml(EwsServiceXmlReader reader) async {
     String? attributeValue;
 
     attributeValue =

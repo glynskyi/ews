@@ -72,7 +72,7 @@
 
              if (!reader.IsEmptyElement)
              {
-                 reader.Read();
+                 await reader.Read();
                  while (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.UnifiedGroupsSet))
                  {
                      UnifiedGroupsSet unifiedGroupsSet = new UnifiedGroupsSet();
@@ -82,7 +82,7 @@
 
                  // Skip end element GroupsSets
                  reader.EnsureCurrentNodeIsEndElement(XmlNamespace.NotSpecified, XmlElementNames.GroupsSets);
-                 reader.Read();
+                 await reader.Read();
              }
          }
     }

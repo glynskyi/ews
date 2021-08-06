@@ -68,14 +68,14 @@ class SearchFolderParameters extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.BaseFolderIds:
         this.RootFolderIds.InternalClear();
-        this.RootFolderIds.LoadFromXml(reader, reader.LocalName);
+        await this.RootFolderIds.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.Restriction:
-        reader.Read();
+        await reader.Read();
         this.searchFilter = search.SearchFilter.LoadFromXmlWithReader(reader);
         return true;
       default:

@@ -160,7 +160,7 @@
             while (true)
             {
                 // Read ahead to see if we've reached the end of the response messages early.
-                reader.Read();
+                await reader.Read();
                 if (reader.IsEndElement(XmlNamespace.Messages, XmlElementNames.ResponseMessages))
                 {
                     break;

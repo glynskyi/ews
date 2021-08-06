@@ -79,14 +79,14 @@ class ContainedPropertyDefinition<TComplexProperty extends ComplexProperty>
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void InternalLoadFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> InternalLoadFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Types, this.containedXmlElementName);
 
-    super.InternalLoadFromXml(reader, propertyBag);
+    await super.InternalLoadFromXml(reader, propertyBag);
 
-    reader.ReadEndElementIfNecessary(
+    await reader.ReadEndElementIfNecessary(
         XmlNamespace.Types, this.containedXmlElementName);
   }
 

@@ -45,7 +45,7 @@
 
             do
             {
-                reader.Read();
+                await reader.Read();
 
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Items))
                 {
@@ -54,7 +54,7 @@
                     {
                         do
                         {
-                            reader.Read();
+                            await reader.Read();
                             NonIndexableItem nonIndexableItem = NonIndexableItem.LoadFromXml(reader);
                             if (nonIndexableItem != null)
                             {

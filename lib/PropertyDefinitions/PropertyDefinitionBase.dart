@@ -53,22 +53,25 @@ abstract class PropertyDefinitionBase {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyDefinition">The property definition.</param>
   /// <returns>True if property was loaded.</returns>
-  static bool TryLoadFromXml(EwsServiceXmlReader reader, OutParam<PropertyDefinitionBase> propertyDefinitionOutParam) {
+  static Future<bool> TryLoadFromXml(EwsServiceXmlReader reader,
+      OutParam<PropertyDefinitionBase> propertyDefinitionOutParam) async {
     switch (reader.LocalName) {
       case XmlElementNames.FieldURI:
         propertyDefinitionOutParam.param =
-            ServiceObjectSchema.FindPropertyDefinition(reader.ReadAttributeValue(XmlAttributeNames.FieldURI));
-        reader.SkipCurrentElement();
+            ServiceObjectSchema.FindPropertyDefinition(
+                reader.ReadAttributeValue(XmlAttributeNames.FieldURI));
+        await reader.SkipCurrentElement();
         return true;
       case XmlElementNames.IndexedFieldURI:
         propertyDefinitionOutParam.param = new IndexedPropertyDefinition(
             reader.ReadAttributeValue(XmlAttributeNames.FieldURI),
             reader.ReadAttributeValue(XmlAttributeNames.FieldIndex));
-        reader.SkipCurrentElement();
+        await reader.SkipCurrentElement();
         return true;
       case XmlElementNames.ExtendedFieldURI:
         propertyDefinitionOutParam.param = new ExtendedPropertyDefinition();
-        (propertyDefinitionOutParam.param as ExtendedPropertyDefinition).LoadFromXml(reader);
+        await (propertyDefinitionOutParam.param as ExtendedPropertyDefinition)
+            .LoadFromXml(reader);
         return true;
       default:
         return false;

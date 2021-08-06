@@ -50,28 +50,28 @@ class AutodiscoverError {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>An Autodiscover error.</returns>
-  static AutodiscoverError Parse(EwsXmlReader reader) {
+  static Future<AutodiscoverError> Parse(EwsXmlReader reader) async {
     AutodiscoverError error = new AutodiscoverError._();
 
     error._time = reader.ReadAttributeValue(XmlAttributeNames.Time);
     error._id = reader.ReadAttributeValue(XmlAttributeNames.Id);
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.ErrorCode:
-            error._errorCode = reader.ReadElementValue<int>();
+            error._errorCode = await reader.ReadElementValue<int>();
             break;
           case XmlElementNames.Message:
-            error._message = reader.ReadElementValue<String>();
+            error._message = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DebugData:
-            error._debugData = reader.ReadElementValue<String>();
+            error._debugData = await reader.ReadElementValue<String>();
             break;
           default:
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
             break;
         }
       }

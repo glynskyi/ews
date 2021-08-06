@@ -52,13 +52,13 @@ class GetAttachmentResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.Attachments);
     if (!reader.IsEmptyElement) {
-      reader.Read(nodeType: XmlNodeType.Element);
+      await reader.Read(nodeType: XmlNodeType.Element);
 
       if (this.attachment == null) {
         if (StringUtils.EqualsIgnoreCase(
@@ -73,10 +73,10 @@ class GetAttachmentResponse extends ServiceResponse {
       }
 
       if (this.attachment != null) {
-        this.attachment!.LoadFromXml(reader, reader.LocalName);
+        await this.attachment!.LoadFromXml(reader, reader.LocalName);
       }
 
-      reader.ReadEndElementWithNamespace(
+      await reader.ReadEndElementWithNamespace(
           XmlNamespace.Messages, XmlElementNames.Attachments);
     }
   }

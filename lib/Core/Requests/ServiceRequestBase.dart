@@ -52,6 +52,7 @@ import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
 import 'package:ews/Xml/XmlException.dart';
 import 'package:ews/Xml/XmlNodeType.dart';
 import 'package:ews/misc/HttpStatusCode.dart';
+import 'package:ews/misc/OutParam.dart';
 import 'package:ews/misc/SoapFaultDetails.dart';
 import 'package:ews/misc/Std/EnumToString.dart';
 import 'package:ews/misc/Std/MemoryStream.dart';
@@ -100,12 +101,11 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <param name="response">HttpWebResponse.</param>
   /// <returns>ResponseStream</returns>
-  static Stream GetResponseStream(IEwsHttpWebResponse response) {
+  static Stream<List<int>> GetResponseStream(IEwsHttpWebResponse response) {
     String contentEncoding = response.ContentEncoding;
-    Stream responseStream = response.GetResponseStream();
+    Stream<List<int>> responseStream = response.GetResponseStream();
 
-    return _WrapStream(
-        responseStream as Stream<List<int>>, response.ContentEncoding);
+    return _WrapStream(responseStream, response.ContentEncoding);
   }
 
   /// <summary>
@@ -165,7 +165,7 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>Response object.</returns>
-  Object ParseResponse(EwsServiceXmlReader reader) {
+  Future<Object> ParseResponse(EwsServiceXmlReader reader) async {
     throw new NotImplementedException(
         "you must override either this or the 2-parameter version");
   }
@@ -177,8 +177,8 @@ abstract class ServiceRequestBase {
   /// <param name="responseHeaders">Response headers</param>
   /// <returns>Response object.</returns>
   /// <remarks>If this is overriden instead of the 1-parameter version, you can read response headers</remarks>
-  Object ParseResponseWithHeaders(
-      EwsServiceXmlReader reader, WebHeaderCollection responseHeaders) {
+  Future<Object> ParseResponseWithHeaders(
+      EwsServiceXmlReader reader, WebHeaderCollection responseHeaders) async {
     return this.ParseResponse(reader);
   }
 
@@ -464,33 +464,33 @@ abstract class ServiceRequestBase {
   /// <param name="ewsXmlReader">The XML reader.</param>
   /// <param name="responseHeaders">HTTP response headers</param>
   /// <returns>Service response.</returns>
-  Object ReadResponseWithHeaders(
-      EwsServiceXmlReader ewsXmlReader, WebHeaderCollection? responseHeaders) {
+  Future<Object> ReadResponseWithHeaders(EwsServiceXmlReader ewsXmlReader,
+      WebHeaderCollection? responseHeaders) async {
     Object serviceResponse;
 
-    this.ReadPreamble(ewsXmlReader);
-    ewsXmlReader.ReadStartElementWithNamespace(
+    await this.ReadPreamble(ewsXmlReader);
+    await ewsXmlReader.ReadStartElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
-    this._ReadSoapHeader(ewsXmlReader);
-    ewsXmlReader.ReadStartElementWithNamespace(
+    await this._ReadSoapHeader(ewsXmlReader);
+    await ewsXmlReader.ReadStartElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
 
-    ewsXmlReader.ReadStartElementWithNamespace(
+    await ewsXmlReader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, this.GetResponseXmlElementName());
 
     if (responseHeaders != null) {
       serviceResponse =
-          this.ParseResponseWithHeaders(ewsXmlReader, responseHeaders);
+          await this.ParseResponseWithHeaders(ewsXmlReader, responseHeaders);
     } else {
-      serviceResponse = this.ParseResponse(ewsXmlReader);
+      serviceResponse = await this.ParseResponse(ewsXmlReader);
     }
 
-    ewsXmlReader.ReadEndElementIfNecessary(
+    await ewsXmlReader.ReadEndElementIfNecessary(
         XmlNamespace.Messages, this.GetResponseXmlElementName());
 
-    ewsXmlReader.ReadEndElementWithNamespace(
+    await ewsXmlReader.ReadEndElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
-    ewsXmlReader.ReadEndElementWithNamespace(
+    await ewsXmlReader.ReadEndElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
     return serviceResponse;
   }
@@ -499,19 +499,19 @@ abstract class ServiceRequestBase {
   /// Reads any preamble data not part of the core response.
   /// </summary>
   /// <param name="ewsXmlReader">The EwsServiceXmlReader.</param>
-  void ReadPreamble(EwsServiceXmlReader ewsXmlReader) {
-    this._ReadXmlDeclaration(ewsXmlReader);
+  Future<void> ReadPreamble(EwsServiceXmlReader ewsXmlReader) async {
+    await this._ReadXmlDeclaration(ewsXmlReader);
   }
 
   /// <summary>
   /// Read SOAP header and extract server version
   /// </summary>
   /// <param name="reader">EwsServiceXmlReader</param>
-  void _ReadSoapHeader(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> _ReadSoapHeader(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
     do {
-      reader.Read();
+      await reader.Read();
 
       // Is this the ServerVersionInfo?
       if (reader.IsStartElementWithNamespace(
@@ -529,13 +529,13 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>SOAP fault details.</returns>
-  SoapFaultDetails? ReadSoapFault(EwsServiceXmlReader reader) {
+  Future<SoapFaultDetails?> ReadSoapFault(EwsServiceXmlReader reader) async {
     SoapFaultDetails? soapFaultDetails = null;
 
     try {
-      this._ReadXmlDeclaration(reader);
+      await this._ReadXmlDeclaration(reader);
 
-      reader.Read();
+      await reader.Read();
       if (!reader.IsStartElement() ||
           (reader.LocalName != XmlElementNames.SOAPEnvelopeElementName)) {
         return soapFaultDetails;
@@ -549,14 +549,14 @@ abstract class ServiceRequestBase {
         return soapFaultDetails;
       }
 
-      reader.Read();
+      await reader.Read();
 
       // EWS doesn't always return a SOAP header. If this response contains a header element,
       // read the server version information contained in the header.
       if (reader.IsStartElementWithNamespace(
           soapNamespace, XmlElementNames.SOAPHeaderElementName)) {
         do {
-          reader.Read();
+          await reader.Read();
 
           if (reader.IsStartElementWithNamespace(
               XmlNamespace.Types, XmlElementNames.ServerVersionInfo)) {
@@ -566,25 +566,26 @@ abstract class ServiceRequestBase {
             soapNamespace, XmlElementNames.SOAPHeaderElementName));
 
         // Queue up the next read
-        reader.Read();
+        await reader.Read();
       }
 
       // Parse the fault element contained within the SOAP body.
       if (reader.IsStartElementWithNamespace(
           soapNamespace, XmlElementNames.SOAPBodyElementName)) {
         do {
-          reader.Read();
+          await reader.Read();
 
           // Parse Fault element
           if (reader.IsStartElementWithNamespace(
               soapNamespace, XmlElementNames.SOAPFaultElementName)) {
-            soapFaultDetails = SoapFaultDetails.Parse(reader, soapNamespace);
+            soapFaultDetails =
+                await SoapFaultDetails.Parse(reader, soapNamespace);
           }
         } while (!reader.IsEndElementWithNamespace(
             soapNamespace, XmlElementNames.SOAPBodyElementName));
       }
 
-      reader.ReadEndElementWithNamespace(
+      await reader.ReadEndElementWithNamespace(
           soapNamespace, XmlElementNames.SOAPEnvelopeElementName);
     } on XmlException catch (e) {
       // If response doesn't contain a valid SOAP fault, just ignore exception and
@@ -599,11 +600,13 @@ abstract class ServiceRequestBase {
   /// </summary>
   /// <param name="request">The request.</param>
   /// <returns>The response returned by the server.</returns>
-  Future<IEwsHttpWebResponse> ValidateAndEmitRequest() async {
+  Future<IEwsHttpWebResponse> ValidateAndEmitRequest(
+      OutParam<IEwsHttpWebRequest> requestOut) async {
     this.Validate();
 
     // todo("implement validation")
     IEwsHttpWebRequest request = await this.BuildEwsHttpWebRequest();
+    requestOut.param = request;
 //
 //            if (this.service.SendClientLatencies)
 //            {
@@ -824,14 +827,14 @@ abstract class ServiceRequestBase {
 
           EwsServiceXmlReader reader =
               await EwsServiceXmlReader.Create(memoryStream, this.Service);
-          soapFaultDetails = this.ReadSoapFault(reader);
+          soapFaultDetails = await this.ReadSoapFault(reader);
           await memoryStream.close();
         } else {
           Stream stream = ServiceRequestBase.GetResponseStream(httpWebResponse);
 
           EwsServiceXmlReader reader = await EwsServiceXmlReader.Create(
               stream as Stream<List<int>>, this.Service);
-          soapFaultDetails = this.ReadSoapFault(reader);
+          soapFaultDetails = await this.ReadSoapFault(reader);
 //                        await stream.close();
         }
 
@@ -913,9 +916,9 @@ abstract class ServiceRequestBase {
   /// Try to read the XML declaration. If it's not there, the server didn't return XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void _ReadXmlDeclaration(EwsServiceXmlReader reader) {
+  Future<void> _ReadXmlDeclaration(EwsServiceXmlReader reader) async {
     try {
-      reader.Read(nodeType: XmlNodeType.XmlDeclaration);
+      await reader.Read(nodeType: XmlNodeType.XmlDeclaration);
     } on XmlException catch (ex, stacktrace) {
       throw new ServiceRequestException(
           "ServiceResponseDoesNotContainXml", ex, stacktrace);

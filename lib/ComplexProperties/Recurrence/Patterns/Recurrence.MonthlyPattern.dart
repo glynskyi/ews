@@ -86,13 +86,13 @@ class MonthlyPattern extends IntervalPattern {
   /// <param name="reader">The reader.</param>
   /// <returns>True if appropriate element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (super.TryReadElementFromXml(reader)) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    if (await super.TryReadElementFromXml(reader)) {
       return true;
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.DayOfMonth:
-          this._dayOfMonth = reader.ReadElementValue<int>();
+          this._dayOfMonth = await reader.ReadElementValue<int>();
           return true;
         default:
           return false;

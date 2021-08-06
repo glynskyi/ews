@@ -95,42 +95,42 @@ class ReferenceAttachment extends Attachment {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    bool result = super.TryReadElementFromXml(reader);
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    bool result = await super.TryReadElementFromXml(reader);
 
     if (!result) {
       if (reader.LocalName == XmlElementNames.AttachLongPathName) {
-        this._attachLongPathName = reader.ReadElementValue<String>();
+        this._attachLongPathName = await reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.ProviderType) {
-        this._providerType = reader.ReadElementValue<String>();
+        this._providerType = await reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.ProviderEndpointUrl) {
-        this._providerEndpointUrl = reader.ReadElementValue<String>();
+        this._providerEndpointUrl = await reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.AttachmentThumbnailUrl) {
-        this._attachmentThumbnailUrl = reader.ReadElementValue<String>();
+        this._attachmentThumbnailUrl = await reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.AttachmentPreviewUrl) {
-        this._attachmentPreviewUrl = reader.ReadElementValue<String>();
+        this._attachmentPreviewUrl = await reader.ReadElementValue<String>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.PermissionType) {
-        this._permissionType = reader.ReadElementValue<int>();
+        this._permissionType = await reader.ReadElementValue<int>();
         return true;
       }
 
       if (reader.LocalName == XmlElementNames.AttachmentIsFolder) {
-        this._attachmentIsFolder = reader.ReadElementValue<bool>();
+        this._attachmentIsFolder = await reader.ReadElementValue<bool>();
         return true;
       }
     }
@@ -144,7 +144,7 @@ class ReferenceAttachment extends Attachment {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) async {
     return super.TryReadElementFromXml(reader);
   }
 

@@ -74,19 +74,19 @@ class MeetingTimeZone extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.BaseOffset:
         this._baseOffset = EwsUtilities.XSDurationToTimeSpan(
-            reader.ReadElementValue<String>()!);
+            (await reader.ReadElementValue<String>())!);
         return true;
       case XmlElementNames.Standard:
         this._standard = new TimeChange();
-        this._standard!.LoadFromXml(reader, reader.LocalName);
+        await this._standard!.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.Daylight:
         this._daylight = new TimeChange();
-        this._daylight!.LoadFromXml(reader, reader.LocalName);
+        await this._daylight!.LoadFromXml(reader, reader.LocalName);
         return true;
       default:
         return false;

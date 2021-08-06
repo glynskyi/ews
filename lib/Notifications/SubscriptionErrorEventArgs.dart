@@ -37,7 +37,7 @@ class SubscriptionErrorEventArgs // extends EventArgs
   /// <param name="subscription">The subscription for which an error occurred. If subscription is null, the error applies to the entire connection.</param>
   /// <param name="exception">The exception representing the error. If exception is null, the connection was cleanly closed by the server.</param>
   SubscriptionErrorEventArgs(
-      StreamingSubscription subscription, Error exception) {
+      StreamingSubscription? subscription, Object? exception) {
     this.Subscription = subscription;
     this.Exception = exception;
   }
@@ -50,5 +50,5 @@ class SubscriptionErrorEventArgs // extends EventArgs
   /// <summary>
   /// Gets the exception representing the error. If Exception is null, the connection was cleanly closed by the server.
   /// </summary>
-  Error? Exception;
+  Object? Exception;
 }

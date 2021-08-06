@@ -77,17 +77,17 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// Reads the element value as date time.
   /// </summary>
   /// <returns>Element value.</returns>
-  DateTime? ReadElementValueAsDateTime() {
-    return this._ConvertStringToDateTime(this.ReadElementValue<String>());
+  Future<DateTime?> ReadElementValueAsDateTime() async {
+    return this._ConvertStringToDateTime(await this.ReadElementValue<String>());
   }
 
   /// <summary>
   /// Reads the element value as unspecified date.
   /// </summary>
   /// <returns>Element value.</returns>
-  DateTime? ReadElementValueAsUnspecifiedDate() {
+  Future<DateTime?> ReadElementValueAsUnspecifiedDate() async {
     return this
-        ._ConvertStringToUnspecifiedDate(this.ReadElementValue<String>());
+        ._ConvertStringToUnspecifiedDate(await this.ReadElementValue<String>());
   }
 
   /// <summary>
@@ -123,41 +123,41 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// <param name="requestedPropertySet">The requested property set.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> [summary properties only].</param>
   /// <returns>List of service objects.</returns>
-  List<TServiceObject> ReadServiceObjectsCollectionFromXmlWithNamespace<
+  Future<List<TServiceObject>> ReadServiceObjectsCollectionFromXmlWithNamespace<
           TServiceObject extends ServiceObject>(
       XmlNamespace collectionXmlNamespace,
       String collectionXmlElementName,
       IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
       bool clearPropertyBag,
       PropertySet? requestedPropertySet,
-      bool summaryPropertiesOnly) {
+      bool summaryPropertiesOnly) async {
     List<TServiceObject> serviceObjects = <TServiceObject>[];
     TServiceObject? serviceObject = null;
 
     if (!this.IsStartElementWithNamespace(
         collectionXmlNamespace, collectionXmlElementName)) {
-      this.ReadStartElementWithNamespace(
+      await this.ReadStartElementWithNamespace(
           collectionXmlNamespace, collectionXmlElementName);
     }
 
     if (!this.IsEmptyElement) {
       do {
-        this.Read();
+        await this.Read();
 
         if (this.IsStartElement()) {
           serviceObject =
               getObjectInstanceDelegate(this.Service, this.LocalName);
 
           if (serviceObject == null) {
-            this.SkipCurrentElement();
+            await this.SkipCurrentElement();
           } else {
             if (this.LocalName != serviceObject.GetXmlElementName()) {
               throw new ServiceLocalException(
                   "The type of the object in the store (${this.LocalName}) does not match that of the local object (${serviceObject.GetXmlElementName()}).");
             }
 
-            serviceObject.LoadFromXmlWithPropertySet(this, clearPropertyBag,
-                requestedPropertySet, summaryPropertiesOnly);
+            await serviceObject.LoadFromXmlWithPropertySet(this,
+                clearPropertyBag, requestedPropertySet, summaryPropertiesOnly);
 
             serviceObjects.add(serviceObject);
           }
@@ -179,13 +179,13 @@ class EwsServiceXmlReader extends EwsXmlReader {
   /// <param name="requestedPropertySet">The requested property set.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> [summary properties only].</param>
   /// <returns>List of service objects.</returns>
-  List<TServiceObject>
+  Future<List<TServiceObject>>
       ReadServiceObjectsCollectionFromXml<TServiceObject extends ServiceObject>(
           String collectionXmlElementName,
           IGetObjectInstanceDelegate<TServiceObject> getObjectInstanceDelegate,
           bool clearPropertyBag,
           PropertySet? requestedPropertySet,
-          bool summaryPropertiesOnly) {
+          bool summaryPropertiesOnly) async {
     return this
         .ReadServiceObjectsCollectionFromXmlWithNamespace<TServiceObject>(
             XmlNamespace.Messages,

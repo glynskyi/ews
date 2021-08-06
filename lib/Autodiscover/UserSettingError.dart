@@ -55,20 +55,21 @@ class UserSettingError {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsXmlReader reader) {
+  Future<void> LoadFromXml(EwsXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.ErrorCode:
-            this.ErrorCode = reader.ReadElementValue<AutodiscoverErrorCode>();
+            this.ErrorCode =
+                await reader.ReadElementValue<AutodiscoverErrorCode>();
             break;
           case XmlElementNames.ErrorMessage:
-            this.ErrorMessage = reader.ReadElementValue<String>();
+            this.ErrorMessage = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SettingName:
-            this.SettingName = reader.ReadElementValue<String>();
+            this.SettingName = await reader.ReadElementValue<String>();
             break;
         }
       }

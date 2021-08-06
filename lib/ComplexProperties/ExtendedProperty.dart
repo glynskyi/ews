@@ -61,11 +61,11 @@ class ExtendedProperty extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.ExtendedFieldURI:
         this._propertyDefinition = new ExtendedPropertyDefinition();
-        this._propertyDefinition!.LoadFromXml(reader);
+        await this._propertyDefinition!.LoadFromXml(reader);
         return true;
       case XmlElementNames.Value:
         EwsUtilities.Assert(
@@ -73,7 +73,7 @@ class ExtendedProperty extends ComplexProperty {
             "ExtendedProperty.TryReadElementFromXml",
             "PropertyDefintion is missing");
 
-        String? stringValue = reader.ReadElementValue<String>();
+        String? stringValue = await reader.ReadElementValue<String>();
         this._value = MapiTypeConverter.ConvertToValueWithStringValue(
             this.PropertyDefinition!.MapiType, stringValue);
         return true;
@@ -85,7 +85,7 @@ class ExtendedProperty extends ComplexProperty {
 
         StringList stringList =
             new StringList.fromElementName(XmlElementNames.Value);
-        stringList.LoadFromXml(reader, reader.LocalName);
+        await stringList.LoadFromXml(reader, reader.LocalName);
         this._value = MapiTypeConverter.ConvertToValue(
             this.PropertyDefinition!.MapiType, stringList);
         return true;
@@ -125,7 +125,8 @@ class ExtendedProperty extends ComplexProperty {
   /// <summary>
   /// Gets the definition of the extended property.
   /// </summary>
-  ExtendedPropertyDefinition? get PropertyDefinition => this._propertyDefinition;
+  ExtendedPropertyDefinition? get PropertyDefinition =>
+      this._propertyDefinition;
 
   /// <summary>
   /// Gets or sets the value of the extended property.

@@ -78,8 +78,8 @@ class TimeZonePeriod extends ComplexProperty {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
-    this.LoadFromXml(reader, XmlElementNames.Period);
+  Future<void> LoadFromXmlElementName(EwsServiceXmlReader reader) async {
+    await this.LoadFromXml(reader, XmlElementNames.Period);
   }
 
   /// <summary>

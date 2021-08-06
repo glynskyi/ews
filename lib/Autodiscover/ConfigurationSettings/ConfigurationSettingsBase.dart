@@ -47,9 +47,9 @@ abstract class ConfigurationSettingsBase {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>True is the current element was read, false otherwise.</returns>
-  bool TryReadCurrentXmlElement(EwsXmlReader reader) {
+  Future<bool> TryReadCurrentXmlElement(EwsXmlReader reader) async {
     if (reader.LocalName == XmlElementNames.Error) {
-      this._error = AutodiscoverError.Parse(reader);
+      this._error = await AutodiscoverError.Parse(reader);
 
       return true;
     } else {
@@ -61,24 +61,24 @@ abstract class ConfigurationSettingsBase {
   /// Loads the settings from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> LoadFromXml(EwsXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.NotSpecified, XmlElementNames.Autodiscover);
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.NotSpecified, XmlElementNames.Response);
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.IsStartElement()) {
-        if (!this.TryReadCurrentXmlElement(reader)) {
-          reader.SkipCurrentElement();
+        if (!await this.TryReadCurrentXmlElement(reader)) {
+          await reader.SkipCurrentElement();
         }
       }
     } while (!reader.IsEndElementWithNamespace(
         XmlNamespace.NotSpecified, XmlElementNames.Response));
 
-    reader.ReadEndElementWithNamespace(
+    await reader.ReadEndElementWithNamespace(
         XmlNamespace.NotSpecified, XmlElementNames.Autodiscover);
   }
 

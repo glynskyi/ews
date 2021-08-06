@@ -56,10 +56,10 @@ class TimeZonePropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  Future<void> LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
     TimeZoneDefinition timeZoneDefinition = new TimeZoneDefinition();
-    timeZoneDefinition.LoadFromXml(reader, this.XmlElementName);
+    await timeZoneDefinition.LoadFromXml(reader, this.XmlElementName);
 
     propertyBag[this] = timeZoneDefinition.ToTimeZoneInfo(reader.Service);
   }

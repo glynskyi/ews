@@ -1,0 +1,9 @@
+analyzer:
+  errors:
+    unawaited_futures: error
+
+linter:
+  rules:
+    unawaited_futures: true
+    prefer_null_aware_method_calls: true
+

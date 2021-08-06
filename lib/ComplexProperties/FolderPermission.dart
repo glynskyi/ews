@@ -192,8 +192,8 @@ class FolderPermission extends ComplexProperty {
       new LazyMember<List<FolderPermission>>(() {
     List<FolderPermission> results = <FolderPermission>[];
 
-    FolderPermission permissionNone =
-        FolderPermission._defaultPermissions.Member![FolderPermissionLevel.None]!;
+    FolderPermission permissionNone = FolderPermission
+        ._defaultPermissions.Member![FolderPermissionLevel.None]!;
     FolderPermission permissionOwner = FolderPermission
         ._defaultPermissions.Member![FolderPermissionLevel.Owner]!;
 
@@ -534,7 +534,8 @@ class FolderPermission extends ComplexProperty {
     // If permission level is set to Custom, see if there's a variant
     // that Outlook would map to the same permission level.
     if (this._permissionLevel == FolderPermissionLevel.Custom) {
-      for (FolderPermission variant in FolderPermission._levelVariants.Member!) {
+      for (FolderPermission variant
+          in FolderPermission._levelVariants.Member!) {
         if (this._IsEqualTo(variant)) {
           return variant.PermissionLevel;
         }
@@ -559,39 +560,39 @@ class FolderPermission extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.UserId:
         this.UserId = new property.UserId();
-        this.UserId!.LoadFromXml(reader, reader.LocalName);
+        await this.UserId!.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.CanCreateItems:
-        this._canCreateItems = reader.ReadValue<bool>();
+        this._canCreateItems = await reader.ReadValue<bool>();
         return true;
       case XmlElementNames.CanCreateSubFolders:
-        this._canCreateSubFolders = reader.ReadValue<bool>();
+        this._canCreateSubFolders = await reader.ReadValue<bool>();
         return true;
       case XmlElementNames.IsFolderOwner:
-        this._isFolderOwner = reader.ReadValue<bool>();
+        this._isFolderOwner = await reader.ReadValue<bool>();
         return true;
       case XmlElementNames.IsFolderVisible:
-        this._isFolderVisible = reader.ReadValue<bool>();
+        this._isFolderVisible = await reader.ReadValue<bool>();
         return true;
       case XmlElementNames.IsFolderContact:
-        this._isFolderContact = reader.ReadValue<bool>();
+        this._isFolderContact = await reader.ReadValue<bool>();
         return true;
       case XmlElementNames.EditItems:
-        this._editItems = reader.ReadValue<PermissionScope>();
+        this._editItems = await reader.ReadValue<PermissionScope>();
         return true;
       case XmlElementNames.DeleteItems:
-        this._deleteItems = reader.ReadValue<PermissionScope>();
+        this._deleteItems = await reader.ReadValue<PermissionScope>();
         return true;
       case XmlElementNames.ReadItems:
-        this._readItems = reader.ReadValue<FolderPermissionReadAccess>();
+        this._readItems = await reader.ReadValue<FolderPermissionReadAccess>();
         return true;
       case XmlElementNames.PermissionLevel:
       case XmlElementNames.CalendarPermissionLevel:
-        this._permissionLevel = reader.ReadValue<FolderPermissionLevel>();
+        this._permissionLevel = await reader.ReadValue<FolderPermissionLevel>();
         return true;
       default:
         return false;
@@ -605,9 +606,9 @@ class FolderPermission extends ComplexProperty {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String? xmlElementName) {
-    super.LoadFromXmlWithNamespace(reader, xmlNamespace, xmlElementName);
+  Future<void> LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String? xmlElementName) async {
+    await super.LoadFromXmlWithNamespace(reader, xmlNamespace, xmlElementName);
 
     this._AdjustPermissionLevel();
   }

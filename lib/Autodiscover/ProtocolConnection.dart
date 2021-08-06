@@ -45,22 +45,23 @@ class ProtocolConnection {
   /// Read user setting with ProtocolConnection value.
   /// </summary>
   /// <param name="reader">EwsServiceXmlReader</param>
-  static ProtocolConnection LoadFromXml(EwsXmlReader reader) {
+  static Future<ProtocolConnection> LoadFromXml(EwsXmlReader reader) async {
     ProtocolConnection connection = new ProtocolConnection();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.EncryptionMethod:
-            connection.EncryptionMethod = reader.ReadElementValue<String>();
+            connection.EncryptionMethod =
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Hostname:
-            connection.Hostname = reader.ReadElementValue<String>();
+            connection.Hostname = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Port:
-            connection.Port = reader.ReadElementValue<int>();
+            connection.Port = await reader.ReadElementValue<int>();
             break;
         }
       }

@@ -144,19 +144,20 @@ class UserId extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.SID:
-        this._sID = reader.ReadValue();
+        this._sID = await reader.ReadValue();
         return true;
       case XmlElementNames.PrimarySmtpAddress:
-        this._primarySmtpAddress = reader.ReadValue();
+        this._primarySmtpAddress = await reader.ReadValue();
         return true;
       case XmlElementNames.DisplayName:
-        this._displayName = reader.ReadValue();
+        this._displayName = await reader.ReadValue();
         return true;
       case XmlElementNames.DistinguishedUser:
-        this._standardUser = reader.ReadValue<enumerations.StandardUser>();
+        this._standardUser =
+            await reader.ReadValue<enumerations.StandardUser>();
         return true;
       default:
         return false;

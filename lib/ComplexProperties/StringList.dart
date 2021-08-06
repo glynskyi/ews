@@ -69,9 +69,9 @@ class StringList extends ComplexProperty
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     if (reader.LocalName == this._itemXmlElementName) {
-      this.Add(reader.ReadValue<String>()!);
+      this.Add((await reader.ReadValue<String>())!);
 
       return true;
     } else {

@@ -100,28 +100,31 @@ class SoapFaultDetails {
   /// <param name="reader">The reader.</param>
   /// <param name="soapNamespace">The SOAP namespace to use.</param>
   /// <returns>SOAP fault details.</returns>
-  static SoapFaultDetails Parse(
-      EwsXmlReader reader, XmlNamespace soapNamespace) {
+  static Future<SoapFaultDetails> Parse(
+      EwsXmlReader reader, XmlNamespace soapNamespace) async {
     SoapFaultDetails soapFaultDetails = new SoapFaultDetails();
 
     do {
-      reader.Read();
+      await reader.Read();
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.SOAPFaultCodeElementName:
-            soapFaultDetails.FaultCode = reader.ReadElementValue<String>();
+            soapFaultDetails.FaultCode =
+                await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SOAPFaultStringElementName:
-            soapFaultDetails.FaultString = reader.ReadElementValue<String>();
+            soapFaultDetails.FaultString =
+                await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SOAPFaultActorElementName:
-            soapFaultDetails.FaultActor = reader.ReadElementValue<String>();
+            soapFaultDetails.FaultActor =
+                await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SOAPDetailElementName:
-            soapFaultDetails.ParseDetailNode(reader);
+            await soapFaultDetails.ParseDetailNode(reader);
             break;
 
           default:
@@ -139,14 +142,14 @@ class SoapFaultDetails {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /* private */
-  void ParseDetailNode(EwsXmlReader reader) {
+  Future<void> ParseDetailNode(EwsXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.EwsResponseCodeElementName:
             try {
-              this.ResponseCode = reader.ReadElementValue<ServiceError>();
+              this.ResponseCode = await reader.ReadElementValue<ServiceError>();
             } catch (ArgumentException) {
               // ServiceError couldn't be mapped to enum value, treat as an ISE
               this.ResponseCode = ServiceError.ErrorInternalServerError;
@@ -155,20 +158,20 @@ class SoapFaultDetails {
             break;
 
           case XmlElementNames.EwsMessageElementName:
-            this.Message = reader.ReadElementValue<String>();
+            this.Message = await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.EwsLineElementName:
-            this.LineNumber = reader.ReadElementValue<int>();
+            this.LineNumber = await reader.ReadElementValue<int>();
             break;
 
           case XmlElementNames.EwsPositionElementName:
-            this.PositionWithinLine = reader.ReadElementValue<int>();
+            this.PositionWithinLine = await reader.ReadElementValue<int>();
             break;
 
           case XmlElementNames.EwsErrorCodeElementName:
             try {
-              this.ErrorCode = reader.ReadElementValue<ServiceError>();
+              this.ErrorCode = await reader.ReadElementValue<ServiceError>();
             } catch (ArgumentException) {
               // ServiceError couldn't be mapped to enum value, treat as an ISE
               this.ErrorCode = ServiceError.ErrorInternalServerError;
@@ -177,11 +180,11 @@ class SoapFaultDetails {
             break;
 
           case XmlElementNames.EwsExceptionTypeElementName:
-            this.ExceptionType = reader.ReadElementValue<String>();
+            this.ExceptionType = await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.MessageXml:
-            this.ParseMessageXml(reader);
+            await this.ParseMessageXml(reader);
             break;
 
           default:
@@ -198,7 +201,7 @@ class SoapFaultDetails {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /* private */
-  void ParseMessageXml(EwsXmlReader reader) {
+  Future<void> ParseMessageXml(EwsXmlReader reader) async {
     // E12 and E14 return the MessageXml element in different
     // namespaces (types namespace for E12, errors namespace in E14). To
     // avoid this problem, the parser will match the namespace from the
@@ -208,14 +211,14 @@ class SoapFaultDetails {
 
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement() && !reader.IsEmptyElement) {
           switch (reader.LocalName) {
             case XmlElementNames.Value:
               this.errorDetails[
                       reader.ReadAttributeValue(XmlAttributeNames.Name)] =
-                  reader.ReadElementValue<String>();
+                  await reader.ReadElementValue<String>();
               break;
 
             default:

@@ -50,11 +50,11 @@
 @override
         void ReadElementsFromXml(EwsServiceXmlReader reader)
         {
-            reader.Read();
+            await reader.Read();
             this.ruleCollection.OutlookRuleBlobExists = reader.ReadElementValue<bool>(
                 XmlNamespace.Messages,
                 XmlElementNames.OutlookRuleBlobExists);
-            reader.Read();
+            await reader.Read();
             if (reader.IsStartElement(XmlNamespace.NotSpecified, XmlElementNames.InboxRules))
             {
                 this.ruleCollection.LoadFromXml(reader, XmlNamespace.NotSpecified, XmlElementNames.InboxRules);

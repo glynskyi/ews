@@ -81,7 +81,7 @@
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
 
                     if (reader.NodeType == XmlNodeType.Element)
                     {
@@ -106,14 +106,14 @@
                 while (!reader.IsEndElement(XmlNamespace.Messages, XmlElementNames.Conversations));
             }
 
-            reader.Read();
+            await reader.Read();
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.HighlightTerms) &&
                 !reader.IsEmptyElement)
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
 
                     if (reader.NodeType == XmlNodeType.Element)
                     {
@@ -134,14 +134,14 @@
             {
                 this.Results.TotalCount = reader.ReadElementValue<int>();
 
-                reader.Read();
+                await reader.Read();
             }
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.IndexedOffset) && !reader.IsEmptyElement)
             {
                 this.Results.IndexedOffset = reader.ReadElementValue<int>();
 
-                reader.Read();
+                await reader.Read();
             }
         }
     }

@@ -45,15 +45,16 @@ class AlternateMailboxCollection {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>AlternateMailboxCollection</returns>
-  static AlternateMailboxCollection LoadFromXml(EwsXmlReader reader) {
+  static Future<AlternateMailboxCollection> LoadFromXml(
+      EwsXmlReader reader) async {
     AlternateMailboxCollection instance = new AlternateMailboxCollection();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if ((reader.NodeType == XmlNodeType.Element) &&
           (reader.LocalName == XmlElementNames.AlternateMailbox)) {
-        instance.Entries.add(AlternateMailbox.LoadFromXml(reader));
+        instance.Entries.add(await AlternateMailbox.LoadFromXml(reader));
       }
     } while (!reader.IsEndElementWithNamespace(
         XmlNamespace.Autodiscover, XmlElementNames.AlternateMailboxes));

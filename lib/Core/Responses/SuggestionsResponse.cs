@@ -54,7 +54,7 @@
 
             do
             {
-                reader.Read();
+                await reader.Read();
 
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.SuggestionDayResult))
                 {

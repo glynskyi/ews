@@ -54,10 +54,10 @@ class DeleteAttachmentResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootItemId);
 
     String? changeKey =
@@ -67,7 +67,7 @@ class DeleteAttachmentResponse extends ServiceResponse {
       this._attachment!.Owner!.RootItemId!.ChangeKey = changeKey;
     }
 
-    reader.ReadEndElementIfNecessary(
+    await reader.ReadEndElementIfNecessary(
         XmlNamespace.Messages, XmlElementNames.RootItemId);
   }
 

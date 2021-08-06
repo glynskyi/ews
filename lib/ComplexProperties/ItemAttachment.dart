@@ -102,15 +102,15 @@ class ItemAttachment extends Attachment {
   /// <param name="reader">The reader to read the element from.</param>
   /// <returns>True if the element was read, false otherwise.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    bool result = super.TryReadElementFromXml(reader);
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    bool result = await super.TryReadElementFromXml(reader);
 
     if (!result) {
       this._item =
           EwsUtilities.CreateItemFromXmlElementName(this, reader.LocalName);
 
       if (this._item != null) {
-        this._item!.LoadFromXml(reader, true /* clearPropertyBag */);
+        await this._item!.LoadFromXml(reader, true /* clearPropertyBag */);
       }
     }
 
@@ -123,11 +123,11 @@ class ItemAttachment extends Attachment {
   /// <param name="reader"></param>
   /// <returns></returns>
   @override
-  bool TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) async {
     // update the attachment id.
-    super.TryReadElementFromXml(reader);
+    await super.TryReadElementFromXml(reader);
 
-    reader.Read();
+    await reader.Read();
     Type? itemClass =
         EwsUtilities.GetItemTypeFromXmlElementName(reader.LocalName);
 
@@ -136,7 +136,7 @@ class ItemAttachment extends Attachment {
         throw new ServiceLocalException("Strings.AttachmentItemTypeMismatch");
       }
 
-      this._item!.LoadFromXml(reader, false /* clearPropertyBag */);
+      await this._item!.LoadFromXml(reader, false /* clearPropertyBag */);
       return true;
     }
 

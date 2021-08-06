@@ -71,17 +71,18 @@ abstract class NotificationEvent {
   /// Load from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void InternalLoadFromXml(EwsServiceXmlReader reader) {}
+  Future<void> InternalLoadFromXml(EwsServiceXmlReader reader) async {}
 
   /// <summary>
   /// Loads this NotificationEvent from XML.
   /// </summary>
   /// <param name="reader">The reader from which to read the notification event.</param>
   /// <param name="xmlElementName">The start XML element name of this notification event.</param>
-  void LoadFromXml(EwsServiceXmlReader reader, String xmlElementName) {
-    this.InternalLoadFromXml(reader);
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String xmlElementName) async {
+    await this.InternalLoadFromXml(reader);
 
-    reader.ReadEndElementIfNecessary(XmlNamespace.Types, xmlElementName);
+    await reader.ReadEndElementIfNecessary(XmlNamespace.Types, xmlElementName);
   }
 
   /// <summary>

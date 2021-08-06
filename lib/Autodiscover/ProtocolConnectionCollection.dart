@@ -47,16 +47,17 @@ class ProtocolConnectionCollection {
   /// Read user setting with ProtocolConnectionCollection value.
   /// </summary>
   /// <param name="reader">EwsServiceXmlReader</param>
-  static ProtocolConnectionCollection LoadFromXml(EwsXmlReader reader) {
+  static Future<ProtocolConnectionCollection> LoadFromXml(
+      EwsXmlReader reader) async {
     ProtocolConnectionCollection value = new ProtocolConnectionCollection();
     ProtocolConnection? connection = null;
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         if (reader.LocalName == XmlElementNames.ProtocolConnection) {
-          connection = ProtocolConnection.LoadFromXml(reader);
+          connection = await ProtocolConnection.LoadFromXml(reader);
           if (connection != null) {
             value.Connections!.add(connection);
           }

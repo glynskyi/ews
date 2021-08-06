@@ -517,8 +517,11 @@ class PropertyBag {
   /// <param name="clear">Indicates whether the bag should be cleared before properties are loaded.</param>
   /// <param name="requestedPropertySet">The requested property set.</param>
   /// <param name="onlySummaryPropertiesRequested">Indicates whether summary or full properties were requested.</param>
-  void LoadFromXml(EwsServiceXmlReader reader, bool clear,
-      PropertySet? requestedPropertySet, bool onlySummaryPropertiesRequested) {
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader,
+      bool clear,
+      PropertySet? requestedPropertySet,
+      bool onlySummaryPropertiesRequested) async {
     if (clear) {
       this.Clear();
     }
@@ -532,7 +535,7 @@ class PropertyBag {
 
     try {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element) {
           OutParam<PropertyDefinition> propertyDefinitionOutParam =
@@ -542,11 +545,11 @@ class PropertyBag {
               reader.LocalName, propertyDefinitionOutParam)) {
             PropertyDefinition propertyDefinition =
                 propertyDefinitionOutParam.param!;
-            propertyDefinition.LoadPropertyValueFromXml(reader, this);
+            await propertyDefinition.LoadPropertyValueFromXml(reader, this);
 
             this._loadedProperties.add(propertyDefinition);
           } else {
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
           }
         }
       } while (!reader.IsEndElementWithNamespace(

@@ -241,7 +241,7 @@ abstract class Attachment extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.AttachmentId:
         this._id = reader.ReadAttributeValue(XmlAttributeNames.Id);
@@ -254,29 +254,29 @@ abstract class Attachment extends ComplexProperty {
             this.Owner!.RootItemId!.ChangeKey = rootItemChangeKey;
           }
         }
-        reader.ReadEndElementIfNecessary(
+        await reader.ReadEndElementIfNecessary(
             XmlNamespace.Types, XmlElementNames.AttachmentId);
         return true;
       case XmlElementNames.Name:
-        this._name = reader.ReadElementValue<String>();
+        this._name = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ContentType:
-        this._contentType = reader.ReadElementValue<String>();
+        this._contentType = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ContentId:
-        this._contentId = reader.ReadElementValue<String>();
+        this._contentId = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ContentLocation:
-        this._contentLocation = reader.ReadElementValue<String>();
+        this._contentLocation = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Size:
-        this._size = reader.ReadElementValue<int>();
+        this._size = await reader.ReadElementValue<int>();
         return true;
       case XmlElementNames.LastModifiedTime:
-        this._lastModifiedTime = reader.ReadElementValueAsDateTime();
+        this._lastModifiedTime = await reader.ReadElementValueAsDateTime();
         return true;
       case XmlElementNames.IsInline:
-        this._isInline = reader.ReadElementValue<bool>();
+        this._isInline = await reader.ReadElementValue<bool>();
         return true;
       default:
         return false;

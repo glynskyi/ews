@@ -78,12 +78,12 @@ class AbsoluteDayOfMonthTransition extends AbsoluteMonthTransition {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (super.TryReadElementFromXml(reader)) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    if (await super.TryReadElementFromXml(reader)) {
       return true;
     } else {
       if (reader.LocalName == XmlElementNames.Day) {
-        this.dayOfMonth = reader.ReadElementValue<int>();
+        this.dayOfMonth = await reader.ReadElementValue<int>();
 
         EwsUtilities.Assert(
             this.dayOfMonth! > 0 && this.dayOfMonth! <= 31,

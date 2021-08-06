@@ -69,10 +69,11 @@ class ExtendedPropertyCollection
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String? localElementName) async {
     ExtendedProperty extendedProperty = new ExtendedProperty();
 
-    extendedProperty.LoadFromXml(reader, reader.LocalName);
+    await extendedProperty.LoadFromXml(reader, reader.LocalName);
     this.InternalAdd(extendedProperty);
   }
 

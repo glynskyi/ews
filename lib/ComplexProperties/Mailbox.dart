@@ -86,13 +86,13 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.EmailAddress:
-        this.Address = reader.ReadElementValue<String>();
+        this.Address = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.RoutingType:
-        this.RoutingType = reader.ReadElementValue<String>();
+        this.RoutingType = await reader.ReadElementValue<String>();
         return true;
       default:
         return false;
@@ -128,7 +128,8 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
     super.InternalValidate();
 
     EwsUtilities.ValidateNonBlankStringParamAllowNull(this.Address, "address");
-    EwsUtilities.ValidateNonBlankStringParamAllowNull(this.RoutingType, "routingType");
+    EwsUtilities.ValidateNonBlankStringParamAllowNull(
+        this.RoutingType, "routingType");
   }
 
   /// <summary>
@@ -151,7 +152,8 @@ class Mailbox extends ComplexProperty implements ISearchStringProvider {
       } else if (((this.Address == null) && (other.Address == null)) ||
           ((this.Address != null) && this.Address == other.Address)) {
         return ((this.RoutingType == null) && (other.RoutingType == null)) ||
-            ((this.RoutingType != null) && this.RoutingType == other.RoutingType);
+            ((this.RoutingType != null) &&
+                this.RoutingType == other.RoutingType);
       } else {
         return false;
       }

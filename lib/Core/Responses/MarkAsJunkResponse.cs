@@ -48,7 +48,7 @@
         {
             base.ReadElementsFromXml(reader);
 
-            reader.Read();
+            await reader.Read();
 
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.MovedItemId))
             {

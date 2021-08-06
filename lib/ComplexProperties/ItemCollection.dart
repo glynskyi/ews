@@ -53,21 +53,22 @@ class ItemCollection<TItem extends Item> extends ComplexProperty
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String? localElementName) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, localElementName);
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element) {
           TItem item = EwsUtilities.CreateEwsObjectFromXmlElementName<Item>(
               reader.Service, reader.LocalName) as TItem;
 
           if (item == null) {
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
           } else {
-            item.LoadFromXml(reader, true /* clearPropertyBag */);
+            await item.LoadFromXml(reader, true /* clearPropertyBag */);
 
             this.items.add(item);
           }

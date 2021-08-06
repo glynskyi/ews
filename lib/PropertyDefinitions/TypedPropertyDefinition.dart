@@ -108,9 +108,9 @@ abstract class TypedPropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
-    String? value = reader.ReadElementValueWithNamespace(
+  Future<void> LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
+    String? value = await reader.ReadElementValueWithNamespace(
         XmlNamespace.Types, this.XmlElementName);
 
     if (!StringUtils.IsNullOrEmpty(value)) {

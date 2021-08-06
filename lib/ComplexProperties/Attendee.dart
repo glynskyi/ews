@@ -69,16 +69,17 @@ class Attendee extends EmailAddress {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Mailbox:
-        this.LoadFromXml(reader, reader.LocalName);
+        await this.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.ResponseType:
-        this._responseType = reader.ReadElementValue<MeetingResponseType>();
+        this._responseType =
+            await reader.ReadElementValue<MeetingResponseType>();
         return true;
       case XmlElementNames.LastResponseTime:
-        this._lastResponseTime = reader.ReadElementValueAsDateTime();
+        this._lastResponseTime = await reader.ReadElementValueAsDateTime();
         return true;
       default:
         return super.TryReadElementFromXml(reader);

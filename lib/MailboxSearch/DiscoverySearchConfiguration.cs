@@ -86,7 +86,7 @@
 
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.SearchQuery))
                 {
                     configuration.SearchQuery = reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.SearchQuery);
@@ -99,7 +99,7 @@
                     {
                         while (!reader.IsEndElement(XmlNamespace.Types, XmlElementNames.SearchableMailboxes))
                         {
-                            reader.Read();
+                            await reader.Read();
 
                             if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.SearchableMailbox))
                             {

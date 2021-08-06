@@ -183,7 +183,7 @@
                         // Process the next node before returning. Otherwise, the current </EmailAddress> node
                         // makes ComplexProperty.InternalLoadFromXml think that this ends the outer <EmailAddress>
 
-                        reader.Read();
+                        await reader.Read();
                         if (reader.NodeType == System.Xml.XmlNodeType.Element)
                         {
                             continue;

@@ -57,37 +57,39 @@ class FolderEvent extends NotificationEvent {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void InternalLoadFromXml(EwsServiceXmlReader reader) {
-    super.InternalLoadFromXml(reader);
+  Future<void> InternalLoadFromXml(EwsServiceXmlReader reader) async {
+    await super.InternalLoadFromXml(reader);
 
     this._folderId = new complex.FolderId();
-    this._folderId!.LoadFromXml(reader, reader.LocalName);
+    await this._folderId!.LoadFromXml(reader, reader.LocalName);
 
-    reader.Read();
+    await reader.Read();
 
     this.ParentFolderId = new complex.FolderId();
-    this.ParentFolderId!.LoadFromXml(reader, XmlElementNames.ParentFolderId);
+    await this
+        .ParentFolderId!
+        .LoadFromXml(reader, XmlElementNames.ParentFolderId);
 
     switch (this.EventType) {
       case EventType.Moved:
       case EventType.Copied:
-        reader.Read();
+        await reader.Read();
 
         this._oldFolderId = new complex.FolderId();
-        this._oldFolderId!.LoadFromXml(reader, reader.LocalName);
+        await this._oldFolderId!.LoadFromXml(reader, reader.LocalName);
 
-        reader.Read();
+        await reader.Read();
 
         this.OldParentFolderId = new complex.FolderId();
-        this.OldParentFolderId!.LoadFromXml(reader, reader.LocalName);
+        await this.OldParentFolderId!.LoadFromXml(reader, reader.LocalName);
         break;
 
       case EventType.Modified:
-        reader.Read();
+        await reader.Read();
         if (reader.IsStartElement()) {
           reader.EnsureCurrentNodeIsStartElementWithNamespace(
               XmlNamespace.Types, XmlElementNames.UnreadCount);
-          this._unreadCount = int.parse(reader.ReadValue());
+          this._unreadCount = int.parse(await reader.ReadValue());
         }
         break;
 

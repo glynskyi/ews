@@ -88,10 +88,10 @@ abstract class RecurrenceRange extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.StartDate:
-        DateTime? startDate = reader.ReadElementValueAsUnspecifiedDate();
+        DateTime? startDate = await reader.ReadElementValueAsUnspecifiedDate();
         if (startDate != null) {
           this._startDate = startDate;
           return true;

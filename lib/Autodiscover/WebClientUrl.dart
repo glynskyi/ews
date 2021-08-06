@@ -55,20 +55,20 @@ class WebClientUrl {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>WebClientUrl.</returns>
-  static WebClientUrl LoadFromXml(EwsXmlReader reader) {
+  static Future<WebClientUrl> LoadFromXml(EwsXmlReader reader) async {
     WebClientUrl webClientUrl = new WebClientUrl._();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.AuthenticationMethods:
             webClientUrl.AuthenticationMethods =
-                reader.ReadElementValue<String>();
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Url:
-            webClientUrl.Url = reader.ReadElementValue<String>();
+            webClientUrl.Url = await reader.ReadElementValue<String>();
             break;
         }
       }

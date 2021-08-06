@@ -51,16 +51,16 @@ abstract class MultiResponseServiceRequest<TResponse extends ServiceResponse>
   /// <param name="reader">The reader.</param>
   /// <returns>Service response collection.</returns>
   @override
-  Object ParseResponse(EwsServiceXmlReader reader) {
+  Future<Object> ParseResponse(EwsServiceXmlReader reader) async {
     ServiceResponseCollection<TResponse> serviceResponses =
         new ServiceResponseCollection<TResponse>();
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.ResponseMessages);
 
     for (int i = 0; i < this.GetExpectedResponseMessageCount(); i++) {
       // Read ahead to see if we've reached the end of the response messages early.
-      reader.Read();
+      await reader.Read();
       if (reader.IsEndElementWithNamespace(
           XmlNamespace.Messages, XmlElementNames.ResponseMessages)) {
         break;
@@ -68,7 +68,8 @@ abstract class MultiResponseServiceRequest<TResponse extends ServiceResponse>
 
       TResponse response = this.CreateServiceResponse(reader.Service, i);
 
-      response.LoadFromXml(reader, this.GetResponseMessageXmlElementName());
+      await response.LoadFromXml(
+          reader, this.GetResponseMessageXmlElementName());
 
       // Add the response to the list after it has been deserialized because the response
       // list updates an overall result as individual responses are added to it.
@@ -93,7 +94,7 @@ abstract class MultiResponseServiceRequest<TResponse extends ServiceResponse>
       }
     }
 
-    reader.ReadEndElementIfNecessary(
+    await reader.ReadEndElementIfNecessary(
         XmlNamespace.Messages, XmlElementNames.ResponseMessages);
 
     return serviceResponses;

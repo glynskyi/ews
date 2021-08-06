@@ -99,13 +99,13 @@ class AttributedString extends ComplexProperty {
   /// <param name="reader">XML reader</param>
   /// <returns>Whether reading succeeded</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Value:
-        this.Value = reader.ReadElementValue<String>();
+        this.Value = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.Attributions:
-        return this.LoadAttributionsFromXml(reader);
+        return await this.LoadAttributionsFromXml(reader);
       default:
         return false;
     }
@@ -116,16 +116,16 @@ class AttributedString extends ComplexProperty {
   /// </summary>
   /// <param name="reader">XML reader</param>
   /// <returns>Whether reading succeeded</returns>
-  bool LoadAttributionsFromXml(EwsServiceXmlReader reader) {
+  Future<bool> LoadAttributionsFromXml(EwsServiceXmlReader reader) async {
     if (!reader.IsEmptyElement) {
       String localName = reader.LocalName;
       this._attributionList = <String?>[];
 
       do {
-        reader.Read();
+        await reader.Read();
         if (reader.NodeType == XmlNodeType.Element &&
             reader.LocalName == XmlElementNames.Attribution) {
-          String? s = reader.ReadElementValue<String>();
+          String? s = await reader.ReadElementValue<String>();
           if (!StringUtils.IsNullOrEmpty(s)) {
             this._attributionList.add(s);
           }

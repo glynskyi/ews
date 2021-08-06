@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Migrated to stream XML processing
+
 ## 1.2.7
 
 * Fixed the autodiscovery response parsing with gzip/deflate encoding

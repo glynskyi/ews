@@ -68,17 +68,17 @@
             {
                 // Because we don't have an element for count of returned object,
                 // we have to test the element to determine if it is StartElement of return object or EndElement
-                reader.Read();
+                await reader.Read();
                 while (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Room))
                 {
-                    reader.Read(); // skip the start <Room>
+                    await reader.Read(); // skip the start <Room>
 
                     EmailAddress emailAddress = new EmailAddress();
                     emailAddress.LoadFromXml(reader, XmlElementNames.RoomId);
                     this.Rooms.Add(emailAddress);
 
                     reader.ReadEndElement(XmlNamespace.Types, XmlElementNames.Room);
-                    reader.Read();
+                    await reader.Read();
                 }
 
                 reader.EnsureCurrentNodeIsEndElement(XmlNamespace.Messages, XmlElementNames.Rooms);

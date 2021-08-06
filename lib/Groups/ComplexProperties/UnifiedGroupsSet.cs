@@ -73,13 +73,13 @@
          /// <param name="reader">The reader.</param>
          /// <param name="xmlElementName">The name of the xml element</param>
 @override
-         void LoadFromXml(EwsServiceXmlReader reader, String xmlElementName)
+         Future<void> LoadFromXml(EwsServiceXmlReader reader, String xmlElementName) async
          {
              reader.EnsureCurrentNodeIsStartElement(XmlNamespace.Types, XmlElementNames.UnifiedGroupsSet);
 
              do
              {
-                 reader.Read();
+                 await reader.Read();
                  switch (reader.LocalName)
                  {
                      case XmlElementNames.FilterType:
@@ -89,7 +89,7 @@
                          this.TotalGroups = reader.ReadElementValue<int>();
                          break;
                      case XmlElementNames.GroupsTag:
-                         reader.Read();
+                         await reader.Read();
                          while (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.UnifiedGroup))
                          {
                              UnifiedGroup unifiedGroup = new UnifiedGroup();
@@ -99,7 +99,7 @@
 
                          // Skip end element.
                          reader.EnsureCurrentNodeIsEndElement(XmlNamespace.NotSpecified, XmlElementNames.GroupsTag);
-                         reader.Read();
+                         await reader.Read();
                          break;
                      default:
                          break;
@@ -109,6 +109,6 @@
 
              // Skip end element
              reader.EnsureCurrentNodeIsEndElement(XmlNamespace.Types, XmlElementNames.UnifiedGroupsSet);
-             reader.Read();
+             await reader.Read();
          }
     }

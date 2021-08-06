@@ -58,11 +58,11 @@ class GetFolderResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
     List<ServiceObjects.Folder> folders =
-        reader.ReadServiceObjectsCollectionFromXml<ServiceObjects.Folder>(
+        await reader.ReadServiceObjectsCollectionFromXml<ServiceObjects.Folder>(
             XmlElementNames.Folders,
             this._GetObjectInstance,
             true,

@@ -90,13 +90,13 @@ class EndDateRecurrenceRange extends RecurrenceRange {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (super.TryReadElementFromXml(reader)) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    if (await super.TryReadElementFromXml(reader)) {
       return true;
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.EndDate:
-          this.endDate = reader.ReadElementValueAsDateTime();
+          this.endDate = await reader.ReadElementValueAsDateTime();
           return true;
         default:
           return false;

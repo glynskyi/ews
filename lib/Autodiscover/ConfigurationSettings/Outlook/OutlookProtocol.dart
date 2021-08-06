@@ -53,7 +53,8 @@ class OutlookProtocol {
   static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       commonProtocolSettings =
       new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
-    final Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    final Map<UserSettingName, Object? Function(OutlookProtocol)> results =
+        new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.EcpDeliveryReportUrlFragment] = (p) => p.ecpUrlMt;
     results[UserSettingName.EcpEmailSubscriptionsUrlFragment] =
         (p) => p.ecpUrlAggr;
@@ -84,7 +85,8 @@ class OutlookProtocol {
   static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       internalProtocolSettings =
       new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
-    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results =
+        new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.ActiveDirectoryServer] =
         (p) => p.activeDirectoryServer;
     results[UserSettingName.CrossOrganizationSharingEnabled] =
@@ -139,7 +141,8 @@ class OutlookProtocol {
   static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       externalProtocolSettings =
       new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
-    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results =
+        new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.ExternalEcpDeliveryReportUrl] =
         (p) => p.ConvertEcpFragmentToUrl(p.ecpUrlRet);
     results[UserSettingName.ExternalEcpEmailSubscriptionsUrl] =
@@ -196,10 +199,12 @@ class OutlookProtocol {
   static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       internalProtocolConverterDictionary =
       new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
-    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
-    commonProtocolSettings.Member!.forEach((key, value) => results[key] = value);
-    internalProtocolSettings.Member!.forEach(
-        (key, value) => results[key] = value);
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results =
+        new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    commonProtocolSettings.Member!
+        .forEach((key, value) => results[key] = value);
+    internalProtocolSettings.Member!
+        .forEach((key, value) => results[key] = value);
     return results;
   });
 
@@ -211,10 +216,12 @@ class OutlookProtocol {
   static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       externalProtocolConverterDictionary =
       new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
-    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
-    commonProtocolSettings.Member!.forEach((key, value) => results[key] = value);
-    externalProtocolSettings.Member!.forEach(
-        (key, value) => results[key] = value);
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results =
+        new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    commonProtocolSettings.Member!
+        .forEach((key, value) => results[key] = value);
+    externalProtocolSettings.Member!
+        .forEach((key, value) => results[key] = value);
     return results;
   });
 
@@ -226,7 +233,8 @@ class OutlookProtocol {
   static LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>
       webProtocolConverterDictionary =
       new LazyMember<Map<UserSettingName, Func<OutlookProtocol, Object?>>>(() {
-    Map<UserSettingName, Object? Function(OutlookProtocol)> results = new Map<UserSettingName, Func<OutlookProtocol, Object>>();
+    Map<UserSettingName, Object? Function(OutlookProtocol)> results =
+        new Map<UserSettingName, Func<OutlookProtocol, Object>>();
     results[UserSettingName.InternalWebClientUrls] =
         (p) => p.internalOutlookWebAccessUrls;
     results[UserSettingName.ExternalWebClientUrls] =
@@ -379,139 +387,145 @@ class OutlookProtocol {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsXmlReader reader) {
+  Future<void> LoadFromXml(EwsXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.Type:
             this.ProtocolType = OutlookProtocol.ProtocolNameToType(
-                reader.ReadElementValue<String>());
+                await reader.ReadElementValue<String>());
             break;
           case XmlElementNames.AuthPackage:
-            this.authPackage = reader.ReadElementValue<String>();
+            this.authPackage = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Server:
-            this.server = reader.ReadElementValue<String>();
+            this.server = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerDN:
-            this.serverDN = reader.ReadElementValue<String>();
+            this.serverDN = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerVersion:
             // just read it out
-            reader.ReadElementValue<String>();
+            await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.AD:
-            this.activeDirectoryServer = reader.ReadElementValue<String>();
+            this.activeDirectoryServer =
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.MdbDN:
-            this.mailboxDN = reader.ReadElementValue<String>();
+            this.mailboxDN = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EWSUrl:
-            this.exchangeWebServicesUrl = reader.ReadElementValue<String>();
+            this.exchangeWebServicesUrl =
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EmwsUrl:
             this.exchangeManagementWebServicesUrl =
-                reader.ReadElementValue<String>();
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ASUrl:
-            this.availabilityServiceUrl = reader.ReadElementValue<String>();
+            this.availabilityServiceUrl =
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.OOFUrl:
             // just read it out
-            reader.ReadElementValue<String>();
+            await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.UMUrl:
-            this.unifiedMessagingUrl = reader.ReadElementValue<String>();
+            this.unifiedMessagingUrl = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.OABUrl:
-            this.offlineAddressBookUrl = reader.ReadElementValue<String>();
+            this.offlineAddressBookUrl =
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.PublicFolderServer:
-            this.publicFolderServer = reader.ReadElementValue<String>();
+            this.publicFolderServer = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Internal:
-            OutlookProtocol.LoadWebClientUrlsFromXml(
+            await OutlookProtocol.LoadWebClientUrlsFromXml(
                 reader, this.internalOutlookWebAccessUrls, reader.LocalName);
             break;
           case XmlElementNames.External:
-            OutlookProtocol.LoadWebClientUrlsFromXml(
+            await OutlookProtocol.LoadWebClientUrlsFromXml(
                 reader, this.externalOutlookWebAccessUrls, reader.LocalName);
             break;
           case XmlElementNames.Ssl:
-            String sslStr = reader.ReadElementValue<String>()!;
+            String sslStr = (await reader.ReadElementValue<String>())!;
             this.sslEnabled = sslStr.toLowerCase() == "on";
             break;
           case XmlElementNames.SharingUrl:
-            this.sharingEnabled = reader.ReadElementValue<String>()!.length > 0;
+            this.sharingEnabled =
+                (await reader.ReadElementValue<String>())!.length > 0;
             break;
           case XmlElementNames.EcpUrl:
-            this.ecpUrl = reader.ReadElementValue<String>();
+            this.ecpUrl = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_um:
-            this.ecpUrlUm = reader.ReadElementValue<String>();
+            this.ecpUrlUm = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_aggr:
-            this.ecpUrlAggr = reader.ReadElementValue<String>();
+            this.ecpUrlAggr = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_sms:
-            this.ecpUrlSms = reader.ReadElementValue<String>();
+            this.ecpUrlSms = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_mt:
-            this.ecpUrlMt = reader.ReadElementValue<String>();
+            this.ecpUrlMt = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_ret:
-            this.ecpUrlRet = reader.ReadElementValue<String>();
+            this.ecpUrlRet = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_publish:
-            this.ecpUrlPublish = reader.ReadElementValue<String>();
+            this.ecpUrlPublish = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_photo:
-            this.ecpUrlPhoto = reader.ReadElementValue<String>();
+            this.ecpUrlPhoto = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ExchangeRpcUrl:
-            this.exchangeRpcUrl = reader.ReadElementValue<String>();
+            this.exchangeRpcUrl = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EwsPartnerUrl:
             this.exchangeWebServicesPartnerUrl =
-                reader.ReadElementValue<String>();
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_connect:
-            this.ecpUrlConnect = reader.ReadElementValue<String>();
+            this.ecpUrlConnect = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tm:
-            this.ecpUrlTm = reader.ReadElementValue<String>();
+            this.ecpUrlTm = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tmCreating:
-            this.ecpUrlTmCreating = reader.ReadElementValue<String>();
+            this.ecpUrlTmCreating = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tmEditing:
-            this.ecpUrlTmEditing = reader.ReadElementValue<String>();
+            this.ecpUrlTmEditing = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_tmHiding:
-            this.ecpUrlTmHiding = reader.ReadElementValue<String>();
+            this.ecpUrlTmHiding = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SiteMailboxCreationURL:
-            this.siteMailboxCreationURL = reader.ReadElementValue<String>();
+            this.siteMailboxCreationURL =
+                await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.EcpUrl_extinstall:
-            this.ecpUrlExtInstall = reader.ReadElementValue<String>();
+            this.ecpUrlExtInstall = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.ServerExclusiveConnect:
             String serverExclusiveConnectStr =
-                reader.ReadElementValue<String>()!;
+                (await reader.ReadElementValue<String>())!;
             this.serverExclusiveConnect =
                 serverExclusiveConnectStr.toLowerCase() == "on";
             break;
           case XmlElementNames.CertPrincipalName:
-            this.certPrincipalName = reader.ReadElementValue<String>();
+            this.certPrincipalName = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.GroupingInformation:
-            this.groupingInformation = reader.ReadElementValue<String>();
+            this.groupingInformation = await reader.ReadElementValue<String>();
             break;
           default:
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
             break;
         }
       }
@@ -540,22 +554,22 @@ class OutlookProtocol {
   /// <param name="webClientUrls">The web client urls.</param>
   /// <param name="elementName">Name of the element.</param>
   /* private */
-  static void LoadWebClientUrlsFromXml(EwsXmlReader reader,
-      WebClientUrlCollection? webClientUrls, String elementName) {
+  static Future<void> LoadWebClientUrlsFromXml(EwsXmlReader reader,
+      WebClientUrlCollection? webClientUrls, String elementName) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.OWAUrl:
             String? authMethod = reader.ReadAttributeValue(
                 XmlAttributeNames.AuthenticationMethod);
-            String? owaUrl = reader.ReadElementValue<String>();
+            String? owaUrl = await reader.ReadElementValue<String>();
             WebClientUrl webClientUrl = new WebClientUrl(authMethod, owaUrl);
             webClientUrls!.Urls!.add(webClientUrl);
             break;
           default:
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
             break;
         }
       }
@@ -614,7 +628,8 @@ class OutlookProtocol {
   /// </summary>
   /// <value>The converter dictionary.</value>
   /* private */
-  Map<UserSettingName, Func<OutlookProtocol, Object?>>? get ConverterDictionary {
+  Map<UserSettingName, Func<OutlookProtocol, Object?>>?
+      get ConverterDictionary {
     switch (this.ProtocolType) {
       case OutlookProtocolType.Rpc:
         return internalProtocolConverterDictionary.Member;

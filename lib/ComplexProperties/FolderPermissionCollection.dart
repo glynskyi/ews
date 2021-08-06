@@ -82,26 +82,27 @@ class FolderPermissionCollection
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String? localElementName) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, localElementName);
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Types, this.InnerCollectionXmlElementName);
-    super.LoadFromXml(reader, this.InnerCollectionXmlElementName);
-    reader.ReadEndElementIfNecessary(
+    await super.LoadFromXml(reader, this.InnerCollectionXmlElementName);
+    await reader.ReadEndElementIfNecessary(
         XmlNamespace.Types, this.InnerCollectionXmlElementName);
 
-    reader.Read();
+    await reader.Read();
 
     if (reader.IsStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.UnknownEntries)) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElementWithNamespace(
             XmlNamespace.Types, XmlElementNames.UnknownEntry)) {
-          this._unknownEntries.add(reader.ReadElementValue<String>());
+          this._unknownEntries.add(await reader.ReadElementValue<String>());
         }
       } while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Types, XmlElementNames.UnknownEntries));

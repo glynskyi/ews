@@ -61,17 +61,17 @@ abstract class AbsoluteMonthTransition extends TimeZoneTransition {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (super.TryReadElementFromXml(reader)) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    if (await super.TryReadElementFromXml(reader)) {
       return true;
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.TimeOffset:
-          this.timeOffset =
-              EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>()!);
+          this.timeOffset = EwsUtilities.XSDurationToTimeSpan(
+              (await reader.ReadElementValue<String>())!);
           return true;
         case XmlElementNames.Month:
-          this.month = reader.ReadElementValue<int>();
+          this.month = await reader.ReadElementValue<int>();
 
           EwsUtilities.Assert(
               this.month! > 0 && this.month! <= 12,

@@ -26,7 +26,7 @@ BasicCredentials wrongUserCredential = BasicCredentials(
 );
 
 ExchangeService prepareExchangeService(BasicCredentials credentials,
-    [requestedExchangeVersion = ExchangeVersion.Exchange2007_SP1]) {
+    [requestedExchangeVersion = ExchangeVersion.Exchange2010_SP1]) {
   return ExchangeService.withVersion(requestedExchangeVersion)
     ..Url = Uri.parse("https://outlook.office365.com/ews/exchange.asmx")
     ..Credentials = credentials

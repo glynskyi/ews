@@ -63,13 +63,13 @@ class HighlightTerm extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.HighlightTermScope:
-        this.scope = reader.ReadElementValue<String>();
+        this.scope = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.HighlightTermValue:
-        this.value = reader.ReadElementValue<String>();
+        this.value = await reader.ReadElementValue<String>();
         return true;
       default:
         return false;

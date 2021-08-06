@@ -96,8 +96,8 @@ class EmailAddressEntry extends DictionaryEntryProperty<EmailAddressKey> {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this.EmailAddress!.Address = reader.ReadValue();
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {
+    this.EmailAddress!.Address = await reader.ReadValue();
   }
 
   /// <summary>

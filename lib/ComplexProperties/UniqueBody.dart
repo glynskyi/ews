@@ -81,8 +81,8 @@ class UniqueBody extends ComplexProperty {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this.text = reader.ReadValue();
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {
+    this.text = await reader.ReadValue();
   }
 
   /// <summary>

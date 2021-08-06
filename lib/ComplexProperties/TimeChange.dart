@@ -139,11 +139,11 @@ class TimeChange extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Offset:
-        this._offset =
-            EwsUtilities.XSDurationToTimeSpan(reader.ReadElementValue<String>()!);
+        this._offset = EwsUtilities.XSDurationToTimeSpan(
+            (await reader.ReadElementValue<String>())!);
         return true;
       case XmlElementNames.RelativeYearlyRecurrence:
         throw UnimplementedError("XmlElementNames.RelativeYearlyRecurrence");
@@ -151,7 +151,8 @@ class TimeChange extends ComplexProperty {
 //                    this.Recurrence.LoadFromXml(reader, reader.LocalName);
 //        return true;
       case XmlElementNames.AbsoluteDate:
-        DateTime dateTime = DateTime.parse(reader.ReadElementValue<String>()!);
+        DateTime dateTime =
+            DateTime.parse((await reader.ReadElementValue<String>())!);
 
         // TODO: BUG
         this._absoluteDate = dateTime;
@@ -159,7 +160,7 @@ class TimeChange extends ComplexProperty {
         return true;
       case XmlElementNames.Time:
         this._time = new misc.Time.fromDateTime(
-            DateTime.parse(reader.ReadElementValue<String>()!));
+            DateTime.parse((await reader.ReadElementValue<String>())!));
         return true;
       default:
         return false;

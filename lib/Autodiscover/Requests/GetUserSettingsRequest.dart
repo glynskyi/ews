@@ -237,8 +237,8 @@ class GetUserSettingsRequest extends AutodiscoverRequest {
   /// </summary>
   /// <param name="reader">EwsXmlReader</param>
   @override
-  void ReadSoapHeader(EwsXmlReader reader) {
-    super.ReadSoapHeader(reader);
+  Future<void> ReadSoapHeader(EwsXmlReader reader) async {
+    await super.ReadSoapHeader(reader);
 
     if (this.expectPartnerToken) {
       if (reader.IsStartElementWithNamespace(

@@ -63,27 +63,29 @@ class RecurrencePropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  Future<void> LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Recurrence);
 
     Recurrence? recurrence = null;
 
-    reader.Read(nodeType: XmlNodeType.Element); // This is the pattern element
+    await reader.Read(
+        nodeType: XmlNodeType.Element); // This is the pattern element
 
     recurrence = GetRecurrenceFromString(reader.LocalName);
 
-    recurrence.LoadFromXml(reader, reader.LocalName);
+    await recurrence.LoadFromXml(reader, reader.LocalName);
 
-    reader.Read(nodeType: XmlNodeType.Element); // This is the range element
+    await reader.Read(
+        nodeType: XmlNodeType.Element); // This is the range element
 
     RecurrenceRange range = GetRecurrenceRange(reader.LocalName);
 
-    range.LoadFromXml(reader, reader.LocalName);
+    await range.LoadFromXml(reader, reader.LocalName);
     range.SetupRecurrence(recurrence);
 
-    reader.ReadEndElementIfNecessary(
+    await reader.ReadEndElementIfNecessary(
         XmlNamespace.Types, XmlElementNames.Recurrence);
 
     propertyBag[this] = recurrence;

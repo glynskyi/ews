@@ -64,7 +64,7 @@
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
 
                     if (reader.NodeType == XmlNodeType.Element)
                     {

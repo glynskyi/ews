@@ -58,19 +58,19 @@ class Flag extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.FlagStatus:
-        this.flagStatus = reader.ReadElementValue<ItemFlagStatus>();
+        this.flagStatus = await reader.ReadElementValue<ItemFlagStatus>();
         return true;
       case XmlElementNames.StartDate:
-        this.startDate = reader.ReadElementValueAsDateTime();
+        this.startDate = await reader.ReadElementValueAsDateTime();
         return true;
       case XmlElementNames.DueDate:
-        this.dueDate = reader.ReadElementValueAsDateTime();
+        this.dueDate = await reader.ReadElementValueAsDateTime();
         return true;
       case XmlElementNames.CompleteDate:
-        this.completeDate = reader.ReadElementValueAsDateTime();
+        this.completeDate = await reader.ReadElementValueAsDateTime();
         return true;
       default:
         return false;

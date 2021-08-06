@@ -59,17 +59,17 @@ class OutlookAccount {
   /// Load from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsXmlReader reader) {
+  Future<void> LoadFromXml(EwsXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.AccountType:
-            this.AccountType = reader.ReadElementValue<String>();
+            this.AccountType = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.Action:
-            String? xmlResponseType = reader.ReadElementValue<String>();
+            String? xmlResponseType = await reader.ReadElementValue<String>();
 
             switch (xmlResponseType) {
               case OutlookAccount._Settings:
@@ -89,7 +89,7 @@ class OutlookAccount {
             break;
           case XmlElementNames.Protocol:
             OutlookProtocol protocol = new OutlookProtocol();
-            protocol.LoadFromXml(reader);
+            await protocol.LoadFromXml(reader);
             if (this._protocols.containsKey(protocol.ProtocolType)) {
               // There should be strictly one node per protocol type in the autodiscover response.
               throw new ServiceLocalException(
@@ -99,16 +99,16 @@ class OutlookAccount {
             break;
           case XmlElementNames.RedirectAddr:
           case XmlElementNames.RedirectUrl:
-            this.RedirectTarget = reader.ReadElementValue<String>();
+            this.RedirectTarget = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.AlternateMailboxes:
             AlternateMailbox alternateMailbox =
-                AlternateMailbox.LoadFromXml(reader);
+                await AlternateMailbox.LoadFromXml(reader);
             this._alternateMailboxes!.Entries.add(alternateMailbox);
             break;
 
           default:
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
             break;
         }
       }

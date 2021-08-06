@@ -44,7 +44,8 @@ class OutlookUser {
   static LazyMember<Map<UserSettingName, Func<OutlookUser, String?>>>
       _converterDictionary =
       new LazyMember<Map<UserSettingName, Func<OutlookUser, String?>>>(() {
-    Map<UserSettingName, String? Function(OutlookUser)> results = new Map<UserSettingName, Func<OutlookUser, String>>();
+    Map<UserSettingName, String? Function(OutlookUser)> results =
+        new Map<UserSettingName, Func<OutlookUser, String>>();
     results[UserSettingName.UserDisplayName] = (u) => u._displayName;
     results[UserSettingName.UserDN] = (u) => u._legacyDN;
     results[UserSettingName.UserDeploymentId] = (u) => u._deploymentId;
@@ -67,26 +68,27 @@ class OutlookUser {
   /// Load from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsXmlReader reader) {
+  Future<void> LoadFromXml(EwsXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.DisplayName:
-            this._displayName = reader.ReadElementValue<String>();
+            this._displayName = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.LegacyDN:
-            this._legacyDN = reader.ReadElementValue<String>();
+            this._legacyDN = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DeploymentId:
-            this._deploymentId = reader.ReadElementValue<String>();
+            this._deploymentId = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.AutoDiscoverSMTPAddress:
-            this._autodiscoverAMTPAddress = reader.ReadElementValue<String>();
+            this._autodiscoverAMTPAddress =
+                await reader.ReadElementValue<String>();
             break;
           default:
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
             break;
         }
       }

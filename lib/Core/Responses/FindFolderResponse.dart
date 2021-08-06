@@ -48,8 +48,8 @@ class FindFolderResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootFolder);
 
     this._results.TotalCount =
@@ -63,11 +63,11 @@ class FindFolderResponse extends ServiceResponse {
             XmlAttributeNames.IndexedPagingOffset)
         : null;
 
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.Folders);
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element) {
           Folder folder =
@@ -75,9 +75,9 @@ class FindFolderResponse extends ServiceResponse {
                   reader.Service, reader.LocalName);
 
           if (folder == null) {
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
           } else {
-            folder.LoadFromXmlWithPropertySet(
+            await folder.LoadFromXmlWithPropertySet(
                 reader,
                 true,
                 /* clearPropertyBag */
@@ -91,7 +91,7 @@ class FindFolderResponse extends ServiceResponse {
           XmlNamespace.Types, XmlElementNames.Folders));
     }
 
-    reader.ReadEndElementWithNamespace(
+    await reader.ReadEndElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.RootFolder);
   }
 

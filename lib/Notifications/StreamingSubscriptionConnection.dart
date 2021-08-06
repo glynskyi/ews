@@ -29,9 +29,21 @@ import 'package:ews/Core/Requests/GetStreamingEventsRequest.dart';
 import 'package:ews/Core/Requests/HangingServiceRequestBase.dart';
 import 'package:ews/Core/Responses/GetStreamingEventsResponse.dart';
 import 'package:ews/Enumerations/ExchangeVersion.dart';
+import 'package:ews/Enumerations/ServiceResult.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
+import 'package:ews/Exceptions/ObjectDisposedException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
 import 'package:ews/Notifications/StreamingSubscription.dart';
+import 'package:ews/Notifications/SubscriptionErrorEventArgs.dart';
+import 'package:synchronized/synchronized.dart';
+
+/// <summary>
+/// Represents a delegate that is invoked when an error occurs within a streaming subscription connection.
+/// </summary>
+/// <param name="sender">The StreamingSubscriptionConnection instance within which the error occurred.</param>
+/// <param name="args">The event data.</param>
+typedef SubscriptionErrorDelegate = void Function(
+    Object sender, SubscriptionErrorEventArgs args);
 
 /// <summary>
 /// Represents a connection to an ongoing stream of events.
@@ -41,22 +53,22 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <summary>
   /// Mapping of streaming id to subscriptions currently on the connection.
   /// </summary>
-  late Map<String?, StreamingSubscription> _subscriptions;
+  late Map<String, StreamingSubscription> _subscriptions;
 
   /// <summary>
   /// connection lifetime, in minutes
   /// </summary>
-  int? _connectionTimeout;
+  late int _connectionTimeout;
 
   /// <summary>
   /// ExchangeService instance used to make the EWS call.
   /// </summary>
-  ExchangeService? _session;
+  late ExchangeService _session;
 
   /// <summary>
   /// Value indicating whether the class is disposed.
   /// </summary>
-  bool? _isDisposed;
+  bool _isDisposed = false;
 
   /// <summary>
   /// Currently used instance of a GetStreamingEventsRequest connected to EWS.
@@ -64,18 +76,16 @@ class StreamingSubscriptionConnection // extends IDisposable
   GetStreamingEventsRequest? _currentHangingRequest;
 
   /// <summary>
+  /// Lock object
+  /// </summary>
+  Lock _lockObject = new Lock();
+
+  /// <summary>
   /// Represents a delegate that is invoked when notifications are received from the server
   /// </summary>
   /// <param name="sender">The StreamingSubscriptionConnection instance that received the events.</param>
   /// <param name="args">The event data.</param>
 // delegate void NotificationEventDelegate(object sender, NotificationEventArgs args);
-
-  /// <summary>
-  /// Represents a delegate that is invoked when an error occurs within a streaming subscription connection.
-  /// </summary>
-  /// <param name="sender">The StreamingSubscriptionConnection instance within which the error occurred.</param>
-  /// <param name="args">The event data.</param>
-// delegate void SubscriptionErrorDelegate(object sender, SubscriptionErrorEventArgs args);
 
   /// <summary>
   /// Occurs when notifications are received from the server.
@@ -90,7 +100,7 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <summary>
   /// Occurs when a streaming subscription connection is disconnected from the server.
   /// </summary>
-// event SubscriptionErrorDelegate OnDisconnect;
+  List<SubscriptionErrorDelegate> OnDisconnect = [];
 
   /// <summary>
   /// Initializes a new instance of the <see cref="StreamingSubscriptionConnection"/> class.
@@ -108,7 +118,7 @@ class StreamingSubscriptionConnection // extends IDisposable
     }
 
     this._session = service;
-    this._subscriptions = new Map<String?, StreamingSubscription>();
+    this._subscriptions = new Map<String, StreamingSubscription>();
     this._connectionTimeout = lifetime;
   }
 
@@ -159,7 +169,7 @@ class StreamingSubscriptionConnection // extends IDisposable
     if (this._subscriptions.containsKey(subscription.Id)) {
       return;
     }
-    this._subscriptions[subscription.Id] = subscription;
+    this._subscriptions[subscription.Id!] = subscription;
   }
 
   /// <summary>
@@ -183,29 +193,27 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// This results in a long-standing call to EWS.
   /// </summary>
   /// <exception cref="InvalidOperationException">Thrown when Open is called while connected.</exception>
-  void Open() {
-    throw NotImplementedException("Open");
-//            lock (this.lockObject)
-//            {
-//                this.ThrowIfDisposed();
-//
-//                this.ValidateConnectionState(false, "Strings.CannotCallConnectDuringLiveConnection");
-//
-//                if (this.subscriptions.length == 0)
-//                {
-//                    throw new ServiceLocalException("Strings.NoSubscriptionsOnConnection");
-//                }
-//
-//                this.currentHangingRequest = new GetStreamingEventsRequest(
-//                    this.session,
-//                    this.HandleServiceResponseObject,
-//                    this.subscriptions.Keys,
-//                    this.connectionTimeout);
-//
-//                this.currentHangingRequest.OnDisconnect += new HangingServiceRequestBase.HangingRequestDisconnectHandler(this.OnRequestDisconnect);
-//
-//                this.currentHangingRequest.InternalExecute();
-//            }
+  Future<void> Open() async {
+    await this._lockObject.synchronized(() async {
+      this.ThrowIfDisposed();
+
+      this.ValidateConnectionState(
+          false, "Strings.CannotCallConnectDuringLiveConnection");
+
+      if (this._subscriptions.length == 0) {
+        throw new ServiceLocalException("Strings.NoSubscriptionsOnConnection");
+      }
+
+      this._currentHangingRequest = new GetStreamingEventsRequest(
+          this._session,
+          this.HandleServiceResponseObject,
+          this._subscriptions.keys,
+          this._connectionTimeout);
+
+      this._currentHangingRequest!.OnDisconnect.add(this._OnRequestDisconnect);
+
+      await this._currentHangingRequest!.InternalExecute();
+    });
   }
 
   /// <summary>
@@ -213,10 +221,9 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// </summary>
   /// <param name="sender">The sender.</param>
   /// <param name="args">The <see cref="Microsoft.Exchange.WebServices.Data.HangingRequestDisconnectEventArgs"/> instance containing the event data.</param>
-  void _OnRequestDisconnect(
-      Object sender, HangingRequestDisconnectEventArgs args) {
-    throw NotImplementedException("OnRequestDisconnect");
-//            this.InternalOnDisconnect(args.Exception);
+  Future<void> _OnRequestDisconnect(
+      Object sender, HangingRequestDisconnectEventArgs args) async {
+    this.InternalOnDisconnect(args.Exception);
   }
 
   /// <summary>
@@ -224,18 +231,17 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// This terminates a long-standing call to EWS.
   /// </summary>
   /// <exception cref="InvalidOperationException">Thrown when Close is called while not connected.</exception>
-  void Close() {
-    throw NotImplementedException("Close");
-//            lock (this.lockObject)
-//            {
-//                this.ThrowIfDisposed();
-//
-//                this.ValidateConnectionState(true, "Strings.CannotCallDisconnectWithNoLiveConnection");
-//
-//                // Further down in the stack, this will result in a call to our OnRequestDisconnect event handler,
-//                // doing the necessary cleanup.
-//                this.currentHangingRequest.Disconnect();
-//            }
+  Future<void> Close() async {
+    await this._lockObject.synchronized(() async {
+      this.ThrowIfDisposed();
+
+      this.ValidateConnectionState(
+          true, "Strings.CannotCallDisconnectWithNoLiveConnection");
+
+      // Further down in the stack, this will result in a call to our OnRequestDisconnect event handler,
+      // doing the necessary cleanup.
+      await this._currentHangingRequest?.Disconnect();
+    });
   }
 
   /// <summary>
@@ -243,20 +249,17 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// </summary>
   /// <param name="ex">The exception that caused the disconnection. May be null.</param>
   /* private */
-  void InternalOnDisconnect(Exception ex) {
-    throw NotImplementedException("InternalOnDisconnect");
-//            this.currentHangingRequest = null;
-//
-//            if (this.OnDisconnect != null)
-//            {
-//                this.OnDisconnect(this, new SubscriptionErrorEventArgs(null, ex));
-//            }
+  void InternalOnDisconnect(Object? ex) {
+    this._currentHangingRequest = null;
+    for (final delegate in OnDisconnect) {
+      delegate(this, new SubscriptionErrorEventArgs(null, ex));
+    }
   }
 
   /// <summary>
   /// Gets a value indicating whether this connection is opened
   /// </summary>
-  bool? get IsOpen {
+  bool get IsOpen {
     this.ThrowIfDisposed();
     if (this._currentHangingRequest == null) {
       return false;
@@ -272,8 +275,8 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <param name="errorMessage">The error message.</param>
   /* private */
   void ValidateConnectionState(bool isConnectedExpected, String errorMessage) {
-    if ((isConnectedExpected && !this.IsOpen!) ||
-        (!isConnectedExpected && this.IsOpen!)) {
+    if ((isConnectedExpected && !this.IsOpen) ||
+        (!isConnectedExpected && this.IsOpen)) {
       throw new ServiceLocalException(errorMessage);
     }
   }
@@ -284,42 +287,35 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <param name="response">The response.</param>
   /* private */
   void HandleServiceResponseObject(Object response) {
-    throw NotImplementedException("HandleServiceResponseObject");
-//            GetStreamingEventsResponse gseResponse = response as GetStreamingEventsResponse;
-//
-//            if (gseResponse == null)
-//            {
-//                throw new ArgumentException();
-//            }
-//            else
-//            {
-//                if (gseResponse.Result == ServiceResult.Success || gseResponse.Result == ServiceResult.Warning)
-//                {
-//                    if (gseResponse.Results.Notifications.length > 0)
-//                    {
-//                        // We got notifications; dole them out.
-//                        this.IssueNotificationEvents(gseResponse);
-//                    }
-//                    else
-//                    {
-//                        //// This was just a heartbeat, nothing to do here.
-//                    }
-//                }
-//                else if (gseResponse.Result == ServiceResult.Error)
-//                {
-//                    if (gseResponse.ErrorSubscriptionIds == null ||
-//                        gseResponse.ErrorSubscriptionIds.length == 0)
-//                    {
-//                        // General error
-//                        this.IssueGeneralFailure(gseResponse);
-//                    }
-//                    else
-//                    {
-//                        // subscription-specific errors
-//                        this.IssueSubscriptionFailures(gseResponse);
-//                    }
-//                }
-//            }
+    // throw NotImplementedException("HandleServiceResponseObject");
+    GetStreamingEventsResponse gseResponse =
+        response as GetStreamingEventsResponse;
+
+    // if (gseResponse == null)
+    // {
+    //     throw new ArgumentException("gseResponse == null");
+    // }
+    // else
+    // {
+    if (gseResponse.Result == ServiceResult.Success ||
+        gseResponse.Result == ServiceResult.Warning) {
+      if (gseResponse.Results.Notifications.length > 0) {
+        // We got notifications; dole them out.
+        this.IssueNotificationEvents(gseResponse);
+      } else {
+        //// This was just a heartbeat, nothing to do here.
+      }
+    } else if (gseResponse.Result == ServiceResult.Error) {
+      if (gseResponse.ErrorSubscriptionIds == null ||
+          gseResponse.ErrorSubscriptionIds.length == 0) {
+        // General error
+        this.IssueGeneralFailure(gseResponse);
+      } else {
+        // subscription-specific errors
+        this.IssueSubscriptionFailures(gseResponse);
+      }
+    }
+    // }
   }
 
   /// <summary>
@@ -473,10 +469,8 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// </summary>
   /* private */
   void ThrowIfDisposed() {
-    throw NotImplementedException("ThrowIfDisposed");
-//            if (this.isDisposed)
-//            {
-//                throw new ObjectDisposedException(this.GetType().FullName);
-//            }
+    if (this._isDisposed) {
+      throw new ObjectDisposedException(this.runtimeType.toString());
+    }
   }
 }

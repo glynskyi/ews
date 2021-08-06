@@ -532,7 +532,7 @@
                 "reader is null");
 
             reader.ReadStartElement(XmlNamespace.Messages, XmlElementNames.UserConfiguration);
-            reader.Read(); // Position at first property element
+            await reader.Read(); // Position at first property element
 
             do
             {
@@ -578,7 +578,7 @@
                 }
 
                 // If XmlData was loaded, read is skipped because GetXmlData positions the reader at the next property.
-                reader.Read();
+                await reader.Read();
             }
             while (!reader.IsEndElement(XmlNamespace.Messages, XmlElementNames.UserConfiguration));
         }

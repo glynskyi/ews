@@ -59,7 +59,7 @@
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
                     if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.SearchableMailbox))
                     {
                         this.searchableMailboxes.Add(SearchableMailbox.LoadFromXml(reader));
@@ -68,7 +68,7 @@
                 while (!reader.IsEndElement(XmlNamespace.Messages, XmlElementNames.SearchableMailboxes));
             }
 
-            reader.Read();
+            await reader.Read();
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.FailedMailboxes))
             {
                 this.FailedMailboxes = FailedSearchMailbox.LoadFailedMailboxesXml(XmlNamespace.Messages, reader);

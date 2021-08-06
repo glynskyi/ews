@@ -113,7 +113,7 @@
         {
             do
             {
-                reader.Read();
+                await reader.Read();
                 InsightValue item = null;
 
                 if (reader.NodeType == XmlNodeType.Element && reader.LocalName == XmlElementNames.Item)

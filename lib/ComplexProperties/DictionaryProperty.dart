@@ -201,22 +201,23 @@ abstract class DictionaryProperty<TKey,
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String? localElementName) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, localElementName);
 
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement()) {
           TEntry? entry = this.CreateEntry(reader);
 
           if (entry != null) {
-            entry.LoadFromXml(reader, reader.LocalName);
+            await entry.LoadFromXml(reader, reader.LocalName);
             this.InternalAdd(entry);
           } else {
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
           }
         }
       } while (!reader.IsEndElementWithNamespace(

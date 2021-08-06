@@ -93,12 +93,12 @@ class FileAttachment extends Attachment {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    bool result = super.TryReadElementFromXml(reader);
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    bool result = await super.TryReadElementFromXml(reader);
 
     if (!result) {
       if (reader.LocalName == XmlElementNames.IsContactPhoto) {
-        this._isContactPhoto = reader.ReadElementValue<bool>();
+        this._isContactPhoto = await reader.ReadElementValue<bool>();
       } else if (reader.LocalName == XmlElementNames.Content) {
         if (this._loadToStream != null) {
           reader.ReadBase64ElementValueWithStream(this._loadToStream);
@@ -113,10 +113,10 @@ class FileAttachment extends Attachment {
             if (outputStream != null) {
               reader.ReadBase64ElementValueWithStream(outputStream);
             } else {
-              this._content = reader.ReadBase64ElementValue();
+              this._content = await reader.ReadBase64ElementValue();
             }
           } else {
-            this._content = reader.ReadBase64ElementValue();
+            this._content = await reader.ReadBase64ElementValue();
           }
         }
 
@@ -133,7 +133,7 @@ class FileAttachment extends Attachment {
   /// <param name="reader"></param>
   /// <returns></returns>
   @override
-  bool TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXmlToPatch(EwsServiceXmlReader reader) async {
     return super.TryReadElementFromXml(reader);
   }
 

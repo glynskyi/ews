@@ -3365,8 +3365,8 @@ class EwsUtilities {
     if (service.RequestedServerVersion.index < minimumServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
                     Strings.MethodIncompatibleWithRequestVersion,
-                    methodName,
-                    minimumServerVersion)""");
+                    $methodName,
+                    $minimumServerVersion)""");
     }
   }
 
@@ -3381,8 +3381,8 @@ class EwsUtilities {
     if (service.RequestedServerVersion.index < minimumServerVersion.index) {
       throw new ServiceVersionException("""string.Format(
                     Strings.ClassIncompatibleWithRequestVersion,
-                    className,
-                    minimumServerVersion)""");
+                    $className,
+                    $minimumServerVersion)""");
     }
   }
 

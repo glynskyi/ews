@@ -111,52 +111,52 @@ class PersonaPostalAddress extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Street:
-        this._street = reader.ReadValue<String>();
+        this._street = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.City:
-        this._city = reader.ReadValue<String>();
+        this._city = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.State:
-        this._state = reader.ReadValue<String>();
+        this._state = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.Country:
-        this._country = reader.ReadValue<String>();
+        this._country = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.PostalCode:
-        this._postalCode = reader.ReadValue<String>();
+        this._postalCode = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.PostOfficeBox:
-        this._postOfficeBox = reader.ReadValue<String>();
+        this._postOfficeBox = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.PostalAddressType:
-        this._type = reader.ReadValue<String>();
+        this._type = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.Latitude:
-        this._latitude = reader.ReadValue<double>();
+        this._latitude = await reader.ReadValue<double>();
         return true;
       case XmlElementNames.Longitude:
-        this._longitude = reader.ReadValue<double>();
+        this._longitude = await reader.ReadValue<double>();
         return true;
       case XmlElementNames.Accuracy:
-        this._accuracy = reader.ReadValue<double>();
+        this._accuracy = await reader.ReadValue<double>();
         return true;
       case XmlElementNames.Altitude:
-        this._altitude = reader.ReadValue<double>();
+        this._altitude = await reader.ReadValue<double>();
         return true;
       case XmlElementNames.AltitudeAccuracy:
-        this._altitudeAccuracy = reader.ReadValue<double>();
+        this._altitudeAccuracy = await reader.ReadValue<double>();
         return true;
       case XmlElementNames.FormattedAddress:
-        this._formattedAddress = reader.ReadValue<String>();
+        this._formattedAddress = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.LocationUri:
-        this._uri = reader.ReadValue<String>();
+        this._uri = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.LocationSource:
-        this._source = reader.ReadValue<LocationSource>();
+        this._source = await reader.ReadValue<LocationSource>();
         return true;
       default:
         return false;
@@ -167,12 +167,12 @@ class PersonaPostalAddress extends ComplexProperty {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
+  Future<void> LoadFromXmlElementName(EwsServiceXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
-        this.TryReadElementFromXml(reader);
+        await this.TryReadElementFromXml(reader);
       }
     } while (!reader.IsEndElementWithNamespace(
         XmlNamespace.Types, XmlElementNames.PersonaPostalAddress));

@@ -223,8 +223,9 @@ abstract class ServiceObject {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="clearPropertyBag">if set to <c>true</c> [clear property bag].</param>
-  void LoadFromXml(EwsServiceXmlReader reader, bool clearPropertyBag) {
-    this.PropertyBag.LoadFromXml(
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, bool clearPropertyBag) async {
+    await this.PropertyBag.LoadFromXml(
         reader,
         clearPropertyBag,
         null, //* propertySet *//*
@@ -245,12 +246,12 @@ abstract class ServiceObject {
   /// <param name="clearPropertyBag">if set to <c>true</c> [clear property bag].</param>
   /// <param name="requestedPropertySet">The property set.</param>
   /// <param name="summaryPropertiesOnly">if set to <c>true</c> [summary props only].</param>
-  void LoadFromXmlWithPropertySet(
+  Future<void> LoadFromXmlWithPropertySet(
       EwsServiceXmlReader reader,
       bool clearPropertyBag,
       PropertySet? requestedPropertySet,
-      bool summaryPropertiesOnly) {
-    this.PropertyBag.LoadFromXml(
+      bool summaryPropertiesOnly) async {
+    await this.PropertyBag.LoadFromXml(
         reader, clearPropertyBag, requestedPropertySet, summaryPropertiesOnly);
   }
 

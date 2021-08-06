@@ -121,7 +121,7 @@ class SearchFilterCollection extends SearchFilter
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     this.Add(SearchFilter.LoadFromXmlWithReader(reader));
     return true;
   }

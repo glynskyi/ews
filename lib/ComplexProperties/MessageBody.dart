@@ -92,8 +92,8 @@ class MessageBody extends ComplexProperty {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this._text = reader.ReadValue();
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {
+    this._text = await reader.ReadValue();
   }
 
   /// <summary>

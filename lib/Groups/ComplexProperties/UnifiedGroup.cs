@@ -87,12 +87,12 @@
         /// <param name="reader">The reader.</param>
         /// <param name="xmlElementName">The xml element to read.</param>
 @override
-        void LoadFromXml(EwsServiceXmlReader reader, String xmlElementName)
+        Future<void> LoadFromXml(EwsServiceXmlReader reader, String xmlElementName) async
         {
             reader.EnsureCurrentNodeIsStartElement(XmlNamespace.Types, XmlElementNames.UnifiedGroup);
             do
             {
-                reader.Read();
+                await reader.Read();
                 switch (reader.LocalName)
                 {
                     case XmlElementNames.SmtpAddress:
@@ -127,6 +127,6 @@
 
             // Skip end element
             reader.EnsureCurrentNodeIsEndElement(XmlNamespace.NotSpecified, XmlElementNames.UnifiedGroup);
-            reader.Read();
+            await reader.Read();
         }
     }

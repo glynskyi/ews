@@ -97,15 +97,16 @@ class EwsXmlReader {
   /// <param name="localName">Name of the local.</param>
   /// <param name="nodeType">Type of the node.</param>
   /* private */
-  void InternalReadElementWithNamespace(
-      XmlNamespace xmlNamespace, String? localName, XmlNodeType nodeType) {
+  Future<void> InternalReadElementWithNamespace(XmlNamespace xmlNamespace,
+      String? localName, XmlNodeType nodeType) async {
     if (xmlNamespace == XmlNamespace.NotSpecified) {
-      this._InternalReadElement("", localName, nodeType);
+      await this._InternalReadElement("", localName, nodeType);
     } else {
-      this.Read(nodeType: nodeType);
+      await this.Read(nodeType: nodeType);
 
       if ((this.LocalName != localName) ||
           (this.NamespaceUri != EwsUtilities.GetNamespaceUri(xmlNamespace))) {
+        print("---- ${this.NamespaceUri}");
         throw new ServiceXmlDeserializationException("""string.Format(
                             Strings.UnexpectedElement,
                             ${EwsUtilities.GetNamespacePrefix(xmlNamespace)},
@@ -123,9 +124,9 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
   /// <param name="nodeType">Type of the node.</param>
-  void _InternalReadElement(
-      String namespacePrefix, String? localName, XmlNodeType nodeType) {
-    this.Read(nodeType: nodeType);
+  Future<void> _InternalReadElement(
+      String namespacePrefix, String? localName, XmlNodeType nodeType) async {
+    await this.Read(nodeType: nodeType);
 
     if ((this.LocalName != localName) ||
         (this.NamespacePrefix != namespacePrefix)) {
@@ -142,7 +143,7 @@ class EwsXmlReader {
   /// <summary>
   /// Reads the next node.
   /// </summary>
-  void Read({XmlNodeType? nodeType = null}) {
+  Future<void> Read({XmlNodeType? nodeType = null}) async {
     if (nodeType != XmlNodeType.XmlDeclaration) {
       this._prevNodeType = this._xmlReader.NodeType;
     }
@@ -150,7 +151,7 @@ class EwsXmlReader {
     // XmlReader.Read returns true if the next node was read successfully; false if there
     // are no more nodes to read. The caller to EwsXmlReader.Read expects that there's another node to
     // read. Throw an exception if not true.
-    bool nodeRead = this._xmlReader.Read();
+    bool nodeRead = await this._xmlReader.Read();
     if (!nodeRead) {
       throw new ServiceXmlDeserializationException(
           "Strings.UnexpectedEndOfXmlDocument");
@@ -158,8 +159,8 @@ class EwsXmlReader {
     if (nodeType != null && this.NodeType != nodeType) {
       throw new ServiceXmlDeserializationException("""string.Format(
                         Strings.UnexpectedElementType,
-                        nodeType,
-                        this.NodeType)""");
+                        $nodeType,
+                        ${this.NodeType})""");
     }
   }
 
@@ -219,16 +220,16 @@ class EwsXmlReader {
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
   /// <returns>Element value.</returns>
-  String? ReadElementStringValueWithPrefix(
-      String namespacePrefix, String localName) {
+  Future<String?> ReadElementStringValueWithPrefix(
+      String namespacePrefix, String localName) async {
     if (!this.IsStartElementWithPrefix(namespacePrefix, localName)) {
-      this.ReadStartElement(namespacePrefix, localName);
+      await this.ReadStartElement(namespacePrefix, localName);
     }
 
     String? value = null;
 
     if (!this.IsEmptyElement) {
-      value = this.ReadValue();
+      value = await this.ReadValue();
     }
 
     return value;
@@ -240,16 +241,16 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
   /// <returns>Element value.</returns>
-  String? ReadElementStringValueWithNamespace(
-      XmlNamespace xmlNamespace, String localName) {
+  Future<String?> ReadElementStringValueWithNamespace(
+      XmlNamespace xmlNamespace, String localName) async {
     if (!this.IsStartElementWithNamespace(xmlNamespace, localName)) {
-      this.ReadStartElementWithNamespace(xmlNamespace, localName);
+      await this.ReadStartElementWithNamespace(xmlNamespace, localName);
     }
 
     String? value = null;
 
     if (!this.IsEmptyElement) {
-      value = this.ReadValue();
+      value = await this.ReadValue();
     }
 
     return value;
@@ -259,7 +260,7 @@ class EwsXmlReader {
   /// Reads the element value.
   /// </summary>
   /// <returns>Element value.</returns>
-  String? ReadElementStringValue() {
+  Future<String?> ReadElementStringValue() async {
     this.EnsureCurrentNodeIsStartElement();
 
     return this
@@ -273,16 +274,16 @@ class EwsXmlReader {
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
   /// <returns>Element value.</returns>
-  T? ReadElementValueWithNamespace<T>(
-      XmlNamespace xmlNamespace, String? localName) {
+  Future<T?> ReadElementValueWithNamespace<T>(
+      XmlNamespace xmlNamespace, String? localName) async {
     if (!this.IsStartElementWithNamespace(xmlNamespace, localName)) {
-      this.ReadStartElementWithNamespace(xmlNamespace, localName);
+      await this.ReadStartElementWithNamespace(xmlNamespace, localName);
     }
 
     T? value = null;
 
     if (!this.IsEmptyElement) {
-      value = this.ReadValue<T>();
+      value = await this.ReadValue<T>();
     }
 
     return value;
@@ -293,7 +294,7 @@ class EwsXmlReader {
   /// </summary>
   /// <typeparam name="T">Type of element value.</typeparam>
   /// <returns>Element value.</returns>
-  T? ReadElementValue<T>() {
+  Future<T?> ReadElementValue<T>() async {
     this.EnsureCurrentNodeIsStartElement();
 
     String namespacePrefix = this.NamespacePrefix;
@@ -302,7 +303,7 @@ class EwsXmlReader {
     T? value = null;
 
     if (!this.IsEmptyElement) {
-      value = this.ReadValue<T>();
+      value = await this.ReadValue<T>();
     }
 
     return value;
@@ -312,7 +313,7 @@ class EwsXmlReader {
   /// Reads the value.
   /// </summary>
   /// <returns>Value</returns>
-  String ReadStringValue() {
+  Future<String> ReadStringValue() async {
     return this._xmlReader.ReadString();
   }
 
@@ -321,9 +322,9 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="value">The value.</param>
   /// <returns>True if value was read.</returns>
-  bool TryReadValue(OutParam<String> value) {
+  Future<bool> TryReadValue(OutParam<String> value) async {
     if (!this.IsEmptyElement) {
-      this.Read();
+      await this.Read();
 
       if (this.NodeType == XmlNodeType.Text) {
         value.param = this._xmlReader.Value;
@@ -341,18 +342,18 @@ class EwsXmlReader {
   /// </summary>
   /// <typeparam name="T">Type of value.</typeparam>
   /// <returns>Value.</returns>
-  T? ReadValue<T>() {
-    return EwsUtilities.Parse<T>(this.ReadStringValue());
+  Future<T?> ReadValue<T>() async {
+    return EwsUtilities.Parse<T>(await this.ReadStringValue());
   }
 
   /// <summary>
   /// Reads the base64 element value.
   /// </summary>
   /// <returns>Byte array.</returns>
-  Uint8List ReadBase64ElementValue() {
+  Future<Uint8List> ReadBase64ElementValue() async {
     this.EnsureCurrentNodeIsStartElement();
 
-    final content = this._xmlReader.ReadString();
+    final content = await this._xmlReader.ReadString();
     return base64.decode(content);
 
     // todo : check base64 reading
@@ -394,8 +395,10 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
-  void ReadStartElement(String namespacePrefix, String localName) {
-    this._InternalReadElement(namespacePrefix, localName, XmlNodeType.Element);
+  Future<void> ReadStartElement(
+      String namespacePrefix, String localName) async {
+    await this
+        ._InternalReadElement(namespacePrefix, localName, XmlNodeType.Element);
   }
 
   /// <summary>
@@ -403,9 +406,9 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void ReadStartElementWithNamespace(
-      XmlNamespace xmlNamespace, String? localName) {
-    this.InternalReadElementWithNamespace(
+  Future<void> ReadStartElementWithNamespace(
+      XmlNamespace xmlNamespace, String? localName) async {
+    await this.InternalReadElementWithNamespace(
         xmlNamespace, localName, XmlNodeType.Element);
   }
 
@@ -414,8 +417,9 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="elementName">Name of the element.</param>
-  void ReadEndElementWithPrefix(String namespacePrefix, String elementName) {
-    this._InternalReadElement(
+  Future<void> ReadEndElementWithPrefix(
+      String namespacePrefix, String elementName) async {
+    await this._InternalReadElement(
         namespacePrefix, elementName, XmlNodeType.EndElement);
   }
 
@@ -424,9 +428,9 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void ReadEndElementWithNamespace(
-      XmlNamespace xmlNamespace, String? localName) {
-    this.InternalReadElementWithNamespace(
+  Future<void> ReadEndElementWithNamespace(
+      XmlNamespace xmlNamespace, String? localName) async {
+    await this.InternalReadElementWithNamespace(
         xmlNamespace, localName, XmlNodeType.EndElement);
   }
 
@@ -435,11 +439,12 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void ReadEndElementIfNecessary(XmlNamespace xmlNamespace, String? localName) {
+  Future<void> ReadEndElementIfNecessary(
+      XmlNamespace xmlNamespace, String? localName) async {
     if (!(this.IsStartElementWithNamespace(xmlNamespace, localName) &&
         this.IsEmptyElement)) {
       if (!this.IsEndElementWithNamespace(xmlNamespace, localName)) {
-        this.ReadEndElementWithNamespace(xmlNamespace, localName);
+        await this.ReadEndElementWithNamespace(xmlNamespace, localName);
       }
     }
   }
@@ -522,15 +527,15 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="namespacePrefix">The namespace prefix.</param>
   /// <param name="localName">Name of the local.</param>
-  void SkipElement(String namespacePrefix, String localName) {
+  Future<void> SkipElement(String namespacePrefix, String localName) async {
     if (!this.IsEndElement(namespacePrefix, localName)) {
       if (!this.IsStartElementWithPrefix(namespacePrefix, localName)) {
-        this.ReadStartElement(namespacePrefix, localName);
+        await this.ReadStartElement(namespacePrefix, localName);
       }
 
       if (!this.IsEmptyElement) {
         do {
-          this.Read();
+          await this.Read();
         } while (!this.IsEndElement(namespacePrefix, localName));
       }
     }
@@ -541,15 +546,16 @@ class EwsXmlReader {
   /// </summary>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localName">Name of the local.</param>
-  void SkipElementWithNamspace(XmlNamespace xmlNamespace, String localName) {
+  Future<void> SkipElementWithNamspace(
+      XmlNamespace xmlNamespace, String localName) async {
     if (!this.IsEndElementWithNamespace(xmlNamespace, localName)) {
       if (!this.IsStartElementWithNamespace(xmlNamespace, localName)) {
-        this.ReadStartElementWithNamespace(xmlNamespace, localName);
+        await this.ReadStartElementWithNamespace(xmlNamespace, localName);
       }
 
       if (!this.IsEmptyElement) {
         do {
-          this.Read();
+          await this.Read();
         } while (!this.IsEndElementWithNamespace(xmlNamespace, localName));
       }
     }
@@ -558,8 +564,8 @@ class EwsXmlReader {
   /// <summary>
   /// Skips the current element.
   /// </summary>
-  void SkipCurrentElement() {
-    this.SkipElement(this.NamespacePrefix, this.LocalName);
+  Future<void> SkipCurrentElement() async {
+    await this.SkipElement(this.NamespacePrefix, this.LocalName);
   }
 
   /// <summary>

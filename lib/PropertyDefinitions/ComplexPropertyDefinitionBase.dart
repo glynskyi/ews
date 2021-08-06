@@ -82,8 +82,8 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
-  void InternalLoadFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  Future<void> InternalLoadFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
     OutParam<Object> complexPropertyOutParam = new OutParam<Object>();
 
     bool justCreated =
@@ -95,7 +95,7 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
       (complexPropertyOutParam.param as ComplexProperty)
           .UpdateFromXml(reader, reader.LocalName);
     } else {
-      (complexPropertyOutParam.param as ComplexProperty)
+      await (complexPropertyOutParam.param as ComplexProperty)
           .LoadFromXml(reader, reader.LocalName);
     }
 
@@ -127,16 +127,17 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  Future<void> LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         XmlNamespace.Types, this.XmlElementName);
 
     if (!reader.IsEmptyElement || reader.HasAttributes) {
-      this.InternalLoadFromXml(reader, propertyBag);
+      await this.InternalLoadFromXml(reader, propertyBag);
     }
 
-    reader.ReadEndElementIfNecessary(XmlNamespace.Types, this.XmlElementName);
+    await reader.ReadEndElementIfNecessary(
+        XmlNamespace.Types, this.XmlElementName);
   }
 
   /// <summary>

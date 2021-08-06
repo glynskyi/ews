@@ -565,7 +565,7 @@
 
                 values.Add(value);
 
-                reader.Read(); // Position at next element or DictionaryKey/DictionaryValue end element
+                await reader.Read(); // Position at next element or DictionaryKey/DictionaryValue end element
             }
             while (reader.IsStartElement(this.Namespace, XmlElementNames.Value));
 

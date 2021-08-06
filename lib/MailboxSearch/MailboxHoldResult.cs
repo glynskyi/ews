@@ -90,7 +90,7 @@
 
             // the query could be empty means there won't be Query element, hence needs to read and check
             // if the next element is not Query, then it means already read MailboxHoldStatuses element
-            reader.Read();
+            await reader.Read();
             holdResult.Query = "";
             if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Query))
             {
@@ -100,7 +100,7 @@
 
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.MailboxHoldStatus))
                 {
                     String mailbox = reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.Mailbox);

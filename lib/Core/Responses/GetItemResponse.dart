@@ -58,11 +58,11 @@ class GetItemResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
     List<serviceObjects.Item> items =
-        reader.ReadServiceObjectsCollectionFromXml<serviceObjects.Item>(
+        await reader.ReadServiceObjectsCollectionFromXml<serviceObjects.Item>(
             XmlElementNames.Items,
             this._GetObjectInstance,
             true,

@@ -74,7 +74,8 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   /// <summary>
   /// Gets error information for settings that could not be returned.
   /// </summary>
-  List<DomainSettingError>? get DomainSettingErrors => this._domainSettingErrors;
+  List<DomainSettingError>? get DomainSettingErrors =>
+      this._domainSettingErrors;
 
   /// <summary>
   /// Loads response from XML.
@@ -82,23 +83,23 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   /// <param name="reader">The reader.</param>
   /// <param name="endElementName">End element name.</param>
   @override
-  void LoadFromXml(EwsXmlReader reader, String endElementName) {
+  Future<void> LoadFromXml(EwsXmlReader reader, String endElementName) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.RedirectTarget:
-            this._redirectTarget = reader.ReadElementValue<String>();
+            this._redirectTarget = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.DomainSettingErrors:
-            this.LoadDomainSettingErrorsFromXml(reader);
+            await this.LoadDomainSettingErrorsFromXml(reader);
             break;
           case XmlElementNames.DomainSettings:
-            this.LoadDomainSettingsFromXml(reader);
+            await this.LoadDomainSettingsFromXml(reader);
             break;
           default:
-            super.LoadFromXml(reader, endElementName);
+            await super.LoadFromXml(reader, endElementName);
             break;
         }
       }
@@ -110,10 +111,10 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadDomainSettingsFromXml(EwsXmlReader reader) {
+  Future<void> LoadDomainSettingsFromXml(EwsXmlReader reader) async {
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == XmlElementNames.DomainSetting)) {
@@ -122,7 +123,7 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
 
           switch (settingClass) {
             case XmlElementNames.DomainStringSetting:
-              this.ReadSettingFromXml(reader);
+              await this.ReadSettingFromXml(reader);
               break;
 
             default:
@@ -143,20 +144,20 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /* private */
-  void ReadSettingFromXml(EwsXmlReader reader) {
+  Future<void> ReadSettingFromXml(EwsXmlReader reader) async {
     DomainSettingName? name = null;
     Object? value = null;
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.Name:
-            name = reader.ReadElementValue<DomainSettingName>();
+            name = await reader.ReadElementValue<DomainSettingName>();
             break;
           case XmlElementNames.Value:
-            value = reader.ReadElementValue<String>();
+            value = await reader.ReadElementValue<String>();
             break;
         }
       }
@@ -176,15 +177,15 @@ class GetDomainSettingsResponse extends AutodiscoverResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /* private */
-  void LoadDomainSettingErrorsFromXml(EwsXmlReader reader) {
+  Future<void> LoadDomainSettingErrorsFromXml(EwsXmlReader reader) async {
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if ((reader.NodeType == XmlNodeType.Element) &&
             (reader.LocalName == XmlElementNames.DomainSettingError)) {
           DomainSettingError error = new DomainSettingError();
-          error.LoadFromXml(reader);
+          await error.LoadFromXml(reader);
           _domainSettingErrors!.add(error);
         }
       } while (!reader.IsEndElementWithNamespace(

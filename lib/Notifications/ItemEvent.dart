@@ -59,29 +59,31 @@ class ItemEvent extends NotificationEvent {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void InternalLoadFromXml(EwsServiceXmlReader reader) {
-    super.InternalLoadFromXml(reader);
+  Future<void> InternalLoadFromXml(EwsServiceXmlReader reader) async {
+    await super.InternalLoadFromXml(reader);
 
     this._itemId = new complex.ItemId();
-    this._itemId!.LoadFromXml(reader, reader.LocalName);
+    await this._itemId!.LoadFromXml(reader, reader.LocalName);
 
-    reader.Read();
+    await reader.Read();
 
     this.ParentFolderId = new FolderId();
-    this.ParentFolderId!.LoadFromXml(reader, XmlElementNames.ParentFolderId);
+    await this
+        .ParentFolderId!
+        .LoadFromXml(reader, XmlElementNames.ParentFolderId);
 
     switch (this.EventType) {
       case EventType.Moved:
       case EventType.Copied:
-        reader.Read();
+        await reader.Read();
 
         this._oldItemId = new complex.ItemId();
-        this._oldItemId!.LoadFromXml(reader, reader.LocalName);
+        await this._oldItemId!.LoadFromXml(reader, reader.LocalName);
 
-        reader.Read();
+        await reader.Read();
 
         this.OldParentFolderId = new FolderId();
-        this.OldParentFolderId!.LoadFromXml(reader, reader.LocalName);
+        await this.OldParentFolderId!.LoadFromXml(reader, reader.LocalName);
         break;
 
       default:

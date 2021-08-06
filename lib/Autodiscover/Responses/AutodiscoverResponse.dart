@@ -48,13 +48,13 @@ abstract class AutodiscoverResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="endElementName">End element name.</param>
-  void LoadFromXml(EwsXmlReader reader, String endElementName) {
+  Future<void> LoadFromXml(EwsXmlReader reader, String endElementName) async {
     switch (reader.LocalName) {
       case XmlElementNames.ErrorCode:
-        this.ErrorCode = reader.ReadElementValue<AutodiscoverErrorCode>();
+        this.ErrorCode = await reader.ReadElementValue<AutodiscoverErrorCode>();
         break;
       case XmlElementNames.ErrorMessage:
-        this.ErrorMessage = reader.ReadElementValue<String>();
+        this.ErrorMessage = await reader.ReadElementValue<String>();
         break;
       default:
         break;

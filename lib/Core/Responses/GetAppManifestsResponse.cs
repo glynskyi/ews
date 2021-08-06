@@ -108,7 +108,7 @@
             {
                 // Because we don't have an element for count of returned object,
                 // we have to test the element to determine if it is StartElement of return object or EndElement
-                reader.Read();
+                await reader.Read();
 
                 if (exchange2013Response)
                 {
@@ -176,7 +176,7 @@
                 this.Manifests.Add(clientApp.Manifest);
 
                 reader.EnsureCurrentNodeIsEndElement(XmlNamespace.Types, XmlElementNames.App);
-                reader.Read();
+                await reader.Read();
             }
         }
     }

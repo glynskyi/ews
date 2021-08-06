@@ -70,20 +70,21 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    reader.Read();
+    await reader.Read();
 
     if (reader.LocalName == XmlElementNames.Notifications) {
-      this._results.LoadFromXml(reader);
+      await this._results.LoadFromXml(reader);
     } else if (reader.LocalName == XmlElementNames.ConnectionStatus) {
-      String? connectionStatus = reader.ReadElementValueWithNamespace(
+      String? connectionStatus = await reader.ReadElementValueWithNamespace(
           XmlNamespace.Messages, XmlElementNames.ConnectionStatus);
 
       if (EnumToString.parse(ConnectionStatus.Closed) == connectionStatus) {
-        this._request.DisconnectWithException(
-            HangingRequestDisconnectReason.Clean, null);
+        await this
+            ._request
+            .DisconnectWithReason(HangingRequestDisconnectReason.Clean, null);
       }
     }
   }
@@ -98,20 +99,21 @@ class GetStreamingEventsResponse extends ServiceResponse {
   /// False if the element name does not match the expected element.
   /// </returns>
   @override
-  bool LoadExtraErrorDetailsFromXml(
-      EwsServiceXmlReader reader, String xmlElementName) {
+  Future<bool> LoadExtraErrorDetailsFromXml(
+      EwsServiceXmlReader reader, String xmlElementName) async {
     bool baseReturnVal =
-        super.LoadExtraErrorDetailsFromXml(reader, xmlElementName);
+        await super.LoadExtraErrorDetailsFromXml(reader, xmlElementName);
 
     if (reader.IsStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds)) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.NodeType == XmlNodeType.Element &&
             reader.LocalName == XmlElementNames.SubscriptionId) {
-          this.ErrorSubscriptionIds.add(reader.ReadElementValueWithNamespace(
-              XmlNamespace.Messages, XmlElementNames.SubscriptionId));
+          this.ErrorSubscriptionIds.add(
+              await reader.ReadElementValueWithNamespace(
+                  XmlNamespace.Messages, XmlElementNames.SubscriptionId));
         }
       } while (!reader.IsEndElementWithNamespace(
           XmlNamespace.Messages, XmlElementNames.ErrorSubscriptionIds));

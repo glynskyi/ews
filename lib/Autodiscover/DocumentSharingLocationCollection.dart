@@ -45,17 +45,18 @@ class DocumentSharingLocationCollection {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>DocumentSharingLocationCollection</returns>
-  static DocumentSharingLocationCollection LoadFromXml(EwsXmlReader reader) {
+  static Future<DocumentSharingLocationCollection> LoadFromXml(
+      EwsXmlReader reader) async {
     DocumentSharingLocationCollection instance =
         new DocumentSharingLocationCollection();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if ((reader.NodeType == XmlNodeType.Element) &&
           (reader.LocalName == XmlElementNames.DocumentSharingLocation)) {
         DocumentSharingLocation location =
-            DocumentSharingLocation.LoadFromXml(reader);
+            await DocumentSharingLocation.LoadFromXml(reader);
         instance.Entries.add(location);
       }
     } while (!reader.IsEndElementWithNamespace(

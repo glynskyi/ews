@@ -53,10 +53,10 @@ abstract class CreateItemResponseBase extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    this._items = reader.ReadServiceObjectsCollectionFromXml<Item>(
+    this._items = await reader.ReadServiceObjectsCollectionFromXml<Item>(
         XmlElementNames.Items,
         this.GetObjectInstance,
         false,

@@ -34,7 +34,9 @@ import 'package:ews/Enumerations/TraceFlags.dart';
 import 'package:ews/Exceptions/ServiceRequestException.dart';
 import 'package:ews/Http/WebException.dart';
 import 'package:ews/Http/WebHeaderCollection.dart';
+import 'package:ews/Interfaces/IEwsHttpWebRequest.dart';
 import 'package:ews/Interfaces/IEwsHttpWebResponse.dart';
+import 'package:ews/misc/OutParam.dart';
 import 'package:ews/misc/Std/MemoryStream.dart';
 
 /// <summary>
@@ -52,8 +54,9 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
   /// </summary>
   /// <returns>Service response.</returns>
   Future<Object> InternalExecute() async {
-//            IEwsHttpWebRequest request;
-    IEwsHttpWebResponse response = await this.ValidateAndEmitRequest();
+    final requestOut = OutParam<IEwsHttpWebRequest>();
+    IEwsHttpWebResponse response =
+        await this.ValidateAndEmitRequest(requestOut);
 
     Object responseObject = await this._ReadResponse(response);
 
@@ -133,12 +136,11 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
       if (this.Service.IsTraceEnabledFor(TraceFlags.EwsResponse)) {
         final memoryStream = new MemoryStream();
         {
-          Stream serviceResponseStream =
+          Stream<List<int>> serviceResponseStream =
               ServiceRequestBase.GetResponseStream(response);
 
           // Copy response to in-memory stream and reset position to start.
-          await EwsUtilities.CopyStream(
-              serviceResponseStream as Stream<List<int>>, memoryStream);
+          await EwsUtilities.CopyStream(serviceResponseStream, memoryStream);
           memoryStream.Position = 0;
 
           //serviceResponseStream.Close();
@@ -148,12 +150,13 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
           serviceResponse =
               this._ReadResponseXml(memoryStream, response.Headers);
         }
-        memoryStream.close();
+        await memoryStream.close();
       } else {
-        Stream responseStream = ServiceRequestBase.GetResponseStream(response);
+        Stream<List<int>> responseStream =
+            ServiceRequestBase.GetResponseStream(response);
 
-        serviceResponse = this._ReadResponseXml(
-            responseStream as Stream<List<int>>, response.Headers);
+        serviceResponse =
+            this._ReadResponseXml(responseStream, response.Headers);
 
         // responseStream.Close();
       }

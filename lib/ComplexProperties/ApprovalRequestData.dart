@@ -53,19 +53,19 @@ class ApprovalRequestData extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.IsUndecidedApprovalRequest:
-        this.isUndecidedApprovalRequest = reader.ReadElementValue<bool>();
+        this.isUndecidedApprovalRequest = await reader.ReadElementValue<bool>();
         return true;
       case XmlElementNames.ApprovalDecision:
-        this.approvalDecision = reader.ReadElementValue<int>();
+        this.approvalDecision = await reader.ReadElementValue<int>();
         return true;
       case XmlElementNames.ApprovalDecisionMaker:
-        this.approvalDecisionMaker = reader.ReadElementValue<String>();
+        this.approvalDecisionMaker = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.ApprovalDecisionTime:
-        this.approvalDecisionTime = reader.ReadElementValueAsDateTime();
+        this.approvalDecisionTime = await reader.ReadElementValueAsDateTime();
         return true;
       default:
         return false;

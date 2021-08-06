@@ -48,10 +48,10 @@ class ResolveNamesResponse extends ServiceResponse {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadElementsFromXml(EwsServiceXmlReader reader) {
-    super.ReadElementsFromXml(reader);
+  Future<void> ReadElementsFromXml(EwsServiceXmlReader reader) async {
+    await super.ReadElementsFromXml(reader);
 
-    this.Resolutions!.LoadFromXml(reader);
+    await this.Resolutions!.LoadFromXml(reader);
   }
 
   /// <summary>

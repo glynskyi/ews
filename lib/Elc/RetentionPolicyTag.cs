@@ -88,7 +88,7 @@
             retentionPolicyTag.RetentionAction = reader.ReadElementValue<RetentionActionType>(XmlNamespace.Types, XmlElementNames.RetentionAction);
 
             // Description is not a required property.
-            reader.Read();
+            await reader.Read();
             if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Description))
             {
                 retentionPolicyTag.Description = reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.Description);

@@ -57,8 +57,8 @@ class EffectiveRightsPropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  Future<void> LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
     Set<EffectiveRights> value = Set();
 
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
@@ -66,42 +66,42 @@ class EffectiveRightsPropertyDefinition extends PropertyDefinition {
 
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement()) {
           switch (reader.LocalName) {
             case XmlElementNames.CreateAssociated:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.CreateAssociated);
               }
               break;
             case XmlElementNames.CreateContents:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.CreateContents);
               }
               break;
             case XmlElementNames.CreateHierarchy:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.CreateHierarchy);
               }
               break;
             case XmlElementNames.Delete:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.Delete);
               }
               break;
             case XmlElementNames.Modify:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.Modify);
               }
               break;
             case XmlElementNames.Read:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.Read);
               }
               break;
             case XmlElementNames.ViewPrivateItems:
-              if (reader.ReadElementValue<bool>()!) {
+              if ((await reader.ReadElementValue<bool>())!) {
                 value.add(EffectiveRights.ViewPrivateItems);
               }
               break;

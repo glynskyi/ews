@@ -51,20 +51,20 @@ class OccurrenceInfo extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.ItemId:
         this._itemId = new complex.ItemId();
-        this._itemId!.LoadFromXml(reader, reader.LocalName);
+        await this._itemId!.LoadFromXml(reader, reader.LocalName);
         return true;
       case XmlElementNames.Start:
-        this._start = reader.ReadElementValueAsDateTime();
+        this._start = await reader.ReadElementValueAsDateTime();
         return true;
       case XmlElementNames.End:
-        this._end = reader.ReadElementValueAsDateTime();
+        this._end = await reader.ReadElementValueAsDateTime();
         return true;
       case XmlElementNames.OriginalStart:
-        this._originalStart = reader.ReadElementValueAsDateTime();
+        this._originalStart = await reader.ReadElementValueAsDateTime();
         return true;
       default:
         return false;

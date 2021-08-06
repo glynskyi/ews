@@ -208,23 +208,24 @@ class EmailAddress extends ComplexProperty implements ISearchStringProvider {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Name:
-        this.name = reader.ReadElementValue<String>();
+        this.name = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.EmailAddress:
-        this.address = reader.ReadElementValue<String>();
+        this.address = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.RoutingType:
-        this.routingType = reader.ReadElementValue<String>();
+        this.routingType = await reader.ReadElementValue<String>();
         return true;
       case XmlElementNames.MailboxType:
-        this.mailboxType = reader.ReadElementValue<enumerations.MailboxType>();
+        this.mailboxType =
+            await reader.ReadElementValue<enumerations.MailboxType>();
         return true;
       case XmlElementNames.ItemId:
         this.id = new ItemId();
-        this.id!.LoadFromXml(reader, reader.LocalName);
+        await this.id!.LoadFromXml(reader, reader.LocalName);
         return true;
       default:
         return false;

@@ -92,7 +92,7 @@
             reader.EnsureCurrentNodeIsStartElement(rootXmlNamespace, XmlElementNames.FailedMailboxes);
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.FailedMailbox))
                 {
                     String mailbox = reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.Mailbox);

@@ -87,13 +87,13 @@ class NumberedRecurrenceRange extends RecurrenceRange {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
-    if (super.TryReadElementFromXml(reader)) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
+    if (await super.TryReadElementFromXml(reader)) {
       return true;
     } else {
       switch (reader.LocalName) {
         case XmlElementNames.NumberOfOccurrences:
-          this.numberOfOccurrences = reader.ReadElementValue<int>();
+          this.numberOfOccurrences = await reader.ReadElementValue<int>();
           return true;
         default:
           return false;

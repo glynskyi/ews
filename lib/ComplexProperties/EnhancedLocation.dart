@@ -86,17 +86,17 @@ class EnhancedLocation extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.LocationDisplayName:
-        this._displayName = reader.ReadValue<String>();
+        this._displayName = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.LocationAnnotation:
-        this._annotation = reader.ReadValue<String>();
+        this._annotation = await reader.ReadValue<String>();
         return true;
       case XmlElementNames.PersonaPostalAddress:
         this._personaPostalAddress = new complex.PersonaPostalAddress();
-        this._personaPostalAddress!.LoadFromXmlElementName(reader);
+        await this._personaPostalAddress!.LoadFromXmlElementName(reader);
         this
             ._personaPostalAddress!
             .addOnChangeEvent(_PersonaPostalAddress_OnChange);

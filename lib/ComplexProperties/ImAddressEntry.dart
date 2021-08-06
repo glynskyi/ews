@@ -67,8 +67,8 @@ class ImAddressEntry extends DictionaryEntryProperty<ImAddressKey> {
   /// </summary>
   /// <param name="reader">The reader.</param>
   @override
-  void ReadTextValueFromXml(EwsServiceXmlReader reader) {
-    this._imAddress = reader.ReadValue();
+  Future<void> ReadTextValueFromXml(EwsServiceXmlReader reader) async {
+    this._imAddress = await reader.ReadValue();
   }
 
   /// <summary>

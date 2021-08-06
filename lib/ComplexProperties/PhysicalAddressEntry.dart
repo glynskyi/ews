@@ -137,9 +137,10 @@ class PhysicalAddressEntry extends DictionaryEntryProperty<PhysicalAddressKey> {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     if (_PhysicalAddressSchema.XmlElementNames!.contains(reader.LocalName)) {
-      this._propertyBag[reader.LocalName] = reader.ReadElementValue<String>();
+      this._propertyBag[reader.LocalName] =
+          await reader.ReadElementValue<String>();
 
       return true;
     } else {

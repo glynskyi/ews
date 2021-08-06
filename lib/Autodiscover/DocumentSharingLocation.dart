@@ -107,7 +107,8 @@ class DocumentSharingLocation {
   /// <remarks>
   /// Example:  "docx pptx xlsx"
   /// </remarks>
-  Iterable<String?>? get SupportedFileExtensions => this._supportedFileExtensions;
+  Iterable<String?>? get SupportedFileExtensions =>
+      this._supportedFileExtensions;
 
   set SupportedFileExtensions(Iterable<String?>? value) =>
       this._supportedFileExtensions = value;
@@ -163,53 +164,57 @@ class DocumentSharingLocation {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>DocumentSharingLocation.</returns>
-  static DocumentSharingLocation LoadFromXml(EwsXmlReader reader) {
+  static Future<DocumentSharingLocation> LoadFromXml(
+      EwsXmlReader reader) async {
     DocumentSharingLocation location = new DocumentSharingLocation._();
 
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.ServiceUrl:
-            location.ServiceUrl = reader.ReadElementValue<String>();
+            location.ServiceUrl = await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.LocationUrl:
-            location.LocationUrl = reader.ReadElementValue<String>();
+            location.LocationUrl = await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.DisplayName:
-            location.DisplayName = reader.ReadElementValue<String>();
+            location.DisplayName = await reader.ReadElementValue<String>();
             break;
 
           case XmlElementNames.SupportedFileExtensions:
             List<String?> fileExtensions = <String?>[];
-            reader.Read();
+            await reader.Read();
             while (reader.IsStartElementWithNamespace(
                 XmlNamespace.Autodiscover, XmlElementNames.FileExtension)) {
-              String? extension = reader.ReadElementValue<String>();
+              String? extension = await reader.ReadElementValue<String>();
               fileExtensions.add(extension);
-              reader.Read();
+              await reader.Read();
             }
 
             location.SupportedFileExtensions = fileExtensions;
             break;
 
           case XmlElementNames.ExternalAccessAllowed:
-            location.ExternalAccessAllowed = reader.ReadElementValue<bool>();
+            location.ExternalAccessAllowed =
+                await reader.ReadElementValue<bool>();
             break;
 
           case XmlElementNames.AnonymousAccessAllowed:
-            location.AnonymousAccessAllowed = reader.ReadElementValue<bool>();
+            location.AnonymousAccessAllowed =
+                await reader.ReadElementValue<bool>();
             break;
 
           case XmlElementNames.CanModifyPermissions:
-            location.CanModifyPermissions = reader.ReadElementValue<bool>();
+            location.CanModifyPermissions =
+                await reader.ReadElementValue<bool>();
             break;
 
           case XmlElementNames.IsDefault:
-            location.IsDefault = reader.ReadElementValue<bool>();
+            location.IsDefault = await reader.ReadElementValue<bool>();
             break;
 
           default:

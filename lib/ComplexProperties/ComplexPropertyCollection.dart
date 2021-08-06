@@ -90,8 +90,10 @@ abstract class ComplexPropertyCollection<
   /// <param name="reader">The reader.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXml(EwsServiceXmlReader reader, String? localElementName) {
-    this.LoadFromXmlWithNamespace(reader, XmlNamespace.Types, localElementName);
+  Future<void> LoadFromXml(
+      EwsServiceXmlReader reader, String? localElementName) async {
+    await this
+        .LoadFromXmlWithNamespace(reader, XmlNamespace.Types, localElementName);
   }
 
   /// <summary>
@@ -101,24 +103,24 @@ abstract class ComplexPropertyCollection<
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="localElementName">Name of the local element.</param>
   @override
-  void LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String? localElementName) {
+  Future<void> LoadFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String? localElementName) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         xmlNamespace, localElementName);
 
     if (!reader.IsEmptyElement) {
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement()) {
           TComplexProperty? complexProperty =
               this.CreateComplexProperty(reader.LocalName);
 
           if (complexProperty != null) {
-            complexProperty.LoadFromXml(reader, reader.LocalName);
+            await complexProperty.LoadFromXml(reader, reader.LocalName);
             this.InternalAdd(complexProperty, true);
           } else {
-            reader.SkipCurrentElement();
+            await reader.SkipCurrentElement();
           }
         }
       } while (
@@ -133,15 +135,15 @@ abstract class ComplexPropertyCollection<
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
   @override
-  void UpdateFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String xmlElementName) {
+  Future<void> UpdateFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName) async {
     reader.EnsureCurrentNodeIsStartElementWithNamespace(
         xmlNamespace, xmlElementName);
 
     if (!reader.IsEmptyElement) {
       int index = 0;
       do {
-        reader.Read();
+        await reader.Read();
 
         if (reader.IsStartElement()) {
           TComplexProperty? complexProperty =

@@ -102,8 +102,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
-    this.LoadFromXml(reader, XmlElementNames.TransitionsGroup);
+  Future<void> LoadFromXmlElementName(EwsServiceXmlReader reader) async {
+    await this.LoadFromXml(reader, XmlElementNames.TransitionsGroup);
   }
 
   /// <summary>
@@ -138,13 +138,13 @@ class TimeZoneTransitionGroup extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     reader.EnsureCurrentNodeIsStartElement();
 
     TimeZoneTransition transition =
         TimeZoneTransition.Create(this.timeZoneDefinition, reader.LocalName);
 
-    transition.LoadFromXmlElementName(reader);
+    await transition.LoadFromXmlElementName(reader);
 
     EwsUtilities.Assert(
         transition.TargetPeriod != null,
@@ -319,7 +319,8 @@ class TimeZoneTransitionGroup extends ComplexProperty {
     CustomTimeZoneCreateParams result = new CustomTimeZoneCreateParams();
 
     if (this.TransitionToDaylight != null) {
-      result.DaylightDisplayName = this.TransitionToDaylight!.TargetPeriod!.Name;
+      result.DaylightDisplayName =
+          this.TransitionToDaylight!.TargetPeriod!.Name;
     }
 
     result.StandardDisplayName = this.TransitionToStandard!.TargetPeriod!.Name;

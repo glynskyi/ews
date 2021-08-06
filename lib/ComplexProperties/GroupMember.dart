@@ -210,7 +210,9 @@ class GroupMember extends ComplexProperty {
 
   set AddressInformation(EmailAddress? value) {
     if (this.addressInformation != null) {
-      this.addressInformation!.removeChangeEvent(this.AddressInformationChanged);
+      this
+          .addressInformation!
+          .removeChangeEvent(this.AddressInformationChanged);
     }
 
     this.addressInformation = value;
@@ -240,16 +242,16 @@ class GroupMember extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Status:
-        this.status =
-            EwsUtilities.Parse<MemberStatus>(reader.ReadElementValue<String>());
+        this.status = EwsUtilities.Parse<MemberStatus>(
+            await reader.ReadElementValue<String>());
         return true;
 
       case XmlElementNames.Mailbox:
         this.AddressInformation = new EmailAddress();
-        this.AddressInformation!.LoadFromXml(reader, reader.LocalName);
+        await this.AddressInformation!.LoadFromXml(reader, reader.LocalName);
         return true;
 
       default:

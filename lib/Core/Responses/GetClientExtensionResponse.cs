@@ -77,7 +77,7 @@
             {
                 // Because we don't have an element for count of returned object,
                 // we have to test the element to determine if it is StartElement of return object or EndElement
-                reader.Read();
+                await reader.Read();
 
                 while (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.ClientExtension))
                 {
@@ -86,13 +86,13 @@
                     this.ClientExtensions.Add(clientExtension);
 
                     reader.EnsureCurrentNodeIsEndElement(XmlNamespace.Types, XmlElementNames.ClientExtension);
-                    reader.Read();
+                    await reader.Read();
                 }
 
                 reader.EnsureCurrentNodeIsEndElement(XmlNamespace.Messages, XmlElementNames.ClientExtensions);
             }
 
-            reader.Read();
+            await reader.Read();
             if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.ClientExtensionRawMasterTableXml))
             {
                 this.rawMasterTableXml = reader.ReadElementValue<String>();

@@ -48,20 +48,21 @@ class DomainSettingError {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsXmlReader reader) {
+  Future<void> LoadFromXml(EwsXmlReader reader) async {
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.NodeType == XmlNodeType.Element) {
         switch (reader.LocalName) {
           case XmlElementNames.ErrorCode:
-            this._errorCode = reader.ReadElementValue<AutodiscoverErrorCode>();
+            this._errorCode =
+                await reader.ReadElementValue<AutodiscoverErrorCode>();
             break;
           case XmlElementNames.ErrorMessage:
-            this._errorMessage = reader.ReadElementValue<String>();
+            this._errorMessage = await reader.ReadElementValue<String>();
             break;
           case XmlElementNames.SettingName:
-            this._settingName = reader.ReadElementValue<String>();
+            this._settingName = await reader.ReadElementValue<String>();
             break;
         }
       }

@@ -121,30 +121,30 @@ class Attribution extends ComplexProperty {
   /// <param name="reader">XML reader</param>
   /// <returns>Whether reading succeeded</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.Id:
-        this.Id = reader.ReadElementValue<String>();
+        this.Id = await reader.ReadElementValue<String>();
         break;
       case XmlElementNames.SourceId:
         this.SourceId = new ItemId();
-        this.SourceId.LoadFromXml(reader, reader.LocalName);
+        await this.SourceId.LoadFromXml(reader, reader.LocalName);
         break;
       case XmlElementNames.DisplayName:
-        this.DisplayName = reader.ReadElementValue<String>();
+        this.DisplayName = await reader.ReadElementValue<String>();
         break;
       case XmlElementNames.IsWritable:
-        this.IsWritable = reader.ReadElementValue<bool>();
+        this.IsWritable = await reader.ReadElementValue<bool>();
         break;
       case XmlElementNames.IsQuickContact:
-        this.IsQuickContact = reader.ReadElementValue<bool>();
+        this.IsQuickContact = await reader.ReadElementValue<bool>();
         break;
       case XmlElementNames.IsHidden:
-        this.IsHidden = reader.ReadElementValue<bool>();
+        this.IsHidden = await reader.ReadElementValue<bool>();
         break;
       case XmlElementNames.FolderId:
         this.FolderId = new complex.FolderId();
-        this.FolderId!.LoadFromXml(reader, reader.LocalName);
+        await this.FolderId!.LoadFromXml(reader, reader.LocalName);
         break;
 
       default:

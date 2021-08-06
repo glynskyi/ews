@@ -56,10 +56,10 @@ class MeetingTimeZonePropertyDefinition extends PropertyDefinition {
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
   @override
-  void LoadPropertyValueFromXml(
-      EwsServiceXmlReader reader, PropertyBag propertyBag) {
+  Future<void> LoadPropertyValueFromXml(
+      EwsServiceXmlReader reader, PropertyBag propertyBag) async {
     MeetingTimeZone meetingTimeZone = new MeetingTimeZone();
-    meetingTimeZone.LoadFromXml(reader, this.XmlElementName);
+    await meetingTimeZone.LoadFromXml(reader, this.XmlElementName);
 
     throw NotImplementedException("LoadPropertyValueFromXml");
 //            propertyBag[AppointmentSchema.StartTimeZone] = meetingTimeZone.ToTimeZoneInfo();

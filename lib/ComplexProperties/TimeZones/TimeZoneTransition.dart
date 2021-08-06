@@ -139,11 +139,11 @@ class TimeZoneTransition extends ComplexProperty {
   /// <param name="reader">The reader.</param>
   /// <returns>True if element was read.</returns>
   @override
-  bool TryReadElementFromXml(EwsServiceXmlReader reader) {
+  Future<bool> TryReadElementFromXml(EwsServiceXmlReader reader) async {
     switch (reader.LocalName) {
       case XmlElementNames.To:
         String? targetKind = reader.ReadAttributeValue(XmlAttributeNames.Kind);
-        String? targetId = reader.ReadElementValue<String>();
+        String? targetId = await reader.ReadElementValue<String>();
 
         switch (targetKind) {
           case TimeZoneTransition.PeriodTarget:
@@ -199,8 +199,8 @@ class TimeZoneTransition extends ComplexProperty {
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXmlElementName(EwsServiceXmlReader reader) {
-    this.LoadFromXml(reader, this.GetXmlElementName());
+  Future<void> LoadFromXmlElementName(EwsServiceXmlReader reader) async {
+    await this.LoadFromXml(reader, this.GetXmlElementName());
   }
 
   /// <summary>

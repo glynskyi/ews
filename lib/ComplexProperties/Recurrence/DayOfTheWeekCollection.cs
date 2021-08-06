@@ -71,7 +71,7 @@
         /// <param name="reader">The reader.</param>
         /// <param name="xmlElementName">Name of the XML element.</param>
 @override
-        void LoadFromXml(EwsServiceXmlReader reader, String xmlElementName)
+        Future<void> LoadFromXml(EwsServiceXmlReader reader, String xmlElementName) async
         {
             reader.EnsureCurrentNodeIsStartElement(XmlNamespace.Types, xmlElementName);
 

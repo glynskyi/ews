@@ -59,14 +59,14 @@
             {
                 this.delegateUserResponses = new Collection<DelegateUserResponse>();
 
-                reader.Read();
+                await reader.Read();
 
                 if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.ResponseMessages))
                 {
                     int delegateUserIndex = 0;
                     do
                     {
-                        reader.Read();
+                        await reader.Read();
 
                         if (reader.IsStartElement(XmlNamespace.Messages, XmlElementNames.DelegateUserResponseMessageType))
                         {

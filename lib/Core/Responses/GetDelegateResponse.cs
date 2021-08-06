@@ -55,7 +55,7 @@
                 // DeliverMeetingRequests start element, so we don't need to read it.
                 if (this.DelegateUserResponses.Count > 0)
                 {
-                    reader.Read();
+                    await reader.Read();
                 }
 
                 // Make sure that we're at the DeliverMeetingRequests element before trying to read the value.

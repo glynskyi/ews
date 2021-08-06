@@ -58,8 +58,8 @@ class NameResolutionCollection
   /// Loads from XML.
   /// </summary>
   /// <param name="reader">The reader.</param>
-  void LoadFromXml(EwsServiceXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> LoadFromXml(EwsServiceXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.ResolutionSet);
 
     int totalItemsInView =
@@ -70,12 +70,12 @@ class NameResolutionCollection
     for (int i = 0; i < totalItemsInView; i++) {
       NameResolution nameResolution = new NameResolution(this);
 
-      nameResolution.LoadFromXml(reader);
+      await nameResolution.LoadFromXml(reader);
 
       this._items.add(nameResolution);
     }
 
-    reader.ReadEndElementWithNamespace(
+    await reader.ReadEndElementWithNamespace(
         XmlNamespace.Messages, XmlElementNames.ResolutionSet);
   }
 

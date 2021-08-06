@@ -26,4 +26,8 @@ class MemoryStream extends Stream<List<int>>
     return Stream.fromIterable(elements).listen(onData,
         onError: onError, onDone: onDone, cancelOnError: cancelOnError);
   }
+
+  void Write(Uint8List buffer, int offset, int size) {
+    elements.add(buffer.sublist(offset, offset + size));
+  }
 }

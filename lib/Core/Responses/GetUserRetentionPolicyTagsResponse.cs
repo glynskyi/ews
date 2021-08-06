@@ -59,7 +59,7 @@
             {
                 do
                 {
-                    reader.Read();
+                    await reader.Read();
                     if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.RetentionPolicyTag))
                     {
                         this.retentionPolicyTags.Add(RetentionPolicyTag.LoadFromXml(reader));

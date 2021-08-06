@@ -62,7 +62,7 @@
 
             do
             {
-                reader.Read();
+                await reader.Read();
 
                 if (reader.IsStartElement())
                 {
@@ -80,7 +80,7 @@
                         case XmlElementNames.CalendarEventArray:
                             do
                             {
-                                reader.Read();
+                                await reader.Read();
 
                                 // Sometimes Exchange Online returns blank CalendarEventArray tag like bellow.
                                 // <CalendarEventArray xmlns="http://schemas.microsoft.com/exchange/services/2006/types" />

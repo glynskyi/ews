@@ -170,9 +170,9 @@ abstract class AutodiscoverRequest {
               await EwsServiceXmlReader.Create(memoryStream2, this.Service);
 
           // WCF may not generate an XML declaration.
-          ewsXmlReader.Read();
+          await ewsXmlReader.Read();
           if (ewsXmlReader.NodeType == XmlNodeType.XmlDeclaration) {
-            ewsXmlReader.ReadStartElementWithNamespace(
+            await ewsXmlReader.ReadStartElementWithNamespace(
                 XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
           } else if ((ewsXmlReader.NodeType != XmlNodeType.Element) ||
               (ewsXmlReader.LocalName !=
@@ -183,11 +183,11 @@ abstract class AutodiscoverRequest {
                 "Strings.InvalidAutodiscoverServiceResponse");
           }
 
-          this.ReadSoapHeaders(ewsXmlReader);
+          await this.ReadSoapHeaders(ewsXmlReader);
 
-          AutodiscoverResponse response = this.ReadSoapBody(ewsXmlReader);
+          AutodiscoverResponse response = await this.ReadSoapBody(ewsXmlReader);
 
-          ewsXmlReader.ReadEndElementWithNamespace(
+          await ewsXmlReader.ReadEndElementWithNamespace(
               XmlNamespace.Soap, XmlElementNames.SOAPEnvelopeElementName);
 
           if (response.ErrorCode == AutodiscoverErrorCode.NoError) {
@@ -276,13 +276,14 @@ abstract class AutodiscoverRequest {
 
           EwsXmlReader reader =
               await EwsServiceXmlReader.Create(memoryStream, this.Service);
-          soapFaultDetails = this.ReadSoapFault(reader);
+          soapFaultDetails = await this.ReadSoapFault(reader);
         } else {
-          Stream stream = ServiceRequestBase.GetResponseStream(httpWebResponse);
+          Stream<List<int>> stream =
+              ServiceRequestBase.GetResponseStream(httpWebResponse);
 
-          EwsXmlReader reader = await EwsServiceXmlReader.Create(
-              stream as Stream<List<int>>, this.Service);
-          soapFaultDetails = this.ReadSoapFault(reader);
+          EwsXmlReader reader =
+              await EwsServiceXmlReader.Create(stream, this.Service);
+          soapFaultDetails = await this.ReadSoapFault(reader);
         }
 
         if (soapFaultDetails != null) {
@@ -334,14 +335,14 @@ abstract class AutodiscoverRequest {
   /// <param name="reader">The reader.</param>
   /// <returns>SOAP fault details.</returns>
   /* private */
-  SoapFaultDetails? ReadSoapFault(EwsXmlReader reader) {
+  Future<SoapFaultDetails?> ReadSoapFault(EwsXmlReader reader) async {
     SoapFaultDetails? soapFaultDetails = null;
 
     try {
       // WCF may not generate an XML declaration.
-      reader.Read();
+      await reader.Read();
       if (reader.NodeType == XmlNodeType.XmlDeclaration) {
-        reader.Read();
+        await reader.Read();
       }
 
       if (!reader.IsStartElement() ||
@@ -357,36 +358,37 @@ abstract class AutodiscoverRequest {
         return soapFaultDetails;
       }
 
-      reader.Read();
+      await reader.Read();
 
       // Skip SOAP header.
       if (reader.IsStartElementWithNamespace(
           soapNamespace, XmlElementNames.SOAPHeaderElementName)) {
         do {
-          reader.Read();
+          await reader.Read();
         } while (!reader.IsEndElementWithNamespace(
             soapNamespace, XmlElementNames.SOAPHeaderElementName));
 
         // Queue up the next read
-        reader.Read();
+        await reader.Read();
       }
 
       // Parse the fault element contained within the SOAP body.
       if (reader.IsStartElementWithNamespace(
           soapNamespace, XmlElementNames.SOAPBodyElementName)) {
         do {
-          reader.Read();
+          await reader.Read();
 
           // Parse Fault element
           if (reader.IsStartElementWithNamespace(
               soapNamespace, XmlElementNames.SOAPFaultElementName)) {
-            soapFaultDetails = SoapFaultDetails.Parse(reader, soapNamespace);
+            soapFaultDetails =
+                await SoapFaultDetails.Parse(reader, soapNamespace);
           }
         } while (!reader.IsEndElementWithNamespace(
             soapNamespace, XmlElementNames.SOAPBodyElementName));
       }
 
-      reader.ReadEndElementWithNamespace(
+      await reader.ReadEndElementWithNamespace(
           soapNamespace, XmlElementNames.SOAPEnvelopeElementName);
     } catch (XmlException) {
       // If response doesn't contain a valid SOAP fault, just ignore exception and
@@ -515,13 +517,13 @@ abstract class AutodiscoverRequest {
   /// Read SOAP headers.
   /// </summary>
   /// <param name="reader">EwsXmlReader</param>
-  void ReadSoapHeaders(EwsXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<void> ReadSoapHeaders(EwsXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName);
     do {
-      reader.Read();
+      await reader.Read();
 
-      this.ReadSoapHeader(reader);
+      await this.ReadSoapHeader(reader);
     } while (!reader.IsEndElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPHeaderElementName));
   }
@@ -530,11 +532,11 @@ abstract class AutodiscoverRequest {
   /// Reads a single SOAP header.
   /// </summary>
   /// <param name="reader">EwsXmlReader</param>
-  void ReadSoapHeader(EwsXmlReader reader) {
+  Future<void> ReadSoapHeader(EwsXmlReader reader) async {
     // Is this the ServerVersionInfo?
     if (reader.IsStartElementWithNamespace(
         XmlNamespace.Autodiscover, XmlElementNames.ServerVersionInfo)) {
-      this._service.ServerInfo = this.ReadServerVersionInfo(reader);
+      this._service.ServerInfo = await this.ReadServerVersionInfo(reader);
     }
   }
 
@@ -543,27 +545,27 @@ abstract class AutodiscoverRequest {
   /// </summary>
   /// <param name="reader">EwsXmlReader</param>
   /* private */
-  ExchangeServerInfo ReadServerVersionInfo(EwsXmlReader reader) {
+  Future<ExchangeServerInfo> ReadServerVersionInfo(EwsXmlReader reader) async {
     ExchangeServerInfo serverInfo = new ExchangeServerInfo();
     do {
-      reader.Read();
+      await reader.Read();
 
       if (reader.IsStartElement()) {
         switch (reader.LocalName) {
           case XmlElementNames.MajorVersion:
-            serverInfo.MajorVersion = reader.ReadElementValue<int>();
+            serverInfo.MajorVersion = await reader.ReadElementValue<int>();
             break;
           case XmlElementNames.MinorVersion:
-            serverInfo.MinorVersion = reader.ReadElementValue<int>();
+            serverInfo.MinorVersion = await reader.ReadElementValue<int>();
             break;
           case XmlElementNames.MajorBuildNumber:
-            serverInfo.MajorBuildNumber = reader.ReadElementValue<int>();
+            serverInfo.MajorBuildNumber = await reader.ReadElementValue<int>();
             break;
           case XmlElementNames.MinorBuildNumber:
-            serverInfo.MinorBuildNumber = reader.ReadElementValue<int>();
+            serverInfo.MinorBuildNumber = await reader.ReadElementValue<int>();
             break;
           case XmlElementNames.Version:
-            serverInfo.VersionString = reader.ReadElementValue<String>();
+            serverInfo.VersionString = await reader.ReadElementValue<String>();
             break;
           default:
             break;
@@ -579,11 +581,11 @@ abstract class AutodiscoverRequest {
   /// Read SOAP body.
   /// </summary>
   /// <param name="reader">EwsXmlReader</param>
-  AutodiscoverResponse ReadSoapBody(EwsXmlReader reader) {
-    reader.ReadStartElementWithNamespace(
+  Future<AutodiscoverResponse> ReadSoapBody(EwsXmlReader reader) async {
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
-    AutodiscoverResponse responses = this.LoadFromXml(reader);
-    reader.ReadEndElementWithNamespace(
+    AutodiscoverResponse responses = await this.LoadFromXml(reader);
+    await reader.ReadEndElementWithNamespace(
         XmlNamespace.Soap, XmlElementNames.SOAPBodyElementName);
     return responses;
   }
@@ -593,12 +595,12 @@ abstract class AutodiscoverRequest {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns></returns>
-  AutodiscoverResponse LoadFromXml(EwsXmlReader reader) {
+  Future<AutodiscoverResponse> LoadFromXml(EwsXmlReader reader) async {
     String elementName = this.GetResponseXmlElementName();
-    reader.ReadStartElementWithNamespace(
+    await reader.ReadStartElementWithNamespace(
         XmlNamespace.Autodiscover, elementName);
     AutodiscoverResponse response = this.CreateServiceResponse();
-    response.LoadFromXml(reader, elementName);
+    await response.LoadFromXml(reader, elementName);
     return response;
   }
 

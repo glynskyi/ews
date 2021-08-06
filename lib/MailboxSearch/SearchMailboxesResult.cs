@@ -46,7 +46,7 @@
             List<MailboxQuery> searchQueries = new List<MailboxQuery>();
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.SearchQueries))
                 {
                     reader.ReadStartElement(XmlNamespace.Types, XmlElementNames.MailboxQuery);
@@ -55,7 +55,7 @@
                     List<MailboxSearchScope> mailboxSearchScopes = new List<MailboxSearchScope>();
                     do
                     {
-                        reader.Read();
+                        await reader.Read();
                         if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.MailboxSearchScope))
                         {
                             String mailbox = reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.Mailbox);
@@ -82,7 +82,7 @@
 
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.KeywordStats))
                 {
                     searchResult.KeywordStats = LoadKeywordStatsXml(reader);
@@ -103,7 +103,7 @@
                     List<SearchRefinerItem> refiners = new List<SearchRefinerItem>();
                     do
                     {
-                        reader.Read();
+                        await reader.Read();
                         if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Refiner))
                         {
                             refiners.Add(SearchRefinerItem.LoadFromXml(reader));
@@ -121,7 +121,7 @@
                     List<MailboxStatisticsItem> mailboxStats = new List<MailboxStatisticsItem>();
                     do
                     {
-                        reader.Read();
+                        await reader.Read();
                         if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.MailboxStat))
                         {
                             mailboxStats.Add(MailboxStatisticsItem.LoadFromXml(reader));
@@ -151,7 +151,7 @@
             reader.EnsureCurrentNodeIsStartElement(XmlNamespace.Types, XmlElementNames.KeywordStats);
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.KeywordStat))
                 {
                     KeywordStatisticsSearchResult keywordStat = new KeywordStatisticsSearchResult();
@@ -178,13 +178,13 @@
             reader.EnsureCurrentNodeIsStartElement(XmlNamespace.Types, XmlElementNames.Items);
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.SearchPreviewItem))
                 {
                     SearchPreviewItem previewItem = new SearchPreviewItem();
                     do
                     {
-                        reader.Read();
+                        await reader.Read();
                         if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.Id))
                         {
                             previewItem.Id = new ItemId();
@@ -296,7 +296,7 @@
                     toRecipients.Add(reader.ReadElementValue(XmlNamespace.Types, XmlElementNames.SmtpAddress));
                 }
 
-                reader.Read();
+                await reader.Read();
             }
             while (!reader.IsEndElement(XmlNamespace.Types, elementName));
 
@@ -315,7 +315,7 @@
             reader.EnsureCurrentNodeIsStartElement(XmlNamespace.Types, XmlElementNames.ExtendedProperties);
             do
             {
-                reader.Read();
+                await reader.Read();
                 if (reader.IsStartElement(XmlNamespace.Types, XmlElementNames.ExtendedProperty))
                 {
                     extendedProperties.LoadFromXml(reader, XmlElementNames.ExtendedProperty);

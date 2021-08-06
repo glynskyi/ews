@@ -149,7 +149,7 @@ abstract class PropertyDefinition extends ServiceObjectPropertyDefinition {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="propertyBag">The property bag.</param>
-  void LoadPropertyValueFromXml(
+  Future<void> LoadPropertyValueFromXml(
       EwsServiceXmlReader reader, PropertyBag propertyBag);
 
   /// <summary>
