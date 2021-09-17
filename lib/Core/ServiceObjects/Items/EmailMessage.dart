@@ -211,8 +211,8 @@ class EmailMessage extends Item {
   /// <summary>
   /// Sends this e-mail message. Calling this method results in at least one call to EWS.
   /// </summary>
-  void Send() {
-    this._InternalSend(null, MessageDisposition.SendOnly);
+  Future<void> Send() async {
+    await this._InternalSend(null, MessageDisposition.SendOnly);
   }
 
   /// <summary>
