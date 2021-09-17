@@ -8,6 +8,22 @@ import 'package:ews/Xml/XmlNodeType.dart' as xml;
 import 'package:xml/xml.dart';
 import 'package:xml/xml_events.dart';
 
+class RotConverter extends Converter<List<XmlEvent>, List<XmlEvent>> {
+  // final _key;
+  const RotConverter();
+
+  @override
+  List<XmlEvent> convert(List<XmlEvent> input) {
+    print(">>> $input");
+    return input;
+  }
+
+// List<int> convert(List<int> data, { int? key }) {
+//   print(">>> $data");
+//   return data;
+// }
+}
+
 class XmlReader {
   // late Stream<List<XmlEvent>> _events;
   late StreamQueue<List<XmlEvent>> _queue;
@@ -19,7 +35,8 @@ class XmlReader {
   XmlEvent? _current;
 
   XmlReader(Stream<String> inputStream) {
-    _queue = StreamQueue(inputStream.toXmlEvents());
+    _queue =
+        StreamQueue(inputStream.toXmlEvents().transform(XmlNormalizeEvents()));
   }
 
   String get Value => throw NotImplementedException("Value");
@@ -130,16 +147,13 @@ class XmlReader {
     if (_retrieved.isNotEmpty) {
       _current = _retrieved.removeAt(0);
       _parseAttributesAndNamespaces();
-
-      // print("+++ ${_current}");
-      // print("+++ namespaces:  ${_namespaces}");
       return true;
     }
     // _isFinished = !_events.moveNext();
 
     if (!_isFinished) {
       if (await _queue.hasNext) {
-        _retrieved = await _queue.next;
+        _retrieved = List.from(await _queue.next);
         _current = _retrieved.removeAt(0);
         _parseAttributesAndNamespaces();
       } else {
@@ -147,8 +161,6 @@ class XmlReader {
       }
     }
 
-    // print("+++ ${_current}");
-    // print("+++ namespaces:  ${_namespaces}");
     return !_isFinished;
   }
 
@@ -195,22 +207,18 @@ class XmlReader {
   }
 
   Future<String> ReadString() async {
-    if (_current is XmlTextEvent) {
-      final value = (_current as XmlTextEvent).text;
-      await Read();
-      return value;
+    if (_current is XmlStartElementEvent &&
+        (_current as XmlStartElementEvent).isSelfClosing) {
+      return "";
     } else {
-      if (_current is XmlStartElementEvent &&
-          (_current as XmlStartElementEvent).isSelfClosing) {
-        return "";
-      } else {
-        final buffer = StringBuffer();
+      if (_current is XmlStartElementEvent) {
         await Read();
-        do {
-          buffer.write((_current as XmlTextEvent).text);
-        } while (await Read() && _current is XmlTextEvent);
-        return buffer.toString();
       }
+      final buffer = StringBuffer();
+      do {
+        buffer.write((_current as XmlTextEvent).text);
+      } while (await Read() && _current is XmlTextEvent);
+      return buffer.toString();
     }
   }
 
@@ -250,12 +258,22 @@ class XmlNormalizeEvents extends XmlListConverter<XmlEvent, XmlEvent> {
 class _XmlNormalizeEventsSink extends ChunkedConversionSink<List<XmlEvent>> {
   _XmlNormalizeEventsSink(this.sink);
 
+  int _nestingLevel = 0;
+
   final Sink<List<XmlEvent>> sink;
   final List<XmlEvent> buffer = <XmlEvent>[];
 
   @override
   void add(List<XmlEvent> chunk) {
-    buffer.addAll(chunk);
+    final normalizedChunks = chunk.where((xmlEvent) {
+      if (xmlEvent is XmlStartElementEvent && !xmlEvent.isSelfClosing) {
+        _nestingLevel++;
+      } else if (xmlEvent is XmlEndElementEvent) {
+        _nestingLevel--;
+      }
+      return xmlEvent is! XmlTextEvent || _nestingLevel > 0;
+    });
+    buffer.addAll(normalizedChunks);
     // Filter out empty text nodes.
     // buffer.addAll(
     //     chunk.where((event) => !(event is XmlTextEvent && event.text.isEmpty)));
@@ -283,8 +301,10 @@ class _XmlNormalizeEventsSink extends ChunkedConversionSink<List<XmlEvent>> {
     //     buffer.clear();
     //   }
     // }
-    sink.add(buffer);
-    buffer.clear();
+    if (buffer.isNotEmpty) {
+      sink.add(buffer.toList(growable: false));
+      buffer.clear();
+    }
   }
 
   @override

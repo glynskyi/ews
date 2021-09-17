@@ -89,7 +89,7 @@ class HangingRequestDisconnectEventArgs // : EventArgs
 /// Callback delegate to handle asynchronous responses.
 /// </summary>
 /// <param name="response">Response received from the server</param>
-typedef void HandleResponseObject(Object response);
+typedef Future<void> HandleResponseObject(Object response);
 
 /// <summary>
 /// Delegate method to handle a hanging request disconnection.
@@ -114,7 +114,7 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
   /// <summary>
   /// Callback delegate to handle response objects
   /// </summary>
-  HandleResponseObject? _responseHandler;
+  late HandleResponseObject _responseHandler;
 
   /// <summary>
   /// Response from the server.
@@ -223,7 +223,7 @@ abstract class HangingServiceRequestBase extends ServiceRequestBase {
                   ewsXmlReader, this._response.Headers);
             }
 
-            this._responseHandler!(responseObject);
+            await this._responseHandler(responseObject);
           }
         } finally {
           // todo restore

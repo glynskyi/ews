@@ -1176,6 +1176,8 @@ class EwsUtilities {
       return value as T?;
     } else if (T == bool) {
       return (value!.toLowerCase() == "true") as T;
+    } else if (T == DateTime) {
+      return DateTime.parse(value!) as T;
     } else {
       throw NotImplementedException("Parse<$T>($value)");
     }

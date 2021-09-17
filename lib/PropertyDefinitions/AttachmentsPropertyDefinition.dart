@@ -64,8 +64,7 @@ class AttachmentsPropertyDefinition
   /// </returns>
   @override
   bool HasFlag(PropertyDefinitionFlags flag, ExchangeVersion version) {
-    if (version != null &&
-        version.index >= ExchangeVersion.Exchange2010_SP2.index) {
+    if (version.index >= ExchangeVersion.Exchange2010_SP2.index) {
       return _Exchange2010SP2PropertyDefinitionFlags.contains(flag);
     }
 

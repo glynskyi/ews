@@ -211,10 +211,6 @@ class SearchFilterCollection extends SearchFilter
   /// </summary>
   /// <param name="searchFilter">The search filter to remove.</param>
   void Remove(SearchFilter searchFilter) {
-    if (searchFilter == null) {
-      throw new ArgumentNullException("searchFilter");
-    }
-
     if (this.Contains(searchFilter)) {
       searchFilter.removeChangeEvent(this.SearchFilterChanged);
       this._searchFilters.remove(searchFilter);

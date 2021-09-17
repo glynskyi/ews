@@ -29,7 +29,8 @@ import 'package:ews/Notifications/StreamingSubscription.dart';
 /// <summary>
 /// Provides data to a StreamingSubscriptionConnection's OnNotificationEvent event.
 /// </summary>
-abstract class NotificationEventArgs /* extends EventArgs */ {
+class NotificationEventArgs {
+  // extends EventArgs  {
   /// <summary>
   /// Initializes a new instance of the <see cref="NotificationEventArgs"/> class.
   /// </summary>

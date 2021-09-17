@@ -80,11 +80,6 @@ class ScopedDateTimePropertyDefinition extends DateTimePropertyDefinition {
       ExchangeVersion version,
       GetPropertyDefinitionCallback getPropertyDefinitionCallback)
       : super.withUriAndFlags(xmlElementName, uri, flags, version) {
-    EwsUtilities.Assert(
-        getPropertyDefinitionCallback != null,
-        "ScopedDateTimePropertyDefinition.ctor",
-        "getPropertyDefinitionCallback is null.");
-
     this._getPropertyDefinitionCallback = getPropertyDefinitionCallback;
   }
 

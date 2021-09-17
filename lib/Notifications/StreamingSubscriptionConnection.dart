@@ -33,6 +33,8 @@ import 'package:ews/Enumerations/ServiceResult.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Exceptions/ObjectDisposedException.dart';
 import 'package:ews/Exceptions/ServiceLocalException.dart';
+import 'package:ews/Notifications/GetStreamingEventsResults.dart';
+import 'package:ews/Notifications/NotificationEventArgs.dart';
 import 'package:ews/Notifications/StreamingSubscription.dart';
 import 'package:ews/Notifications/SubscriptionErrorEventArgs.dart';
 import 'package:synchronized/synchronized.dart';
@@ -46,6 +48,14 @@ typedef SubscriptionErrorDelegate = void Function(
     Object sender, SubscriptionErrorEventArgs args);
 
 /// <summary>
+/// Represents a delegate that is invoked when notifications are received from the server
+/// </summary>
+/// <param name="sender">The StreamingSubscriptionConnection instance that received the events.</param>
+/// <param name="args">The event data.</param>
+typedef NotificationEventDelegate = void Function(
+    Object sender, NotificationEventArgs args);
+
+/// <summary>
 /// Represents a connection to an ongoing stream of events.
 /// </summary>
 class StreamingSubscriptionConnection // extends IDisposable
@@ -53,7 +63,7 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// <summary>
   /// Mapping of streaming id to subscriptions currently on the connection.
   /// </summary>
-  late Map<String, StreamingSubscription> _subscriptions;
+  Map<String, StreamingSubscription> _subscriptions = {};
 
   /// <summary>
   /// connection lifetime, in minutes
@@ -81,16 +91,9 @@ class StreamingSubscriptionConnection // extends IDisposable
   Lock _lockObject = new Lock();
 
   /// <summary>
-  /// Represents a delegate that is invoked when notifications are received from the server
-  /// </summary>
-  /// <param name="sender">The StreamingSubscriptionConnection instance that received the events.</param>
-  /// <param name="args">The event data.</param>
-// delegate void NotificationEventDelegate(object sender, NotificationEventArgs args);
-
-  /// <summary>
   /// Occurs when notifications are received from the server.
   /// </summary>
-// event NotificationEventDelegate OnNotificationEvent;
+  List<NotificationEventDelegate> OnNotificationEvent = [];
 
   /// <summary>
   /// Occurs when a subscription encounters an error.
@@ -118,7 +121,6 @@ class StreamingSubscriptionConnection // extends IDisposable
     }
 
     this._session = service;
-    this._subscriptions = new Map<String, StreamingSubscription>();
     this._connectionTimeout = lifetime;
   }
 
@@ -286,8 +288,7 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// </summary>
   /// <param name="response">The response.</param>
   /* private */
-  void HandleServiceResponseObject(Object response) {
-    // throw NotImplementedException("HandleServiceResponseObject");
+  Future<void> HandleServiceResponseObject(Object response) async {
     GetStreamingEventsResponse gseResponse =
         response as GetStreamingEventsResponse;
 
@@ -301,7 +302,7 @@ class StreamingSubscriptionConnection // extends IDisposable
         gseResponse.Result == ServiceResult.Warning) {
       if (gseResponse.Results.Notifications.length > 0) {
         // We got notifications; dole them out.
-        this.IssueNotificationEvents(gseResponse);
+        await this.IssueNotificationEvents(gseResponse);
       } else {
         //// This was just a heartbeat, nothing to do here.
       }
@@ -391,33 +392,27 @@ class StreamingSubscriptionConnection // extends IDisposable
   /// </summary>
   /// <param name="gseResponse">The GetStreamingEvents response.</param>
   /* private */
-  void IssueNotificationEvents(GetStreamingEventsResponse gseResponse) {
-    throw NotImplementedException("IssueNotificationEvents");
-//            for (GetStreamingEventsResults.NotificationGroup events in gseResponse.Results.Notifications)
-//            {
-//                StreamingSubscription subscription = null;
-//
-//                lock (this.lockObject)
-//                {
-//                    // Client can do any good or bad things in the below event handler
-//                    if (this.subscriptions != null && this.subscriptions.containsKey(events.SubscriptionId))
-//                    {
-//                        subscription = this.subscriptions[events.SubscriptionId];
-//                    }
-//                }
-//
-//                if (subscription != null)
-//                {
-//                    NotificationEventArgs eventArgs = new NotificationEventArgs(
-//                        subscription,
-//                        events.Events);
-//
-//                    if (this.OnNotificationEvent != null)
-//                    {
-//                        this.OnNotificationEvent(this, eventArgs);
-//                    }
-//                }
-//            }
+  Future<void> IssueNotificationEvents(
+      GetStreamingEventsResponse gseResponse) async {
+    for (NotificationGroup events in gseResponse.Results.Notifications) {
+      StreamingSubscription? subscription = null;
+
+      await this._lockObject.synchronized(() async {
+        // Client can do any good or bad things in the below event handler
+        if (this._subscriptions.containsKey(events.SubscriptionId)) {
+          subscription = this._subscriptions[events.SubscriptionId];
+        }
+      });
+
+      if (subscription != null) {
+        NotificationEventArgs eventArgs =
+            new NotificationEventArgs(subscription!, events.Events);
+
+        for (final delegate in this.OnNotificationEvent) {
+          delegate(this, eventArgs);
+        }
+      }
+    }
   }
 
   /// <summary>

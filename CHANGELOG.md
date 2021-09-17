@@ -1,3 +1,9 @@
+## 2.1.0
+
+* Added stream notifications
+* Fixed the DateTime decoding
+* Fixed the parsing of multiline body
+
 ## 2.0.0
 
 * Migrated to stream XML processing

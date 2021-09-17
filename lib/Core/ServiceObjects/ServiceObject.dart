@@ -319,16 +319,13 @@ abstract class ServiceObject {
   Object? operator [](PropertyDefinitionBase propertyDefinition) {
     Object? propertyValue;
 
-    PropertyDefinition propDef = propertyDefinition as PropertyDefinition;
-    if (propDef != null) {
-      return this.PropertyBag[propDef];
+    if (propertyDefinition is PropertyDefinition) {
+      return this.PropertyBag[propertyDefinition];
     } else {
-      ExtendedPropertyDefinition extendedPropDef =
-          propertyDefinition as ExtendedPropertyDefinition;
-      if (extendedPropDef != null) {
+      if (propertyDefinition is ExtendedPropertyDefinition) {
         OutParam<Object> propertyValueOutParam = OutParam();
-        if (this
-            .TryGetExtendedProperty(extendedPropDef, propertyValueOutParam)) {
+        if (this.TryGetExtendedProperty(
+            propertyDefinition, propertyValueOutParam)) {
           return propertyValue;
         } else {
           throw new ServiceObjectPropertyException(
