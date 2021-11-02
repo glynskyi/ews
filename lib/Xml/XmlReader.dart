@@ -5,6 +5,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:ews/Exceptions/ArgumentException.dart';
 import 'package:ews/Exceptions/NotImplementedException.dart';
 import 'package:ews/Xml/XmlNodeType.dart' as xml;
+import 'package:html_unescape/html_unescape.dart';
 import 'package:xml/xml.dart';
 import 'package:xml/xml_events.dart';
 
@@ -27,6 +28,7 @@ class RotConverter extends Converter<List<XmlEvent>, List<XmlEvent>> {
 class XmlReader {
   // late Stream<List<XmlEvent>> _events;
   late StreamQueue<List<XmlEvent>> _queue;
+  final _htmlUnescape = HtmlUnescape();
   final _namespaces = <Map<String, String>>[];
   var _isStarted = false;
   var _isFinished = false;
@@ -35,8 +37,9 @@ class XmlReader {
   XmlEvent? _current;
 
   XmlReader(Stream<String> inputStream) {
-    _queue =
-        StreamQueue(inputStream.toXmlEvents().transform(XmlNormalizeEvents()));
+    _queue = StreamQueue(inputStream
+        .toXmlEvents(entityMapping: XmlDefaultEntityMapping({}))
+        .transform(XmlNormalizeEvents()));
   }
 
   String get Value => throw NotImplementedException("Value");
@@ -218,7 +221,7 @@ class XmlReader {
       do {
         buffer.write((_current as XmlTextEvent).text);
       } while (await Read() && _current is XmlTextEvent);
-      return buffer.toString();
+      return _htmlUnescape.convert(buffer.toString());
     }
   }
 
