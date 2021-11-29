@@ -26,6 +26,7 @@
 import 'dart:typed_data';
 
 import 'package:ews/Attributes/ServiceObjectDefinitionAttribute.dart';
+import 'package:ews/ComplexProperties/EmailAddress.dart';
 import 'package:ews/ComplexProperties/EmailAddressCollection.dart';
 import 'package:ews/ComplexProperties/FolderId.dart';
 import 'package:ews/ComplexProperties/ItemAttachment.dart';
@@ -123,7 +124,8 @@ class EmailMessage extends Item {
       } else {
         // If the message has attachments, save as a draft (and add attachments) before sending.
         await this.InternalCreate(
-            null, // null means use the Drafts folder in the mailbox of the authenticated user.
+            null,
+            // null means use the Drafts folder in the mailbox of the authenticated user.
             MessageDisposition.SaveOnly,
             null);
 
@@ -301,8 +303,11 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets or sets the "on behalf" sender of the e-mail message.
   /// </summary>
-//        EmailAddress get From => this.PropertyBag[EmailMessageSchema.From];
-//        set From(EmailAddress value) => this.PropertyBag[EmailMessageSchema.From] = value;
+  EmailAddress? get From =>
+      this.PropertyBag[EmailMessageSchema.From] as EmailAddress?;
+
+  set From(EmailAddress? value) =>
+      this.PropertyBag[EmailMessageSchema.From] = value;
 
   /// <summary>
   /// Gets or sets a value indicating whether this is an associated message.
@@ -379,8 +384,11 @@ class EmailMessage extends Item {
   /// <summary>
   /// Gets or sets the sender of the e-mail message.
   /// </summary>
-//        EmailAddress get Sender => this.PropertyBag[EmailMessageSchema.Sender];
-//        set Sender(EmailAddress value) => this.PropertyBag[EmailMessageSchema.Sender] = value;
+  EmailAddress? get Sender =>
+      this.PropertyBag[EmailMessageSchema.Sender] as EmailAddress?;
+
+  set Sender(EmailAddress? value) =>
+      this.PropertyBag[EmailMessageSchema.Sender] = value;
 
   /// <summary>
   /// Gets the ReceivedBy property of the e-mail message.

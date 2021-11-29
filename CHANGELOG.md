@@ -1,3 +1,7 @@
+## 2.1.2
+
+* Added `MemberStatus` field to `EmailMessage` entity
+
 ## 2.1.1
 
 * Fixed the html escaping in the text streams

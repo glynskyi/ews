@@ -46,7 +46,8 @@ class _EmailMessageSchemaFieldUris {
   static const String IsRead = "message:IsRead";
   static const String IsResponseRequested = "message:IsResponseRequested";
   static const String IsReadReceiptRequested = "message:IsReadReceiptRequested";
-  static const String IsDeliveryReceiptRequested = "message:IsDeliveryReceiptRequested";
+  static const String IsDeliveryReceiptRequested =
+      "message:IsDeliveryReceiptRequested";
   static const String References = "message:References";
   static const String ReplyTo = "message:ReplyTo";
   static const String From = "message:From";
@@ -138,28 +139,35 @@ class EmailMessageSchema extends ItemSchema {
   /// <summary>
   /// Defines the From property.
   /// </summary>
-// static PropertyDefinition From =
-//            new ContainedPropertyDefinition<EmailAddress>(
-//                XmlElementNames.From,
-//                EmailMessageSchemaFieldUris.From,
-//                XmlElementNames.Mailbox,
-//                [PropertyDefinitionFlags.CanSet , PropertyDefinitionFlags.CanUpdate , PropertyDefinitionFlags.CanDelete , PropertyDefinitionFlags.CanFind],
-//                ExchangeVersion.Exchange2007_SP1,
-//                () { return new EmailAddress(); });
+  static PropertyDefinition From =
+      new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
+          XmlElementNames.From,
+          _EmailMessageSchemaFieldUris.From,
+          XmlElementNames.Mailbox,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1, () {
+    return new EmailAddress();
+  });
 
   /// <summary>
   /// Defines the IsDeliveryReceiptRequested property.
   /// </summary>
-  static PropertyDefinition IsDeliveryReceiptRequested = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsDeliveryReceiptRequested,
-      _EmailMessageSchemaFieldUris.IsDeliveryReceiptRequested,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsDeliveryReceiptRequested =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsDeliveryReceiptRequested,
+          _EmailMessageSchemaFieldUris.IsDeliveryReceiptRequested,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsRead property.
@@ -177,31 +185,33 @@ class EmailMessageSchema extends ItemSchema {
   /// <summary>
   /// Defines the IsReadReceiptRequested property.
   /// </summary>
-  static PropertyDefinition IsReadReceiptRequested = new BoolPropertyDefinition.withUriAndFlags(
-      XmlElementNames.IsReadReceiptRequested,
-      _EmailMessageSchemaFieldUris.IsReadReceiptRequested,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1);
+  static PropertyDefinition IsReadReceiptRequested =
+      new BoolPropertyDefinition.withUriAndFlags(
+          XmlElementNames.IsReadReceiptRequested,
+          _EmailMessageSchemaFieldUris.IsReadReceiptRequested,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1);
 
   /// <summary>
   /// Defines the IsResponseRequested property.
   /// </summary>
-  static PropertyDefinition IsResponseRequested = new BoolPropertyDefinition.withFlagsAndNullable(
-      XmlElementNames.IsResponseRequested,
-      _EmailMessageSchemaFieldUris.IsResponseRequested,
-      [
-        PropertyDefinitionFlags.CanSet,
-        PropertyDefinitionFlags.CanUpdate,
-        PropertyDefinitionFlags.CanDelete,
-        PropertyDefinitionFlags.CanFind
-      ],
-      ExchangeVersion.Exchange2007_SP1,
-      true); // isNullable
+  static PropertyDefinition IsResponseRequested =
+      new BoolPropertyDefinition.withFlagsAndNullable(
+          XmlElementNames.IsResponseRequested,
+          _EmailMessageSchemaFieldUris.IsResponseRequested,
+          [
+            PropertyDefinitionFlags.CanSet,
+            PropertyDefinitionFlags.CanUpdate,
+            PropertyDefinitionFlags.CanDelete,
+            PropertyDefinitionFlags.CanFind
+          ],
+          ExchangeVersion.Exchange2007_SP1,
+          true); // isNullable
 
   /// <summary>
   /// Defines the InternetMessageId property.
@@ -246,12 +256,13 @@ class EmailMessageSchema extends ItemSchema {
   /// <summary>
   /// Defines the Sender property.
   /// </summary>
-  static PropertyDefinition Sender = new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
-      XmlElementNames.Sender,
-      _EmailMessageSchemaFieldUris.Sender,
-      XmlElementNames.Mailbox,
-      [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanFind],
-      ExchangeVersion.Exchange2007_SP1, () {
+  static PropertyDefinition Sender =
+      new ContainedPropertyDefinition<EmailAddress>.withUriAndFlags(
+          XmlElementNames.Sender,
+          _EmailMessageSchemaFieldUris.Sender,
+          XmlElementNames.Mailbox,
+          [PropertyDefinitionFlags.CanSet, PropertyDefinitionFlags.CanFind],
+          ExchangeVersion.Exchange2007_SP1, () {
     return new EmailAddress();
   });
 

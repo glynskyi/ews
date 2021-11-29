@@ -69,6 +69,7 @@ export 'package:ews/Core/ServiceObjects/Items/MeetingResponse.dart';
 export 'package:ews/Core/ServiceObjects/Items/Task.dart';
 export 'package:ews/Core/ServiceObjects/Schemas/AppointmentSchema.dart';
 export 'package:ews/Core/ServiceObjects/Schemas/ContactSchema.dart';
+export 'package:ews/Core/ServiceObjects/Schemas/EmailMessageSchema.dart';
 export 'package:ews/Core/ServiceObjects/Schemas/FolderSchema.dart';
 export 'package:ews/Core/ServiceObjects/Schemas/ItemSchema.dart';
 export 'package:ews/Core/ServiceObjects/Schemas/SearchFolderSchema.dart';
