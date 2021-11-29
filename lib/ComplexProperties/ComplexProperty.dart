@@ -138,9 +138,9 @@ abstract class ComplexProperty implements ISelfValidate {
   /// <param name="reader">The reader.</param>
   /// <param name="xmlNamespace">The XML namespace.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void UpdateFromXmlWithNamespace(EwsServiceXmlReader reader,
-      XmlNamespace xmlNamespace, String xmlElementName) {
-    this._InternalLoadFromXml(reader, xmlNamespace, xmlElementName,
+  Future<void> UpdateFromXmlWithNamespace(EwsServiceXmlReader reader,
+      XmlNamespace xmlNamespace, String xmlElementName) async {
+    await this._InternalLoadFromXml(reader, xmlNamespace, xmlElementName,
         this.TryReadElementFromXmlToPatch);
   }
 
@@ -200,8 +200,10 @@ abstract class ComplexProperty implements ISelfValidate {
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <param name="xmlElementName">Name of the XML element.</param>
-  void UpdateFromXml(EwsServiceXmlReader reader, String xmlElementName) {
-    this.UpdateFromXmlWithNamespace(reader, this.Namespace, xmlElementName);
+  Future<void> UpdateFromXml(
+      EwsServiceXmlReader reader, String xmlElementName) async {
+    await this
+        .UpdateFromXmlWithNamespace(reader, this.Namespace, xmlElementName);
   }
 
   /// <summary>

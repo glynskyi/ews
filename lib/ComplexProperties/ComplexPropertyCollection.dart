@@ -156,7 +156,7 @@ abstract class ComplexPropertyCollection<
 //                            throw new ServiceLocalException("Strings.PropertyTypeIncompatibleWhenUpdatingCollection");
 //                        }
 
-          actualComplexProperty.UpdateFromXmlWithNamespace(
+          await actualComplexProperty.UpdateFromXmlWithNamespace(
               reader, xmlNamespace, reader.LocalName);
         }
       } while (!reader.IsEndElementWithNamespace(xmlNamespace, xmlElementName));

@@ -1,3 +1,7 @@
+## 2.1.3
+
+* Fixed the attachment creation for Exchange 2013 
+
 ## 2.1.2
 
 * Added `MemberStatus` field to `EmailMessage` entity

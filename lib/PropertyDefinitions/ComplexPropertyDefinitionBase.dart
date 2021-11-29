@@ -92,7 +92,7 @@ abstract class ComplexPropertyDefinitionBase extends PropertyDefinition {
     if (!justCreated &&
         this.HasFlag(PropertyDefinitionFlags.UpdateCollectionItems,
             propertyBag.Owner!.Service.RequestedServerVersion)) {
-      (complexPropertyOutParam.param as ComplexProperty)
+      await (complexPropertyOutParam.param as ComplexProperty)
           .UpdateFromXml(reader, reader.LocalName);
     } else {
       await (complexPropertyOutParam.param as ComplexProperty)
