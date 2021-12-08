@@ -148,7 +148,7 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
           this.TraceResponseXml(response, memoryStream);
 
           serviceResponse =
-              this._ReadResponseXml(memoryStream, response.Headers);
+              await this._ReadResponseXml(memoryStream, response.Headers);
         }
         await memoryStream.close();
       } else {
@@ -156,7 +156,7 @@ abstract class SimpleServiceRequestBase extends ServiceRequestBase {
             ServiceRequestBase.GetResponseStream(response);
 
         serviceResponse =
-            this._ReadResponseXml(responseStream, response.Headers);
+            await this._ReadResponseXml(responseStream, response.Headers);
 
         // responseStream.Close();
       }

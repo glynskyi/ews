@@ -1,3 +1,7 @@
+## 2.1.4
+
+* Fixed http request lifecycle
+
 ## 2.1.3
 
 * Fixed the attachment creation for Exchange 2013 
