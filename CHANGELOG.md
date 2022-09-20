@@ -1,3 +1,8 @@
+## 2.2.0
+
+* Updated `xml` to 6.1.0
+* Updated `timezone` to 0.9.0
+
 ## 2.1.4
 
 * Fixed http request lifecycle
