@@ -42,8 +42,7 @@ main() {
       ..TraceListener = traceListener;
     await Folder.BindWithWellKnownFolder(
         exchangeService, WellKnownFolderName.Notes);
-    expect(
-        traceListener.toString().toLowerCase(), contains("content-encoding"));
+    expect(traceListener.toString().toLowerCase(), contains("request-id"));
   });
 
   test('tests trace logs containts request', () async {
