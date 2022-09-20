@@ -12,9 +12,8 @@ import 'package:xml/src/xml/nodes/element.dart';
 import 'package:xml/src/xml/nodes/node.dart';
 import 'package:xml/src/xml/nodes/processing.dart';
 import 'package:xml/src/xml/nodes/text.dart';
-import 'package:xml/src/xml/utils/attribute_type.dart';
+import 'package:xml/src/xml/enums/attribute_type.dart';
 import 'package:xml/src/xml/utils/name.dart';
-import 'package:xml/src/xml/visitors/transformer.dart';
 
 const String xml = 'xml';
 const String xmlUri = 'http://www.w3.org/XML/1998/namespace';
@@ -257,7 +256,8 @@ class XmlBuilder {
   NamespaceData? _lookup(String uri) {
     final builder = _stack.lastWhere(
         (builder) => builder.namespaces.containsKey(uri),
-        orElse: (() => throw ArgumentException('Undefined namespace: $uri')) as XmlNodeBuilder Function()?);
+        orElse: (() => throw ArgumentException('Undefined namespace: $uri'))
+            as XmlNodeBuilder Function()?);
     return builder.namespaces[uri];
   }
 
@@ -273,13 +273,13 @@ class XmlBuilder {
         text(value.text);
       } else if (value is XmlAttribute) {
         // Attributes must be copied and added to the attributes list.
-        _stack.last.attributes.add(XmlTransformer.defaultInstance.visit(value));
+        _stack.last.attributes.add(value.copy());
       } else if (value is XmlDocumentFragment) {
         // Document fragments need to be unwrapped.
         value.children.forEach(_insert);
       } else if (value is XmlElement || value is XmlData) {
         // All other valid nodes must be copied and added to the children list.
-        _stack.last.children.add(XmlTransformer.defaultInstance.visit(value));
+        _stack.last.children.add(value.copy());
       } else {
         throw ArgumentException(
             'Unable to add element of type ${value.nodeType}');
