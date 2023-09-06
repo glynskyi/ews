@@ -8,12 +8,12 @@ environment:
 
 dependencies:
   async: ^2.8.2
-  xml: ^6.1.0
+  xml: ^6.3.0
   synchronized: ^3.0.0
-  intl: ^0.17.0
+  intl: ^0.18.1
   timezone: ^0.9.0
   uuid: ^3.0.5
-  collection: ^1.15.0
+  collection: ^1.15.2
   html_unescape: ^2.0.0
 
 dev_dependencies:
