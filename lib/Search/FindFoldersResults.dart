@@ -23,14 +23,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-import 'dart:collection';
-
 import 'package:ews/Core/ServiceObjects/Folders/Folder.dart';
 
 /// <summary>
 /// Represents the results of a folder search operation.
 /// </summary>
-class FindFoldersResults extends Iterable<Folder> with IterableMixin<Folder> {
+class FindFoldersResults extends Iterable<Folder> {
   int? _totalCount;
 
   int? _nextPageOffset;

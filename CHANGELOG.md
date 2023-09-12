@@ -1,3 +1,9 @@
+## 2.3.0
+
+* Updated `xml` to 6.3.0
+* Updated `collection` to 1.15.2
+* Updated `intl` to 0.18.1
+
 ## 2.2.0
 
 * Updated `xml` to 6.1.0
